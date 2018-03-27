@@ -1,0 +1,55 @@
+﻿@page
+@model CoreWiki.Pages.CreateModel
+
+@{
+	ViewData["Title"] = "Create";
+}
+
+<h2>Create</h2>
+
+<h4>Article</h4>
+<hr />
+<div class="row">
+	<div class="col-md-4">
+		<form method="post">
+
+			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+			<div class="form-group">
+				<label asp-for="Article.Topic" class="control-label"></label>
+				<input asp-for="Article.Topic" class="form-control" />
+				<span asp-validation-for="Article.Topic" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="Article.Published" class="control-label"></label>
+				<input asp-for="Article.Published" class="form-control" value="@DateTime.UtcNow" />
+				<span asp-validation-for="Article.Published" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="Article.Content" class="control-label"></label>
+				<textarea asp-for="Article.Content" class="form-control"></textarea>
+				<span asp-validation-for="Article.Content" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<input type="submit" value="Create" class="btn btn-default" />
+			</div>
+		</form>
+	</div>
+</div>
+
+<div>
+	<a asp-page="Index">Back to List</a>
+</div>
+
+@section Scripts {
+
+	<script src="~/lib/simplemde/simplemde.min.js"></script>
+	<script>
+		var simplemde = new SimpleMDE();
+	</script>
+
+	@{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
+@section Styles {
+	<link href="~/lib/simplemde/simplemde.min.css" rel="stylesheet" />
+}

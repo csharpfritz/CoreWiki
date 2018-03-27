@@ -1,0 +1,15 @@
+﻿@page
+@model CoreWiki.Pages.DetailsModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>@Model.Article.Topic</h2>
+
+<markdown>@Model.Article.Content</markdown>
+
+<div>
+    <a asp-page="./Edit" asp-route-id="@Model.Article.Topic">Edit</a> |
+    <a asp-page="./Index">Back to List</a>
+</div>
