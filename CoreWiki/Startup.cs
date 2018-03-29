@@ -12,43 +12,47 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace CoreWiki
 {
-    public class Startup
-    {
-        public Startup(IConfiguration configuration)
-        {
-            Configuration = configuration;
-        }
+	public class Startup
+	{
+		public Startup(IConfiguration configuration)
+		{
+			Configuration = configuration;
+		}
 
-        public IConfiguration Configuration { get; }
+		public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
-        {
+		// This method gets called by the runtime. Use this method to add services to the container.
+		public void ConfigureServices(IServiceCollection services)
+		{
 
-            services.AddEntityFrameworkSqlite()
-                .AddDbContext<ApplicationDbContext>(options =>
-                    options.UseSqlite("Data Source=./wiki.db")
-                );
+			services.AddEntityFrameworkSqlite()
+					.AddDbContext<ApplicationDbContext>(options =>
+							options.UseSqlite("Data Source=./wiki.db")
+					);
 
-            services.AddMvc();
-        }
+			services.AddMvc()
+				.AddRazorPagesOptions(options =>
+				{
+					options.Conventions.AddPageRoute("/Details", "{topicName?}");
+				});
+		}
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
-        {
-            if (env.IsDevelopment())
-            {
-                app.UseBrowserLink();
-                app.UseDeveloperExceptionPage();
-            }
-            else
-            {
-                app.UseExceptionHandler("/Error");
-            }
+		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+		public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+		{
+			if (env.IsDevelopment())
+			{
+				app.UseBrowserLink();
+				app.UseDeveloperExceptionPage();
+			}
+			else
+			{
+				app.UseExceptionHandler("/Error");
+			}
 
-            app.UseStaticFiles();
+			app.UseStaticFiles();
 
-            app.UseMvc();
-        }
-    }
+			app.UseMvc();
+		}
+	}
 }

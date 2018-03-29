@@ -1,15 +1,20 @@
-﻿@page
+﻿@page "{topicName?}"
 @model CoreWiki.Pages.DetailsModel
 
 @{
-    ViewData["Title"] = "Details";
+		ViewData["Title"] = "Details";
 }
 
 <h2>@Model.Article.Topic</h2>
+<h5>Last Published: @Model.Article.Published.ToShortDateString() @Model.Article.Published.ToLongTimeString()</h5>
 
 <markdown>@Model.Article.Content</markdown>
 
 <div>
-    <a asp-page="./Edit" asp-route-id="@Model.Article.Topic">Edit</a> |
-    <a asp-page="./Index">Back to List</a>
-</div>
+	<a asp-page="./Edit" asp-route-id="@Model.Article.Topic">Edit</a>
+
+	@if (Model.Article.Topic != "HomePage")
+	{
+		<text>| </text><a href="~/">Back to Home</a>
+			}
+		</div>

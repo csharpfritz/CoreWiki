@@ -9,31 +9,31 @@ using CoreWiki.Models;
 
 namespace CoreWiki.Pages
 {
-    public class DetailsModel : PageModel
-    {
-        private readonly CoreWiki.Models.ApplicationDbContext _context;
+	public class DetailsModel : PageModel
+	{
+		private readonly CoreWiki.Models.ApplicationDbContext _context;
 
-        public DetailsModel(CoreWiki.Models.ApplicationDbContext context)
-        {
-            _context = context;
-        }
+		public DetailsModel(CoreWiki.Models.ApplicationDbContext context)
+		{
+			_context = context;
+		}
 
-        public Article Article { get; set; }
+		public Article Article { get; set; }
 
-        public async Task<IActionResult> OnGetAsync(string id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
+		public async Task<IActionResult> OnGetAsync(string topicName)
+		{
 
-            Article = await _context.Articles.SingleOrDefaultAsync(m => m.Topic == id);
+			// TODO: If topicName not specified, default to Home Page
 
-            if (Article == null)
-            {
-                return NotFound();
-            }
-            return Page();
-        }
-    }
+			topicName = topicName ?? "HomePage";
+
+			Article = await _context.Articles.SingleOrDefaultAsync(m => m.Topic == topicName);
+
+			if (Article == null)
+			{
+				return NotFound();
+			}
+			return Page();
+		}
+	}
 }
