@@ -27,12 +27,16 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a asp-page="/Index" class="navbar-brand">CoreWiki</a>
+                <a href="~/" class="navbar-brand">CoreWiki</a>
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li><a asp-page="/Index">Home</a></li>
+                    <li><a href="~/">Home</a></li>
                 </ul>
+							<ul class="nav navbar-nav navbar-right">
+								<li><a asp-page="/Create" >Create New Page</a></li>
+							</ul>
+							
             </div>
         </div>
     </nav>

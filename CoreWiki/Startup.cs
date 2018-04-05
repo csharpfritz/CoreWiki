@@ -34,6 +34,7 @@ namespace CoreWiki
 				.AddRazorPagesOptions(options =>
 				{
 					options.Conventions.AddPageRoute("/Details", "{topicName?}");
+					options.Conventions.AddPageRoute("/Details", @"Index");
 				});
 		}
 
