@@ -8,7 +8,7 @@
 <h2>@Model.Article.Topic</h2>
 <h5>Last Published: @Model.Article.Published.ToShortDateString() @Model.Article.Published.ToLongTimeString()</h5>
 
-<markdown>@Model.Article.Content</markdown>
+<markdown markdown="Article.Content" />
 
 <div>
 	<a asp-page="./Edit" asp-route-id="@Model.Article.Topic">Edit</a>
