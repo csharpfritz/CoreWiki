@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using CoreWiki.Models;
@@ -9,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 
 namespace CoreWiki
 {
@@ -54,6 +56,18 @@ namespace CoreWiki
 			app.UseStaticFiles();
 
 			app.UseMvc();
+		}
+
+
+		public void ServeNodePackage(IApplicationBuilder app, IHostingEnvironment env, string packageName)
+		{
+			app.UseStaticFiles(new StaticFileOptions
+			{
+				FileProvider = new PhysicalFileProvider(
+							Path.Combine(env.ContentRootPath, "node_modules", packageName, "dist")
+					),
+				RequestPath = "/lib/" + packageName
+			});
 		}
 	}
 }
