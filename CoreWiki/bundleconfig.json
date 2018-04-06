@@ -8,18 +8,227 @@
 			"wwwroot/css/site.css"
 		]
 	},
+
+	// simplemde
 	{
-		"outputFileName": "wwwroot/lib/simplemde/simplemde.min.js",
-		"inputFiles": [
-			"node_modules/simplemde/dist/simplemde.min.js"
-		]
+		"outputFileName": "wwwroot/lib/simplemde/dist/simplemde.min.js",
+			"inputFiles": [
+				"node_modules/simplemde/dist/simplemde.min.js"
+			]
 	},
 	{
-		"outputFileName": "wwwroot/lib/simplemde/simplemde.min.css",
+		"outputFileName": "wwwroot/lib/simplemde/dist/simplemde.min.css",
 		"inputFiles": [
 			"node_modules/simplemde/dist/simplemde.min.css"
 		]
 	},
+
+	//BootStrap 4 from node_modules
+	// ... it doesn't minify without errors, so just copy
+	{
+		"outputFileName": "wwwroot/lib/bootstrap/dist/css/bootstrap.css",
+		"inputFiles": [
+			"node_modules/bootstrap/dist/css/bootstrap.css"
+		],
+		"minify": {
+			"enabled": false
+		}
+	},
+	{
+		"outputFileName": "wwwroot/lib/bootstrap/dist/css/bootstrap.min.css",
+		"inputFiles": [
+			"node_modules/bootstrap/dist/css/bootstrap.min.css"
+		],
+		"minify": {
+			"enabled": false
+		}
+	},
+	{
+		"outputFileName": "wwwroot/lib/bootstrap/dist/css/bootstrap-grid.css",
+		"inputFiles": [
+			"node_modules/bootstrap/dist/css/bootstrap-grid.css"
+		],
+		"minify": {
+			"enabled": false
+		}
+	},
+	{
+		"outputFileName": "wwwroot/lib/bootstrap/dist/css/bootstrap-grid.min.css",
+		"inputFiles": [
+			"node_modules/bootstrap/dist/css/bootstrap-grid.min.css"
+		],
+		"minify": {
+			"enabled": false
+		}
+	},
+	{
+		"outputFileName": "wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.css",
+		"inputFiles": [
+			"node_modules/bootstrap/dist/css/bootstrap-reboot.css"
+		],
+		"minify": {
+			"enabled": false
+		}
+	},
+	{
+		"outputFileName": "wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.min.css",
+		"inputFiles": [
+			"node_modules/bootstrap/dist/css/bootstrap-reboot.min.css"
+		],
+		"minify": {
+			"enabled": false
+		}
+	},
+	{
+		"outputFileName": "wwwroot/lib/bootstrap/dist/js/bootstrap.js",
+		"inputFiles": [
+			"node_modules/bootstrap/dist/js/bootstrap.js"
+		],
+		"minify": {
+			"enabled": false
+		}
+	},
+	{
+		"outputFileName": "wwwroot/lib/bootstrap/dist/js/bootstrap.min.js",
+		"inputFiles": [
+			"node_modules/bootstrap/dist/js/bootstrap.min.js"
+		],
+		"minify": {
+			"enabled": false
+		}
+	},
+
+	// popper.js
+	{
+		"outputFileName": "wwwroot/lib/popper.js/dist/umd/popper.js",
+		"inputFiles": [
+			"node_modules/popper.js/dist/umd/popper.js"
+		],
+		"minify": {
+			"enabled": false
+		}
+	},
+	{
+		"outputFileName": "wwwroot/lib/popper.js/dist/umd/popper.min.js",
+		"inputFiles": [
+			"node_modules/popper.js/dist/umd/popper.js"
+		]
+	},
+	{
+		"outputFileName": "wwwroot/lib/popper.js/dist/umd/popper-utils.js",
+		"inputFiles": [
+			"node_modules/popper.js/dist/umd/popper-utils.js"
+		],
+		"minify": {
+			"enabled": false
+		}
+	},
+	{
+		"outputFileName": "wwwroot/lib/popper.js/dist/umd/popper-utils.min.js",
+		"inputFiles": [
+			"node_modules/popper.js/dist/umd/popper-utils.js"
+		]
+	},
+
+	// jQuery
+	{
+		"outputFileName": "wwwroot/lib/jquery/dist/core.js",
+		"inputFiles": [
+			"node_modules/jquery/dist/core.js"
+		],
+		"minify": {
+			"enabled": false
+		}
+	},
+	{
+		"outputFileName": "wwwroot/lib/jquery/dist/jquery.js",
+		"inputFiles": [
+			"node_modules/jquery/dist/jquery.js"
+		],
+		"minify": {
+			"enabled": false
+		}
+	},
+	{
+		"outputFileName": "wwwroot/lib/jquery/dist/jquery.min.js",
+		"inputFiles": [
+			"node_modules/jquery/dist/jquery.min.js"
+		],
+		"minify": {
+			"enabled": false
+		}
+	},
+	{
+		"outputFileName": "wwwroot/lib/jquery/dist/jquery.slim.js",
+		"inputFiles": [
+			"node_modules/jquery/dist/jquery.slim.js"
+		],
+		"minify": {
+			"enabled": false
+		}
+	},
+	{
+		"outputFileName": "wwwroot/lib/jquery/dist/jquery.slim.min.js",
+		"inputFiles": [
+			"node_modules/jquery/dist/jquery.slim.min.js"
+		],
+		"minify": {
+			"enabled": false
+		}
+	},
+
+	// jquery-validation
+	{
+		"outputFileName": "wwwroot/lib/jquery-validation/dist/additional-methods.js",
+		"inputFiles": [
+			"node_modules/jquery-validation/dist/additional-methods.js"
+		],
+		"minify": {
+			"enabled": false
+		}
+	},
+	{
+		"outputFileName": "wwwroot/lib/jquery-validation/dist/jquery.validate.js",
+		"inputFiles": [
+			"node_modules/jquery-validation/dist/jquery.validate.js"
+		],
+		"minify": {
+			"enabled": false
+		}
+	},
+	{
+		"outputFileName": "wwwroot/lib/jquery-validation/dist/jquery.validate.min.js",
+		"inputFiles": [
+			"node_modules/jquery-validation/dist/jquery.validate.min.js"
+		],
+		"minify": {
+			"enabled": false
+		}
+	},
+
+	// jquery-validation-unobtrusive
+	{
+		"outputFileName": "wwwroot/lib/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.js",
+		"inputFiles": [
+			"node_modules/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.js"
+		],
+		"minify": {
+			"enabled": false
+		}
+	},
+	{
+		"outputFileName": "wwwroot/lib/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.min.js",
+		"inputFiles": [
+			"node_modules/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.min.js"
+		],
+		"minify": {
+			"enabled": false
+		}
+	},
+
+
+
+
 	{
 		"outputFileName": "wwwroot/js/site.min.js",
 		"inputFiles": [
