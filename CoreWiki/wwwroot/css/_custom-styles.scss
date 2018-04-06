@@ -1,3 +1,22 @@
+﻿// Add additional styles here. For example, overwrite certain styles or add new components.
+// Tip: You can use bootstrap's powerful mixins here!
+
+
+//.alert-myalert {
+//  @include alert-variant(#60667d, #1d1d1d, #f4fdff);
+//}
+
+//@each $color, $value in $theme-colors {
+//  .alert-#{$color} {
+//    box-shadow: 3px 3px theme-color-level($color, -3);
+//  }
+//}
+
+
+
+
+
+// Contents from site.css
 body {
     padding-top: 50px;
     padding-bottom: 20px;
@@ -6,7 +25,7 @@ body {
 /* Wrapping element */
 /* Set some basic padding to keep content from hitting the edges */
 .body-content {
-		padding-top: 20px;
+    padding-top: 2rem;
     padding-right: 15px;
     padding-left: 15px;
 }
