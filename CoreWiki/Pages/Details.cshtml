@@ -6,7 +6,7 @@
 }
 
 <h2>@Model.Article.Topic</h2>
-<h5>Last Published: @Model.Article.Published.ToShortDateString() @Model.Article.Published.ToLongTimeString()</h5>
+<h5>Last Published: <span data-value="@Model.Article.Published" class="timeStampValue"> @Model.Article.Published</span></h5>
 
 <markdown markdown="Article.Content" />
 
@@ -18,3 +18,4 @@
 		<text>| </text><a href="~/">Back to Home</a>
 			}
 		</div>
+

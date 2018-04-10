@@ -20,11 +20,6 @@
 				<span asp-validation-for="Article.Topic" class="text-danger"></span>
 			</div>
 			<div class="form-group">
-				<label asp-for="Article.Published" class="control-label"></label>
-				<input asp-for="Article.Published" class="form-control" value="@DateTime.UtcNow" />
-				<span asp-validation-for="Article.Published" class="text-danger"></span>
-			</div>
-			<div class="form-group">
 				<label asp-for="Article.Content" class="control-label"></label>
 				<textarea asp-for="Article.Content" class="form-control"></textarea>
 				<span asp-validation-for="Article.Content" class="text-danger"></span>

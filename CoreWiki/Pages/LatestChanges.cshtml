@@ -20,10 +20,10 @@
 		</h3>
 	</div>
 	<div class="card-body">
-		<h6 class="card-subtitle mb-2 text-muted">@item.Published.ToShortDateString()</h6>
+		<h6 class="card-subtitle mb-2 text-muted"><span data-value="@item.Published" class="timeStampValue"> @item.Published</span></h6>
 
-		<a class="card-link" asp-page="./Edit" asp-route-id="@item.Topic">Edit</a>
-		<a class="card-link" asp-page="./Delete" asp-route-id="@item.Topic">Delete</a>
+	<a class="card-link" asp-page="./Edit" asp-route-id="@item.Topic">Edit</a>
+	<a class="card-link" asp-page="./Delete" asp-route-id="@item.Topic">Delete</a>
 
 	</div>
 
