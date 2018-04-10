@@ -6,6 +6,7 @@
     <PackageReference Include="BuildBundlerMinifier" Version="2.6.362" />
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.6" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.3" />
+    <PackageReference Include="NodaTime" Version="2.2.5" />
     <PackageReference Include="Westwind.AspNetCore.Markdown" Version="3.0.16" />
   </ItemGroup>
   <ItemGroup>
@@ -14,6 +15,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="wwwroot\lib\bootstrap\" />
+    <Folder Include="wwwroot\lib\moment\" />
     <Folder Include="wwwroot\lib\simplemde\" />
   </ItemGroup>
 </Project>
