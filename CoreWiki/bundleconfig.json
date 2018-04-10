@@ -4,9 +4,9 @@
 	// simplemde
 	{
 		"outputFileName": "wwwroot/lib/simplemde/dist/simplemde.min.js",
-			"inputFiles": [
-				"node_modules/simplemde/dist/simplemde.min.js"
-			]
+		"inputFiles": [
+			"node_modules/simplemde/dist/simplemde.min.js"
+		]
 	},
 	{
 		"outputFileName": "wwwroot/lib/simplemde/dist/simplemde.min.css",
@@ -121,6 +121,55 @@
 			"node_modules/popper.js/dist/umd/popper-utils.js"
 		]
 	},
+
+	// moment
+	{
+		"outputFileName": "wwwroot/lib/moment/min/locales.js",
+			"inputFiles": [
+				"node_modules/moment/min/locales.js"
+			],
+		"minify": {
+			"enabled": false
+		}
+	},
+	{
+		"outputFileName": "wwwroot/lib/moment/min/locales.min.js",
+			"inputFiles": [
+				"node_modules/moment/min/locales.min.js"
+			],
+		"minify": {
+			"enabled": false
+		}
+	},
+	{
+		"outputFileName": "wwwroot/lib/moment/min/moment.min.js",
+		"inputFiles": [
+			"node_modules/moment/min/moment.min.js"
+		],
+		"minify": {
+			"enabled": false
+		}
+	},
+	{
+		"outputFileName": "wwwroot/lib/moment/min/moment-with-locales.js",
+		"inputFiles": [
+			"node_modules/moment/min/moment-with-locales.js"
+		],
+		"minify": {
+			"enabled": false
+		}
+	},
+	{
+		"outputFileName": "wwwroot/lib/moment/min/moment-with-locales.min.js",
+		"inputFiles": [
+			"node_modules/moment/min/moment-with-locales.min.js"
+		],
+			"minify": {
+				"enabled": false
+			}
+	},
+
+
 
 	// jQuery
 	{
