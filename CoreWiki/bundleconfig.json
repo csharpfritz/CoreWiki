@@ -6,13 +6,19 @@
 		"outputFileName": "wwwroot/lib/simplemde/dist/simplemde.min.js",
 		"inputFiles": [
 			"node_modules/simplemde/dist/simplemde.min.js"
-		]
+		],
+		"minify": {
+			"enabled": false
+		}
 	},
 	{
 		"outputFileName": "wwwroot/lib/simplemde/dist/simplemde.min.css",
 		"inputFiles": [
 			"node_modules/simplemde/dist/simplemde.min.css"
-		]
+		],
+		"minify": {
+			"enabled": false
+		}
 	},
 
 	//BootStrap 4 from node_modules
@@ -103,8 +109,11 @@
 	{
 		"outputFileName": "wwwroot/lib/popper.js/dist/umd/popper.min.js",
 		"inputFiles": [
-			"node_modules/popper.js/dist/umd/popper.js"
-		]
+			"node_modules/popper.js/dist/umd/popper.min.js"
+		],
+		"minify": {
+			"enabled": false
+		}
 	},
 	{
 		"outputFileName": "wwwroot/lib/popper.js/dist/umd/popper-utils.js",
@@ -118,8 +127,11 @@
 	{
 		"outputFileName": "wwwroot/lib/popper.js/dist/umd/popper-utils.min.js",
 		"inputFiles": [
-			"node_modules/popper.js/dist/umd/popper-utils.js"
-		]
+			"node_modules/popper.js/dist/umd/popper-utils.min.js"
+		],
+		"minify": {
+			"enabled": false
+		}
 	},
 
 	// moment
