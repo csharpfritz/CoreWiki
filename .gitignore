@@ -261,4 +261,4 @@ __pycache__/
 *.pyc
 
 # Omit our lib folders that are being restored from npm
-wwwroot/lib/
+CoreWiki/wwwroot/lib/
