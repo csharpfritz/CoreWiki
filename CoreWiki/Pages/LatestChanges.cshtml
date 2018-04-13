@@ -2,13 +2,13 @@
 @model CoreWiki.Pages.LatestChangesModel
 
 @{
-    ViewData["Title"] = "LatestChanges";
+    ViewData["Title"] = "Latest Changes";
 }
 
-<h2>LatestChanges</h2>
+<h2>Latest Changes</h2>
 
 <p>
-    <a asp-page="Create">Create New</a>
+    <a asp-page="Create">New article</a>
 </p>
 
 @foreach (var item in Model.Article) {
