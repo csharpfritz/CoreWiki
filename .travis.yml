@@ -1,0 +1,15 @@
+language: csharp
+os:
+  - osx
+  - linux
+
+sudo: required
+dist: trusty
+
+osx_image: xcode9.2
+
+mono: none
+dotnet: 2.1.101
+
+script:
+  - ./build.sh --Target=Travis

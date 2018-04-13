@@ -95,4 +95,7 @@ Task("Default")
 Task("AppVeyor")
     .IsDependentOn("Publish");
 
+Task("Travis")
+    .IsDependentOn("Build");
+
 RunTarget(target);
