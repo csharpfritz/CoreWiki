@@ -13,5 +13,6 @@ namespace CoreWiki.Models
 
 		public DbSet<Article> Articles { get; set; }
 
+	
 	}
 }
