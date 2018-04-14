@@ -14,7 +14,7 @@
 			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
 			<div class="form-group">
 				<label asp-for="Article.Topic" class="control-label"></label>
-				<input asp-for="Article.Topic" class="form-control" />
+				<span>@Model.Article.Topic</span>
 				<span asp-validation-for="Article.Topic" class="text-danger"></span>
 			</div>
 			<input type="hidden" asp-for="Article.Topic" />
