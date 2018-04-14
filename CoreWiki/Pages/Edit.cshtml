@@ -35,15 +35,12 @@
 </div>
 
 @section Scripts {
+	@await Html.PartialAsync("_EditorScript")
 
-<script src="~/lib/simplemde/simplemde.min.js"></script>
-<script>
-		var simplemde = new SimpleMDE();
-</script>
-
-	@{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
 
 @section Styles {
-<link href="~/lib/simplemde/simplemde.min.css" rel="stylesheet" />
+
+@await Html.PartialAsync("_EditorStyle")
+
 }

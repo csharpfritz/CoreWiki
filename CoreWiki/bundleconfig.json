@@ -2,24 +2,24 @@
 // More info at https://go.microsoft.com/fwlink/?LinkId=808241
 [
 	// simplemde
-	{
-		"outputFileName": "wwwroot/lib/simplemde/dist/simplemde.min.js",
-		"inputFiles": [
-			"node_modules/simplemde/dist/simplemde.min.js"
-		],
-		"minify": {
-			"enabled": false
-		}
-	},
-	{
-		"outputFileName": "wwwroot/lib/simplemde/dist/simplemde.min.css",
-		"inputFiles": [
-			"node_modules/simplemde/dist/simplemde.min.css"
-		],
-		"minify": {
-			"enabled": false
-		}
-	},
+	//{
+	//	"outputFileName": "wwwroot/lib/simplemde/dist/simplemde.min.js",
+	//	"inputFiles": [
+	//		"node_modules/simplemde/dist/simplemde.min.js"
+	//	],
+	//	"minify": {
+	//		"enabled": false
+	//	}
+	//},
+	//{
+	//	"outputFileName": "wwwroot/lib/simplemde/dist/simplemde.min.css",
+	//	"inputFiles": [
+	//		"node_modules/simplemde/dist/simplemde.min.css"
+	//	],
+	//	"minify": {
+	//		"enabled": false
+	//	}
+	//},
 
 	//BootStrap 4 from node_modules
 	// ... it doesn't minify without errors, so just copy
