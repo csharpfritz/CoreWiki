@@ -6,7 +6,9 @@
 
 		<h2>All Articles</h2>
 
-		<ul class="pagination">
+		<pager total-pages="Model.TotalPages" current-page="Model.PageNumber"></pager>
+
+		@*<ul class="pagination">
 			@for (var pageNum = 1; pageNum <= Model.TotalPages; pageNum++)
 			{
 
@@ -22,7 +24,7 @@
 				</li>
 
 			}
-		</ul>
+		</ul>*@
 
 		@foreach (var item in Model.Articles)
 		{
