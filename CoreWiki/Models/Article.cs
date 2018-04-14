@@ -11,22 +11,22 @@ namespace CoreWiki.Models
 {
 	public class Article
 	{
-		[Required, Key]
+		[Required, Key, MaxLength(100)]
 		public string Topic { get; set; }
 
-				[NotMapped]
-        public Instant Published { get; set; }
+		[NotMapped]
+		public Instant Published { get; set; }
 
-        // Buddy property (?)
-        [Obsolete("This property only exists for EF-serialization purposes")]
-        [DataType(DataType.DateTime)]
-				[Column("Published")]
-        public DateTime PublishedDateTime
-        {
-            get => Published.ToDateTimeUtc();
-            // TODO: Remove this ugly hack
-            set => Published = DateTime.SpecifyKind(value, DateTimeKind.Utc).ToInstant();
-        }
+		// Buddy property (?)
+		[Obsolete("This property only exists for EF-serialization purposes")]
+		[DataType(DataType.DateTime)]
+		[Column("Published")]
+		public DateTime PublishedDateTime
+		{
+			get => Published.ToDateTimeUtc();
+			// TODO: Remove this ugly hack
+			set => Published = DateTime.SpecifyKind(value, DateTimeKind.Utc).ToInstant();
+		}
 
 		[DataType(DataType.MultilineText)]
 		public string Content { get; set; }
