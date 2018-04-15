@@ -22,9 +22,8 @@ namespace CoreWiki.TagHelpers
 			_UrlHelperFactory = urlFactory;
 		}
 
-		public override Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
+		public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
 		{
-
 
 			var _urlHelper = _UrlHelperFactory.GetUrlHelper(this.ActionContext);
 
@@ -43,33 +42,41 @@ namespace CoreWiki.TagHelpers
 
 			for (var pageNum = 1; pageNum <= TotalPages; pageNum++)
 			{
-
-				// LI tag
-				output.Content.AppendHtml($"<li class=\"page-item");
+				TagBuilder li = new TagBuilder("li");
+				li.AddCssClass("page-item");
 				if (pageNum == CurrentPage)
 				{
-					output.Content.AppendHtml(" active");
+					li.AddCssClass("active");
 				}
-				output.Content.AppendHtml("\">");
 
-				// A tag
 				if (pageNum == CurrentPage)
 				{
-					output.Content.AppendHtml($"<a class=\"page-link active\" href=\"#\">{pageNum}</a>");
+					TagBuilder span1 = new TagBuilder("span");
+					span1.AddCssClass("page-link");
+					span1.InnerHtml.Append($"{pageNum}");
+					li.InnerHtml.AppendHtml(span1);
 				}
 				else
 				{
+					TagBuilder a = new TagBuilder("a");
+					a.AddCssClass("page-link");
+					a.InnerHtml.Append($"{pageNum}");
 					var routes = new { PageNumber = pageNum };
-					output.Content.AppendHtml($"<a class=\"page-link\" href=\"{_urlHelper.Page("./All", routes)}\">{pageNum}</a>");
+					a.Attributes.Add("href", $"{_urlHelper.Page(AspPage, routes)}");
+					li.InnerHtml.AppendHtml(a);
 				}
 
 
+				output.Content.AppendHtml(li);
+
 			}
 
-			output.Content.AppendHtml("</ul>");
-			return Task.CompletedTask;
+			await base.ProcessAsync(context, output);
+			return;
 
 		}
+
+		public string AspPage { get; set; }
 
 		public int CurrentPage { get; set; }
 

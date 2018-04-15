@@ -13,14 +13,14 @@ namespace CoreWiki.Pages
 	{
 
 		private readonly ApplicationDbContext _Context;
-		private const int _PageSize = 20;
+		private const int _PageSize = 2;
 
 		public AllModel(ApplicationDbContext context)
 		{
 			this._Context = context;
 		}
 
-		[FromQuery()]
+		[FromRoute]
 		public int PageNumber { get; set; } = 1;
 
 		public int TotalPages { get; set; }
@@ -29,7 +29,7 @@ namespace CoreWiki.Pages
 		public IEnumerable<Article> Articles { get; set; }
 
 
-		public async Task OnGet()
+		public async Task OnGet(int PageNumber = 1)
 		{
 
 			Articles = await _Context.Articles
