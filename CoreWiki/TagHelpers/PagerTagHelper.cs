@@ -16,18 +16,15 @@ namespace CoreWiki.TagHelpers
 	[HtmlTargetElement("pager")]
 	public class PagerTagHelper : TagHelper
 	{
-		private readonly IUrlHelperFactory _UrlHelperFactory;
+		private readonly IHtmlGenerator _Generator;
 
-		public PagerTagHelper(IUrlHelperFactory urlFactory)
+		public PagerTagHelper(IHtmlGenerator generator)
 		{
-			_UrlHelperFactory = urlFactory;
+			_Generator = generator;
 		}
 
 		public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
 		{
-
-			var _urlHelper = _UrlHelperFactory.GetUrlHelper(this.ActionContext);
-
 			output.TagMode = TagMode.StartTagAndEndTag;
 			output.TagName = "ul";
 
@@ -49,11 +46,21 @@ namespace CoreWiki.TagHelpers
 				}
 				else
 				{
-					TagBuilder a = new TagBuilder("a");
+					object route = new { PageNumber = pageNum };
+					TagBuilder a;
+					a = _Generator.GeneratePageLink(
+						ViewContext,
+						linkText: pageNum.ToString(),
+						pageName: AspPage,
+						pageHandler: string.Empty,
+						protocol: string.Empty,
+						hostname: string.Empty,
+						fragment: string.Empty,
+						routeValues: route,
+						htmlAttributes: null
+						);
 					a.AddCssClass("page-link");
-					a.InnerHtml.Append($"{pageNum}");
-					var routes = new { PageNumber = pageNum };
-					a.Attributes.Add("href", $"{_urlHelper.Page(AspPage, routes)}");
+
 					li.InnerHtml.AppendHtml(a);
 				}
 
@@ -72,7 +79,11 @@ namespace CoreWiki.TagHelpers
 
 		public int TotalPages { get; set; }
 
+		/// <summary>
+		/// Gets or sets the <see cref="Rendering.ViewContext"/> for the current request.
+		/// </summary>
+		[HtmlAttributeNotBound]
 		[ViewContext]
-		public ActionContext ActionContext { get; set; }
+		public ViewContext ViewContext { get; set; }
 	}
 }
