@@ -13,6 +13,11 @@ namespace CoreWiki.Pages
 	{
 
 		private readonly ApplicationDbContext _Context;
+
+		[BindProperty]
+		public int PageSize { get; set; } = 5;
+
+
 		private const int _PageSize = 2;
 
 		public AllModel(ApplicationDbContext context)
@@ -31,18 +36,28 @@ namespace CoreWiki.Pages
 
 		public async Task OnGet(int PageNumber = 1)
 		{
-
-			Articles = await _Context.Articles
-				.AsNoTracking()
-				.OrderBy(a => a.Topic)
-				.Skip((PageNumber - 1) * _PageSize)
-				.Take(_PageSize)
-				.ToArrayAsync();
-
-			TotalPages = (int)Math.Ceiling((await _Context.Articles.CountAsync()) / (double)_PageSize);
+			await FetchArticles();
 
 		}
 
+		public async Task OnPost()
+		{
+			await FetchArticles();
+		}
+
+
+		private async Task FetchArticles()
+		{
+			Articles = await _Context.Articles
+				.AsNoTracking()
+				.OrderBy(a => a.Topic)
+				.Skip((PageNumber - 1) * PageSize)
+				.Take(PageSize)
+				.ToArrayAsync();
+
+			TotalPages = (int)Math.Ceiling((await _Context.Articles.CountAsync()) / (double)PageSize);
+		}
 
 	}
+
 }
