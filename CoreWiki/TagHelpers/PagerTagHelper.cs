@@ -13,6 +13,12 @@ using Microsoft.AspNetCore.Razor.TagHelpers;
 namespace CoreWiki.TagHelpers
 {
 
+	/// <summary>
+	/// <see cref="ITagHelper"/> implementation targeting &lt;pager&gt; elements.
+	/// </summary>
+	/// <remarks>
+	/// Generates a bootstrap 4 pagination block.
+	/// </remarks>
 	[HtmlTargetElement("pager")]
 	public class PagerTagHelper : TagHelper
 	{
@@ -73,10 +79,28 @@ namespace CoreWiki.TagHelpers
 
 		}
 
+		/// <summary>
+		/// The name of the page.
+		/// </summary>
+		/// <remarks>
+		/// Can be <c>null</c> if refering to the current page.
+		/// </remarks>
 		public string AspPage { get; set; }
 
-		public int CurrentPage { get; set; }
+		/// <summary>
+		/// The number of the current page.
+		/// </summary>
+		/// <remarks>
+		/// If not specified this will default to <c>1</c>.
+		/// </remarks>
+		public int CurrentPage { get; set; } = 1;
 
+		/// <summary>
+		/// The number of page links to show
+		/// </summary>
+		/// <remarks>
+		/// This is required and can not be <c>null</c>.
+		/// </remarks>
 		public int TotalPages { get; set; }
 
 		/// <summary>
