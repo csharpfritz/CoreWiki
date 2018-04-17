@@ -42,21 +42,20 @@ namespace CoreWiki.TagHelpers
 				if (pageNum == CurrentPage)
 				{
 					li.AddCssClass("active");
-				}
-
-				TagBuilder a = new TagBuilder("a");
-				a.AddCssClass("page-link");
-				a.InnerHtml.Append($"{pageNum}");
-				if (pageNum == CurrentPage)
-				{
-					a.Attributes.Add("href","#");
+					TagBuilder span1 = new TagBuilder("span");
+					span1.AddCssClass("page-link");
+					span1.InnerHtml.Append($"{pageNum}");
+					li.InnerHtml.AppendHtml(span1);
 				}
 				else
 				{
+					TagBuilder a = new TagBuilder("a");
+					a.AddCssClass("page-link");
+					a.InnerHtml.Append($"{pageNum}");
 					var routes = new { PageNumber = pageNum };
 					a.Attributes.Add("href", $"{_urlHelper.Page(AspPage, routes)}");
+					li.InnerHtml.AppendHtml(a);
 				}
-				li.InnerHtml.AppendHtml(a);
 
 				output.Content.AppendHtml(li);
 
