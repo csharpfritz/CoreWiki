@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.Routing;
+using Microsoft.AspNetCore.Mvc.TagHelpers;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Razor.Runtime.TagHelpers;
 using Microsoft.AspNetCore.Razor.TagHelpers;
@@ -30,15 +31,9 @@ namespace CoreWiki.TagHelpers
 			output.TagMode = TagMode.StartTagAndEndTag;
 			output.TagName = "ul";
 
-
-			if (output.Attributes.ContainsName("class"))
-			{
-				output.Attributes.SetAttribute("class", output.Attributes["class"].Value + " pagination");
-			}
-			else
-			{
-				output.Attributes.Add("class", "pagination");
-			}
+			TagBuilder ul = new TagBuilder("ul");
+			ul.AddCssClass("pagination");
+			output.MergeAttributes(ul);
 
 			for (var pageNum = 1; pageNum <= TotalPages; pageNum++)
 			{
@@ -62,7 +57,6 @@ namespace CoreWiki.TagHelpers
 					a.Attributes.Add("href", $"{_urlHelper.Page(AspPage, routes)}");
 				}
 				li.InnerHtml.AppendHtml(a);
-
 
 				output.Content.AppendHtml(li);
 
