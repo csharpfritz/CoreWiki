@@ -3,7 +3,7 @@
 
 	var reformatTimeStamps = function () {
 
-		var timeStamps = document.getElementsByClassName("timeStampValue");
+		var timeStamps = document.querySelectorAll(".timeStampValue");
 		for (var ts of timeStamps) {
 
 			var thisTimeStamp = ts.getAttribute("data-value");
