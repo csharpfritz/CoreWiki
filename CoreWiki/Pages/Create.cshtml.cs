@@ -10,33 +10,40 @@ using CoreWiki.Models;
 
 namespace CoreWiki.Pages
 {
-    public class CreateModel : PageModel
-    {
-        private readonly CoreWiki.Models.ApplicationDbContext _context;
-        private readonly IClock _clock;
+	public class CreateModel : PageModel
+	{
+		private readonly CoreWiki.Models.ApplicationDbContext _context;
+		private readonly IClock _clock;
 
-        public CreateModel(CoreWiki.Models.ApplicationDbContext context, IClock clock)
-        {
-            _context = context;
-            _clock = clock;
-        }
+		public CreateModel(CoreWiki.Models.ApplicationDbContext context, IClock clock)
+		{
+			_context = context;
+			_clock = clock;
+		}
 
-        public IActionResult OnGet() => Page();
+		public IActionResult OnGet() => Page();
 
-        [BindProperty]
-        public Article Article { get; set; }
+		[BindProperty]
+		public Article Article { get; set; }
 
-        public async Task<IActionResult> OnPostAsync()
-        {
-            if (!ModelState.IsValid)
-            {
-                return Page();
-            }
-            Article.Published = _clock.GetCurrentInstant();
-            _context.Articles.Add(Article);
-            await _context.SaveChangesAsync();
+		public async Task<IActionResult> OnPostAsync()
+		{
+			if (!ModelState.IsValid)
+			{
+				return Page();
+			}
 
-            return Redirect($"/{Article.Topic}");
-        }
-    }
+			if (_context.Articles.Any(a => a.Topic == Article.Topic))
+			{
+				ModelState.AddModelError($"{nameof(Article)}.{nameof(Article.Topic)}", $"The topic '{Article.Topic}' already exists.  Please choose another name");
+				return Page();
+			}
+
+			Article.Published = _clock.GetCurrentInstant();
+			_context.Articles.Add(Article);
+			await _context.SaveChangesAsync();
+
+			return Redirect($"/{Article.Topic}");
+		}
+	}
 }

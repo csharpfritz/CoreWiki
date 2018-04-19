@@ -8,8 +8,7 @@
 		"jquery-validation": "^1.17.0",
 		"jquery-validation-unobtrusive": "^3.2.9",
 		"popper.js": "^1.14.3",
-		"moment": "^2.22.0",
-		"simplemde": "^1.11.2"
+		"moment": "^2.22.0"
 	},
 	"devDependencies": {},
 	"scripts": {
