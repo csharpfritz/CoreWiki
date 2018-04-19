@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using NodaTime;
 using CoreWiki.Models;
+using CoreWiki.Helpers;
 
 namespace CoreWiki.Pages
 {
@@ -32,11 +33,24 @@ namespace CoreWiki.Pages
             {
                 return Page();
             }
+
+            //check if the slug already exists in the database.  
+            var slug = UrlHelpers.URLFriendly(Article.Topic.ToLower());
+            var isAvailable = !_context.Articles.Any(x => x.Slug == slug);
+
+            if (isAvailable == false)
+            {
+                ModelState.AddModelError("Article.Topic", "This Title already exists.");
+                return Page();
+            }
+
             Article.Published = _clock.GetCurrentInstant();
+            Article.Slug = slug;
+
             _context.Articles.Add(Article);
             await _context.SaveChangesAsync();
 
-            return Redirect($"/{Article.Topic}");
+            return Redirect($"/{Article.Slug}");
         }
     }
 }

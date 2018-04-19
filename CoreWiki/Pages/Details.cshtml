@@ -1,4 +1,4 @@
-﻿@page "{topicName?}"
+﻿@page "{Slug?}"
 @model CoreWiki.Pages.DetailsModel
 
 @{
@@ -11,9 +11,9 @@
 <markdown markdown="Article.Content" />
 
 <div>
-	<a asp-page="./Edit" asp-route-id="@Model.Article.Topic">Edit</a>
+	<a asp-page="./Edit" asp-route-id="@Model.Article.Id">Edit</a>
 
-	@if (Model.Article.Topic != "HomePage")
+	@if (Model.Article.Slug != "home-page")
 	{
 		<text>| </text><a href="~/">Back to Home</a>
 			}

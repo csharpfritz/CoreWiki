@@ -21,14 +21,16 @@ namespace CoreWiki.Pages
         [BindProperty]
         public Article Article { get; set; }
 
-        public async Task<IActionResult> OnGetAsync(string id)
+        ///  TODO: Make it so you cannot delete the home page (deleting the home page will cause a 404)
+        ///  or re-factor to make the home page dynamic or configurable.
+        public async Task<IActionResult> OnGetAsync(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            Article = await _context.Articles.SingleOrDefaultAsync(m => m.Topic == id);
+            Article = await _context.Articles.SingleOrDefaultAsync(m => m.Id == id);
 
             if (Article == null)
             {
@@ -37,7 +39,7 @@ namespace CoreWiki.Pages
             return Page();
         }
 
-        public async Task<IActionResult> OnPostAsync(string id)
+        public async Task<IActionResult> OnPostAsync(int? id)
         {
             if (id == null)
             {

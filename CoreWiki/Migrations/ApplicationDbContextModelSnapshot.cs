@@ -21,14 +21,20 @@ namespace CoreWiki.Migrations
 
             modelBuilder.Entity("CoreWiki.Models.Article", b =>
                 {
-                    b.Property<string>("Topic")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("Content");
 
-                    b.Property<DateTime>("Published");
+                    b.Property<DateTime>("PublishedDateTime")
+                        .HasColumnName("Published");
 
-                    b.HasKey("Topic");
+                    b.Property<string>("Slug");
+
+                    b.Property<string>("Topic")
+                        .IsRequired();
+
+                    b.HasKey("Id");
 
                     b.ToTable("Articles");
                 });

@@ -9,18 +9,23 @@ using NodaTime.Extensions;
 
 namespace CoreWiki.Models
 {
-	public class Article
-	{
-		[Required, Key]
-		public string Topic { get; set; }
+    public class Article
+    {
+        [Key]
+        public int Id { get; set; }
 
-				[NotMapped]
+        [Required]
+        public string Topic { get; set; }
+
+        public string Slug { get; set; }
+
+        [NotMapped]
         public Instant Published { get; set; }
 
         // Buddy property (?)
         [Obsolete("This property only exists for EF-serialization purposes")]
         [DataType(DataType.DateTime)]
-				[Column("Published")]
+        [Column("Published")]
         public DateTime PublishedDateTime
         {
             get => Published.ToDateTimeUtc();
@@ -28,8 +33,8 @@ namespace CoreWiki.Models
             set => Published = DateTime.SpecifyKind(value, DateTimeKind.Utc).ToInstant();
         }
 
-		[DataType(DataType.MultilineText)]
-		public string Content { get; set; }
+        [DataType(DataType.MultilineText)]
+        public string Content { get; set; }
 
-	}
+    }
 }
