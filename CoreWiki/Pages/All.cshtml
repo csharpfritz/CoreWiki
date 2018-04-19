@@ -1,48 +1,58 @@
 ﻿@page "{PageNumber?}"
-@model CoreWiki.Pages.AllModel
-@{
-    ViewData["Title"] = "All";
-}
+	@model CoreWiki.Pages.AllModel
+		@{
+			ViewData["Title"] = "All";
+		}
 
-<h2>All Articles</h2>
+		<h2>All Articles</h2>
 
-<div class="row justify-content-between no-gutters">
-    <pager class="col-auto mr-auto mt-3" total-pages="Model.TotalPages" current-page="Model.PageNumber"></pager>
-    <form class="col-auto form-inline" method="post">
-        <select asp-for="PageSize" class="form-control-sm text-primary border-primary">
-            <option class="" value="2">2</option>
-            <option class="" value="5">5</option>
-            <option class="" value="10">10</option>
-            <option class="" value="20">20</option>
-        </select>
-        <button class="btn btn-primary btn-sm" type="submit"><</button>
-    </form>
-</div>
+		<pager total-pages="Model.TotalPages" current-page="Model.PageNumber"></pager>
 
-@foreach (var item in Model.Articles)
-{
+		@*<ul class="pagination">
+			@for (var pageNum = 1; pageNum <= Model.TotalPages; pageNum++)
+			{
 
-    <div class="card border border-primary mb-3">
-        <div class="card-header">
-            <h3 class="card-title">
-                <a href="~/@item.Topic">@item.Topic</a>
-            </h3>
-        </div>
-        <div class="card-body">
-            <h6 class="card-subtitle mb-2 text-muted"><span data-value="@item.Published" class="timeStampValue"> @item.Published</span></h6>
+				<li class="page-item @(pageNum == Model.PageNumber ? "active" : "")">
+				@if (pageNum == Model.PageNumber)
+				{
+					<a class="page-link active" href="#">@pageNum</a>
+				}
+				else
+				{
+					<a class="page-link" asp-page="./All" asp-route-PageNumber="@pageNum">@pageNum</a>
+				}
+				</li>
 
-            <a class="card-link" asp-page="./Edit" asp-route-id="@item.Topic">Edit</a>
-            <a class="card-link" asp-page="./Delete" asp-route-id="@item.Topic">Delete</a>
-        </div>
-    </div>
-}
+			}
+		</ul>*@
 
-@section Styles {
-    <style>
-        .pageNumber {
-            margin: 0px 4px;
-        }
-    </style>
-}
+		@foreach (var item in Model.Articles)
+		{
+
+			<div class="card border border-primary mb-3">
+				<div class="card-header">
+					<h3 class="card-title">
+						<a href="~/@item.Topic">@item.Topic</a>
+					</h3>
+				</div>
+				<div class="card-body">
+					<h6 class="card-subtitle mb-2 text-muted"><span data-value="@item.Published" class="timeStampValue"> @item.Published</span></h6>
+
+					<a class="card-link" asp-page="./Edit" asp-route-id="@item.Topic">Edit</a>
+					<a class="card-link" asp-page="./Delete" asp-route-id="@item.Topic">Delete</a>
+
+				</div>
+
+
+			</div>
+		}
+
+		@section Styles {
+			<style>
+				.pageNumber {
+					margin: 0px 4px;
+				}
+			</style>
+		}
 
 
