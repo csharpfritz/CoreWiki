@@ -9,6 +9,8 @@ March 27, 2018 | [From DevIntersection in Orlando, ASP.NET Core with guest Shayn
 March 29, 2018 |  [Back in Philly working on our new Wiki project](https://www.twitch.tv/videos/244236019?t=52m50s) - _Start 00:52:50_
 April 5, 2018 | [Building a Wiki with ASP.NET Core - Updating to Bootstrap 4](https://www.twitch.tv/videos/246900841)
 April 10, 2018 | [Pair-programming with Jon Skeet, Handling Dates and Times](https://www.twitch.tv/videos/248778357)
+April 12, 2018 | [Pair-programming with YOU!  Your .NET questions and pull-requests](https://www.twitch.tv/videos/249500947)
+April 14, 2018 | [Coding ASP.NET Core: Building a Wiki](https://www.twitch.tv/videos/250258108)
 
 #  1) Implemented Feature List
 
@@ -42,9 +44,19 @@ LatestChanges
 - [X] Allows the users navigate to Edit feature. `[Edit]`
 - [X] Allows the users navigate to Delete feature. `[Delete]`
 - [ ] Allows the users navigate to Details feature. `[Detail]`
-- [X] Allows the users navigate to Create new article feature. `[Create new article]`
+- [X] Allows the users navigate to Create new article feature. `[New article]`
 - [X] Allows the users navigate to the default article (HomePage).`[Back to Home]`
- 
+
+List All
+-----------------------------
+- [X] Allows the users see ALL articles. Ordered by Topic.
+- [X] Allows the users navigate to Edit feature. `[Edit]`
+- [X] Allows the users navigate to Delete feature. `[Delete]`
+- [ ] Allows the users navigate to Details feature. `[Detail]`
+- [X] Allows the users navigate to Create new article feature. `[New article]`
+- [X] Allows the users navigate to the default article (HomePage).`[Back to Home]`
+- [X] Allows the users navigate to Latest Changes feature. `[Latest Changes]`
+
 NotFound
 -----------------------------
 * Occurs, always which default article (HomePage) is not found. To simulate page not found remove the article HomePage.
@@ -64,6 +76,7 @@ Lessons - GitHub
 --------
 - [X] Create New Repository
 - [X] Create Branch (Master, Dev)
+- [X] Create New Project
 
 Lessons - Git Cli
 --------
@@ -92,6 +105,7 @@ Lessons - ASP.NET Core
 - [X] Dependency Injection
 - [X] Tag Helpers
   - [X] Install and Use External
+  - [X] Create
 - [X] Validation Error UI 
 - [X] Server-Side Validation 
 - [X] Configure Minification
@@ -104,13 +118,15 @@ Lessons - ASP.NET Core
   - [X] Scaffold the Model
   - [X] DataType Attributes
   - [X] ModelState Validation
+- [X] Data Access
+  - [X] Pagination
 
 Lessons - Entity Framework Core
 --------
 
 - [X] Code First Database 
 - [X] Migrations
-- [ ] Seed
+- [X] Seed
 - [X] CRUD (Create, Read, Update e Delete)
 - [X] Update concurrency exception handling
 
