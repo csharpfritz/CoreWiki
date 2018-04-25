@@ -11,7 +11,7 @@ namespace CoreWiki.Models
 {
 	public class Article
 	{
-		[Required, Key, MaxLength(100)]
+        [Required , MaxLength(100)]
 		public string Topic { get; set; }
 
 		[NotMapped]
@@ -31,5 +31,15 @@ namespace CoreWiki.Models
 		[DataType(DataType.MultilineText)]
 		public string Content { get; set; }
 
-	}
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int Id { get; set; }
+
+        //public virtual ICollection<Comment> Comments { get; set; }
+        public virtual ICollection<Comment> Comments { get; set; }
+        public Article()
+        {
+            this.Comments = new HashSet<Comment>();
+        }
+    }
 }

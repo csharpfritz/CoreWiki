@@ -15,6 +15,7 @@ namespace CoreWiki.Models
 		}
 
 		public DbSet<Article> Articles { get; set; }
+        public DbSet<Comment> Comments { get; set; }
 
 		internal static void SeedData(ApplicationDbContext context)
 		{
@@ -42,5 +43,32 @@ namespace CoreWiki.Models
 
 		}
 
-	}
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Comment>()
+            .HasOne(p => p.Article)
+            .WithMany(b => b.Comments)
+            .HasForeignKey(p => p.IdArticle)
+            .HasConstraintName("FK_Comment_Article");
+
+            //Requirement Topic is unique
+            modelBuilder.Entity<Article>()
+            .HasIndex(b => b.Topic)
+            .IsUnique()
+            .HasFilter(null);
+
+            //Requirement default value
+            //modelBuilder.Entity<Comment>()
+            //.Property(b => b.Submitted)
+            //.HasDefaultValueSql("datetime()");
+
+            //Performance
+            //modelBuilder.Entity<Article>()
+            //.HasIndex(b => b.Published)
+            //.HasName("Index_Published");
+
+            base.OnModelCreating(modelBuilder);
+        }
+
+    }
 }
