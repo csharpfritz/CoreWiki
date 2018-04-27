@@ -60,18 +60,12 @@ namespace CoreWiki
 			app.UseStaticFiles();
 
 			app.UseMvc();
+
+			var scope = app.ApplicationServices.CreateScope();
+			var context = scope.ServiceProvider.GetService<ApplicationDbContext>();
+			ApplicationDbContext.SeedData(context);
+
 		}
 
-
-		public void ServeNodePackage(IApplicationBuilder app, IHostingEnvironment env, string packageName)
-		{
-			app.UseStaticFiles(new StaticFileOptions
-			{
-				FileProvider = new PhysicalFileProvider(
-							Path.Combine(env.ContentRootPath, "node_modules", packageName, "dist")
-					),
-				RequestPath = "/lib/" + packageName
-			});
-		}
 	}
 }
