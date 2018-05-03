@@ -20,14 +20,14 @@ namespace CoreWiki.Pages
 
 		public Article Article { get; set; }
 
-		public async Task<IActionResult> OnGetAsync(string topicName)
+		public async Task<IActionResult> OnGetAsync(string slug)
 		{
 
-			// TODO: If topicName not specified, default to Home Page
+            // TODO: If topicName not specified, default to Home Page
 
-			topicName = topicName ?? "HomePage";
+            slug = slug ?? "home-page";
 
-			Article = await _context.Articles.SingleOrDefaultAsync(m => m.Topic == topicName);
+			Article = await _context.Articles.SingleOrDefaultAsync(m => m.Slug == slug.ToLower());
 
 			if (Article == null)
 			{
