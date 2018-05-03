@@ -36,10 +36,13 @@ namespace CoreWiki
 			// Add NodaTime clock for time-based testing
 			services.AddSingleton<IClock>(SystemClock.Instance);
 
-			services.AddMvc()
+            services.AddRouting(options => options.LowercaseUrls = true);
+
+            services.AddMvc()
 				.AddRazorPagesOptions(options =>
 				{
-					options.Conventions.AddPageRoute("/Details", "{topicName?}");
+
+                    options.Conventions.AddPageRoute("/Details", "{Slug?}");
 					options.Conventions.AddPageRoute("/Details", @"Index");
 				});
 		}

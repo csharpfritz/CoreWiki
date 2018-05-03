@@ -14,6 +14,12 @@ namespace CoreWiki.Models
 
 		}
 
+		protected override void OnModelCreating(ModelBuilder modelBuilder) {
+
+			modelBuilder.Entity<Article>().HasIndex(a => a.Slug).IsUnique();
+
+		}
+
 		public DbSet<Article> Articles { get; set; }
 
 		internal static void SeedData(ApplicationDbContext context)
@@ -30,6 +36,7 @@ namespace CoreWiki.Models
 				{
 
 					Topic = "HomePage",
+					Slug= "home-page",
 					Content = "This is the default home page.  Please change me!",
 					Published = SystemClock.Instance.GetCurrentInstant()
 
