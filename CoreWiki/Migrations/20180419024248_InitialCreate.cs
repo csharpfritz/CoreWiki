@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace CoreWiki.Migrations
 {
-    public partial class Initial : Migration
+    public partial class InitialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -12,13 +12,16 @@ namespace CoreWiki.Migrations
                 name: "Articles",
                 columns: table => new
                 {
-                    Topic = table.Column<string>(nullable: false),
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
                     Content = table.Column<string>(nullable: true),
-                    Published = table.Column<DateTime>(nullable: false)
+                    Published = table.Column<DateTime>(nullable: false),
+                    Slug = table.Column<string>(nullable: true),
+                    Topic = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Articles", x => x.Topic);
+                    table.PrimaryKey("PK_Articles", x => x.Id);
                 });
         }
 

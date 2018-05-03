@@ -11,8 +11,8 @@ using System;
 namespace CoreWiki.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20180327144938_Initial")]
-    partial class Initial
+    [Migration("20180419024248_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -22,14 +22,20 @@ namespace CoreWiki.Migrations
 
             modelBuilder.Entity("CoreWiki.Models.Article", b =>
                 {
-                    b.Property<string>("Topic")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("Content");
 
-                    b.Property<DateTime>("Published");
+                    b.Property<DateTime>("PublishedDateTime")
+                        .HasColumnName("Published");
 
-                    b.HasKey("Topic");
+                    b.Property<string>("Slug");
+
+                    b.Property<string>("Topic")
+                        .IsRequired();
+
+                    b.HasKey("Id");
 
                     b.ToTable("Articles");
                 });
