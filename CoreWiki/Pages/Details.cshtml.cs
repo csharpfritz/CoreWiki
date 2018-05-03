@@ -6,16 +6,19 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using CoreWiki.Models;
+using NodaTime;
 
 namespace CoreWiki.Pages
 {
 	public class DetailsModel : PageModel
 	{
 		private readonly CoreWiki.Models.ApplicationDbContext _context;
+		private readonly IClock _clock;
 
-		public DetailsModel(CoreWiki.Models.ApplicationDbContext context)
+		public DetailsModel(CoreWiki.Models.ApplicationDbContext context, IClock clock)
 		{
-			_context = context;
+            _context = context;
+            _clock = clock;
 		}
 
 		public Article Article { get; set; }
@@ -27,7 +30,7 @@ namespace CoreWiki.Pages
 
 			topicName = topicName ?? "HomePage";
 
-			Article = await _context.Articles.SingleOrDefaultAsync(m => m.Topic == topicName);
+			Article = await _context.Articles.Include(x => x.Comments).SingleOrDefaultAsync(m => m.Topic == topicName);
 
 			if (Article == null)
 			{
@@ -35,5 +38,26 @@ namespace CoreWiki.Pages
 			}
 			return Page();
 		}
-	}
+
+		public async Task<IActionResult> OnPostAsync(Models.Comment comment)
+		{
+			TryValidateModel(comment);
+			Article = await _context.Articles.Include(x => x.Comments).SingleOrDefaultAsync(m => m.Id == comment.IdArticle);
+
+			if (Article == null)
+                return NotFound();
+
+			if (!ModelState.IsValid)
+                return Page();
+
+			comment.Article = this.Article;
+
+			comment.Submitted = _clock.GetCurrentInstant();
+
+			_context.Comments.Add(comment);
+			await _context.SaveChangesAsync();
+
+			return Redirect($"/{Article.Topic}");
+        }
+    }
 }

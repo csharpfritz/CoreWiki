@@ -1,49 +1,47 @@
 ﻿@page
-@model CoreWiki.Pages.CreateModel
+	@model CoreWiki.Pages.CreateModel
 
-@{
-	ViewData["Title"] = "Create";
-}
+		@{
+			ViewData["Title"] = "Create";
+		}
 
-<h2>Create New Article</h2>
-<hr />
-<br/>
-<div class="row">
-	<div class="col-md-12">
-		<form method="post">
+		<h2>Create New Article</h2>
+		<hr />
+		<br />
+		<div class="row">
+			<div class="col-md-12">
+				<form method="post">
 
-			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
-			<div class="form-group">
-				<label asp-for="Article.Topic" class="control-label"></label>
-				<input asp-for="Article.Topic" class="form-control" />
-				<span asp-validation-for="Article.Topic" class="text-danger"></span>
+					<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+					<div class="form-group">
+						<label asp-for="Article.Topic" class="control-label"></label>
+						<input asp-for="Article.Topic" class="form-control" />
+						<span asp-validation-for="Article.Topic" class="text-danger"></span>
+					</div>
+					<div class="form-group">
+						<label asp-for="Article.Content" class="control-label"></label>
+						<textarea asp-for="Article.Content" class="form-control"></textarea>
+						<span asp-validation-for="Article.Content" class="text-danger"></span>
+					</div>
+					<div class="form-group">
+						<input type="submit" value="Create" class="btn btn-default" />
+					</div>
+				</form>
 			</div>
-			<div class="form-group">
-				<label asp-for="Article.Content" class="control-label"></label>
-				<textarea asp-for="Article.Content" class="form-control"></textarea>
-				<span asp-validation-for="Article.Content" class="text-danger"></span>
-			</div>
-			<div class="form-group">
-				<input type="submit" value="Create" class="btn btn-default" />
-			</div>
-		</form>
-	</div>
-</div>
+		</div>
 
-<div>
-    <a asp-page="./Details">Back to Home</a>
-</div>
+		<div>
+			<a asp-page="./Details">Back to Home</a>
+		</div>
 
-@section Scripts {
 
-	<script src="~/lib/simplemde/simplemde.min.js"></script>
-	<script>
-		var simplemde = new SimpleMDE();
-	</script>
+		@section Scripts {
+		@await Html.PartialAsync("_EditorScript")
 
-	@{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+		}
 
-@section Styles {
-	<link href="~/lib/simplemde/simplemde.min.css" rel="stylesheet" />
-}
+		@section Styles {
+
+		@await Html.PartialAsync("_EditorStyle")
+
+		}
