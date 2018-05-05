@@ -4,39 +4,50 @@ using System.Text.RegularExpressions;
 
 namespace CoreWiki.Helpers
 {
-    public class UrlHelpers
-    {
+	public class UrlHelpers
+	{
 
-        private static readonly Regex reSlugCharacters = new Regex(@"([\s,.//\\-_=])+");
+		private static readonly Regex reSlugCharactersToBeDashes = new Regex(@"([\s,.//\\-_=])+");
+		private static readonly Regex reSlugCharactersToRemove = new Regex(@"([^0-9a-z\-])+");
+		private static readonly Regex reSlugDashes = new Regex(@"([\-])+");
 
-        public static string URLFriendly(string title) {
+		public static string URLFriendly(string title)
+		{
 
-            if (string.IsNullOrEmpty(title)) return "";
+			if (string.IsNullOrEmpty(title)) return "";
 
-            var newTitle = title.ToLowerInvariant();
+			var newTitle = title.ToLowerInvariant();
 
-            newTitle = reSlugCharacters.Replace(newTitle, "-");
+			newTitle = RemoveDiacritics(newTitle);
 
-            return RemoveDiacritics(newTitle);
+			newTitle = reSlugCharactersToBeDashes.Replace(newTitle, "-");
 
-        }
+			newTitle = reSlugCharactersToRemove.Replace(newTitle, "");
 
-    static string RemoveDiacritics(string text)
-    {
-      var normalizedString = text.Normalize(NormalizationForm.FormD);
-      var stringBuilder = new StringBuilder();
+			newTitle = reSlugDashes.Replace(newTitle, "-");
 
-      foreach (var c in normalizedString)
-      {
-        var unicodeCategory = CharUnicodeInfo.GetUnicodeCategory(c);
-        if (unicodeCategory != UnicodeCategory.NonSpacingMark)
-        {
-          stringBuilder.Append(c);
-        }
-      }
+			newTitle = newTitle.Trim('-');
 
-      return stringBuilder.ToString().Normalize(NormalizationForm.FormC);
-    }
+			return newTitle;
 
-  }
+		}
+
+		static string RemoveDiacritics(string text)
+		{
+			var normalizedString = text.Normalize(NormalizationForm.FormD);
+			var stringBuilder = new StringBuilder();
+
+			foreach (var c in normalizedString)
+			{
+				var unicodeCategory = CharUnicodeInfo.GetUnicodeCategory(c);
+				if (unicodeCategory != UnicodeCategory.NonSpacingMark)
+				{
+					stringBuilder.Append(c);
+				}
+			}
+
+			return stringBuilder.ToString().Normalize(NormalizationForm.FormC);
+		}
+
+	}
 }
