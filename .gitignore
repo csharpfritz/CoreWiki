@@ -263,3 +263,5 @@ __pycache__/
 # Omit our lib folders that are being restored from npm
 CoreWiki/wwwroot/lib/
 !CoreWiki/wwwroot/lib/simplemde
+
+.vscode/
