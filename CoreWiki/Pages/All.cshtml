@@ -10,6 +10,7 @@
     <pager class="col-auto mr-auto" total-pages="Model.TotalPages" current-page="Model.PageNumber"></pager>
     <select asp-for="PageSize"
             asp-items="Model.PageSizeOptions"
+            data-value="@Model.PageSize"
             class="form-control-sm text-primary border-primary"
             onchange="UpdatePageSize(value)">
     </select>
@@ -42,9 +43,13 @@
 }
 
 <script>
+
+    // First item on the page is item (pagesize * (pagenumber-1))+1
+
+
     function UpdatePageSize(value) {
         document.cookie = encodeURIComponent("PageSize") + "=" + encodeURIComponent(value) + "; path=/";
-        location.reload();
+        location = '/all/1';
     }
 </script>
 
