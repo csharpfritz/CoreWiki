@@ -16,11 +16,14 @@ namespace CoreWiki.Helpers
 
 			if (string.IsNullOrEmpty(title)) return "";
 
-			var newTitle = title.ToLowerInvariant();
 
-			newTitle = RemoveDiacritics(newTitle);
+			var newTitle = RemoveDiacritics(title);
+
+			newTitle = Regex.Replace(newTitle, "(?<!^)([A-Z][a-z]|(?<=[a-z])[A-Z])", @"-$1");
 
 			newTitle = reSlugCharactersToBeDashes.Replace(newTitle, "-");
+
+			newTitle = newTitle.ToLowerInvariant();
 
 			newTitle = reSlugCharactersToRemove.Replace(newTitle, "");
 
