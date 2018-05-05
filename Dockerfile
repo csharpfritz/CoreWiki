@@ -10,6 +10,9 @@ RUN Cake /src/build.cake --Target=Publish
 
 FROM microsoft/aspnetcore:2.0.6
 
-COPY --from=builder /src/output /app
+WORKDIR app
 
-CMD ["dotnet","/app/CoreWiki.dll"]
+COPY --from=builder /src/output .
+
+CMD ["dotnet","CoreWiki.dll"]
+
