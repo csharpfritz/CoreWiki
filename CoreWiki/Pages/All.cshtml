@@ -32,14 +32,14 @@
 			<div class="card border border-primary mb-3">
 				<div class="card-header">
 					<h3 class="card-title">
-						<a href="~/@item.Topic">@item.Topic</a>
+						<a href="@($"/{(item.Slug == "home-page" ? "" : item.Slug)}")">@item.Topic</a>
 					</h3>
 				</div>
 				<div class="card-body">
 					<h6 class="card-subtitle mb-2 text-muted"><span data-value="@item.Published" class="timeStampValue"> @item.Published</span></h6>
 
-					<a class="card-link" asp-page="./Edit" asp-route-id="@item.Topic">Edit</a>
-					<a class="card-link" asp-page="./Delete" asp-route-id="@item.Topic">Delete</a>
+					<a class="card-link" asp-page="./Edit" asp-route-id="@item.Id">Edit</a>
+					<a class="card-link" asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
 
 				</div>
 
