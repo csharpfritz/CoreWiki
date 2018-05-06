@@ -11,9 +11,10 @@ using System;
 namespace CoreWiki.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180506165429_Added ReadCount field to Articles database")]
+    partial class AddedReadCountfieldtoArticlesdatabase
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
