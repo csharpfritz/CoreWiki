@@ -1,12 +1,13 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using NodaTime;
 using System.Linq;
 
 namespace CoreWiki.Models
 {
 
-	public class ApplicationDbContext : DbContext
-	{
+	public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
+  {
 
 		public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
 			: base(options)
@@ -17,10 +18,11 @@ namespace CoreWiki.Models
 		protected override void OnModelCreating(ModelBuilder modelBuilder) {
 
 			modelBuilder.Entity<Article>().HasIndex(a => a.Slug).IsUnique();
+		  base.OnModelCreating(modelBuilder);
 
-		}
+	}
 
-		public DbSet<Article> Articles { get; set; }
+	public DbSet<Article> Articles { get; set; }
 
 		internal static void SeedData(ApplicationDbContext context)
 		{
