@@ -21,8 +21,9 @@ namespace CoreWiki.Models
 		}
 
 		public DbSet<Article> Articles { get; set; }
+		public DbSet<Comment> Comments { get; set; }
 
-		internal static void SeedData(ApplicationDbContext context)
+	internal static void SeedData(ApplicationDbContext context)
 		{
 
 			context.Database.EnsureCreated();
