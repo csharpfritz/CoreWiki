@@ -4,8 +4,10 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using CoreWiki.Models;
+using CoreWiki.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.Configuration;
@@ -29,26 +31,36 @@ namespace CoreWiki
 		{
 
 			services.AddEntityFrameworkSqlite()
-					.AddDbContext<ApplicationDbContext>(options =>
-							options.UseSqlite("Data Source=./wiki.db")
-					);
+			.AddDbContext<ApplicationDbContext>(options =>
+				options.UseSqlite("Data Source=./wiki.db")
+			);
+
+			services.AddIdentity<ApplicationUser, IdentityRole>()
+			.AddEntityFrameworkStores<ApplicationDbContext>()
+			.AddDefaultTokenProviders();
 
 			// Add NodaTime clock for time-based testing
 			services.AddSingleton<IClock>(SystemClock.Instance);
 
-            services.AddRouting(options => options.LowercaseUrls = true);
+			services.AddRouting(options => options.LowercaseUrls = true);
 
-            services.AddMvc()
-				.AddRazorPagesOptions(options =>
-				{
+			services.AddMvc()
+			.AddRazorPagesOptions(options =>
+			{
+				options.Conventions.AddPageRoute("/Details", "{Slug?}");
+				options.Conventions.AddPageRoute("/Details", @"Index");
 
-                    options.Conventions.AddPageRoute("/Details", "{Slug?}");
-					options.Conventions.AddPageRoute("/Details", @"Index");
-				});
-		}
+			  options.Conventions.AuthorizeFolder("/Account/Manage");
+			  options.Conventions.AuthorizePage("/Account/Logout");
+			});
 
-		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-		public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+			// Register no-op EmailSender used by account confirmation and password reset during development
+			// For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=532713
+			services.AddSingleton<IEmailSender, EmailSender>();
+	}
+
+	// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+	public void Configure(IApplicationBuilder app, IHostingEnvironment env)
 		{
 			if (env.IsDevelopment())
 			{
@@ -61,7 +73,7 @@ namespace CoreWiki
 			}
 
 			app.UseStaticFiles();
-
+			app.UseAuthentication();
 			app.UseMvc();
 
 			var scope = app.ApplicationServices.CreateScope();
