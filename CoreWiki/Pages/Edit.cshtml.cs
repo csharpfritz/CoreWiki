@@ -48,6 +48,9 @@ namespace CoreWiki.Pages
 				return Page();
 			}
 
+			var existingArticle = _context.Articles.AsNoTracking().First(a => a.Topic == Article.Topic);
+			Article.ViewCount = existingArticle.ViewCount;
+
 			_context.Attach(Article).State = EntityState.Modified;
 			Article.Published = _clock.GetCurrentInstant();
 
