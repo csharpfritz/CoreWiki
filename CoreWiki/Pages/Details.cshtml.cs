@@ -23,9 +23,9 @@ namespace CoreWiki.Pages
 		public async Task<IActionResult> OnGetAsync(string slug)
 		{
 
-            // TODO: If topicName not specified, default to Home Page
+			// TODO: If topicName not specified, default to Home Page
 
-            slug = slug ?? "home-page";
+			slug = slug ?? "home-page";
 
 			Article = await _context.Articles.SingleOrDefaultAsync(m => m.Slug == slug.ToLower());
 
@@ -33,6 +33,10 @@ namespace CoreWiki.Pages
 			{
 				return NotFound();
 			}
+
+			Article.ReadCount++;
+			await _context.SaveChangesAsync();
+
 			return Page();
 		}
 	}
