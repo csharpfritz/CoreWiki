@@ -36,7 +36,7 @@ namespace CoreWiki.Models
 		[DataType(DataType.MultilineText)]
 		public string Content { get; set; }
 
-		public int ReadCount { get; set; }
+	public int ReadCount { get; set; } = 0;
 
 	}
 }

@@ -14,8 +14,16 @@
 			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
 			<div class="form-group">
 				<label asp-for="Article.Topic" class="control-label"></label>
-				<span>@Model.Article.Topic</span>
-				<span asp-validation-for="Article.Topic" class="text-danger"></span>
+				@if (Model.Article.Topic == "HomePage")
+				{
+					<input type="hidden" asp-for="Article.Topic" />
+					<span>@Model.Article.Topic</span>
+				}
+				else
+				{
+					<input asp-for="Article.Topic" />
+					<span asp-validation-for="Article.Topic" class="text-danger"></span>
+				}
 			</div>
 			<input type="hidden" asp-for="Article.Id" />
 			<div class="form-group">
