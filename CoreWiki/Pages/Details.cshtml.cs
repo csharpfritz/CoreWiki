@@ -35,6 +35,18 @@ namespace CoreWiki.Pages
 			{
 				return NotFound();
 			}
+
+			if (Request.Cookies[Article.Topic] == null)
+			{
+				Article.ViewCount++;
+				Response.Cookies.Append(Article.Topic, "foo", new Microsoft.AspNetCore.Http.CookieOptions
+				{
+					Expires = DateTime.UtcNow.AddMinutes(5)
+				});
+
+				await _context.SaveChangesAsync();
+			}
+
 			return Page();
 	}
 

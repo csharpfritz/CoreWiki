@@ -12,7 +12,7 @@ namespace CoreWiki.Models
     public class Article
     {
         [Key]
-				[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
         [Required, MaxLength(100)]
@@ -41,5 +41,9 @@ namespace CoreWiki.Models
         {
             this.Comments = new HashSet<Comment>();
         }
-}
+
+		public int ViewCount { get; set; } = 0;
+
+	}
+
 }

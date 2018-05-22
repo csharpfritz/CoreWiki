@@ -21,12 +21,11 @@
 	</div>
 	<div class="card-body">
 		<h6 class="card-subtitle mb-2 text-muted"><span data-value="@item.Published" class="timeStampValue"> @item.Published</span></h6>
+		<h6 class="card-subtitle mb-2 text-muted">View Count: <span> @item.ViewCount</span></h6>
 
 	<a class="card-link" asp-page="./Edit" asp-route-id="@item.Id">Edit</a>
 	<a class="card-link" asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
 
 	</div>
-
-
 </div>
 }

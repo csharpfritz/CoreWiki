@@ -35,7 +35,10 @@ namespace CoreWiki.Migrations
                         .IsRequired()
                         .HasMaxLength(100);
 
+                   	b.Property<int>("ViewCount");
+
                     b.HasKey("Id");
+
 
                     b.HasIndex("Slug")
                         .IsUnique();
