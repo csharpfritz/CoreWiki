@@ -50,7 +50,8 @@ April 19, 2018 | [Chill coding today.. good music, good code, and YOU!](https://
 May 3, 2018 | [Answering your questions, reviewing pull-requests, and May is for Macs continues!](https://www.twitch.tv/videos/257242690)
 May 5, 2018 | [ASP.NET Core, live interactions with SignalR, and YOUR pull requests](https://www.twitch.tv/videos/257981634)
 May 5, 2018 | [ASP.NET Core, live interactions with SignalR, and YOUR pull requests](https://www.twitch.tv/videos/257985865)
-
+May 22, 2018 | [ASP.NET Core, live interactions with SignalR, and YOUR pull requests](https://www.twitch.tv/videos/257985865)
+May 22, 2018 | [May is for Macs - Reviewing GitHub scoreboard widget and working on our Wiki](https://www.twitch.tv/videos/264220203?t=1h9m30s)
 #  1) Functionality that have already been implemented
 
 **HomePage** - _It's not a page or a feature. This is a default article that is presented as if it were the Home. When the user navigate to /Details, if topicName is not specified, the application redirect to default Article (HomePage)_
