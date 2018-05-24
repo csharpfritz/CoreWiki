@@ -2,30 +2,47 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CoreWiki.Models;
+using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Snickler.RSSCore.Models;
 using Snickler.RSSCore.Providers;
+using System.Web;
 
 namespace CoreWiki
 {
   public class RSSProvider : IRSSProvider
   {
-	Task<IList<RSSItem>> IRSSProvider.RetrieveSyndicationItems()
+	private ApplicationDbContext _context;
+	
+	public RSSProvider(ApplicationDbContext context)
 	{
-	  IList<RSSItem> syndicationList = new List<RSSItem>();
-	  var RSSItem = new RSSItem()
-	  {
-		Content = "Page",
-		PermaLink = new Uri("http://www.github.com/CSharpFritz/CoreWiki"),
-		LinkUri = new Uri("http://www.github.com/CSharpFritz/CoreWiki/Item.aspx?123"),
-		LastUpdated = DateTime.Now,
-		PublishDate = DateTime.Now,
-		Title = "Sample"
+	  _context = context;
+	  
+	}
 
-	  };
-	  RSSItem.Categories.Add("Issues");
-	  RSSItem.Authors.Add("Jeff Fritz");
-	  syndicationList.Add((RSSItem)syndicationList);
-	  return Task.FromResult(syndicationList);
-		}
+	public async Task<IList<RSSItem>> RetrieveSyndicationItems()
+	{
+	  var articles = await _context.Articles.OrderByDescending(a => a.Published).Take(10).ToListAsync();
+	  return articles.Select(rssItem =>
+	  {
+		var wikiItem = new RSSItem
+		{
+		  Content = rssItem.Content,
+			//Will probably need FQDN for a permalink in RSS. May have to use _httpContextAccessor.HttpContext.Request.Host.Host. 
+			//in Startup.cs, add _services.AddHttpContextAccessor();
+			PermaLink = new Uri(WikiHttpContext.HttpContext.Current.Request.Host.Host) ,
+		  LinkUri =		new Uri(WikiHttpContext.HttpContext.Current.Request.Host.Host),
+		  PublishDate = rssItem.PublishedDateTime,
+		  LastUpdated = rssItem.PublishedDateTime,
+		  Title = rssItem.Topic
+
+		};
+
+		wikiItem.Authors.Add("Jeff Fritz");
+		return wikiItem;
+	  }).ToList();
+	}
+
   }
 }

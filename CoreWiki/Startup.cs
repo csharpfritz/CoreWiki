@@ -16,72 +16,89 @@ using Snickler.RSSCore;
 using Snickler.RSSCore.Providers;
 using Snickler.RSSCore.Extensions;
 using Snickler.RSSCore.Models;
+using Microsoft.AspNetCore.Http;
 
 namespace CoreWiki
 {
+  public static class StaticHttpContextExtensions
+  {
+	public static void AddHttpContextAccessor(this IServiceCollection services)
+	{
+	  services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+	}
+
+	public static IApplicationBuilder UseStaticHttpContext(this IApplicationBuilder app)
+	{
+	  var httpContextAccessor = app.ApplicationServices.GetRequiredService<IHttpContextAccessor>();
+	  WikiHttpContext.HttpContext.Configure(httpContextAccessor);
+	  return app;
+		}
+  }
   public class Startup
   {
-	public Startup(IConfiguration configuration)
-	{
-	  Configuration = configuration;
-	}
+  public Startup(IConfiguration configuration)
+  {
+    Configuration = configuration;
+  }
 
-	public IConfiguration Configuration { get; }
+  public IConfiguration Configuration { get; }
 
-	// This method gets called by the runtime. Use this method to add services to the container.
-	public void ConfigureServices(IServiceCollection services)
-	{
-	  services.AddRSSFeed<RSSProvider>();
+  // This method gets called by the runtime. Use this method to add services to the container.
+  public void ConfigureServices(IServiceCollection services)
+  {
+    services.AddRSSFeed<RSSProvider>();
 
-	  services.AddEntityFrameworkSqlite()
-			  .AddDbContext<ApplicationDbContext>(options =>
-					  options.UseSqlite("Data Source=./wiki.db")
-			  );
+    services.AddEntityFrameworkSqlite()
+      .AddDbContext<ApplicationDbContext>(options =>
+        options.UseSqlite("Data Source=./wiki.db")
+      );
 
-	  // Add NodaTime clock for time-based testing
-	  services.AddSingleton<IClock>(SystemClock.Instance);
+    // Add NodaTime clock for time-based testing
+    services.AddSingleton<IClock>(SystemClock.Instance);
 
-	  services.AddRouting(options => options.LowercaseUrls = true);
+    services.AddRouting(options => options.LowercaseUrls = true);
+	  services.AddHttpContextAccessor();
 
 	  services.AddMvc()
-		  .AddRazorPagesOptions(options =>
-		  {
+    .AddRazorPagesOptions(options =>
+    {
 
-			options.Conventions.AddPageRoute("/Details", "{Slug?}");
-			options.Conventions.AddPageRoute("/Details", @"Index");
-		  });
+      options.Conventions.AddPageRoute("/Details", "{Slug?}");
+      options.Conventions.AddPageRoute("/Details", @"Index");
+    });
 
 
-	}
+  }
 
-	// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-	public void Configure(IApplicationBuilder app, IHostingEnvironment env)
-	{
-	  if (env.IsDevelopment())
-	  {
-		app.UseBrowserLink();
-		app.UseDeveloperExceptionPage();
-	  }
-	  else
-	  {
-		app.UseExceptionHandler("/Error");
-	  }
+  // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+  public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+  {
+    if (env.IsDevelopment())
+    {
+    app.UseBrowserLink();
+    app.UseDeveloperExceptionPage();
+    }
+    else
+    {
+    app.UseExceptionHandler("/Error");
+    }
 
-	  app.UseStaticFiles();
+    app.UseStaticFiles();
+	  app.UseStaticHttpContext();
 
-	  app.UseMvc();
-	  app.UseRSSFeed("/feed", new RSSFeedOptions
-	  {
-		Title = "CoreWiki RSS Feed",
-		Copyright = "2018",
-		Description = "RSS Feed for CoreWiki",
-		Url = new Uri("http://www.github.com/csharpfritz/CoreWiki")
-	  });
-	  var scope = app.ApplicationServices.CreateScope();
-	  var context = scope.ServiceProvider.GetService<ApplicationDbContext>();
-	  ApplicationDbContext.SeedData(context);
+    app.UseMvc();
+    app.UseRSSFeed("/feed", new RSSFeedOptions
+    {
+    Title = "CoreWiki RSS Feed",
+    Copyright = "2018",
+    Description = "RSS Feed for CoreWiki",
+    Url = new Uri(WikiHttpContext.HttpContext.Current.Request.Host.Host)
+    });
+    var scope = app.ApplicationServices.CreateScope();
+    var context = scope.ServiceProvider.GetService<ApplicationDbContext>();
+    ApplicationDbContext.SeedData(context);
 
-	}
+  }
 
   }
 }
