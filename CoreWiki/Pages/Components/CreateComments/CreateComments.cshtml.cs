@@ -17,7 +17,7 @@ namespace CoreWiki.Pages.Components.CreateComments
             this._context = context;
         }
 
-        public async Task<IViewComponentResult> InvokeAsync(Comment comment)
+        public IViewComponentResult Invoke(Comment comment)
         {
             return View("CreateComments", comment);
         }

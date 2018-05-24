@@ -29,20 +29,19 @@ namespace CoreWiki
 		{
 
 			services.AddEntityFrameworkSqlite()
-					.AddDbContext<ApplicationDbContext>(options =>
-							options.UseSqlite("Data Source=./wiki.db")
-					);
+				.AddDbContextPool<ApplicationDbContext>(options =>
+						options.UseSqlite("Data Source=./wiki.db")
+				);
 
 			// Add NodaTime clock for time-based testing
 			services.AddSingleton<IClock>(SystemClock.Instance);
 
-            services.AddRouting(options => options.LowercaseUrls = true);
+			services.AddRouting(options => options.LowercaseUrls = true);
 
-            services.AddMvc()
+			services.AddMvc()
 				.AddRazorPagesOptions(options =>
 				{
-
-                    options.Conventions.AddPageRoute("/Details", "{Slug?}");
+					options.Conventions.AddPageRoute("/Details", "{Slug?}");
 					options.Conventions.AddPageRoute("/Details", @"Index");
 				});
 		}
@@ -52,7 +51,7 @@ namespace CoreWiki
 		{
 			if (env.IsDevelopment())
 			{
-				app.UseBrowserLink();
+				// app.UseBrowserLink();
 				app.UseDeveloperExceptionPage();
 			}
 			else
