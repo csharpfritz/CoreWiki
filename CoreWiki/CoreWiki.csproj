@@ -7,6 +7,7 @@
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.6" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.3" />
     <PackageReference Include="NodaTime" Version="2.2.5" />
+    <PackageReference Include="Snickler.RSSCore" Version="1.0.2" />
     <PackageReference Include="Westwind.AspNetCore.Markdown" Version="3.0.16" />
   </ItemGroup>
   <ItemGroup>

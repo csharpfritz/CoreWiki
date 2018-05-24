@@ -12,63 +12,76 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using NodaTime;
+using Snickler.RSSCore;
+using Snickler.RSSCore.Providers;
+using Snickler.RSSCore.Extensions;
+using Snickler.RSSCore.Models;
 
 namespace CoreWiki
 {
-	public class Startup
+  public class Startup
+  {
+	public Startup(IConfiguration configuration)
 	{
-		public Startup(IConfiguration configuration)
-		{
-			Configuration = configuration;
-		}
+	  Configuration = configuration;
+	}
 
-		public IConfiguration Configuration { get; }
+	public IConfiguration Configuration { get; }
 
-		// This method gets called by the runtime. Use this method to add services to the container.
-		public void ConfigureServices(IServiceCollection services)
-		{
+	// This method gets called by the runtime. Use this method to add services to the container.
+	public void ConfigureServices(IServiceCollection services)
+	{
+	  services.AddRSSFeed<RSSProvider>();
 
-			services.AddEntityFrameworkSqlite()
-					.AddDbContext<ApplicationDbContext>(options =>
-							options.UseSqlite("Data Source=./wiki.db")
-					);
+	  services.AddEntityFrameworkSqlite()
+			  .AddDbContext<ApplicationDbContext>(options =>
+					  options.UseSqlite("Data Source=./wiki.db")
+			  );
 
-			// Add NodaTime clock for time-based testing
-			services.AddSingleton<IClock>(SystemClock.Instance);
+	  // Add NodaTime clock for time-based testing
+	  services.AddSingleton<IClock>(SystemClock.Instance);
 
-            services.AddRouting(options => options.LowercaseUrls = true);
+	  services.AddRouting(options => options.LowercaseUrls = true);
 
-            services.AddMvc()
-				.AddRazorPagesOptions(options =>
-				{
+	  services.AddMvc()
+		  .AddRazorPagesOptions(options =>
+		  {
 
-                    options.Conventions.AddPageRoute("/Details", "{Slug?}");
-					options.Conventions.AddPageRoute("/Details", @"Index");
-				});
-		}
+			options.Conventions.AddPageRoute("/Details", "{Slug?}");
+			options.Conventions.AddPageRoute("/Details", @"Index");
+		  });
 
-		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-		public void Configure(IApplicationBuilder app, IHostingEnvironment env)
-		{
-			if (env.IsDevelopment())
-			{
-				app.UseBrowserLink();
-				app.UseDeveloperExceptionPage();
-			}
-			else
-			{
-				app.UseExceptionHandler("/Error");
-			}
-
-			app.UseStaticFiles();
-
-			app.UseMvc();
-
-			var scope = app.ApplicationServices.CreateScope();
-			var context = scope.ServiceProvider.GetService<ApplicationDbContext>();
-			ApplicationDbContext.SeedData(context);
-
-		}
 
 	}
+
+	// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+	public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+	{
+	  if (env.IsDevelopment())
+	  {
+		app.UseBrowserLink();
+		app.UseDeveloperExceptionPage();
+	  }
+	  else
+	  {
+		app.UseExceptionHandler("/Error");
+	  }
+
+	  app.UseStaticFiles();
+
+	  app.UseMvc();
+	  app.UseRSSFeed("/feed", new RSSFeedOptions
+	  {
+		Title = "CoreWiki RSS Feed",
+		Copyright = "2018",
+		Description = "RSS Feed for CoreWiki",
+		Url = new Uri("http://www.github.com/csharpfritz/CoreWiki")
+	  });
+	  var scope = app.ApplicationServices.CreateScope();
+	  var context = scope.ServiceProvider.GetService<ApplicationDbContext>();
+	  ApplicationDbContext.SeedData(context);
+
+	}
+
+  }
 }
