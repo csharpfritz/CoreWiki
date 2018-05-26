@@ -89,7 +89,7 @@ namespace CoreWiki
 			Title = "CoreWiki RSS Feed",
 			Copyright = DateTime.UtcNow.Year.ToString(),
 			Description = "RSS Feed for CoreWiki",
-			Url = new Uri("/", UriKind.Relative)
+			Url = new Uri(Configuration["Url"])
     });
 
     var scope = app.ApplicationServices.CreateScope();

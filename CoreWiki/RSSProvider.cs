@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Snickler.RSSCore.Models;
 using Snickler.RSSCore.Providers;
 using System.Web;
+using Microsoft.Extensions.Configuration;
 
 namespace CoreWiki
 {
@@ -15,9 +16,12 @@ namespace CoreWiki
   {
 	private ApplicationDbContext _context;
 
-	public RSSProvider(ApplicationDbContext context)
+    public IConfiguration Configuration { get; }
+
+    public RSSProvider(ApplicationDbContext context, IConfiguration config)
 	{
 	  _context = context;
+		Configuration = config;
 
 	}
 
@@ -31,8 +35,8 @@ namespace CoreWiki
 		  Content = rssItem.Content,  // TODO: May need to truncate for VERY large articles in the future
 			//Will probably need FQDN for a permalink in RSS. May have to use _httpContextAccessor.HttpContext.Request.Host.Host.
 			//in Startup.cs, add _services.AddHttpContextAccessor();
-			PermaLink = new Uri($"/{rssItem.Slug}", UriKind.Relative),
-		  LinkUri =		new Uri($"/{rssItem.Slug}", UriKind.Relative),
+			PermaLink = new Uri($"{Configuration["Url"]}/{rssItem.Slug}"),
+		  LinkUri =		new Uri($"{Configuration["Url"]}/{rssItem.Slug}"),
 		  PublishDate = rssItem.PublishedDateTime,
 		  LastUpdated = rssItem.PublishedDateTime,
 		  Title = rssItem.Topic
