@@ -24,8 +24,17 @@
 						<span asp-validation-for="Article.Content" class="text-danger"></span>
 					</div>
 					<div class="form-group">
-						<input type="submit" value="Create" class="btn btn-default" />
-						<input type="file" class="btn btn-default" onchange="openFile(event)" />
+						<div class="input-group mb-3">
+							<input type="submit" value="Create" class="btn btn-default" />
+  						<div class="input-group-prepend">
+    						<span class="input-group-text">Upload</span>
+  						</div>
+							<div class="custom-file">
+								<input type="file" class="custom-file-input" id="inputGroupFile01" onchange="openFile(event)">
+								<label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+							</div>
+						</div>
+
 					</div>
 				</form>
 			</div>
