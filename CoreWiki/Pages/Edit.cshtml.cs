@@ -27,14 +27,9 @@ namespace CoreWiki.Pages
 		[BindProperty]
 		public Article Article { get; set; }
 
-		public async Task<IActionResult> OnGetAsync(string id)
+		public async Task<IActionResult> OnGetAsync(int id)
 		{
-			if (id == null)
-			{
-				return NotFound();
-			}
-
-			Article = await _context.Articles.SingleOrDefaultAsync(m => m.Topic == id);
+			Article = await _context.Articles.SingleOrDefaultAsync(m => m.Id == id);
 
 			if (Article == null)
 			{
