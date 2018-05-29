@@ -31,14 +31,14 @@ namespace CoreWiki.Pages
 		{
 			if (id == null)
 			{
-				return NotFound();
+				return new ArticleNotFoundResult();
 			}
 
 			Article = await _context.Articles.SingleOrDefaultAsync(m => m.Topic == id);
 
 			if (Article == null)
 			{
-				return NotFound();
+				return new ArticleNotFoundResult();
 			}
 			return Page();
 		}
@@ -64,7 +64,7 @@ namespace CoreWiki.Pages
 			{
 				if (!ArticleExists(Article.Topic))
 				{
-					return NotFound();
+					return new ArticleNotFoundResult();
 				}
 				else
 				{
