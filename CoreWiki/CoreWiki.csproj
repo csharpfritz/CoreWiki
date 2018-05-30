@@ -14,8 +14,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\lib\bootstrap\" />
-    <Folder Include="wwwroot\lib\moment\" />
+    <Folder Include="Areas\Identity\Services\" />
+		<Folder Include="wwwroot\lib\bootstrap\" />
+		<Folder Include="wwwroot\lib\moment\" />
     <Folder Include="wwwroot\lib\simplemde\" />
   </ItemGroup>
 
