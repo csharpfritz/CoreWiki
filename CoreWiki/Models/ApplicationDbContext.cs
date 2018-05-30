@@ -7,7 +7,7 @@ namespace CoreWiki.Models
 {
 
 	public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
-  {
+	{
 
 		public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
 			: base(options)
@@ -15,14 +15,16 @@ namespace CoreWiki.Models
 
 		}
 
-		protected override void OnModelCreating(ModelBuilder modelBuilder) {
+		protected override void OnModelCreating(ModelBuilder modelBuilder)
+		{
 
 			modelBuilder.Entity<Article>().HasIndex(a => a.Slug).IsUnique();
-		  base.OnModelCreating(modelBuilder);
+			base.OnModelCreating(modelBuilder);
 
-	}
+		}
 
-	public DbSet<Article> Articles { get; set; }
+		public DbSet<Article> Articles { get; set; }
+		public DbSet<Comment> Comments { get; set; }
 
 		internal static void SeedData(ApplicationDbContext context)
 		{
@@ -38,7 +40,7 @@ namespace CoreWiki.Models
 				{
 
 					Topic = "HomePage",
-					Slug= "home-page",
+					Slug = "home-page",
 					Content = "This is the default home page.  Please change me!",
 					Published = SystemClock.Instance.GetCurrentInstant()
 
