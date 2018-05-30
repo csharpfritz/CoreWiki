@@ -9,10 +9,11 @@ using Microsoft.EntityFrameworkCore;
 using CoreWiki.Models;
 using NodaTime;
 using CoreWiki.Helpers;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CoreWiki.Pages
 {
-
+	[Authorize]
 	public class EditModel : PageModel
 	{
 		private readonly CoreWiki.Models.ApplicationDbContext _context;

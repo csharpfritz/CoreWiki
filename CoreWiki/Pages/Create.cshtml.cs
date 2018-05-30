@@ -9,10 +9,12 @@ using NodaTime;
 using CoreWiki.Models;
 using CoreWiki.Helpers;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CoreWiki.Pages
 {
-    public class CreateModel : PageModel
+	[Authorize]
+	public class CreateModel : PageModel
     {
         private readonly CoreWiki.Models.ApplicationDbContext _context;
         private readonly IClock _clock;

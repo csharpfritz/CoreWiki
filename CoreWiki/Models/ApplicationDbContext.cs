@@ -1,11 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using NodaTime;
 using System.Linq;
 
 namespace CoreWiki.Models
 {
 
-	public class ApplicationDbContext : DbContext
+	public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
 	{
 
 		public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
@@ -14,16 +15,18 @@ namespace CoreWiki.Models
 
 		}
 
-		protected override void OnModelCreating(ModelBuilder modelBuilder) {
+		protected override void OnModelCreating(ModelBuilder modelBuilder)
+		{
 
 			modelBuilder.Entity<Article>().HasIndex(a => a.Slug).IsUnique();
+			base.OnModelCreating(modelBuilder);
 
 		}
 
 		public DbSet<Article> Articles { get; set; }
 		public DbSet<Comment> Comments { get; set; }
 
-	internal static void SeedData(ApplicationDbContext context)
+		internal static void SeedData(ApplicationDbContext context)
 		{
 
 			context.Database.EnsureCreated();
@@ -37,7 +40,7 @@ namespace CoreWiki.Models
 				{
 
 					Topic = "HomePage",
-					Slug= "home-page",
+					Slug = "home-page",
 					Content = "This is the default home page.  Please change me!",
 					Published = SystemClock.Instance.GetCurrentInstant()
 

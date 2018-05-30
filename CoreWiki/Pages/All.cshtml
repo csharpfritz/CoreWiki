@@ -1,58 +1,58 @@
 ﻿@page "{PageNumber?}"
-	@model CoreWiki.Pages.AllModel
-		@{
-			ViewData["Title"] = "All";
-		}
+@model CoreWiki.Pages.AllModel
+@{
+    ViewData["Title"] = "All";
+}
 
-		<h2>All Articles</h2>
+<h2>All Articles</h2>
 
-		<pager total-pages="Model.TotalPages" current-page="Model.PageNumber"></pager>
+<div class="row justify-content-between no-gutters">
+    <pager class="col-auto mr-auto" total-pages="Model.TotalPages" current-page="Model.PageNumber"></pager>
+    <select asp-for="PageSize"
+            asp-items="Model.PageSizeOptions"
+            data-value="@Model.PageSize"
+            class="form-control-sm text-primary border-primary"
+            onchange="UpdatePageSize(value)">
+    </select>
+</div>
 
-		@*<ul class="pagination">
-			@for (var pageNum = 1; pageNum <= Model.TotalPages; pageNum++)
-			{
+@foreach (var item in Model.Articles)
+{
 
-				<li class="page-item @(pageNum == Model.PageNumber ? "active" : "")">
-				@if (pageNum == Model.PageNumber)
-				{
-					<a class="page-link active" href="#">@pageNum</a>
-				}
-				else
-				{
-					<a class="page-link" asp-page="./All" asp-route-PageNumber="@pageNum">@pageNum</a>
-				}
-				</li>
+	<div class="card border border-primary mb-3">
+		<div class="card-header">
+			<h3 class="card-title">
+				<a href="@($"/{(item.Slug == "home-page" ? "" : item.Slug)}")">@item.Topic</a>
+			</h3>
+		</div>
+		<div class="card-body">
+			<h6 class="card-subtitle mb-2 text-muted"><span data-value="@item.Published" class="timeStampValue"> @item.Published</span></h6>
 
-			}
-		</ul>*@
+			<a class="card-link" asp-page="./Edit" asp-route-id="@item.Id">Edit</a>
+			<a class="card-link" asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
 
-		@foreach (var item in Model.Articles)
-		{
-
-			<div class="card border border-primary mb-3">
-				<div class="card-header">
-					<h3 class="card-title">
-						<a href="@($"/{(item.Slug == "home-page" ? "" : item.Slug)}")">@item.Topic</a>
-					</h3>
-				</div>
-				<div class="card-body">
-					<h6 class="card-subtitle mb-2 text-muted"><span data-value="@item.Published" class="timeStampValue"> @item.Published</span></h6>
-
-					<a class="card-link" asp-page="./Edit" asp-route-id="@item.Id">Edit</a>
-					<a class="card-link" asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
-
-				</div>
+		</div>
 
 
-			</div>
-		}
+	</div>
 
-		@section Styles {
-			<style>
-				.pageNumber {
-					margin: 0px 4px;
-				}
-			</style>
-		}
+}
+
+@section Styles {
+    <style>
+        .pageNumber {
+            margin: 0px 4px;
+        }
+    </style>
+}
+
+<script>
+
+    // First item on the page is item (pagesize * (pagenumber-1))+1
 
 
+    function UpdatePageSize(value) {
+        document.cookie = encodeURIComponent("PageSize") + "=" + encodeURIComponent(value) + "; path=/";
+        location = '/all/1';
+    }
+</script>

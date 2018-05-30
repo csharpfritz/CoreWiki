@@ -17,6 +17,8 @@ using Snickler.RSSCore.Providers;
 using Snickler.RSSCore.Extensions;
 using Snickler.RSSCore.Models;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
+using CoreWiki.Services;
 
 namespace CoreWiki
 {
@@ -53,8 +55,12 @@ namespace CoreWiki
 						options.UseSqlite("Data Source=./wiki.db")
 				);
 
-    // Add NodaTime clock for time-based testing
-    services.AddSingleton<IClock>(SystemClock.Instance);
+			services.AddIdentity<ApplicationUser, IdentityRole>()
+			.AddEntityFrameworkStores<ApplicationDbContext>()
+			.AddDefaultTokenProviders();
+
+			// Add NodaTime clock for time-based testing
+			services.AddSingleton<IClock>(SystemClock.Instance);
 
     services.AddRouting(options => options.LowercaseUrls = true);
 	  services.AddHttpContextAccessor();
@@ -65,7 +71,14 @@ namespace CoreWiki
 
       options.Conventions.AddPageRoute("/Details", "{Slug?}");
       options.Conventions.AddPageRoute("/Details", @"Index");
-    });
+
+		options.Conventions.AuthorizeFolder("/Account/Manage");
+		options.Conventions.AuthorizePage("/Account/Logout");
+	});
+
+	// Register no-op EmailSender used by account confirmation and password reset during development
+	// For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=532713
+	services.AddSingleton<IEmailSender, EmailSender>();
 
   }
 
@@ -82,8 +95,8 @@ namespace CoreWiki
     }
 
     app.UseStaticFiles();
-	  app.UseStaticHttpContext();
-
+	app.UseStaticHttpContext();
+	app.UseAuthentication();
     app.UseRSSFeed("/feed", new RSSFeedOptions
     {
 			Title = "CoreWiki RSS Feed",
