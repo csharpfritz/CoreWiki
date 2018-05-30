@@ -18,6 +18,7 @@ using Snickler.RSSCore.Extensions;
 using Snickler.RSSCore.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using CoreWiki.Services;
 
 namespace CoreWiki
 {
