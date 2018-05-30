@@ -12,9 +12,10 @@ namespace CoreWiki.Models
     public class Article
     {
         [Key]
+		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-        [Required]
+        [Required, MaxLength(100)]
         public string Topic { get; set; }
 
         public string Slug { get; set; }
@@ -35,6 +36,14 @@ namespace CoreWiki.Models
 
         [DataType(DataType.MultilineText)]
         public string Content { get; set; }
+        public virtual ICollection<Comment> Comments { get; set; }
+        public Article()
+        {
+            this.Comments = new HashSet<Comment>();
+        }
 
-    }
+		public int ViewCount { get; set; } = 0;
+
+	}
+
 }

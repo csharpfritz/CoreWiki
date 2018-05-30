@@ -20,27 +20,31 @@
 				<span class="navbar-toggler-icon"></span>
 			</button>
 			<div class="navbar-collapse collapse justify-content-between" id="navbarToggler">
+					<ul class="navbar-nav">
+						<li class="nav-item"><a class="nav-link" asp-page="./LatestChanges">Latest Changes</a></li>
+						<li class="nav-item"><a class="nav-link" asp-page="./All">All Articles</a></li>
+					</ul>
+
 				<ul class="navbar-nav">
-					<li class="nav-item"><a class="nav-link" asp-page="./LatestChanges">Latest Changes</a></li>
-					<li class="nav-item"><a class="nav-link" asp-page="./All">All Articles</a></li>
+					<li class="nav-item"><a class="nav-link" href="~/Create">New Article</a></li>
 				</ul>
-			  @await Html.PartialAsync("_LoginPartial")
-			</div>
+
+				</div>
 		</nav>
 
 		<div class="container body-content">
 				@RenderBody()
 				<hr />
 				<footer>
-						<p>&copy; @DateTime.UtcNow.Year - CoreWiki</p>
+						<p>&copy; @DateTime.UtcNow.Year - <a target="_blank" href="https://github.com/csharpfritz/CoreWiki">CoreWiki: An Open Source Project from the Fritz and Friends Community</a></p>
 				</footer>
 		</div>
 
 		<script src="~/lib/moment/min/moment.min.js"></script>
 		<environment include="Development">
-            <script src="~/lib/jquery/dist/jquery.js"></script>
-            <script src="~/lib/popper.js/dist/umd/popper.js"></script>
-            <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+			<script src="~/lib/jquery/dist/jquery.js"></script>
+			<script src="~/lib/popper.js/dist/umd/popper.js"></script>
+			<script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
 			<script defer src="https://use.fontawesome.com/releases/v5.0.9/js/all.js" integrity="sha384-8iPTk2s/jMVj81dnzb/iFR2sdA7u06vHJyyLlAd4snFpCl/SnyUjRrbdJsw1pGIl" crossorigin="anonymous"></script>
 			<script src="~/js/site.js" asp-append-version="true"></script>
 		</environment>
@@ -56,10 +60,10 @@
                     asp-fallback-test="Popper"
                     crossorigin="anonymous">
             </script>
-            <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"
+            <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"
                     asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
                     asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
-                    integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T"
+                    integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm"
                     crossorigin="anonymous">
             </script>
             <script src="~/js/site.min.js" asp-append-version="true"></script>
