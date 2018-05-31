@@ -4,7 +4,7 @@
     "anonymousAuthentication": true,
     "iisExpress": {
       "applicationUrl": "http://localhost:64907/",
-      "sslPort": 0
+      "sslPort": 64908
     }
   },
   "profiles": {
@@ -15,13 +15,13 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "CoreWiki": {
-      "commandName": "Project",
-      "launchBrowser": true,
-      "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
-      },
-      "applicationUrl": "http://localhost:64908/"
-    }
+			"CoreWiki": {
+				"commandName": "Project",
+				"launchBrowser": true,
+				"environmentVariables": {
+					"ASPNETCORE_ENVIRONMENT": "Development"
+				},
+				"applicationUrl": "https://localhost:64908;http://localhost:64907"
+			}
   }
 }
