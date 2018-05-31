@@ -37,8 +37,9 @@ namespace CoreWiki.Areas.Identity.Pages.Account
             }
             else
             {
-                return Page();
-            }
+				//return Page();
+				return LocalRedirect("/");
+			}
         }
     }
 }
