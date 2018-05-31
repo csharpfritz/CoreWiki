@@ -29,8 +29,11 @@
 				<ul class="navbar-nav">
 					<li class="nav-item"><a class="nav-link" href="~/Create">New Article</a></li>
 				</ul>
+				<partial name="_LoginPartial" />
 			</div>
 		</nav>
+
+		<partial name="_CookieConsentPartial" />
 
 		<div class="container body-content">
 				@RenderBody()
