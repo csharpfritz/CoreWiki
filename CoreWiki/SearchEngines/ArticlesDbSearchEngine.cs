@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices.ComTypes;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using CoreWiki.Models;
 using Microsoft.EntityFrameworkCore;
@@ -16,7 +14,7 @@ namespace CoreWiki.SearchEngines
 			_context = context;
 		}
 
-		public async Task<SearchResult> SearchAsync(string query, int pageNumber, int resultsPerPage)
+		public async Task<SearchResult<Article>> SearchAsync(string query, int pageNumber, int resultsPerPage)
 		{
 			var filteredQuery = query.Trim();
 			var offset = (pageNumber - 1) * resultsPerPage;
@@ -37,10 +35,10 @@ namespace CoreWiki.SearchEngines
 				.OrderByDescending(a => a.ViewCount)
 				.ToListAsync();
 
-			return new SearchResult
+			return new SearchResult<Article>
 			{
 				Query = filteredQuery,
-				Articles = articles,
+				Results = articles,
 				CurrentPage = pageNumber,
 				ResultsPerPage = resultsPerPage,
 				TotalResults = totalResults

@@ -27,7 +27,7 @@
 @if (searchResult != null)
 {
 	<div class="mb-2">
-		@StringHelpers.Pluralize("result", "results", @searchResult.TotalResults, prependCount: true)
+		@StringHelpers.Pluralize("result", "results", searchResult.TotalResults, prependCount: true)
 		found for <strong>@searchResult.Query</strong>
 	</div>
 
@@ -38,8 +38,8 @@
 		total-pages="searchResult.TotalPages">
 	</pager>
 
-	foreach(var article in searchResult.Articles)
+	foreach(var article in searchResult.Results)
 	{
-		@Html.Partial("_ArticleRow", article)
+		@await Html.PartialAsync("_ArticleRow", article)
 	}
 }

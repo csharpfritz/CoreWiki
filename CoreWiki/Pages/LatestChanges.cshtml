@@ -12,5 +12,5 @@
 </p>
 
 @foreach (var article in Model.Article) {
-	@Html.Partial("_ArticleRow", article)
+	@await Html.PartialAsync("_ArticleRow", article)
 }

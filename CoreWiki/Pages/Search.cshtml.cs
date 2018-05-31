@@ -1,5 +1,6 @@
 using System.Linq;
 using System.Threading.Tasks;
+using CoreWiki.Models;
 using CoreWiki.SearchEngines;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -8,7 +9,7 @@ namespace CoreWiki.Pages
 {
 	public class SearchModel : PageModel
 	{
-		public SearchResult SearchResult;
+		public SearchResult<Article> SearchResult;
 		private readonly IArticlesSearchEngine _articlesSearchEngine;
 		private const int ResultsPerPage = 10;
 
@@ -17,7 +18,7 @@ namespace CoreWiki.Pages
 			_articlesSearchEngine = articlesSearchEngine;
 		}
 
-		public async Task<IActionResult> OnGet()
+		public async Task<IActionResult> OnGetAsync()
 		{
 			var isQueryPresent = TryGetSearchQuery(out var query);
 

@@ -4,11 +4,11 @@ using CoreWiki.Models;
 
 namespace CoreWiki.SearchEngines
 {
-	public class SearchResult
+	public class SearchResult<T>
 	{
 		public string Query { get; set; }
 
-		public List<Article> Articles { get; set; }
+		public List<T> Results { get; set; }
 
 		public int TotalResults { get; set; }
 

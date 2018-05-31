@@ -30,7 +30,7 @@
 
 		@foreach (var article in Model.Articles)
 		{
-			@Html.Partial("_ArticleRow", article)
+			@await Html.PartialAsync("_ArticleRow", article)
 		}
 
 		@section Styles {
