@@ -95,6 +95,8 @@ namespace CoreWiki
     var scope = app.ApplicationServices.CreateScope();
     var context = scope.ServiceProvider.GetService<ApplicationDbContext>();
 
+    app.UseStatusCodePagesWithReExecute("/HttpErrors/{0}");
+
     app.UseMvc();
     ApplicationDbContext.SeedData(context);
 

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using CoreWiki.Models;
 using NodaTime;
+using CoreWiki.Helpers;
 
 namespace CoreWiki.Pages
 {
@@ -33,7 +34,7 @@ namespace CoreWiki.Pages
 
 			if (Article == null)
 			{
-				return NotFound();
+				return new ArticleNotFoundResult();
 			}
 
 			if (Request.Cookies[Article.Topic] == null)
@@ -56,7 +57,7 @@ namespace CoreWiki.Pages
 			Article = await _context.Articles.Include(x => x.Comments).SingleOrDefaultAsync(m => m.Id == comment.IdArticle);
 
 			if (Article == null)
-								 return NotFound();
+								 return new ArticleNotFoundResult();
 
 			if (!ModelState.IsValid)
 								 return Page();

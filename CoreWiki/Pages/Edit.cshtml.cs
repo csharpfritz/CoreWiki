@@ -38,7 +38,7 @@ namespace CoreWiki.Pages
 
 			if (Article == null)
 			{
-				return NotFound();
+				return new ArticleNotFoundResult();
 			}
 			return Page();
 		}
@@ -76,7 +76,7 @@ namespace CoreWiki.Pages
 			{
 				if (!ArticleExists(Article.Id))
 				{
-					return NotFound();
+					return new ArticleNotFoundResult();
 				}
 				else
 				{
