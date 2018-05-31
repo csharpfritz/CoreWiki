@@ -8,6 +8,7 @@
 	</div>
 	<div class="card-body">
 		<h6 class="card-subtitle mb-2 text-muted"><span data-value="@Model.Published" class="timeStampValue"> @Model.Published</span></h6>
+		<h6 class="card-subtitle mb-2 text-muted">View Count: <span> @Model.ViewCount</span></h6>
 
 		<a class="card-link" asp-page="./Edit" asp-route-id="@Model.Id">Edit</a>
 		<a class="card-link" asp-page="./Delete" asp-route-id="@Model.Id">Delete</a>

@@ -1,6 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices.ComTypes;
+using System.Threading.Tasks;
 using CoreWiki.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace CoreWiki.SearchEngines
 {
@@ -13,19 +16,34 @@ namespace CoreWiki.SearchEngines
 			_context = context;
 		}
 
-		public SearchResult Search(string query)
+		public async Task<SearchResult> SearchAsync(string query, int pageNumber, int resultsPerPage)
 		{
 			var filteredQuery = query.Trim();
+			var offset = (pageNumber - 1) * resultsPerPage;
 
-			var articles = _context.Articles.Where(article =>
-				article.Topic.ToUpper().Contains(filteredQuery.ToUpper()) ||
-				article.Content.ToUpper().Contains(filteredQuery.ToUpper())
-			).OrderBy(a => a.Topic).ToList();
+			var dbQuery = _context
+				.Articles
+				.AsNoTracking()
+				.Where(article =>
+					article.Topic.ToUpper().Contains(filteredQuery.ToUpper()) ||
+					article.Content.ToUpper().Contains(filteredQuery.ToUpper())
+				);
+
+			var totalResults = await dbQuery.CountAsync();
+
+			var articles = await dbQuery
+				.Skip(offset)
+				.Take(resultsPerPage)
+				.OrderByDescending(a => a.ViewCount)
+				.ToListAsync();
 
 			return new SearchResult
 			{
 				Query = filteredQuery,
-				Articles = articles
+				Articles = articles,
+				CurrentPage = pageNumber,
+				ResultsPerPage = resultsPerPage,
+				TotalResults = totalResults
 			};
 		}
 	}
