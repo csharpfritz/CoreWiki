@@ -27,8 +27,13 @@ namespace CoreWiki.Pages
 		[BindProperty]
 		public Article Article { get; set; }
 
-		public async Task<IActionResult> OnGetAsync(int id)
+		public async Task<IActionResult> OnGetAsync(int? id)
 		{
+			if (id == null)
+			{
+				return NotFound();
+			}
+
 			Article = await _context.Articles.SingleOrDefaultAsync(m => m.Id == id);
 
 			if (Article == null)
@@ -48,8 +53,20 @@ namespace CoreWiki.Pages
 			var existingArticle = _context.Articles.AsNoTracking().First(a => a.Topic == Article.Topic);
 			Article.ViewCount = existingArticle.ViewCount;
 
+			//check if the slug already exists in the database.  
+			var slug = UrlHelpers.URLFriendly(Article.Topic.ToLower());
+			var isAvailable = !_context.Articles.Any(x => x.Slug == slug && x.Id != Article.Id);
+
+			if (isAvailable == false)
+			{
+				ModelState.AddModelError("Article.Topic", "This Title already exists.");
+				return Page();
+			}
+
 			_context.Attach(Article).State = EntityState.Modified;
+
 			Article.Published = _clock.GetCurrentInstant();
+			Article.Slug = slug;
 
 			try
 			{
@@ -57,7 +74,7 @@ namespace CoreWiki.Pages
 			}
 			catch (DbUpdateConcurrencyException)
 			{
-				if (!ArticleExists(Article.Topic))
+				if (!ArticleExists(Article.Id))
 				{
 					return NotFound();
 				}
@@ -67,12 +84,12 @@ namespace CoreWiki.Pages
 				}
 			}
 
-			return Redirect($"/{(Article.Topic == "HomePage" ? "" : Article.Topic)}");
+			return Redirect($"/{(Article.Slug == "home-page" ? "" : Article.Slug)}");
 		}
 
-		private bool ArticleExists(string id)
+		private bool ArticleExists(int id)
 		{
-			return _context.Articles.Any(e => e.Topic == id);
+			return _context.Articles.Any(e => e.Id == id);
 		}
 	}
 
