@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using CoreWiki.Models;
+using CoreWiki.SearchEngines;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -55,6 +56,8 @@ namespace CoreWiki
 
     // Add NodaTime clock for time-based testing
     services.AddSingleton<IClock>(SystemClock.Instance);
+
+	services.AddScoped<IArticlesSearchEngine, ArticlesDbSearchEngine>();
 
     services.AddRouting(options => options.LowercaseUrls = true);
 	  services.AddHttpContextAccessor();

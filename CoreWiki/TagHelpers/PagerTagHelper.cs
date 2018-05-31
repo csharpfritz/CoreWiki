@@ -52,7 +52,6 @@ namespace CoreWiki.TagHelpers
 				}
 				else
 				{
-					object route = new { PageNumber = pageNum };
 					TagBuilder a;
 					a = _Generator.GeneratePageLink(
 						ViewContext,
@@ -62,7 +61,7 @@ namespace CoreWiki.TagHelpers
 						protocol: string.Empty,
 						hostname: string.Empty,
 						fragment: string.Empty,
-						routeValues: route,
+						routeValues: MakeRouteValues(pageNum),
 						htmlAttributes: null
 						);
 					a.AddCssClass("page-link");
@@ -79,6 +78,31 @@ namespace CoreWiki.TagHelpers
 
 		}
 
+		private Dictionary<string, string> MakeRouteValues(int pageNumber)
+		{
+			var route = new Dictionary<string, string>
+			{
+				{"PageNumber", pageNumber.ToString()}
+			};
+
+			if (UrlParams == null)
+			{
+				return route;
+			}
+
+			foreach (var key in UrlParams.Keys)
+			{
+				// We don't want to override existing values such as PageNumber
+				if (route.ContainsKey(key))
+				{
+					continue;
+				}
+				route.Add(key, UrlParams[key]);
+			}
+
+			return route;
+		}
+
 		/// <summary>
 		/// The name of the page.
 		/// </summary>
@@ -86,6 +110,11 @@ namespace CoreWiki.TagHelpers
 		/// Can be <c>null</c> if refering to the current page.
 		/// </remarks>
 		public string AspPage { get; set; }
+
+		/// <summary>
+		/// 	Optional. Enables adding url parameters (e.g '?query=test') to the link URL
+		/// </summary>
+		public Dictionary<string, string> UrlParams { get; set; }
 
 		/// <summary>
 		/// The number of the current page.

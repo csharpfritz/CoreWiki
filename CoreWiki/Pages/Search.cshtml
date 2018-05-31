@@ -1,0 +1,45 @@
+@page
+@using System.Collections.Generic
+@using Helpers
+@using Microsoft.AspNetCore.Mvc.Rendering
+@model SearchModel
+@{
+	ViewData["Title"] = "Search";
+	var searchResult = Model.SearchResult;
+	var urlParams = new Dictionary<string, string>
+	{
+		{"Query", searchResult?.Query ?? ""}
+	};
+}
+<h1 class="h1">Search CoreWiki</h1>
+
+<form action="/search" method="get" class="my-2">
+	<div class="form-group">
+		<div class="input-group">
+			<input class="form-control" type="text" name="Query" value="@searchResult?.Query" placeholder="Search for articles on CoreWiki"/>
+			<div class="input-group-append">
+				<button class="btn badge-primary" type="submit">Search</button>
+			</div>
+		</div>
+	</div>
+</form>
+
+@if (searchResult != null)
+{
+	<div class="mb-2">
+		@StringHelpers.Pluralize("result", "results", searchResult.TotalResults, prependCount: true)
+		found for <strong>@searchResult.Query</strong>
+	</div>
+
+	<pager
+		asp-page="Search"
+		url-params="urlParams"
+		current-page="searchResult.CurrentPage"
+		total-pages="searchResult.TotalPages">
+	</pager>
+
+	foreach(var article in searchResult.Results)
+	{
+		@await Html.PartialAsync("_ArticleRow", article)
+	}
+}
