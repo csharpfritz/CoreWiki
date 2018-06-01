@@ -24,13 +24,11 @@
 				<li class="nav-item"><a class="nav-link" asp-page="./LatestChanges">Latest Changes</a></li>
 				<li class="nav-item"><a class="nav-link" asp-page="./All">All Articles</a></li>
 				<li>
-					<form class="form-inline my-2 my-lg-0 mx-0 mx-lg-2" action="/search" method="get">
-						<div class="form-group">
-							<div class="input-group">
-								<input class="form-control" type="search" name="Query" placeholder="Search" aria-label="Search" />
-								<div class="input-group-append">
-									<button class="btn btn-dark btn-outline-secondary my-2 my-sm-0" type="submit"><i class="fas fa-search"></i></button>
-								</div>
+					<form class="form-inline mx-0 mx-lg-2 my-2 my-lg-0" action="/search" method="get">
+						<div class="input-group">
+							<input class="form-control" type="text" name="Query" placeholder="Search" aria-label="Search" />
+							<div class="input-group-append">
+								<button class="btn btn-dark btn-outline-secondary" type="submit"><i class="fas fa-search"></i></button>
 							</div>
 						</div>
 					</form>
