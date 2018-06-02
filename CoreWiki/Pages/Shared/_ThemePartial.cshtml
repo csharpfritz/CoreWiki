@@ -20,9 +20,20 @@
 			for (var t of themedItems) {
 				t.classList.add("text-light");
 			}
-			var nothemedItems = document.querySelectorAll(".notheme");
-			for (var t of nothemedItems) {
-				t.classList.add("bg-light");
+			// Pager
+			var themedItems = document.querySelectorAll(".page-link");
+			for (var t of themedItems) {
+				if (!t.parentElement.classList.contains("active")) {
+					t.classList.add("bg-dark");
+				};
+			}
+			// markdown editor fix
+			var textareas = document.querySelectorAll("textarea");
+			for (var t of textareas) {
+				var wrapper = document.createElement("div");
+				wrapper.classList.add("bg-light");
+				t.parentNode.insertBefore(wrapper, t);
+				wrapper.appendChild(t);
 			}
 		}
 		var select = document.getElementById("selectTheme");
