@@ -12,13 +12,17 @@
 		}
 		if (getCookie("CoreWikiTheme") == "Dark") {
 			document.querySelector("#selectTheme").value = "Dark";
-			var themedItems = document.querySelectorAll("select, body, pre, .theme");
+			var themedItems = document.querySelectorAll("select, body, pre, .card, .theme");
 			for (var t of themedItems) {
 				t.classList.add("bg-dark", "text-light");
 			}
 			var themedItems = document.querySelectorAll("a, button");
 			for (var t of themedItems) {
 				t.classList.add("text-light");
+			}
+			var nothemedItems = document.querySelectorAll(".notheme");
+			for (var t of nothemedItems) {
+				t.classList.add("bg-light");
 			}
 		}
 		var select = document.getElementById("selectTheme");
