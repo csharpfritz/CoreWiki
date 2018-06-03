@@ -1,48 +1,63 @@
 ﻿<select id="selectTheme" class="form-control form-control-sm text-muted">
 	<option class="bg-light text-primary" value="light">Light</option>
 	<option class="bg-dark text-white" value="dark">Dark</option>
+	<option class="bg-light text-primary" value="themeOuch">Ouch</option>
 </select>
 <script>
 	(function () {
 		'use strict';
 
 		const themeCookieName = "CoreWiki.Theme";
+		const DefaultTheme = "light";
 
 		function getCookie(name) {
 			var value = "; " + document.cookie;
 			var parts = value.split("; " + name + "=");
 			if (parts.length == 2) return parts.pop().split(";").shift();
 		}
-		if (getCookie(themeCookieName) == "dark") {
-			document.querySelector("#selectTheme").value = "dark";
-			var themedItems = document.querySelectorAll("select, body, pre, .card, .theme");
-			// Cannot use (var t of ...) because it doesn't work in Edge Mobile
-			// for (var t of themedItems) {}
-			for (var i = 0; i < themedItems.length; i++) {
-				var t = themedItems[i];
-				t.classList.add("bg-dark", "text-light");
-			}
-			var themedItems = document.querySelectorAll("a, button");
-			for (var i = 0; i < themedItems.length; i++) {
-				var t = themedItems[i];
-				t.classList.add("text-light");
-			}
-			// Pager
-			var themedItems = document.querySelectorAll(".page-link");
-			for (var i = 0; i < themedItems.length; i++) {
-				var t = themedItems[i];
-				if (!t.parentElement.classList.contains("active")) {
-					t.classList.add("bg-dark");
-				};
-			}
-			// markdown editor fix
-			var textareas = document.querySelectorAll("textarea");
-			for (var i = 0; i < textareas.length; i++) {
-				var t = textareas[i];
-				var wrapper = document.createElement("div");
-				wrapper.classList.add("bg-light");
-				t.parentNode.insertBefore(wrapper, t);
-				wrapper.appendChild(t);
+
+		var themeName = getCookie(themeCookieName);
+		if (themeName == undefined) {
+			themeName = DefaultTheme;
+		}
+
+		document.querySelector("#selectTheme").value = themeName;
+
+		if (themeName.startsWith("theme")) {
+			// Ignore
+		} else {
+			if (getCookie(themeCookieName) != DefaultTheme) {
+				console.log("Applying Dark Theme: " + themeName);
+				var themeBg = "bg-" + themeName;
+				var themedItems = document.querySelectorAll("select, body, pre, .card, .theme");
+				// Cannot use (var t of ...) because it doesn't work in Edge Mobile
+				// for (var t of themedItems) {}
+				for (var i = 0; i < themedItems.length; i++) {
+					var t = themedItems[i];
+					t.classList.add(themeBg, "text-light");
+				}
+				var themedItems = document.querySelectorAll("a, button");
+				for (var i = 0; i < themedItems.length; i++) {
+					var t = themedItems[i];
+					t.classList.add("text-light");
+				}
+				// Pager
+				var themedItems = document.querySelectorAll(".page-link");
+				for (var i = 0; i < themedItems.length; i++) {
+					var t = themedItems[i];
+					if (!t.parentElement.classList.contains("active")) {
+						t.classList.add(themeBg);
+					};
+				}
+				// markdown editor fix
+				var textareas = document.querySelectorAll("textarea");
+				for (var i = 0; i < textareas.length; i++) {
+					var t = textareas[i];
+					var wrapper = document.createElement("div");
+					wrapper.classList.add("bg-light");
+					t.parentNode.insertBefore(wrapper, t);
+					wrapper.appendChild(t);
+				}
 			}
 		}
 		var select = document.getElementById("selectTheme");
