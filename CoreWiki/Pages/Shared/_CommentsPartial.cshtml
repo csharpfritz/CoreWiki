@@ -1,0 +1,16 @@
+﻿@model DetailsModel
+@inject Microsoft.Extensions.Configuration.IConfiguration configuration
+@{
+	var settings = configuration.GetSection("Comments");
+	var isLocal = settings["Engine"] == "Local";
+	var shortname = settings["Disqus:ShortName"];
+}
+@if (isLocal)
+{
+	@await Component.InvokeAsync("CreateComments", new Models.Comment { IdArticle = Model.Article.Id })
+	@await Component.InvokeAsync("ListComments", @Model.Article.Comments)
+}
+else
+{
+	<partial name="_DisqusComments" model="shortname" />
+}
