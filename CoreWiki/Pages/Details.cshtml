@@ -9,21 +9,10 @@
 	ViewData["Title"] = title;
 }
 
-@functions  {
-
-	public int CalculateReadTime(string content)
-	{
-		const decimal wpm = 275.0m;
-		var wordCount = content.Split(' ').Length;
-		return (int)Math.Ceiling(wordCount / wpm);
-	}
-
-}
-
 <h2>@Model.Article.Topic</h2>
 <h5>Last Published: <span data-value="@Model.Article.Published" class="timeStampValue"> @Model.Article.Published</span></h5>
 <h5>View Count: <span data-value="@Model.Article.ViewCount"> @Model.Article.ViewCount</span></h5>
-<h5>Estimated Reading Time (minutes): <span> @CalculateReadTime(Model.Article.Content)</span></h5>
+<h5>Estimated Reading Time: <span class="duration" data-duration="@Model.Article.Content.CalculateReadTime().TotalMilliseconds"></span></h5>
 <markdown markdown="Article.Content" />
 
 <div>
@@ -39,6 +28,12 @@
 
 @section Scripts {
 	@await Html.PartialAsync("_EditorScript")
+	<script type="text/javascript">
+		$('.duration').each(function () {
+			var duration = Number($(this).attr('data-duration'));
+			$(this).text(moment.duration(duration).humanize());
+		});
+	</script>
 }
 
 @section Styles {
