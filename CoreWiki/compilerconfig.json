@@ -14,5 +14,9 @@
   {
     "outputFile": "wwwroot/css/themeOuch.css",
     "inputFile": "wwwroot/css/themeOuch.scss"
+  },
+  {
+    "outputFile": "wwwroot/css/themeDark.css",
+    "inputFile": "wwwroot/css/themeDark.scss"
   }
 ]
