@@ -23,5 +23,9 @@ namespace CoreWiki.Models
             // For example, you can rename the ASP.NET Identity table names and more.
             // Add your customizations after calling base.OnModelCreating(builder);
         }
-    }
+		internal static void SeedData(CoreWikiIdentityContext context)
+		{
+			context.Database.EnsureCreated();
+		}
+	}
 }

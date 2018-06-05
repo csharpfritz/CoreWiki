@@ -61,8 +61,8 @@ namespace CoreWiki
 					options.UseSqlite("Data Source=./wiki.db")
 				);
 
-    	// Add NodaTime clock for time-based testing
-    	services.AddSingleton<IClock>(SystemClock.Instance);
+			// Add NodaTime clock for time-based testing
+			services.AddSingleton<IClock>(SystemClock.Instance);
 
 			services.AddScoped<IArticlesSearchEngine, ArticlesDbSearchEngine>();
 
@@ -110,12 +110,13 @@ namespace CoreWiki
 
 			var scope = app.ApplicationServices.CreateScope();
 			var context = scope.ServiceProvider.GetService<ApplicationDbContext>();
+			var identityContext = scope.ServiceProvider.GetService<CoreWikiIdentityContext>();
 
-	    app.UseStatusCodePagesWithReExecute("/HttpErrors/{0}");
+			app.UseStatusCodePagesWithReExecute("/HttpErrors/{0}");
 
 			app.UseMvc();
 			ApplicationDbContext.SeedData(context);
-
+			CoreWikiIdentityContext.SeedData(identityContext);
 		}
 
 	}
