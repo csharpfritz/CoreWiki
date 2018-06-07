@@ -26,7 +26,7 @@
 		var select = document.getElementById("selectTheme");
 		select.addEventListener("change", function (ev) {
 			console.log("Select Theme: " + ev.target.value);
-			document.cookie = encodeURIComponent(themeCookieName) + "=" + encodeURIComponent(ev.target.value) + "; path=/";;
+			document.cookie = encodeURIComponent(themeCookieName) + "=" + encodeURIComponent(ev.target.value) + ";Max-Age=" + (10 * 365 * 24 * 60 * 60) + " ;SameSite=Strict; Path=/";
 			location.reload();
 		});
 	})();
