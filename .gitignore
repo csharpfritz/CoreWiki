@@ -267,9 +267,6 @@ __pycache__/
 CoreWiki/wwwroot/lib/
 !CoreWiki/wwwroot/lib/simplemde
 
-# VSCode 
-.vscode/
-
 # Cake files
 [Tt]ools/
 [Oo]utput/
