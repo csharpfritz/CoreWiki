@@ -273,3 +273,4 @@ CoreWiki/wwwroot/lib/
 # Cake files
 [Tt]ools/
 [Oo]utput/
+*.pubxml
