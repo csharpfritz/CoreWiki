@@ -35,8 +35,7 @@
 	}
 </div>
 
-@await Component.InvokeAsync("CreateComments", new Models.Comment { IdArticle = Model.Article.Id })
-@await Component.InvokeAsync("ListComments", @Model.Article.Comments)
+<partial name="_CommentsPartial" model="Model" />
 
 @section Scripts {
 	@await Html.PartialAsync("_EditorScript")

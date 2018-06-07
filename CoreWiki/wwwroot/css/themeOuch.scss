@@ -1,0 +1,24 @@
+﻿// Changing the body background and text
+$body-bg: #b6ff00;
+$body-color: #151417;
+
+// Changing the theme colors
+$primary: #2c0570;
+$dark: #ff6a00;
+$card-bg: #e8a6a6;
+$pagination-bg: rgba(251, 28, 230, 1.00);
+
+@import '../../node_modules/bootstrap/scss/bootstrap';
+@import 'custom-styles';
+
+.navbar {
+	.navbar-brand {
+		color: #0d24e5 !important;
+		font-size: x-large;
+		font-weight: bold;
+	}
+
+	.nav-link {
+		color: #02f722 !important;
+	}
+}
