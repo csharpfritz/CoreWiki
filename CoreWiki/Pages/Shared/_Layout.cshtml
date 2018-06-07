@@ -34,8 +34,8 @@
 		</button>
 		<div class="navbar-collapse collapse justify-content-between" id="navbarToggler">
 			<ul class="navbar-nav">
-				<li class="nav-item"><a class="nav-link" asp-page="./LatestChanges">Latest Changes</a></li>
-				<li class="nav-item"><a class="nav-link" asp-page="./All">All Articles</a></li>
+				<li class="nav-item"><a class="nav-link" asp-page="/LatestChanges">Latest Changes</a></li>
+				<li class="nav-item"><a class="nav-link" asp-page="/All">All Articles</a></li>
 				<li>
 					<form class="form-inline mx-0 mx-lg-2 my-2 my-lg-0" action="/search" method="get">
 						<div class="input-group">
@@ -48,7 +48,7 @@
 				</li>
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
-				<li class="nav-item"><a class="nav-link" href="~/Create">New Article</a></li>
+				<li class="nav-item"><a class="nav-link" asp-page="/Create">New Article</a></li>
 				<partial name="_LoginPartial" />
 			</ul>
 		</div>
@@ -56,18 +56,17 @@
 
 	<partial name="_CookieConsentPartial" />
 
-	<div class="container body-content">
-		@RenderBody()
-		<hr />
-		<footer>
-			<div class="row">
-				<div class-"col-8">
-					&copy; @DateTime.UtcNow.Year - <a target="_blank" href="https://github.com/csharpfritz/CoreWiki">CoreWiki: An Open Source Project from the Fritz and Friends Community</a>
-				</div>
-				<div class="col-4 ml-auto">
-					<partial name="_ThemePartial" />
-				</div>
-			</div>
+		<div class="container body-content">
+				@RenderBody()
+				<hr />
+				<footer>
+					<div class="row justify-content-between">
+							<div class-"col-sm-12 col-md-8 ">&copy; @DateTime.UtcNow.Year - <a target="_blank" href="https://github.com/csharpfritz/CoreWiki">CoreWiki: An Open Source Project from the Fritz and Friends Community</a>
+							</div>
+						<div class="col-sm-12 col-md-auto">
+							<partial name="_ThemePartial" />
+						</div>
+					</div>
 
 		</footer>
 	</div>
