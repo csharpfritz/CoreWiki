@@ -23,13 +23,19 @@ namespace CoreWiki.Areas.Identity
 						context.Configuration.GetConnectionString("CoreWikiIdentityContextConnection")));
 
 				services.AddDefaultIdentity<CoreWikiUser>()
-					.AddEntityFrameworkStores<CoreWikiIdentityContext>();
+					.AddEntityFrameworkStores<CoreWikiIdentityContext>(); 
 
-				services.AddAuthentication().AddMicrosoftAccount(microsoftOptions =>
+				if (!string.IsNullOrEmpty(context.Configuration["Authentication:Microsoft:ApplicationId"]))
 				{
-					microsoftOptions.ClientId = context.Configuration["Authentication:Microsoft:ApplicationId"];
-					microsoftOptions.ClientSecret = context.Configuration["Authentication:Microsoft:Password"];
-				});
+
+					services.AddAuthentication().AddMicrosoftAccount(microsoftOptions =>
+				 {
+					 microsoftOptions.ClientId = context.Configuration["Authentication:Microsoft:ApplicationId"];
+					 microsoftOptions.ClientSecret = context.Configuration["Authentication:Microsoft:Password"];
+				 });
+
+				}
+
 			});
 		}
 	}
