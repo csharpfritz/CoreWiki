@@ -18,23 +18,12 @@ using Snickler.RSSCore.Providers;
 using Snickler.RSSCore.Extensions;
 using Snickler.RSSCore.Models;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Hosting.Server.Features;
+using CoreWiki.Configuration;
+using Microsoft.Extensions.Options;
 
 namespace CoreWiki
 {
-	public static class StaticHttpContextExtensions
-	{
-		public static void AddHttpContextAccessor(this IServiceCollection services)
-		{
-			services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-		}
-
-		public static IApplicationBuilder UseStaticHttpContext(this IApplicationBuilder app)
-		{
-			var httpContextAccessor = app.ApplicationServices.GetRequiredService<IHttpContextAccessor>();
-			WikiHttpContext.HttpContext.Configure(httpContextAccessor);
-			return app;
-		}
-	}
 	public class Startup
 	{
 		public Startup(IConfiguration configuration)
@@ -48,6 +37,8 @@ namespace CoreWiki
 		public void ConfigureServices(IServiceCollection services)
 		{
 			services.AddRSSFeed<RSSProvider>();
+
+			services.Configure<AppSettings>(Configuration);
 
 			services.Configure<CookiePolicyOptions>(options =>
 			{
@@ -79,14 +70,13 @@ namespace CoreWiki
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-		public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+		public void Configure(IApplicationBuilder app, IHostingEnvironment env, IOptionsSnapshot<AppSettings> settings)
 		{
 			if (env.IsDevelopment())
 			{
 				app.UseDeveloperExceptionPage();
 				app.UseDatabaseErrorPage();
-			}
-			else
+			} else
 			{
 				app.UseExceptionHandler("/Error");
 				app.UseHsts();
@@ -98,14 +88,12 @@ namespace CoreWiki
 
 			app.UseAuthentication();
 
-			app.UseStaticHttpContext();
-
 			app.UseRSSFeed("/feed", new RSSFeedOptions
 			{
 				Title = "CoreWiki RSS Feed",
 				Copyright = DateTime.UtcNow.Year.ToString(),
 				Description = "RSS Feed for CoreWiki",
-				Url = new Uri(Configuration["Url"])
+				Url = settings.Value.Url
 			});
 
 			var scope = app.ApplicationServices.CreateScope();
