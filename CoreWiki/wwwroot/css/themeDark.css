@@ -3051,14 +3051,23 @@ input[type="button"].btn-block {
 
 .card-body {
   flex: 1 1 auto;
-  padding: 1.25rem; }
+  padding: 1.25rem;
+	color: #bee5eb;
+}
 
 .card-title {
-  margin-bottom: 0.75rem; }
+  margin-bottom: 0.75rem;
+	
+}
+
+.card-title a {
+	color: rgb(205, 240, 255);
+}
 
 .card-subtitle {
-  margin-top: -0.375rem;
-  margin-bottom: 0; }
+	margin-top: -0.375rem;
+	margin-bottom: 0;
+}
 
 .card-text:last-child {
   margin-bottom: 0; }
@@ -3070,10 +3079,11 @@ input[type="button"].btn-block {
   margin-left: 1.25rem; }
 
 .card-header {
-  padding: 0.75rem 1.25rem;
-  margin-bottom: 0;
-  background-color: rgba(0, 0, 0, 0.03);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.125); }
+	padding: 0.75rem 1.25rem;
+	margin-bottom: 0;
+	background-color: #061935;
+	border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+}
   .card-header:first-child {
     border-radius: calc(0.25rem - 1px) calc(0.25rem - 1px) 0 0; }
   .card-header + .list-group .list-group-item:first-child {
@@ -6186,7 +6196,7 @@ a.text-dark:hover, a.text-dark:focus {
   color: #f8f9fa !important; }
 
 .text-muted {
-  color: #6c757d !important; }
+  color: #b4c2cf !important; }
 
 .text-black-50 {
   color: rgba(0, 0, 0, 0.5) !important; }
