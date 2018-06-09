@@ -2,15 +2,40 @@
 @model CoreWiki.Pages.LatestChangesModel
 
 @{
-    ViewData["Title"] = "Latest Changes";
+	ViewData["Title"] = "Latest Changes";
 }
 
 <h2>Latest Changes</h2>
 
 <p>
-    <a asp-page="Create">New article</a>
+	<a asp-page="Create" class="btn btn-outline-success">New article</a>
 </p>
 
-@foreach (var article in Model.Article) {
-	@await Html.PartialAsync("_ArticleRow", article)
+<div class="cwiki-flex-container">
+	@foreach (var article in Model.Article)
+	{
+		@await Html.PartialAsync("_ArticleRow", article)
+	}
+</div>
+
+@section Styles {
+	<style>
+		.cwiki-flex-container {
+			padding: 0;
+			margin: 0;
+			display: -webkit-box;
+			display: -moz-box;
+			display: -ms-flexbox;
+			display: -webkit-flex;
+			display: flex;
+			-webkit-flex-flow: row wrap;
+			justify-content: space-around;
+		}
+
+		.cwiki-flex-item {
+			width: 360px;
+			color: white;
+			border-radius: 20px;
+		}
+	</style>
 }
