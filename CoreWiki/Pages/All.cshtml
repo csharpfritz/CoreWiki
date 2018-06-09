@@ -6,39 +6,58 @@
 	ViewData["Title"] = "All";
 }
 
-		<h2>All Articles</h2>
+<h2>All Articles</h2>
 
-		<pager total-pages="Model.TotalPages" current-page="Model.PageNumber"></pager>
+<pager total-pages="Model.TotalPages" current-page="Model.PageNumber"></pager>
 
-		@*<ul class="pagination">
-			@for (var pageNum = 1; pageNum <= Model.TotalPages; pageNum++)
-			{
+@*<ul class="pagination">
+	@for (var pageNum = 1; pageNum <= Model.TotalPages; pageNum++)
+	{
 
-				<li class="page-item @(pageNum == Model.PageNumber ? "active" : "")">
-				@if (pageNum == Model.PageNumber)
-				{
-					<a class="page-link active" href="#">@pageNum</a>
-				}
-				else
-				{
-					<a class="page-link" asp-page="./All" asp-route-PageNumber="@pageNum">@pageNum</a>
-				}
-				</li>
-
-			}
-		</ul>*@
-
-		@foreach (var article in Model.Articles)
+	<li class="page-item @(pageNum == Model.PageNumber ? " active" : "" )">
+		@if (pageNum == Model.PageNumber)
 		{
-			@await Html.PartialAsync("_ArticleRow", article)
+		<a class="page-link active" href="#">@pageNum</a>
 		}
+		else
+		{
+		<a class="page-link" asp-page="./All" asp-route-PageNumber="@pageNum">@pageNum</a>
+		}
+	</li>
 
-		@section Styles {
-			<style>
-				.pageNumber {
-					margin: 0px 4px;
-				}
-			</style>
-		}
+	}
+</ul>*@
+
+<div class="cwiki-flex-container">
+	@foreach (var article in Model.Articles)
+	{
+	@await Html.PartialAsync("_ArticleRow", article)
+	}
+</div>
+@section Styles {
+<style>
+	.pageNumber {
+		margin: 0px 4px;
+	}
+
+	.cwiki-flex-container {
+		padding: 0;
+		margin: 0;
+		display: -webkit-box;
+		display: -moz-box;
+		display: -ms-flexbox;
+		display: -webkit-flex;
+		display: flex;
+		-webkit-flex-flow: row wrap;
+		justify-content: space-around;
+	}
+
+	.cwiki-flex-item {
+		width: 360px;
+		color: white;
+		border-radius: 20px;
+	}
+</style>
+}
 
 

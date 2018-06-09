@@ -13,7 +13,7 @@ namespace CoreWiki.Pages
 	{
 
 		private readonly ApplicationDbContext _Context;
-		private const int _PageSize = 2;
+		private const int _PageSize = 10;
 
 		public AllModel(ApplicationDbContext context)
 		{
