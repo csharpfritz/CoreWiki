@@ -25,11 +25,16 @@ namespace CoreWiki.Helpers
 		/// <returns>The number of words in the sentance</returns>
 		public static int WordCount(this string content)
 		{
-			if (string.IsNullOrWhiteSpace(content))
-				return 0;
-
-			var matches = Regex.Matches(content, @"\b\S+\b");
-			return matches.Count;
+			var wordCount = 0;
+			for (var i = 1; i < content.Length; i++)
+			{
+				if (char.IsWhiteSpace(content[i]) || i == content.Length)
+				{
+					if (!char.IsWhiteSpace(content[i - 1]))
+						wordCount += 1;
+				}
+			}
+			return wordCount;
 		}
 		/// <summary>
 		/// Returns the amount of time to read a string
