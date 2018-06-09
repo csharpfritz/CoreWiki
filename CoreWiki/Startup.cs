@@ -67,6 +67,8 @@ namespace CoreWiki
 					options.Conventions.AddPageRoute("/Details", @"Index");
 				});
 
+			services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
 			services.AddProgressiveWebApp();
 
 		}
