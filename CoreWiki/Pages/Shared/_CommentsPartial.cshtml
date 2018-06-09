@@ -1,6 +1,4 @@
 ﻿@model DetailsModel
-@using Microsoft.Extensions.Options;
-@using CoreWiki.Configuration;
 @inject IOptionsSnapshot<AppSettings> settings
 
 @if (settings.Value.Comments.IsEngineLocal)
