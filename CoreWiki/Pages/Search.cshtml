@@ -6,16 +6,16 @@
 	ViewData["Title"] = "Search";
 	var searchResult = Model.SearchResult;
 	var urlParams = new Dictionary<string, string>
-	{
-		{"Query", searchResult?.Query ?? ""}
-	};
+{
+{"Query", searchResult?.Query ?? ""}
+};
 }
 <h1 class="h1">Search CoreWiki</h1>
 
 <form action="/search" method="get" class="my-2">
 	<div class="form-group">
 		<div class="input-group">
-			<input class="form-control" type="text" name="Query" value="@searchResult?.Query" placeholder="Search for articles on CoreWiki"/>
+			<input class="form-control" type="text" name="Query" value="@searchResult?.Query" placeholder="Search for articles on CoreWiki" />
 			<div class="input-group-append">
 				<button class="btn badge-primary" type="submit">Search</button>
 			</div>
@@ -30,15 +30,37 @@
 		found for <strong>@searchResult.Query</strong>
 	</div>
 
-	<pager
-		asp-page="Search"
-		url-params="urlParams"
-		current-page="searchResult.CurrentPage"
-		total-pages="searchResult.TotalPages">
+	<pager asp-page="Search"
+				 url-params="urlParams"
+				 current-page="searchResult.CurrentPage"
+				 total-pages="searchResult.TotalPages">
 	</pager>
+	<div class="cwiki-flex-container">
+		@foreach (var article in searchResult.Results)
+		{
+			@await Html.PartialAsync("_ArticleRow", article)
+		}
+	</div>
 
-	foreach(var article in searchResult.Results)
-	{
-		@await Html.PartialAsync("_ArticleRow", article)
-	}
+}
+@section Styles {
+	<style>
+		.cwiki-flex-container {
+			padding: 0;
+			margin: 0;
+			display: -webkit-box;
+			display: -moz-box;
+			display: -ms-flexbox;
+			display: -webkit-flex;
+			display: flex;
+			-webkit-flex-flow: row wrap;
+			justify-content: space-around;
+		}
+
+		.cwiki-flex-item {
+			width: 360px;
+			color: white;
+			border-radius: 20px;
+		}
+	</style>
 }
