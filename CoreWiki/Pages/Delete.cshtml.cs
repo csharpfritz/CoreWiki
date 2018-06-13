@@ -23,14 +23,14 @@ namespace CoreWiki.Pages
 
         ///  TODO: Make it so you cannot delete the home page (deleting the home page will cause a 404)
         ///  or re-factor to make the home page dynamic or configurable.
-        public async Task<IActionResult> OnGetAsync(int? id)
+        public async Task<IActionResult> OnGetAsync(string slug)
         {
-            if (id == null)
+            if (slug == null)
             {
                 return NotFound();
             }
 
-            Article = await _context.Articles.SingleOrDefaultAsync(m => m.Id == id);
+            Article = await _context.Articles.SingleOrDefaultAsync(m => m.Slug == slug);
 
             if (Article == null)
             {
@@ -39,14 +39,14 @@ namespace CoreWiki.Pages
             return Page();
         }
 
-        public async Task<IActionResult> OnPostAsync(int? id)
+        public async Task<IActionResult> OnPostAsync(string slug)
         {
-            if (id == null)
+            if (slug == null)
             {
                 return NotFound();
             }
 
-            Article = await _context.Articles.FindAsync(id);
+            Article = await _context.Articles.SingleOrDefaultAsync(m => m.Slug == slug);
 
             if (Article != null)
             {
@@ -54,7 +54,7 @@ namespace CoreWiki.Pages
                 await _context.SaveChangesAsync();
             }
 
-            return RedirectToPage("./Details");
+            return RedirectToPage("/All");
         }
     }
 }

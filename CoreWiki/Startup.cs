@@ -63,6 +63,8 @@ namespace CoreWiki
 			services.AddMvc()
 				.AddRazorPagesOptions(options =>
 				{
+					options.Conventions.AddPageRoute("/Edit", "/{Slug}/Edit");
+					options.Conventions.AddPageRoute("/Delete", "{Slug}/Delete");
 					options.Conventions.AddPageRoute("/Details", "{Slug?}");
 					options.Conventions.AddPageRoute("/Details", @"Index");
 				});
