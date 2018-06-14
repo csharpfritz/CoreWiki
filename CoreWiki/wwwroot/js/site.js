@@ -20,8 +20,13 @@
 
 //Prevent duplicate submit
 
-$("form").submit(function () {
+$("form").submit(function (e) {
 	if ($(this).valid()) {
-		$(this).find(':submit').attr('disabled', 'disabled');
+		if ($(this).attr('attempted') == 'true') {
+			e.preventDefault();
+		}
+		else {
+			$(this).attr('attempted', 'true');
+		}
 	}
 });
