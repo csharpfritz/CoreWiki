@@ -19,22 +19,34 @@ namespace CoreWiki.Areas.Identity
 			builder.ConfigureServices((context, services) =>
 			{
 				services.AddDbContext<CoreWikiIdentityContext>(options =>
-					options.UseSqlite(
-						context.Configuration.GetConnectionString("CoreWikiIdentityContextConnection")));
+									options.UseSqlite(
+											context.Configuration.GetConnectionString("CoreWikiIdentityContextConnection")));
 
 				services.AddDefaultIdentity<CoreWikiUser>()
-					.AddEntityFrameworkStores<CoreWikiIdentityContext>(); 
+									.AddEntityFrameworkStores<CoreWikiIdentityContext>()
+									.AddDefaultTokenProviders();
 
 				if (!string.IsNullOrEmpty(context.Configuration["Authentication:Microsoft:ApplicationId"]))
 				{
 
 					services.AddAuthentication().AddMicrosoftAccount(microsoftOptions =>
-				 {
-					 microsoftOptions.ClientId = context.Configuration["Authentication:Microsoft:ApplicationId"];
-					 microsoftOptions.ClientSecret = context.Configuration["Authentication:Microsoft:Password"];
-				 });
+			 {
+				 microsoftOptions.ClientId = context.Configuration["Authentication:Microsoft:ApplicationId"];
+				 microsoftOptions.ClientSecret = context.Configuration["Authentication:Microsoft:Password"];
+			 });
 
 				}
+
+				if (!string.IsNullOrEmpty(context.Configuration["Authentication:Twitter:ConsumerKey"]))
+				{
+					services.AddAuthentication().AddTwitter(twitterOptions =>
+					 {
+						 twitterOptions.ConsumerKey = context.Configuration["Authentication:Twitter:ConsumerKey"];
+						 twitterOptions.ConsumerSecret = context.Configuration["Authentication:Twitter:ConsumerSecret"];
+					 });
+
+				}
+
 
 			});
 		}
