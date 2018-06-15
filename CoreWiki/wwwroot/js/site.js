@@ -21,6 +21,10 @@
 //Prevent duplicate submit
 
 $("form").submit(function () {
+
+	if (this.id == "externalLogin") return true;
+
+
 	if ($(this).valid()) {
 		$(this).find(':submit').attr('disabled', 'disabled');
 	}

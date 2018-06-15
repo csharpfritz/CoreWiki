@@ -21,6 +21,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Hosting.Server.Features;
 using CoreWiki.Configuration;
 using Microsoft.Extensions.Options;
+using CoreWiki.Helpers;
+using Microsoft.ApplicationInsights.Extensibility;
+using CoreWiki.Areas.Identity.Data;
+using Microsoft.AspNetCore.Identity;
 
 namespace CoreWiki
 {
@@ -52,6 +56,7 @@ namespace CoreWiki
 					options.UseSqlite("Data Source=./wiki.db")
 				);
 
+
 			// Add NodaTime clock for time-based testing
 			services.AddSingleton<IClock>(SystemClock.Instance);
 
@@ -76,6 +81,12 @@ namespace CoreWiki
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
 		public void Configure(IApplicationBuilder app, IHostingEnvironment env, IOptionsSnapshot<AppSettings> settings)
 		{
+
+      var initializer = new ArticleNotFoundInitializer();
+
+      var configuration = app.ApplicationServices.GetService<TelemetryConfiguration>();
+      configuration.TelemetryInitializers.Add(initializer);
+
 			if (env.IsDevelopment())
 			{
 				app.UseDeveloperExceptionPage();

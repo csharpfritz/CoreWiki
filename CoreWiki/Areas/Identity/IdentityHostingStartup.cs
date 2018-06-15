@@ -26,27 +26,29 @@ namespace CoreWiki.Areas.Identity
 									.AddEntityFrameworkStores<CoreWikiIdentityContext>()
 									.AddDefaultTokenProviders();
 
+				var authBuilder = services.AddAuthentication();
+
 				if (!string.IsNullOrEmpty(context.Configuration["Authentication:Microsoft:ApplicationId"]))
 				{
 
-					services.AddAuthentication().AddMicrosoftAccount(microsoftOptions =>
-			 {
-				 microsoftOptions.ClientId = context.Configuration["Authentication:Microsoft:ApplicationId"];
-				 microsoftOptions.ClientSecret = context.Configuration["Authentication:Microsoft:Password"];
-			 });
+					authBuilder.AddMicrosoftAccount(microsoftOptions =>
+					 {
+						 microsoftOptions.ClientId = context.Configuration["Authentication:Microsoft:ApplicationId"];
+						 microsoftOptions.ClientSecret = context.Configuration["Authentication:Microsoft:Password"];
+					 });
 
 				}
 
 				if (!string.IsNullOrEmpty(context.Configuration["Authentication:Twitter:ConsumerKey"]))
 				{
-					services.AddAuthentication().AddTwitter(twitterOptions =>
+
+					authBuilder.AddTwitter(twitterOptions =>
 					 {
 						 twitterOptions.ConsumerKey = context.Configuration["Authentication:Twitter:ConsumerKey"];
 						 twitterOptions.ConsumerSecret = context.Configuration["Authentication:Twitter:ConsumerSecret"];
 					 });
 
 				}
-
 
 			});
 		}

@@ -34,7 +34,7 @@ namespace CoreWiki.Pages
 
 			if (Article == null)
 			{
-				return new ArticleNotFoundResult();
+				return new ArticleNotFoundResult(slug);
 			}
 
 			if (Request.Cookies[Article.Topic] == null)
