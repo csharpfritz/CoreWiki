@@ -5,12 +5,12 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="BuildBundlerMinifier" Version="2.8.391" />
-    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.1.0" />
+    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.3.0" />
     <PackageReference Include="Microsoft.AspNetCore.App" Version="2.1.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="2.1.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.0" />
     <PackageReference Include="NodaTime" Version="2.3.0" />
-    <PackageReference Include="Snickler.RSSCore" Version="1.0.2" />
+    <PackageReference Include="Snickler.RSSCore" Version="1.0.3" />
     <PackageReference Include="WebEssentials.AspNetCore.PWA" Version="1.0.33" />
     <PackageReference Include="Westwind.AspNetCore.Markdown" Version="3.0.28" />
   </ItemGroup>
