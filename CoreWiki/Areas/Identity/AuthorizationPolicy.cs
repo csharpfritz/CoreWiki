@@ -11,11 +11,17 @@ namespace CoreWiki.Areas.Identity
 		internal static void Execute(AuthorizationOptions options)
 		{
 
-				// Logged in users can write comments
-				// Authors can write articles
-				// Authors can edit their own articles
-				// Editors can edit anyones articles
-				// Administrators can delete articles
+			options.AddPolicy("CanDeleteArticles", policy =>
+			{
+				policy.RequireAuthenticatedUser();
+				policy.RequireRole("Administrator");
+			});
+
+			// Logged in users can write comments
+			// Authors can write articles
+			// Authors can edit their own articles
+			// Editors can edit anyones articles
+			// Administrators can delete articles
 
 
 		}
