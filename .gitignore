@@ -271,3 +271,6 @@ CoreWiki/wwwroot/lib/
 [Tt]ools/
 [Oo]utput/
 *.pubxml
+
+# Minified and generated files
+*.min.js
