@@ -34,7 +34,7 @@
 
     <form method="post">
         <input type="hidden" asp-for="Article.Id" />
-        <input type="submit" value="Delete" class="btn btn-default" />
+        <input asp-policy="CanDeleteArticles" asp-policy-message="You do not have permission to delete this article." type="submit" value="Delete" class="btn btn-default" />
 
     </form>
     <div>

@@ -14,7 +14,7 @@ namespace CoreWiki.Areas.Identity
 			options.AddPolicy("CanDeleteArticles", policy =>
 			{
 				policy.RequireAuthenticatedUser();
-				policy.RequireRole("Administrator");
+				policy.RequireRole("Administrators");
 			});
 
 			// Logged in users can write comments

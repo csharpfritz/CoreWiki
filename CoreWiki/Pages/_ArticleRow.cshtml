@@ -18,16 +18,7 @@
 
 			<a class="card-link btn btn-outline-info btn-sm" asp-page="/Edit" asp-route-slug="@Model.Slug">Edit</a>
 
-			@if ((await AuthorizationService.AuthorizeAsync(User, "CanDeleteArticles")).Succeeded)
-			{
-
-				<a class="card-link btn btn-outline-danger btn-sm" asp-page="/Delete" asp-route-slug="@Model.Slug">Delete</a>
-
-			}
-			else
-			{
-				<span class="card-link btn btn-outline-danger disabled btn-sm" title="You do not have permission to delete this article">Delete</span>
-			}
+			<a class="card-link btn btn-outline-danger btn-sm" asp-policy="CanDeleteArticles" asp-policy-message="You do not have permission to delete this article." asp-page="/Delete" asp-route-slug="@Model.Slug">Delete</a>
 
 		</div>
 	</div>
