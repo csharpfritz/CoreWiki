@@ -4,39 +4,40 @@ using System.Text.RegularExpressions;
 
 namespace CoreWiki.Helpers
 {
-    public class UrlHelpers
-    {
+	public class UrlHelpers
+	{
 
-        private static readonly Regex reSlugCharacters = new Regex(@"([\s,.//\\-_=])+");
+		private static readonly Regex reSlugCharacters = new Regex(@"([\s,.//\\-_=])+");
 
-        public static string URLFriendly(string title) {
+		public static string URLFriendly(string title)
+		{
 
-            if (string.IsNullOrEmpty(title)) return "";
+			if (string.IsNullOrEmpty(title)) return "";
 
-            var newTitle = title.ToLowerInvariant();
+			var newTitle = title.ToLowerInvariant();
 
-            newTitle = reSlugCharacters.Replace(newTitle, "-");
+			newTitle = reSlugCharacters.Replace(newTitle, "-");
 
-            return RemoveDiacritics(newTitle);
+			return RemoveDiacritics(newTitle);
 
-        }
+		}
 
-    static string RemoveDiacritics(string text)
-    {
-      var normalizedString = text.Normalize(NormalizationForm.FormD);
-      var stringBuilder = new StringBuilder();
+		static string RemoveDiacritics(string text)
+		{
+			var normalizedString = text.Normalize(NormalizationForm.FormD);
+			var stringBuilder = new StringBuilder();
 
-      foreach (var c in normalizedString)
-      {
-        var unicodeCategory = CharUnicodeInfo.GetUnicodeCategory(c);
-        if (unicodeCategory != UnicodeCategory.NonSpacingMark)
-        {
-          stringBuilder.Append(c);
-        }
-      }
+			foreach (var c in normalizedString)
+			{
+				var unicodeCategory = CharUnicodeInfo.GetUnicodeCategory(c);
+				if (unicodeCategory != UnicodeCategory.NonSpacingMark)
+				{
+					stringBuilder.Append(c);
+				}
+			}
 
-      return stringBuilder.ToString().Normalize(NormalizationForm.FormC);
-    }
+			return stringBuilder.ToString().Normalize(NormalizationForm.FormC);
+		}
 
-  }
+	}
 }
