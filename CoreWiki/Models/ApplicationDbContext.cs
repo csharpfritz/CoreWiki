@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using NodaTime;
+using System;
 using System.Linq;
 
 namespace CoreWiki.Models
@@ -26,8 +27,8 @@ namespace CoreWiki.Models
 						Topic = "HomePage",
 						Slug= "home-page",
 						Content = "This is the default home page.  Please change me!",
-						Published = SystemClock.Instance.GetCurrentInstant()
-
+						Published = SystemClock.Instance.GetCurrentInstant(),
+						AuthorId = Guid.NewGuid()
 					}
 			});
 

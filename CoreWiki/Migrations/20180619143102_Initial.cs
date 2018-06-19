@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace CoreWiki.Migrations
 {
-    public partial class Initialize : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -15,6 +15,7 @@ namespace CoreWiki.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     Topic = table.Column<string>(maxLength: 100, nullable: false),
                     Slug = table.Column<string>(nullable: true),
+                    AuthorId = table.Column<Guid>(nullable: false),
                     Published = table.Column<DateTime>(nullable: false),
                     Content = table.Column<string>(nullable: true),
                     ViewCount = table.Column<int>(nullable: false)
@@ -34,6 +35,7 @@ namespace CoreWiki.Migrations
                     ArticleId = table.Column<int>(nullable: true),
                     DisplayName = table.Column<string>(maxLength: 100, nullable: false),
                     Email = table.Column<string>(maxLength: 100, nullable: false),
+                    AuthorId = table.Column<Guid>(nullable: false),
                     Submitted = table.Column<DateTime>(nullable: false),
                     Content = table.Column<string>(nullable: false)
                 },
@@ -50,8 +52,8 @@ namespace CoreWiki.Migrations
 
             migrationBuilder.InsertData(
                 table: "Articles",
-                columns: new[] { "Id", "Content", "Published", "Slug", "Topic", "ViewCount" },
-                values: new object[] { 1, "This is the default home page.  Please change me!", new DateTime(2018, 6, 16, 16, 34, 40, 32, DateTimeKind.Utc), "home-page", "HomePage", 0 });
+                columns: new[] { "Id", "AuthorId", "Content", "Published", "Slug", "Topic", "ViewCount" },
+                values: new object[] { 1, new Guid("d1cebc50-390b-45b5-ab5e-d8bb589d46e5"), "This is the default home page.  Please change me!", new DateTime(2018, 6, 19, 14, 31, 2, 265, DateTimeKind.Utc), "home-page", "HomePage", 0 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Articles_Slug",

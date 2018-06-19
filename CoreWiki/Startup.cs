@@ -25,6 +25,7 @@ using CoreWiki.Helpers;
 using Microsoft.ApplicationInsights.Extensibility;
 using CoreWiki.Areas.Identity.Data;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 
 namespace CoreWiki
 {
@@ -75,6 +76,7 @@ namespace CoreWiki
 				});
 
 			services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+			services.AddSingleton<IEmailSender, Services.EmailNotifier>();
 
 			services.AddProgressiveWebApp();
 
