@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 
@@ -26,8 +27,29 @@ namespace CoreWiki.Helpers
 		/// <returns>The number of words in the sentance</returns>
 		public static int WordCount(this string content)
 		{
-			var possible_words = content.Split(" ", StringSplitOptions.RemoveEmptyEntries);
-			return possible_words.Count(word => word.Any(c => Char.IsLetter(c)));
+			if (content == null) return 0;
+
+			var wordCount = 0;
+			var letterCount = 0;
+
+			foreach (var c in content)
+			{
+				if (c == '\'') continue;
+
+				if (Char.IsLetter(c))
+				{
+					letterCount++;
+				}
+				else if (letterCount > 0)
+				{
+					letterCount = 0;
+					wordCount++;
+				}
+			}
+
+			if (letterCount > 0) wordCount++;
+
+			return wordCount;
 		}
 
 		/// <summary>
