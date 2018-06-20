@@ -36,7 +36,7 @@ namespace CoreWiki.Helpers
 			{
 				if (c == '\'') continue;
 
-				if (Char.IsLetter(c))
+				if (Char.IsLetterOrDigit(c))
 				{
 					letterCount++;
 				}
