@@ -24,7 +24,7 @@ namespace CoreWiki.Helpers
 		/// Returns the number of words in a string
 		/// </summary>
 		/// <param name="content">The string we wish to count the number of words contained within.</param>
-		/// <returns>The number of words in the sentance</returns>
+		/// <returns>The number of words in the sentence</returns>
 		public static int WordCount(this string content)
 		{
 			if (content == null) return 0;
