@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CoreWiki.Helpers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.Routing;
@@ -47,7 +48,7 @@ namespace CoreWiki.TagHelpers
 					li.AddCssClass("active");
 					TagBuilder span1 = new TagBuilder("span");
 					span1.AddCssClass("page-link");
-					span1.InnerHtml.Append($"{pageNum}");
+					span1.AddAriaSpans($"Current Page", $"{pageNum}");
 					li.InnerHtml.AppendHtml(span1);
 				}
 				else
@@ -55,7 +56,7 @@ namespace CoreWiki.TagHelpers
 					TagBuilder a;
 					a = _Generator.GeneratePageLink(
 						ViewContext,
-						linkText: pageNum.ToString(),
+						linkText: "",
 						pageName: AspPage,
 						pageHandler: string.Empty,
 						protocol: string.Empty,
@@ -65,6 +66,7 @@ namespace CoreWiki.TagHelpers
 						htmlAttributes: null
 						);
 					a.AddCssClass("page-link");
+					a.AddAriaSpans($"Page {pageNum}", $"{pageNum}");
 
 					li.InnerHtml.AppendHtml(a);
 				}
