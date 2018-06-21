@@ -135,6 +135,34 @@ namespace CoreWiki.TagHelpers
 			return tag;
 		}
 
+		private (int start, int end) CalculatePaginatorDisplayRange(int currentPage, int totalPages, int maxPagesDisplayed)
+		{
+			var start = 0;
+			var end = 0;
+
+			var midPoint = (int)Math.Floor(MaxPagesDisplayed / 2.0);
+			var pagesToShowBeforeMidpoint = MaxPagesDisplayed - midPoint - 1;
+			var pagesToShowAfterMidpoint = MaxPagesDisplayed - pagesToShowBeforeMidpoint - 1;
+
+			if (CurrentPage <= pagesToShowBeforeMidpoint)
+			{
+				start = 1;
+				end = Math.Min(MaxPagesDisplayed, TotalPages);
+			}
+			else if (CurrentPage >= TotalPages - pagesToShowBeforeMidpoint)
+			{
+				start = MaxPagesDisplayed > TotalPages ? 1 : TotalPages - MaxPagesDisplayed + 1;
+				end = TotalPages;
+			}
+			else
+			{
+				start = CurrentPage - pagesToShowBeforeMidpoint;
+				end = CurrentPage + pagesToShowAfterMidpoint;
+			}
+
+			return (start, end);
+		}
+
 		/// <summary>
 		/// The name of the page.
 		/// </summary>
