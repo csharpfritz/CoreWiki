@@ -103,6 +103,38 @@ namespace CoreWiki.TagHelpers
 			return route;
 		}
 
+		public TagBuilder CreatePageItem()
+		{
+			var tag = new TagBuilder("li");
+			tag.AddCssClass("page-item");
+			return tag;
+		}
+
+		private TagBuilder CreateSpanPage(string linkText, int pageNum)
+		{
+			var tag = new TagBuilder("span");
+			tag.AddCssClass("page-link");
+			tag.InnerHtml.Append($"{pageNum}");
+			return tag;
+		}
+
+		private TagBuilder CreateLinkPage(string linkText, int pageNum)
+		{
+			var tag = _Generator.GeneratePageLink(
+						ViewContext,
+						linkText: linkText,
+						pageName: AspPage,
+						pageHandler: string.Empty,
+						protocol: string.Empty,
+						hostname: string.Empty,
+						fragment: string.Empty,
+						routeValues: MakeRouteValues(pageNum),
+						htmlAttributes: null
+						);
+			tag.AddCssClass("page-link");
+			return tag;
+		}
+
 		/// <summary>
 		/// The name of the page.
 		/// </summary>
