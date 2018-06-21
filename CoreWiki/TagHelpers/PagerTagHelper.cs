@@ -125,12 +125,20 @@ namespace CoreWiki.TagHelpers
 		public int CurrentPage { get; set; } = 1;
 
 		/// <summary>
-		/// The number of page links to show
+		/// The total number of page links available to show.
 		/// </summary>
 		/// <remarks>
 		/// This is required and can not be <c>null</c>.
 		/// </remarks>
 		public int TotalPages { get; set; }
+
+		/// <summary>
+		/// Show up to this number of page links in the paginator.
+		/// </summary>
+		/// <remarks>
+		/// If not specified this will default to <c>10</c>.
+		/// </remarks>
+		public int MaxPagesDisplayed { get; set; } = 10;
 
 		/// <summary>
 		/// Gets or sets the <see cref="Rendering.ViewContext"/> for the current request.
