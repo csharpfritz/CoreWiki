@@ -135,6 +135,42 @@ namespace CoreWiki.TagHelpers
 			return tag;
 		}
 
+		private void AppendPreNavigationButtons(TagHelperOutput output)
+		{
+			var first = CreatePageItem();
+			first.InnerHtml.AppendHtml(CreateLinkPage("<<", 1));
+
+			var previous = CreatePageItem();
+			previous.InnerHtml.AppendHtml(CreateLinkPage("<", CurrentPage - 1));
+
+			if (CurrentPage == 1)
+			{
+				first.AddCssClass("disabled");
+				previous.AddCssClass("disabled");
+			}
+
+			output.Content.AppendHtml(first);
+			output.Content.AppendHtml(previous);
+		}
+
+		private void AppendPostNavigationButtons(TagHelperOutput output)
+		{
+			var next = CreatePageItem();
+			next.InnerHtml.AppendHtml(CreateLinkPage(">", CurrentPage + 1));
+
+			var last = CreatePageItem();
+			last.InnerHtml.AppendHtml(CreateLinkPage(">>", TotalPages));
+
+			if (CurrentPage == TotalPages)
+			{
+				next.AddCssClass("disabled");
+				last.AddCssClass("disabled");
+			}
+
+			output.Content.AppendHtml(next);
+			output.Content.AppendHtml(last);
+		}
+
 		private (int start, int end) CalculatePaginatorDisplayRange(int currentPage, int totalPages, int maxPagesDisplayed)
 		{
 			var start = 0;
