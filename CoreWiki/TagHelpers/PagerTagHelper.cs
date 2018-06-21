@@ -38,40 +38,9 @@ namespace CoreWiki.TagHelpers
 			ul.AddCssClass("pagination");
 			output.MergeAttributes(ul);
 
-			for (var pageNum = 1; pageNum <= TotalPages; pageNum++)
-			{
-				TagBuilder li = new TagBuilder("li");
-				li.AddCssClass("page-item");
-				if (pageNum == CurrentPage)
-				{
-					li.AddCssClass("active");
-					TagBuilder span1 = new TagBuilder("span");
-					span1.AddCssClass("page-link");
-					span1.InnerHtml.Append($"{pageNum}");
-					li.InnerHtml.AppendHtml(span1);
-				}
-				else
-				{
-					TagBuilder a;
-					a = _Generator.GeneratePageLink(
-						ViewContext,
-						linkText: pageNum.ToString(),
-						pageName: AspPage,
-						pageHandler: string.Empty,
-						protocol: string.Empty,
-						hostname: string.Empty,
-						fragment: string.Empty,
-						routeValues: MakeRouteValues(pageNum),
-						htmlAttributes: null
-						);
-					a.AddCssClass("page-link");
-
-					li.InnerHtml.AppendHtml(a);
-				}
-
-				output.Content.AppendHtml(li);
-
-			}
+			AppendPreNavigationButtons(output);
+			AppendNavigationButtons(output);
+			AppendPostNavigationButtons(output);
 
 			await base.ProcessAsync(context, output);
 			return;
