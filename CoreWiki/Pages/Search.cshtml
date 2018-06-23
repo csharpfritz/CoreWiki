@@ -1,6 +1,7 @@
 @page
 @using System.Collections.Generic
 @using Microsoft.AspNetCore.Mvc.Rendering
+@using Humanizer;
 @model SearchModel
 @{
 	ViewData["Title"] = "Search";
@@ -26,7 +27,7 @@
 @if (searchResult != null)
 {
 	<div class="mb-2">
-		@StringHelpers.Pluralize("result", "results", searchResult.TotalResults, prependCount: true)
+		@("result".ToQuantity(searchResult.TotalResults));
 		found for <strong>@searchResult.Query</strong>
 	</div>
 
