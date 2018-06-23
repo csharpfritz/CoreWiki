@@ -38,40 +38,9 @@ namespace CoreWiki.TagHelpers
 			ul.AddCssClass("pagination");
 			output.MergeAttributes(ul);
 
-			for (var pageNum = 1; pageNum <= TotalPages; pageNum++)
-			{
-				TagBuilder li = new TagBuilder("li");
-				li.AddCssClass("page-item");
-				if (pageNum == CurrentPage)
-				{
-					li.AddCssClass("active");
-					TagBuilder span1 = new TagBuilder("span");
-					span1.AddCssClass("page-link");
-					span1.InnerHtml.Append($"{pageNum}");
-					li.InnerHtml.AppendHtml(span1);
-				}
-				else
-				{
-					TagBuilder a;
-					a = _Generator.GeneratePageLink(
-						ViewContext,
-						linkText: pageNum.ToString(),
-						pageName: AspPage,
-						pageHandler: string.Empty,
-						protocol: string.Empty,
-						hostname: string.Empty,
-						fragment: string.Empty,
-						routeValues: MakeRouteValues(pageNum),
-						htmlAttributes: null
-						);
-					a.AddCssClass("page-link");
-
-					li.InnerHtml.AppendHtml(a);
-				}
-
-				output.Content.AppendHtml(li);
-
-			}
+			AppendPreNavigationButtons(output);
+			AppendNavigationButtons(output);
+			AppendPostNavigationButtons(output);
 
 			await base.ProcessAsync(context, output);
 			return;
@@ -103,6 +72,124 @@ namespace CoreWiki.TagHelpers
 			return route;
 		}
 
+		public TagBuilder CreatePageItem()
+		{
+			var tag = new TagBuilder("li");
+			tag.AddCssClass("page-item");
+			return tag;
+		}
+
+		private TagBuilder CreateSpanPage(string linkText, int pageNum)
+		{
+			var tag = new TagBuilder("span");
+			tag.AddCssClass("page-link");
+			tag.InnerHtml.Append($"{pageNum}");
+			return tag;
+		}
+
+		private TagBuilder CreateLinkPage(string linkText, int pageNum)
+		{
+			var tag = _Generator.GeneratePageLink(
+						ViewContext,
+						linkText: linkText,
+						pageName: AspPage,
+						pageHandler: string.Empty,
+						protocol: string.Empty,
+						hostname: string.Empty,
+						fragment: string.Empty,
+						routeValues: MakeRouteValues(pageNum),
+						htmlAttributes: null
+						);
+			tag.AddCssClass("page-link");
+			return tag;
+		}
+
+		private void AppendPreNavigationButtons(TagHelperOutput output)
+		{
+			var first = CreatePageItem();
+			first.InnerHtml.AppendHtml(CreateLinkPage("<<", 1));
+
+			var previous = CreatePageItem();
+			previous.InnerHtml.AppendHtml(CreateLinkPage("<", CurrentPage - 1));
+
+			if (CurrentPage == 1)
+			{
+				first.AddCssClass("disabled");
+				previous.AddCssClass("disabled");
+			}
+
+			output.Content.AppendHtml(first);
+			output.Content.AppendHtml(previous);
+		}
+
+		private void AppendPostNavigationButtons(TagHelperOutput output)
+		{
+			var next = CreatePageItem();
+			next.InnerHtml.AppendHtml(CreateLinkPage(">", CurrentPage + 1));
+
+			var last = CreatePageItem();
+			last.InnerHtml.AppendHtml(CreateLinkPage(">>", TotalPages));
+
+			if (CurrentPage == TotalPages)
+			{
+				next.AddCssClass("disabled");
+				last.AddCssClass("disabled");
+			}
+
+			output.Content.AppendHtml(next);
+			output.Content.AppendHtml(last);
+		}
+
+		private void AppendNavigationButtons(TagHelperOutput output)
+		{
+			var (start, end) = CalculatePaginatorDisplayRange(CurrentPage, TotalPages, MaxPagesDisplayed);
+
+			for (var pageNum = start; pageNum <= end; pageNum++)
+			{
+				var li = CreatePageItem();
+
+				if (pageNum == CurrentPage)
+				{
+					li.AddCssClass("active");
+					li.InnerHtml.AppendHtml(CreateSpanPage($"{pageNum}", pageNum));
+				}
+				else
+				{
+					li.InnerHtml.AppendHtml(CreateLinkPage($"{pageNum}", pageNum));
+				}
+
+				output.Content.AppendHtml(li);
+			}
+		}
+
+		private (int start, int end) CalculatePaginatorDisplayRange(int currentPage, int totalPages, int maxPagesDisplayed)
+		{
+			var start = 0;
+			var end = 0;
+
+			var midPoint = (int)Math.Floor(MaxPagesDisplayed / 2.0);
+			var pagesToShowBeforeMidpoint = MaxPagesDisplayed - midPoint - 1;
+			var pagesToShowAfterMidpoint = MaxPagesDisplayed - pagesToShowBeforeMidpoint - 1;
+
+			if (CurrentPage <= pagesToShowBeforeMidpoint)
+			{
+				start = 1;
+				end = Math.Min(MaxPagesDisplayed, TotalPages);
+			}
+			else if (CurrentPage >= TotalPages - pagesToShowBeforeMidpoint)
+			{
+				start = MaxPagesDisplayed > TotalPages ? 1 : TotalPages - MaxPagesDisplayed + 1;
+				end = TotalPages;
+			}
+			else
+			{
+				start = CurrentPage - pagesToShowBeforeMidpoint;
+				end = CurrentPage + pagesToShowAfterMidpoint;
+			}
+
+			return (start, end);
+		}
+
 		/// <summary>
 		/// The name of the page.
 		/// </summary>
@@ -125,12 +212,20 @@ namespace CoreWiki.TagHelpers
 		public int CurrentPage { get; set; } = 1;
 
 		/// <summary>
-		/// The number of page links to show
+		/// The total number of page links available to show.
 		/// </summary>
 		/// <remarks>
 		/// This is required and can not be <c>null</c>.
 		/// </remarks>
 		public int TotalPages { get; set; }
+
+		/// <summary>
+		/// Show up to this number of page links in the paginator.
+		/// </summary>
+		/// <remarks>
+		/// If not specified this will default to <c>10</c>.
+		/// </remarks>
+		public int MaxPagesDisplayed { get; set; } = 10;
 
 		/// <summary>
 		/// Gets or sets the <see cref="Rendering.ViewContext"/> for the current request.
