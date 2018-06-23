@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Text.RegularExpressions;
+using System.Globalization;
 
 namespace CoreWiki.Helpers
 {
@@ -47,6 +47,27 @@ namespace CoreWiki.Helpers
 			var wordCount = content.WordCount();
 			var minutes = (double)(wordCount / wpm);
 			return TimeSpan.FromMinutes(minutes);
+		}
+		/// <summary>
+		/// Returns the string supplied in title case
+		/// </summary>
+		/// <param name="content">The string we wish to change to title case.</param>
+		/// <param name="culture">The current user's culture, defaulting to en-US.</param>
+		/// <returns>A string in title case according to the supplied culture.</returns>
+		public static string ToTitleCase(this string content, string culture = "en-US")
+		{
+			var textInfo = new CultureInfo(culture, false).TextInfo;
+			return textInfo.ToTitleCase(content);
+		}
+		/// <summary>
+		/// Returns the string supplied in title case
+		/// </summary>
+		/// <param name="content">The string we wish to change to title case.</param>
+		/// <param name="culture">The current user's culture, defaulting to en-US.</param>
+		/// <returns>A string in title case according to the supplied culture.</returns>
+		public static string RemoveHyphens(this string content)
+		{
+			return content.Replace("-", " ");
 		}
 	}
 }
