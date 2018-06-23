@@ -90,12 +90,16 @@ namespace CoreWiki.Pages
 			await _context.SaveChangesAsync();
 
 			//Add notifications here:
-			var authorEmail = (await _UserManager.FindByIdAsync(Article.AuthorId.ToString())).Email;
-			// TODO: Verify that we found an author
+			var author = await _UserManager.FindByIdAsync(Article.AuthorId.ToString());
 
-			var thisUrl = Request.GetEncodedUrl();
-			await Notifier.SendEmailAsync(authorEmail, "You have a new comment!", $"Someone said something about your article at {thisUrl}");
+			if (author.CanNotify)
+			{
+				var authorEmail = author.Email;
+				// TODO: Verify that we found an author
 
+				var thisUrl = Request.GetEncodedUrl();
+				await Notifier.SendEmailAsync(authorEmail, "You have a new comment!", $"Someone said something about your article at {thisUrl}");
+			}
 
 			return Redirect($"/{Article.Slug}");
 		}
