@@ -43,7 +43,8 @@ namespace CoreWiki.Models
 		}
 		internal static void SeedData(CoreWikiIdentityContext context)
 		{
-			context.Database.EnsureCreated();
+
+			context.Database.Migrate();
 
 		}
 	}

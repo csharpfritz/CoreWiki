@@ -54,7 +54,7 @@ namespace CoreWiki
 
 			services.AddEntityFrameworkSqlite()
 				.AddDbContextPool<ApplicationDbContext>(options =>
-					options.UseSqlite("Data Source=./wiki.db")
+					options.UseSqlite(Configuration.GetConnectionString("CoreWikiData"))
 				);
 
 

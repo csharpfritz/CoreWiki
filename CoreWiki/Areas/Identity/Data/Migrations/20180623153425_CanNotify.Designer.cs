@@ -3,14 +3,16 @@ using System;
 using CoreWiki.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CoreWiki.Areas.Identity.Data.Migrations
 {
     [DbContext(typeof(CoreWikiIdentityContext))]
-    partial class CoreWikiIdentityContextModelSnapshot : ModelSnapshot
+    [Migration("20180623153425_CanNotify")]
+    partial class CanNotify
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
