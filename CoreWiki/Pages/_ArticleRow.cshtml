@@ -1,3 +1,5 @@
+@using Microsoft.AspNetCore.Authorization
+@inject IAuthorizationService AuthorizationService
 @model Models.Article
 
 
@@ -15,7 +17,18 @@
 			<h6 class="card-subtitle mb-2 text-muted">View Count: <span> @Model.ViewCount</span></h6>
 
 			<a class="card-link btn btn-outline-info btn-sm" asp-page="/Edit" asp-route-slug="@Model.Slug">Edit</a>
-			<a class="card-link btn btn-outline-danger btn-sm" asp-page="/Delete" asp-route-slug="@Model.Slug">Delete</a>
+
+			@if ((await AuthorizationService.AuthorizeAsync(User, "CanDeleteArticles")).Succeeded)
+			{
+
+				<a class="card-link btn btn-outline-danger btn-sm" asp-page="/Delete" asp-route-slug="@Model.Slug">Delete</a>
+
+			}
+			else
+			{
+				<span class="card-link btn btn-outline-danger disabled btn-sm" title="You do not have permission to delete this article">Delete</span>
+			}
+
 		</div>
 	</div>
 

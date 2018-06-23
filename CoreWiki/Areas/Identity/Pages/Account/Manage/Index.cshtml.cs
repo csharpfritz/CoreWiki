@@ -47,7 +47,10 @@ namespace CoreWiki.Areas.Identity.Pages.Account.Manage
             [Phone]
             [Display(Name = "Phone number")]
             public string PhoneNumber { get; set; }
-        }
+
+			[Display(Name = "Opt-in to receive notifications?")]
+			public bool CanNotify { get; set; }
+		}
 
         public async Task<IActionResult> OnGetAsync()
         {
@@ -61,7 +64,7 @@ namespace CoreWiki.Areas.Identity.Pages.Account.Manage
             var email = await _userManager.GetEmailAsync(user);
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
 
-            Username = userName;
+			Username = userName;
 
             Input = new InputModel
             {
@@ -109,7 +112,18 @@ namespace CoreWiki.Areas.Identity.Pages.Account.Manage
                 }
             }
 
-            await _signInManager.RefreshSignInAsync(user);
+			if (Input.CanNotify != user.CanNotify)
+			{
+				user.CanNotify = Input.CanNotify;
+				var updateProfileResult = await _userManager.UpdateAsync(user);
+
+				if (!updateProfileResult.Succeeded)
+				{
+					throw new InvalidOperationException($"Unexpected error ocurred updating CanNotify for user with ID '{user.Id}'");
+				}
+			}
+
+			await _signInManager.RefreshSignInAsync(user);
             StatusMessage = "Your profile has been updated";
             return RedirectToPage();
         }
