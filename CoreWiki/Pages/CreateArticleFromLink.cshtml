@@ -1,0 +1,40 @@
+﻿@page
+@model CoreWiki.Pages.CreateArticleFromLinkModel
+@{
+	ViewData["Title"] = "CreateArticleFromLink";
+}
+
+<h2>Found links to articles that do not yet exist</h2>
+<hr />
+<br />
+<div class="row">
+	<div class="col-md-12">
+		<form method="post">
+			<div>
+				<div>The following links to CoreWiki articles that do not yet exist were found in the Article:</div>
+				<br />
+				@if (Model.LinksToCreate != null && Model.LinksToCreate.Count > 0)
+				{
+					@for (var i = 0; i < Model.LinksToCreate.Count; i++)
+					{
+						<input asp-for="@Model.LinksToCreate[i]]" type="hidden" />
+						<span>* <b>@Model.LinksToCreate[i].ToTitleCase().RemoveHyphens()</b> (@Model.LinksToCreate[i])</span>
+						<br />
+					}
+				}
+			</div>
+			<br />
+			<div>Would you link to create these articles now?</div>
+			<br />
+			<div class="form-group">
+				<input type="hidden" asp-for="Article.Slug" />
+				<div class="input-group mb-3">
+					<input type="submit" value="Yes" class="btn btn-default" asp-page-handler="CreateLinks" asp-route-slug=@Model.Article.Slug />
+					<span>&nbsp;</span>
+					<input type="submit" value="No" class="btn btn-default" asp-page-handler="Cancel" asp-route-slug=@Model.Article.Slug />
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
+
