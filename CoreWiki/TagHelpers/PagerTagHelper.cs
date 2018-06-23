@@ -84,7 +84,7 @@ namespace CoreWiki.TagHelpers
 		{
 			var tag = new TagBuilder("span");
 			tag.AddCssClass("page-link");
-			tag.InnerHtml.Append($"{pageNum}");
+			tag.AddAriaSpans($"Current Page", $"{pageNum}");
 			return tag;
 		}
 
