@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace CoreWiki.Helpers
@@ -22,20 +24,34 @@ namespace CoreWiki.Helpers
 		/// Returns the number of words in a string
 		/// </summary>
 		/// <param name="content">The string we wish to count the number of words contained within.</param>
-		/// <returns>The number of words in the sentance</returns>
+		/// <returns>The number of words in the sentence</returns>
 		public static int WordCount(this string content)
 		{
+			if (content == null) return 0;
+
 			var wordCount = 0;
-			for (var i = 1; i < content.Length; i++)
+			var letterCount = 0;
+
+			foreach (var c in content)
 			{
-				if (char.IsWhiteSpace(content[i]) || i == content.Length)
+				if (c == '\'') continue;
+
+				if (Char.IsLetterOrDigit(c))
 				{
-					if (!char.IsWhiteSpace(content[i - 1]))
-						wordCount += 1;
+					letterCount++;
+				}
+				else if (letterCount > 0)
+				{
+					letterCount = 0;
+					wordCount++;
 				}
 			}
+
+			if (letterCount > 0) wordCount++;
+
 			return wordCount;
 		}
+
 		/// <summary>
 		/// Returns the amount of time to read a string
 		/// </summary>
