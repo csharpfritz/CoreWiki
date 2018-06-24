@@ -27,11 +27,13 @@
 				<input asp-for="Input.ConfirmPassword" class="form-control" />
 				<span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
 			</div>
-			<div class="form-check form-check-inline">
-				<input asp-for="Input.CanNotify" class="form-check-input" />
-				<label asp-for="Input.CanNotify" class="form-check-label"></label>
+			<div class="form-group">
+				<div class="form-check">
+					<input asp-for="Input.CanNotify" class="form-check-input" />
+					<label asp-for="Input.CanNotify" class="form-check-label"></label>
+				</div>
 			</div>
-			<div class="mt-4">
+			<div>
 				<button type="submit" class="btn btn-outline-primary">Register</button>
 			</div>
 		</form>
