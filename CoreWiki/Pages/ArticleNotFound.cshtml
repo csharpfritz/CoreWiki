@@ -1,7 +1,6 @@
 @{
-	var title = "Article not found";
-	ViewData["Title"] = title;
+	ViewData["Title"] = Localizer["ArticleNotFound"];
 }
-<h1>@title</h1>
-<p>Please check that the URL you entered is correct. It's also possible that an article at this address was deleted.</p>
-<a href="~/">Go to Homepage</a>
+<h1>@Localizer["ArticleNotFound"]</h1>
+<p>@Localizer["ArticleNotFoundText"]</p>
+<a href="~/">@Localizer["GoHome"]</a>

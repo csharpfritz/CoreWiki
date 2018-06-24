@@ -1,4 +1,5 @@
 ﻿@using System.IO
+
 @inject Microsoft.AspNetCore.Hosting.IHostingEnvironment env
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor context
 @inject IOptionsSnapshot<AppSettings> settings
@@ -56,8 +57,8 @@
 		</button>
 		<div class="navbar-collapse collapse justify-content-between" id="navbarToggler">
 			<ul class="navbar-nav">
-				<li class="nav-item"><a class="nav-link" asp-page="/LatestChanges">Latest Changes</a></li>
-				<li class="nav-item"><a class="nav-link" asp-page="/All">All Articles</a></li>
+				<li class="nav-item"><a class="nav-link" asp-page="/LatestChanges">@Localizer["menu_LatestChanges"]</a></li>
+				<li class="nav-item"><a class="nav-link" asp-page="/All">@Localizer["menu_AllArticles"]</a></li>
 				<li>
 					<form class="form-inline mx-0 mx-lg-2 my-2 my-lg-0" action="/search" method="get">
 						<div class="input-group">
@@ -70,7 +71,7 @@
 				</li>
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
-				<li class="nav-item"><a class="nav-link" asp-page="/Create">New Article</a></li>
+				<li class="nav-item"><a class="nav-link" asp-page="/Create">@Localizer["menu_NewArticle"]</a></li>
 				<partial name="_LoginPartial" />
 			</ul>
 		</div>
@@ -84,7 +85,7 @@
 		<footer>
 			<div class="row justify-content-between">
 				<div class="col-sm-12 col-md-8">
-					&copy; @DateTime.UtcNow.Year - <a target="_blank" href="https://github.com/csharpfritz/CoreWiki">CoreWiki: An Open Source Project from the Fritz and Friends Community</a>
+					&copy; @DateTime.UtcNow.Year - <a target="_blank" href="https://github.com/csharpfritz/CoreWiki">@Localizer["CopyrightLinkText"]</a>
 				</div>
 				<div class="col-sm-12 col-md-auto">
 					<partial name="_ThemePartial" />
@@ -104,21 +105,21 @@
 	</environment>
 	<environment exclude="Development">
 		<script src="https://code.jquery.com/jquery-3.3.1.min.js"
-						asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
-						asp-fallback-test="window.jQuery"
-						integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-						crossorigin="anonymous">
+				asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
+				asp-fallback-test="window.jQuery"
+				integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+				crossorigin="anonymous">
 		</script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
-						asp-fallback-src="~/lib/popper.js/dist/umd/popper.min.js"
-						asp-fallback-test="Popper"
-						crossorigin="anonymous">
+				asp-fallback-src="~/lib/popper.js/dist/umd/popper.min.js"
+				asp-fallback-test="Popper"
+				crossorigin="anonymous">
 		</script>
 		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"
-						asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
-						asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
-						integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm"
-						crossorigin="anonymous">
+				asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
+				asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
+				integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm"
+				crossorigin="anonymous">
 		</script>
 		<script src="~/js/site.min.js" asp-append-version="true"></script>
 	</environment>

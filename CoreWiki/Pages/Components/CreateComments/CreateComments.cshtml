@@ -1,7 +1,7 @@
 ﻿@model Models.Comment
 <br />
 <br />
-<h1>New Comment</h1>
+<h1>@Localizer["NewComment"]</h1>
 <hr />
 <form method="post" autocomplete="off">
 	<input type="hidden" asp-for="@Model.IdArticle" />
@@ -33,7 +33,7 @@
 		</div>
 		<div class="row">
 			<div class="form-group">
-				<input type="submit" value="Submit" class="btn btn-default" />
+				<input type="submit" value=@Localizer["Submit"] class="btn btn-default" />
 			</div>
 		</div>
 	</div>

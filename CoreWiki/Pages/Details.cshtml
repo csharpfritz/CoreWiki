@@ -1,26 +1,29 @@
 ﻿@page "{Slug?}"
 @model DetailsModel
 @{
-	var title = "Details";
+	var title = Localizer["Details"];
 	if (!string.IsNullOrEmpty(Model.Article.Topic))
 	{
-		title = Model.Article.Topic;
+		ViewData["Title"] = Model.Article.Topic;
 	}
-	ViewData["Title"] = title;
+	else
+	{
+		ViewData["Title"] = title;
+	}
 }
 
 <h2>@Model.Article.Topic</h2>
-<h5>Last Published: <span data-value="@Model.Article.Published" class="timeStampValue"> @Model.Article.Published</span></h5>
-<h5>View Count: <span data-value="@Model.Article.ViewCount"> @Model.Article.ViewCount</span></h5>
-<h5>Estimated Reading Time: <span class="duration" data-duration="@Model.Article.Content.CalculateReadTime().TotalMilliseconds"></span></h5>
+<h5>@Localizer["Published"]: <span data-value="@Model.Article.Published" class="timeStampValue"> @Model.Article.Published</span></h5>
+<h5>@Localizer["ViewCount"]: <span data-value="@Model.Article.ViewCount"> @Model.Article.ViewCount</span></h5>
+<h5>@Localizer["ReadingTime"]: <span class="duration" data-duration="@Model.Article.Content.CalculateReadTime().TotalMilliseconds"></span></h5>
 <markdown markdown="Article.Content" />
 
 <div>
-	<a asp-page="/Edit" asp-route-slug="@Model.Article.Slug">Edit</a>
+	<a asp-page="/Edit" asp-route-slug="@Model.Article.Slug">@Localizer["Edit"]</a>
 
 	@if (Model.Article.Slug != "home-page")
 	{
-		<text>| </text><a href="~/">Back to Home</a>
+		<text>| </text><a href="~/">@Localizer["GoHome"]</a>
 	}
 </div>
 
