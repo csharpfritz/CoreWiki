@@ -29,9 +29,9 @@
 			<div class="form-group">
 				<input type="hidden" asp-for="Article.Slug" />
 				<div class="input-group mb-3">
-					<input type="submit" value="Yes" class="btn btn-default" asp-page-handler="CreateLinks" asp-route-slug=@Model.Article.Slug />
+					<button type="submit" class="btn btn-outline-primary" asp-page-handler="CreateLinks" asp-route-slug=@Model.Article.Slug>Yes</button>
 					<span>&nbsp;</span>
-					<input type="submit" value="No" class="btn btn-default" asp-page-handler="Cancel" asp-route-slug=@Model.Article.Slug />
+					<button type="submit" class="btn btn-outline-primary" asp-page-handler="Cancel" asp-route-slug=@Model.Article.Slug>No</button>
 				</div>
 			</div>
 		</form>
