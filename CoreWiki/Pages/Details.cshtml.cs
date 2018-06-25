@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using CoreWiki.Models;
 using NodaTime;
 using CoreWiki.Helpers;
+using CoreWiki.Services;
 using SendGrid;
 using SendGrid.Helpers.Mail;
 using Microsoft.AspNetCore.Identity;
@@ -16,7 +17,6 @@ using System.Security.Policy;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.Extensions.Configuration;
-using CoreWiki.Services;
 using Microsoft.AspNetCore.Identity.UI.Services;
 
 namespace CoreWiki.Pages
@@ -25,21 +25,17 @@ namespace CoreWiki.Pages
 	{
 		private readonly CoreWiki.Models.ApplicationDbContext _context;
 		private readonly IClock _clock;
-		private readonly UserManager<CoreWikiUser> _UserManager;
+		private readonly INotificationService _notificationService;
 
-		public IConfiguration Configuration { get; }
-		public IEmailSender Notifier { get; }
-
-		public DetailsModel(CoreWiki.Models.ApplicationDbContext context, UserManager<CoreWikiUser> userManager,
-			IConfiguration config, IEmailSender notifier,
-			IClock clock)
+		public DetailsModel(CoreWiki.Models.ApplicationDbContext context, IClock clock, INotificationService notificationService)
 		{
 			_context = context;
 			_clock = clock;
-			_UserManager = userManager;
-			this.Configuration = config;
-			this.Notifier = notifier;
+			_notificationService = notificationService;
 		}
+		private readonly UserManager<CoreWikiUser> _UserManager;
+
+		public IConfiguration Configuration { get; }
 
 		public Article Article { get; set; }
 
@@ -77,10 +73,10 @@ namespace CoreWiki.Pages
 			Article = await _context.Articles.Include(x => x.Comments).SingleOrDefaultAsync(m => m.Id == comment.IdArticle);
 
 			if (Article == null)
-								 return new ArticleNotFoundResult();
+				return new ArticleNotFoundResult();
 
 			if (!ModelState.IsValid)
-								 return Page();
+				return Page();
 
 			comment.Article = this.Article;
 
@@ -88,18 +84,7 @@ namespace CoreWiki.Pages
 
 			_context.Comments.Add(comment);
 			await _context.SaveChangesAsync();
-
-			//Add notifications here:
-			var author = await _UserManager.FindByIdAsync(Article.AuthorId.ToString());
-
-			if (author.CanNotify)
-			{
-				var authorEmail = author.Email;
-				// TODO: Verify that we found an author
-
-				var thisUrl = Request.GetEncodedUrl();
-				await Notifier.SendEmailAsync(authorEmail, "You have a new comment!", $"Someone said something about your article at {thisUrl}");
-			}
+			await _notificationService.NotifyAuthorNewComment(Article, comment);
 
 			return Redirect($"/{Article.Slug}");
 		}

@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using CoreWiki.Models;
 using NodaTime;
@@ -15,10 +12,10 @@ namespace CoreWiki.Pages
 
 	public class EditModel : PageModel
 	{
-		private readonly CoreWiki.Models.ApplicationDbContext _context;
+		private readonly ApplicationDbContext _context;
 		private readonly IClock _clock;
 
-		public EditModel(CoreWiki.Models.ApplicationDbContext context, IClock clock)
+		public EditModel(ApplicationDbContext context, IClock clock)
 		{
 			_context = context;
 			_clock = clock;
@@ -63,6 +60,9 @@ namespace CoreWiki.Pages
 				return Page();
 			}
 
+			var articlesToCreateFromLinks = ArticleHelpers.GetArticlesToCreate(_context, Article, createSlug: true)
+				.ToList();
+
 			_context.Attach(Article).State = EntityState.Modified;
 
 			Article.Published = _clock.GetCurrentInstant();
@@ -82,6 +82,11 @@ namespace CoreWiki.Pages
 				{
 					throw;
 				}
+			}
+
+			if (articlesToCreateFromLinks.Count > 0)
+			{
+				return RedirectToPage("CreateArticleFromLink", new { id = slug });
 			}
 
 			return Redirect($"/{(Article.Slug == "home-page" ? "" : Article.Slug)}");

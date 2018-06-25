@@ -16,12 +16,12 @@ namespace CoreWiki.Pages
 {
     public class CreateModel : PageModel
     {
-        private readonly CoreWiki.Models.ApplicationDbContext _context;
+        private readonly ApplicationDbContext _context;
         private readonly IClock _clock;
 
     public ILogger Logger { get; private set; }
 
-    public CreateModel(CoreWiki.Models.ApplicationDbContext context, IClock clock, ILoggerFactory loggerFactory)
+    public CreateModel(ApplicationDbContext context, IClock clock, ILoggerFactory loggerFactory)
         {
             _context = context;
             _clock = clock;
@@ -38,9 +38,9 @@ namespace CoreWiki.Pages
 
             var slug = UrlHelpers.URLFriendly(Article.Topic.ToLower());
             Article.Slug = slug;
-						Article.AuthorId = Guid.Parse(this.User.FindFirstValue(ClaimTypes.NameIdentifier));
+			Article.AuthorId = Guid.Parse(this.User.FindFirstValue(ClaimTypes.NameIdentifier));
 
-            if (!ModelState.IsValid)
+			if (!ModelState.IsValid)
             {
                 return Page();
             }
@@ -61,7 +61,15 @@ namespace CoreWiki.Pages
             _context.Articles.Add(Article);
             await _context.SaveChangesAsync();
 
-            return Redirect($"/{Article.Slug}");
+			var articlesToCreateFromLinks = ArticleHelpers.GetArticlesToCreate(_context, Article, createSlug: true)
+				.ToList();
+
+			if (articlesToCreateFromLinks.Count > 0)
+			{
+				return RedirectToPage("CreateArticleFromLink", new { id = slug });
+			}
+
+			return Redirect($"/{Article.Slug}");
         }
     }
 }
