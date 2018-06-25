@@ -23,6 +23,9 @@ namespace CoreWiki.Pages
 
 		public Article Article { get; set; }
 
+		[ViewDataAttribute]
+		public string Slug { get; set; }
+
 		public async Task<IActionResult> OnGetAsync(string slug)
 		{
 
@@ -34,6 +37,7 @@ namespace CoreWiki.Pages
 
 			if (Article == null)
 			{
+				Slug = slug;
 				return new ArticleNotFoundResult(slug);
 			}
 

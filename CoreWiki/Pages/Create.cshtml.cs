@@ -9,6 +9,7 @@ using NodaTime;
 using CoreWiki.Models;
 using CoreWiki.Helpers;
 using Microsoft.Extensions.Logging;
+using Microsoft.EntityFrameworkCore;
 
 namespace CoreWiki.Pages
 {
@@ -26,7 +27,27 @@ namespace CoreWiki.Pages
             this.Logger = loggerFactory.CreateLogger("CreatePage");
         }
 
-        public IActionResult OnGet() => Page();
+        public async Task<IActionResult> OnGetAsync(string slug)
+        {
+            if (string.IsNullOrEmpty(slug))
+            {
+                return Page();
+            }
+
+            Article article = await _context.Articles.SingleOrDefaultAsync(m => m.Slug == slug);
+
+            if (article != null)
+            {
+                return Redirect($"/{slug}/Edit");
+            }
+
+            Article = new Article()
+            {
+                Topic = UrlHelpers.SlugToTopic(slug)
+            };
+
+            return Page();
+        }
 
         [BindProperty]
         public Article Article { get; set; }
