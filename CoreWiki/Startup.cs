@@ -96,8 +96,13 @@ namespace CoreWiki
 			} else
 			{
 				app.UseExceptionHandler("/Error");
-				app.UseHsts();
 			}
+
+			app.UseHsts(options => options.MaxAge(days: 365).IncludeSubdomains());
+			app.UseXContentTypeOptions();
+			app.UseReferrerPolicy(options => options.NoReferrer());
+			app.UseXXssProtection(options => options.EnabledWithBlockMode());
+			app.UseXfo(options => options.Deny());
 
 			app.UseHttpsRedirection();
 			app.UseStaticFiles();
