@@ -9,6 +9,7 @@ using NodaTime;
 using CoreWiki.Models;
 using CoreWiki.Helpers;
 using Microsoft.Extensions.Logging;
+using System.Security.Claims;
 
 namespace CoreWiki.Pages
 {
@@ -36,8 +37,9 @@ namespace CoreWiki.Pages
 
             var slug = UrlHelpers.URLFriendly(Article.Topic.ToLower());
             Article.Slug = slug;
+			Article.AuthorId = Guid.Parse(this.User.FindFirstValue(ClaimTypes.NameIdentifier));
 
-            if (!ModelState.IsValid)
+			if (!ModelState.IsValid)
             {
                 return Page();
             }

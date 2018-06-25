@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using CoreWiki.Models;
 using NodaTime;
 using CoreWiki.Helpers;
+using CoreWiki.Services;
 
 namespace CoreWiki.Pages
 {
@@ -15,10 +16,13 @@ namespace CoreWiki.Pages
 	{
 		private readonly CoreWiki.Models.ApplicationDbContext _context;
 		private readonly IClock _clock;
-		public DetailsModel(CoreWiki.Models.ApplicationDbContext context, IClock clock)
+		private readonly INotificationService _notificationService;
+
+		public DetailsModel(CoreWiki.Models.ApplicationDbContext context, IClock clock, INotificationService notificationService)
 		{
 			_context = context;
 			_clock = clock;
+			_notificationService = notificationService;
 		}
 
 		public Article Article { get; set; }
@@ -68,7 +72,8 @@ namespace CoreWiki.Pages
 
 			_context.Comments.Add(comment);
 			await _context.SaveChangesAsync();
-
+			await _notificationService.NotifyAuthorNewComment(Article, comment);
+			
 			return Redirect($"/{Article.Slug}");
 		}
 	}

@@ -25,17 +25,21 @@ using CoreWiki.Helpers;
 using Microsoft.ApplicationInsights.Extensibility;
 using CoreWiki.Areas.Identity.Data;
 using Microsoft.AspNetCore.Identity;
+using CoreWiki.Services;
+using Microsoft.AspNetCore.Hosting.Internal;
 
 namespace CoreWiki
 {
 	public class Startup
 	{
-		public Startup(IConfiguration configuration)
+		public Startup(IConfiguration configuration, IHostingEnvironment hostingEnvironment)
 		{
 			Configuration = configuration;
+			HostingEnvironment = hostingEnvironment;
 		}
 
 		public IConfiguration Configuration { get; }
+		public IHostingEnvironment HostingEnvironment { get; }
 
 		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services)
@@ -56,6 +60,13 @@ namespace CoreWiki
 					options.UseSqlite("Data Source=./wiki.db")
 				);
 
+			var templateRootDirectory = Path.Combine(HostingEnvironment.ContentRootPath, "EmailTemplates");
+
+			services.Add(new ServiceDescriptor(typeof(ITemplateProvider), new TemplateProvider(templateRootDirectory)));
+			services.Add(new ServiceDescriptor(typeof(ITemplateParser), typeof(TemplateParser), ServiceLifetime.Scoped));
+			services.Add(new ServiceDescriptor(typeof(IEmailMessageFormatter), typeof(EmailMessageFormatter), ServiceLifetime.Scoped));
+			services.Add(new ServiceDescriptor(typeof(IEmailSender), typeof(EmailSender), ServiceLifetime.Scoped));
+			services.Add(new ServiceDescriptor(typeof(INotificationService), typeof(NotificationService), ServiceLifetime.Scoped));
 
 			// Add NodaTime clock for time-based testing
 			services.AddSingleton<IClock>(SystemClock.Instance);
