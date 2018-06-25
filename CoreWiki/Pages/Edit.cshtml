@@ -12,11 +12,10 @@
 	<div class="col-md-12">
 		<form method="post">
 			<input type="hidden" asp-for="Article.Id" />
-			<input type="hidden" asp-for="Article.Topic" />
 			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
 			<div class="form-group">
 				<label asp-for="Article.Topic" class="control-label"></label>
-				<span>@Model.Article.Topic</span>
+				<input asp-for="Article.Topic" class="form-control" />
 				<span asp-validation-for="Article.Topic" class="text-danger"></span>
 			</div>
 			<div class="form-group">

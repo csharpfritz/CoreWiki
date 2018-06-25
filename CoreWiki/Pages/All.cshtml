@@ -10,24 +10,6 @@
 
 <pager total-pages="Model.TotalPages" current-page="Model.PageNumber"></pager>
 
-@*<ul class="pagination">
-	@for (var pageNum = 1; pageNum <= Model.TotalPages; pageNum++)
-	{
-
-	<li class="page-item @(pageNum == Model.PageNumber ? " active" : "" )">
-		@if (pageNum == Model.PageNumber)
-		{
-		<a class="page-link active" href="#">@pageNum</a>
-		}
-		else
-		{
-		<a class="page-link" asp-page="./All" asp-route-PageNumber="@pageNum">@pageNum</a>
-		}
-	</li>
-
-	}
-</ul>*@
-
 <div class="cwiki-flex-container">
 	@foreach (var article in Model.Articles)
 	{
