@@ -23,6 +23,7 @@ namespace CoreWiki.Services
 		{
 			var author = await _userManager.FindByIdAsync(article.AuthorId.ToString());
 			if (author == null) throw new Exception("Author not found");
+			if (!author.CanNotify) return false;
 			if (string.IsNullOrWhiteSpace(author.Email)) return false;
 
 			var model = new

@@ -9,5 +9,6 @@ namespace CoreWiki.Areas.Identity.Data
     // Add profile data for application users by adding properties to the CoreWikiUser class
     public class CoreWikiUser : IdentityUser
     {
+		public bool CanNotify { get; set; }
     }
 }

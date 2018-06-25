@@ -9,6 +9,7 @@ using NodaTime;
 using CoreWiki.Models;
 using CoreWiki.Helpers;
 using Microsoft.Extensions.Logging;
+using CoreWiki.Areas.Identity.Data;
 using System.Security.Claims;
 
 namespace CoreWiki.Pages
