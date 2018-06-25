@@ -13,23 +13,27 @@ namespace CoreWiki.Helpers
 		public static IList<string> GetArticlesToCreate(ApplicationDbContext context, Article article, bool createSlug = false)
 		{
 			var articlesToCreate = new List<string>();
-			var internalWikiLinkArray = FindWikiArticleLinks(article.Content);
-			foreach (var link in internalWikiLinkArray)
+
+			if (!string.IsNullOrWhiteSpace(article.Content))
 			{
-				// Normalise the potential new wiki link into our slug format
-				var slug = createSlug ? UrlHelpers.URLFriendly(link) : link;
-
-				// Does the slug already exist in the database?
-				if (!context.Articles.Any(x => x.Slug.Equals(slug) && x.Id != article.Id))
+				var internalWikiLinkArray = FindWikiArticleLinks(article.Content);
+				foreach (var link in internalWikiLinkArray)
 				{
-					if (createSlug && !slug.Equals(link))
-					{
-						var target = LinkPrefix + link;
-						var replacement = LinkPrefix + slug;
-						article.Content = article.Content.Replace(target, replacement);
-					}
+					// Normalise the potential new wiki link into our slug format
+					var slug = createSlug ? UrlHelpers.URLFriendly(link) : link;
 
-					articlesToCreate.Add(slug);
+					// Does the slug already exist in the database?
+					if (!context.Articles.Any(x => x.Slug.Equals(slug) && x.Id != article.Id))
+					{
+						if (createSlug && !slug.Equals(link))
+						{
+							var target = LinkPrefix + link;
+							var replacement = LinkPrefix + slug;
+							article.Content = article.Content.Replace(target, replacement);
+						}
+
+						articlesToCreate.Add(slug);
+					}
 				}
 			}
 
