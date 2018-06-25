@@ -77,6 +77,7 @@ namespace CoreWiki
 					options.Conventions.AddPageRoute("/Delete", "{Slug}/Delete");
 					options.Conventions.AddPageRoute("/Details", "{Slug?}");
 					options.Conventions.AddPageRoute("/Details", @"Index");
+					options.Conventions.AddPageRoute("/Create", "{Slug?}/Create");
 				});
 
 			services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
