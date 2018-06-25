@@ -25,6 +25,7 @@ using CoreWiki.Helpers;
 using Microsoft.ApplicationInsights.Extensibility;
 using CoreWiki.Areas.Identity.Data;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Localization;
 
 namespace CoreWiki
 {
@@ -65,7 +66,11 @@ namespace CoreWiki
 			services.AddRouting(options => options.LowercaseUrls = true);
 			services.AddHttpContextAccessor();
 
+			services.AddLocalization(options => options.ResourcesPath = "Globalization");
+
 			services.AddMvc()
+				.AddViewLocalization()
+				.AddDataAnnotationsLocalization()
 				.AddRazorPagesOptions(options =>
 				{
 					options.Conventions.AddPageRoute("/Edit", "/{Slug}/Edit");
@@ -111,6 +116,11 @@ namespace CoreWiki
 				Copyright = DateTime.UtcNow.Year.ToString(),
 				Description = "RSS Feed for CoreWiki",
 				Url = settings.Value.Url
+			});
+
+			app.UseRequestLocalization(new RequestLocalizationOptions
+			{
+				DefaultRequestCulture = new RequestCulture("en-US"),
 			});
 
 			var scope = app.ApplicationServices.CreateScope();
