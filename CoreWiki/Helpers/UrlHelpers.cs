@@ -11,6 +11,18 @@ namespace CoreWiki.Helpers
 		private static readonly Regex reSlugCharactersToRemove = new Regex(@"([^0-9a-z\-])+");
 		private static readonly Regex reSlugDashes = new Regex(@"([\-])+");
 
+		private static readonly Regex reSlugCharacters = new Regex(@"([\s,.//\\-_=])+");
+
+		public static string SlugToTopic(string slug)
+		{
+			if (string.IsNullOrEmpty(slug))
+			{
+				return "";
+			}
+
+			return slug.ToTitleCase().RemoveHyphens();
+		}
+
 		public static string URLFriendly(string title)
 		{
 
