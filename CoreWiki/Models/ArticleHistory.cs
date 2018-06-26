@@ -10,20 +10,22 @@ using NodaTime.Extensions;
 
 namespace CoreWiki.Models
 {
-	public class Article
+	public class ArticleHistory
 	{
 		[Key]
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 		public int Id { get; set; }
+
+		public virtual Article Article { get; set; }
+
+		[Required]
+		public int Version { get; set; }
 
 		[Required, MaxLength(100)]
 		[Display(Name = "Topic")]
 		public string Topic { get; set; }
 
 		public string Slug { get; set; }
-
-		[Required]
-		public int Version { get; set; } = 1;
 
 		[NotMapped]
 		public Instant Published { get; set; }
@@ -43,15 +45,20 @@ namespace CoreWiki.Models
 		[DataType(DataType.MultilineText)]
 		[Display(Name = "Content")]
 		public string Content { get; set; }
-		public virtual ICollection<Comment> Comments { get; set; }
-		public virtual ICollection<ArticleHistory> History { get; set; }
-		public Article()
-		{
-			this.Comments = new HashSet<Comment>();
-			this.History = new HashSet<ArticleHistory>();
-		}
 
-		public int ViewCount { get; set; } = 0;
+		public static ArticleHistory FromArticle(Article article) {
+
+			return new ArticleHistory
+			{
+				Article = article,
+				Content = article.Content,
+				Published = article.Published,
+				Slug = article.Slug,
+				Topic = article.Topic,
+				Version = article.Version
+			};
+
+		}
 
 	}
 

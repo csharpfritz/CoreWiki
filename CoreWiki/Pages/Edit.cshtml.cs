@@ -81,6 +81,8 @@ namespace CoreWiki.Pages
 				_context.Attach(historical).State = EntityState.Added;
 			}
 
+			AddNewArticleVersion();
+
 			try
 			{
 				await _context.SaveChangesAsync();
@@ -103,6 +105,14 @@ namespace CoreWiki.Pages
 			}
 
 			return Redirect($"/{(Article.Slug == "home-page" ? "" : Article.Slug)}");
+		}
+
+		private void AddNewArticleVersion()
+		{
+
+			Article.Version++;
+			_context.ArticleHistories.Add(ArticleHistory.FromArticle(Article));
+
 		}
 
 		private bool ArticleExists(int id)

@@ -26,6 +26,8 @@ namespace CoreWiki.Models
 		public DbSet<Comment> Comments { get; set; }
 		public DbSet<SlugHistory> SlugHistories { get; set; }
 
+		public DbSet<ArticleHistory> ArticleHistories { get; set; }
+
 	internal static void SeedData(ApplicationDbContext context)
 		{
 
@@ -46,6 +48,7 @@ namespace CoreWiki.Models
 
 				};
 				context.Articles.Add(homePageArticle);
+				context.ArticleHistories.Add(ArticleHistory.FromArticle(homePageArticle));
 				context.SaveChanges();
 
 			}

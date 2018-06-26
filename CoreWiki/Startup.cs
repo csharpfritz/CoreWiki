@@ -54,7 +54,7 @@ namespace CoreWiki
 
 			services.AddEntityFrameworkSqlite()
 				.AddDbContextPool<ApplicationDbContext>(options =>
-					options.UseSqlite("Data Source=./wiki.db")
+					options.UseSqlite(Configuration.GetConnectionString("CoreWiki"))
 				);
 
 
@@ -90,10 +90,10 @@ namespace CoreWiki
 		public void Configure(IApplicationBuilder app, IHostingEnvironment env, IOptionsSnapshot<AppSettings> settings)
 		{
 
-      var initializer = new ArticleNotFoundInitializer();
+			var initializer = new ArticleNotFoundInitializer();
 
-      var configuration = app.ApplicationServices.GetService<TelemetryConfiguration>();
-      configuration.TelemetryInitializers.Add(initializer);
+			var configuration = app.ApplicationServices.GetService<TelemetryConfiguration>();
+			configuration.TelemetryInitializers.Add(initializer);
 
 			if (env.IsDevelopment())
 			{

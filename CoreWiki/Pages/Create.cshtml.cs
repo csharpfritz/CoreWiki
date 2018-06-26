@@ -13,71 +13,72 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CoreWiki.Pages
 {
-    public class CreateModel : PageModel
-    {
-        private readonly ApplicationDbContext _context;
-        private readonly IClock _clock;
+	public class CreateModel : PageModel
+	{
+		private readonly ApplicationDbContext _context;
+		private readonly IClock _clock;
 
-    public ILogger Logger { get; private set; }
+		public ILogger Logger { get; private set; }
 
-    public CreateModel(ApplicationDbContext context, IClock clock, ILoggerFactory loggerFactory)
-        {
-            _context = context;
-            _clock = clock;
-            this.Logger = loggerFactory.CreateLogger("CreatePage");
-        }
+		public CreateModel(ApplicationDbContext context, IClock clock, ILoggerFactory loggerFactory)
+		{
+			_context = context;
+			_clock = clock;
+			this.Logger = loggerFactory.CreateLogger("CreatePage");
+		}
 
-        public async Task<IActionResult> OnGetAsync(string slug)
-        {
-            if (string.IsNullOrEmpty(slug))
-            {
-                return Page();
-            }
+		public async Task<IActionResult> OnGetAsync(string slug)
+		{
+			if (string.IsNullOrEmpty(slug))
+			{
+				return Page();
+			}
 
-            Article article = await _context.Articles.SingleOrDefaultAsync(m => m.Slug == slug);
+			Article article = await _context.Articles.SingleOrDefaultAsync(m => m.Slug == slug);
 
-            if (article != null)
-            {
-                return Redirect($"/{slug}/Edit");
-            }
+			if (article != null)
+			{
+				return Redirect($"/{slug}/Edit");
+			}
 
-            Article = new Article()
-            {
-                Topic = UrlHelpers.SlugToTopic(slug)
-            };
+			Article = new Article()
+			{
+				Topic = UrlHelpers.SlugToTopic(slug)
+			};
 
-            return Page();
-        }
+			return Page();
+		}
 
-        [BindProperty]
-        public Article Article { get; set; }
+		[BindProperty]
+		public Article Article { get; set; }
 
-        public async Task<IActionResult> OnPostAsync()
-        {
+		public async Task<IActionResult> OnPostAsync()
+		{
 
-            var slug = UrlHelpers.URLFriendly(Article.Topic.ToLower());
-            Article.Slug = slug;
+			var slug = UrlHelpers.URLFriendly(Article.Topic.ToLower());
+			Article.Slug = slug;
 
-            if (!ModelState.IsValid)
-            {
-                return Page();
-            }
+			if (!ModelState.IsValid)
+			{
+				return Page();
+			}
 
-            //check if the slug already exists in the database.  
-            Logger.LogWarning($"Creating page with slug: {slug}");
-            var isAvailable = !_context.Articles.Any(x => x.Slug == slug);
+			//check if the slug already exists in the database.  
+			Logger.LogWarning($"Creating page with slug: {slug}");
+			var isAvailable = !_context.Articles.Any(x => x.Slug == slug);
 
-            if (isAvailable == false)
-            {
-                ModelState.AddModelError("Article.Topic", "This Title already exists.");
-                return Page();
-            }
+			if (isAvailable == false)
+			{
+				ModelState.AddModelError("Article.Topic", "This Title already exists.");
+				return Page();
+			}
 
-            Article.Published = _clock.GetCurrentInstant();
-            // Article.Slug = slug;
+			Article.Published = _clock.GetCurrentInstant();
+			// Article.Slug = slug;
 
-            _context.Articles.Add(Article);
-            await _context.SaveChangesAsync();
+			_context.Articles.Add(Article);
+			_context.ArticleHistories.Add(ArticleHistory.FromArticle(Article));
+			await _context.SaveChangesAsync();
 
 			var articlesToCreateFromLinks = ArticleHelpers.GetArticlesToCreate(_context, Article, createSlug: true)
 				.ToList();
@@ -88,6 +89,6 @@ namespace CoreWiki.Pages
 			}
 
 			return Redirect($"/{Article.Slug}");
-        }
-    }
+		}
+	}
 }
