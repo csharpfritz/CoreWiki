@@ -26,12 +26,13 @@ using Microsoft.ApplicationInsights.Extensibility;
 using CoreWiki.Areas.Identity.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
+using CoreWiki.Services;
 
 namespace CoreWiki
 {
 	public class Startup
 	{
-		public Startup(IConfiguration configuration)
+		public Startup(IConfiguration configuration, IHostingEnvironment hostingEnvironment)
 		{
 			Configuration = configuration;
 		}
@@ -62,6 +63,11 @@ namespace CoreWiki
 			services.AddSingleton<IClock>(SystemClock.Instance);
 
 			services.AddScoped<IArticlesSearchEngine, ArticlesDbSearchEngine>();
+			services.AddScoped<ITemplateProvider ,TemplateProvider>();
+			services.AddScoped<ITemplateParser, TemplateParser>();
+			services.AddScoped<IEmailMessageFormatter, EmailMessageFormatter>();
+			services.AddScoped<IEmailNotifier, EmailNotifier>();
+			services.AddScoped<INotificationService, NotificationService>();
 
 			services.AddRouting(options => options.LowercaseUrls = true);
 			services.AddHttpContextAccessor();
@@ -76,7 +82,6 @@ namespace CoreWiki
 				});
 
 			services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-			services.AddSingleton<IEmailSender, Services.EmailNotifier>();
 
 			services.AddProgressiveWebApp();
 
