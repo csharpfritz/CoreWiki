@@ -120,10 +120,19 @@
   <data name="ArticleNotFound" xml:space="preserve">
     <value>Article not found</value>
   </data>
-  <data name="ArticleNotFoundText" xml:space="preserve">
-    <value>Please check that the URL you entered is correct. It's also possible that an article at this address was deleted.</value>
+  <data name="Create" xml:space="preserve">
+    <value>Create</value>
   </data>
   <data name="GoHome" xml:space="preserve">
     <value>Go to Homepage</value>
+  </data>
+  <data name="ListItem1" xml:space="preserve">
+    <value>Please check that the URL you entered is correct.</value>
+  </data>
+  <data name="ListItem2" xml:space="preserve">
+    <value>It's also possible that an article at this address was deleted.</value>
+  </data>
+  <data name="ListItem3" xml:space="preserve">
+    <value>If you would like to create the missing article, click the button below.</value>
   </data>
 </root>
