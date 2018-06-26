@@ -29,7 +29,7 @@ namespace CoreWiki.Models
 	internal static void SeedData(ApplicationDbContext context)
 		{
 
-			context.Database.EnsureCreated();
+			context.Database.Migrate();
 
 
 			// Load an initial home page
