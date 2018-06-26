@@ -1,0 +1,12 @@
+@{
+	ViewData["Title"] = Localizer["ArticleNotFound"];
+}
+<h1>@Localizer["ArticleNotFound"]</h1>
+
+<ul>
+	<li>Please check that the URL you entered is correct.</li>
+	<li>It's also possible that an article at this address was deleted.</li>
+	<li>Would you like to <a asp-page="/Create">create</a> the page?</li>
+</ul>
+
+<a href="~/">Go to Homepage</a>

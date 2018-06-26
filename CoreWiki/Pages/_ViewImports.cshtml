@@ -1,5 +1,13 @@
 @using CoreWiki
+@using CoreWiki.Helpers
+@using Microsoft.Extensions.Options;
+@using CoreWiki.Configuration;
+@using Microsoft.AspNetCore.Mvc.Localization
+
+@inject IViewLocalizer Localizer
+
 @namespace CoreWiki.Pages
+
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @addTagHelper *, Westwind.AspNetCore.Markdown
 @addTagHelper *, CoreWiki

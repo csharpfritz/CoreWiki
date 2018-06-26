@@ -2,25 +2,21 @@
 @model CoreWiki.Pages.EditModel
 
 @{
-	ViewData["Title"] = "Edit";
+	ViewData["Title"] = Localizer["Edit"];
 }
 
-<h2>Edit Article</h2>
+<h2>@Localizer["EditArticle"]</h2>
 <hr />
 <br/>
 <div class="row">
 	<div class="col-md-12">
 		<form method="post">
+			<input type="hidden" asp-for="Article.Id" />
 			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
 			<div class="form-group">
 				<label asp-for="Article.Topic" class="control-label"></label>
-				@if (Model.Article.Topic == "HomePage") {
-					<input type="hidden" asp-for="Article.Topic" />
-					<span>@Model.Article.Topic</span>
-				} else {
-					<input asp-for="Article.Topic" />
-					<span asp-validation-for="Article.Topic" class="text-danger"></span>
-				}
+				<input asp-for="Article.Topic" class="form-control" />
+				<span asp-validation-for="Article.Topic" class="text-danger"></span>
 			</div>
 			<div class="form-group">
 				<label asp-for="Article.Content" class="control-label"></label>
@@ -28,14 +24,25 @@
 				<span asp-validation-for="Article.Content" class="text-danger"></span>
 			</div>
 			<div class="form-group">
-				<input type="submit" value="Save" class="btn btn-default" />
+				<div class="input-group mb-3">
+					<div class="input-group-prepend">
+						<span class="input-group-text">@Localizer["Upload"]</span>
+					</div>
+					<div class="custom-file">
+						<input type="file" class="custom-file-input" id="inputGroupFile01" onchange="openFile(event)">
+						<label class="custom-file-label" for="inputGroupFile01">@Localizer["ChooseFile"]</label>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<button type="submit" class="btn btn-outline-primary">@Localizer["Save"]</button>
 			</div>
 		</form>
 	</div>
 </div>
 
 <div>
-	<a asp-page="./Details">Back to Home</a>
+	<a asp-page="./Details">@Localizer["GoHome"]</a>
 </div>
 
 @section Scripts {

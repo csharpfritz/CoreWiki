@@ -17,7 +17,7 @@ namespace CoreWiki.Pages.Components.ListComments
             this._context = context;
         }
 
-        public async Task<IViewComponentResult> InvokeAsync(ICollection<Comment> comments)
+        public IViewComponentResult Invoke(ICollection<Comment> comments)
         {
             return View("ListComments", comments);
         }

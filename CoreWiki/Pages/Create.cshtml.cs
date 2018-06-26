@@ -9,24 +9,45 @@ using NodaTime;
 using CoreWiki.Models;
 using CoreWiki.Helpers;
 using Microsoft.Extensions.Logging;
+using Microsoft.EntityFrameworkCore;
 
 namespace CoreWiki.Pages
 {
     public class CreateModel : PageModel
     {
-        private readonly CoreWiki.Models.ApplicationDbContext _context;
+        private readonly ApplicationDbContext _context;
         private readonly IClock _clock;
 
     public ILogger Logger { get; private set; }
 
-    public CreateModel(CoreWiki.Models.ApplicationDbContext context, IClock clock, ILoggerFactory loggerFactory)
+    public CreateModel(ApplicationDbContext context, IClock clock, ILoggerFactory loggerFactory)
         {
             _context = context;
             _clock = clock;
             this.Logger = loggerFactory.CreateLogger("CreatePage");
         }
 
-        public IActionResult OnGet() => Page();
+        public async Task<IActionResult> OnGetAsync(string slug)
+        {
+            if (string.IsNullOrEmpty(slug))
+            {
+                return Page();
+            }
+
+            Article article = await _context.Articles.SingleOrDefaultAsync(m => m.Slug == slug);
+
+            if (article != null)
+            {
+                return Redirect($"/{slug}/Edit");
+            }
+
+            Article = new Article()
+            {
+                Topic = UrlHelpers.SlugToTopic(slug)
+            };
+
+            return Page();
+        }
 
         [BindProperty]
         public Article Article { get; set; }
@@ -58,7 +79,15 @@ namespace CoreWiki.Pages
             _context.Articles.Add(Article);
             await _context.SaveChangesAsync();
 
-            return Redirect($"/{Article.Slug}");
+			var articlesToCreateFromLinks = ArticleHelpers.GetArticlesToCreate(_context, Article, createSlug: true)
+				.ToList();
+
+			if (articlesToCreateFromLinks.Count > 0)
+			{
+				return RedirectToPage("CreateArticleFromLink", new { id = slug });
+			}
+
+			return Redirect($"/{Article.Slug}");
         }
     }
 }

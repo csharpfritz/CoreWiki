@@ -25,7 +25,7 @@ namespace CoreWiki.Pages
 		public int PageNumber { get; set; } = 1;
 
 		[BindProperty]
-		public int PageSize { get; set; }
+		public int PageSize { get; set; } = 10;
 
 		public SelectList PageSizeOptions { get; set; }
 

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using CoreWiki.Models;
 using NodaTime;
+using CoreWiki.Helpers;
 
 namespace CoreWiki.Pages
 {
@@ -22,6 +23,9 @@ namespace CoreWiki.Pages
 
 		public Article Article { get; set; }
 
+		[ViewDataAttribute]
+		public string Slug { get; set; }
+
 		public async Task<IActionResult> OnGetAsync(string slug)
 		{
 
@@ -33,8 +37,32 @@ namespace CoreWiki.Pages
 
 			if (Article == null)
 			{
-				return NotFound();
+				Slug = slug;
+				var historical = await _context.SlugHistories.Include(h => h.Article)
+					.OrderByDescending(h => h.Added)
+					.FirstOrDefaultAsync(h => h.OldSlug == slug.ToLowerInvariant());
+
+				if (historical != null)
+				{
+					return new RedirectResult($"~/{historical.Article.Slug}");
+				}
+				else
+				{
+					return new ArticleNotFoundResult(slug);
+				}
 			}
+
+			if (Request.Cookies[Article.Topic] == null)
+			{
+				Article.ViewCount++;
+				Response.Cookies.Append(Article.Topic, "foo", new Microsoft.AspNetCore.Http.CookieOptions
+				{
+					Expires = DateTime.UtcNow.AddMinutes(5)
+				});
+
+				await _context.SaveChangesAsync();
+			}
+
 			return Page();
 	}
 
@@ -44,7 +72,7 @@ namespace CoreWiki.Pages
 			Article = await _context.Articles.Include(x => x.Comments).SingleOrDefaultAsync(m => m.Id == comment.IdArticle);
 
 			if (Article == null)
-								 return NotFound();
+								 return new ArticleNotFoundResult();
 
 			if (!ModelState.IsValid)
 								 return Page();

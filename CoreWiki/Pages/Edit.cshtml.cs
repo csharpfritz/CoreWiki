@@ -1,95 +1,114 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using CoreWiki.Models;
 using NodaTime;
 using CoreWiki.Helpers;
+using System;
 
 namespace CoreWiki.Pages
 {
-    public class EditModel : PageModel
-    {
-        private readonly CoreWiki.Models.ApplicationDbContext _context;
-        private readonly IClock _clock;
 
-        public EditModel(CoreWiki.Models.ApplicationDbContext context, IClock clock)
-        {
-            _context = context;
-            _clock = clock;
-        }
+	public class EditModel : PageModel
+	{
+		private readonly ApplicationDbContext _context;
+		private readonly IClock _clock;
 
-        [BindProperty]
-        public Article Article { get; set; }
+		public EditModel(ApplicationDbContext context, IClock clock)
+		{
+			_context = context;
+			_clock = clock;
+		}
 
-        ///  TODO: Make it so you cannot edit the home page Topic as this will change the slug (changing the home page slug will cause a 404)
-        ///  or re-factor to make the home page dynamic or configurable.
-        public async Task<IActionResult> OnGetAsync(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
+		[BindProperty]
+		public Article Article { get; set; }
 
-            Article = await _context.Articles.SingleOrDefaultAsync(m => m.Id == id);
+		public async Task<IActionResult> OnGetAsync(string slug)
+		{
+			if (slug == null)
+			{
+				return NotFound();
+			}
 
-            if (Article == null)
-            {
-                return NotFound();
-            }
-            return Page();
-        }
+			Article = await _context.Articles.SingleOrDefaultAsync(m => m.Slug == slug);
 
-        public async Task<IActionResult> OnPostAsync()
-        {
+			if (Article == null)
+			{
+				return new ArticleNotFoundResult();
+			}
+			return Page();
+		}
 
-            if (!ModelState.IsValid)
-            {
-                return Page();
-            }
+		public async Task<IActionResult> OnPostAsync()
+		{
+			if (!ModelState.IsValid)
+			{
+				return Page();
+			}
 
+			var existingArticle = _context.Articles.AsNoTracking().First(a => a.Id == Article.Id);
+			Article.ViewCount = existingArticle.ViewCount;
 
-            _context.Attach(Article).State = EntityState.Modified;
+			//check if the slug already exists in the database.
+			var slug = UrlHelpers.URLFriendly(Article.Topic.ToLower());
+			var isAvailable = !_context.Articles.Any(x => x.Slug == slug && x.Id != Article.Id);
 
-            //check if the slug already exists in the database.  
-            var slug = UrlHelpers.URLFriendly(Article.Topic.ToLower());
-            var isAvailable = !_context.Articles.Any(x => x.Slug == slug && x.Id != Article.Id);
+			if (isAvailable == false)
+			{
+				ModelState.AddModelError("Article.Topic", "This Title already exists.");
+				return Page();
+			}
 
-            if (isAvailable == false)
-            {
-                ModelState.AddModelError("Article.Topic", "This Title already exists.");
-                return Page();
-            }
+			var articlesToCreateFromLinks = ArticleHelpers.GetArticlesToCreate(_context, Article, createSlug: true)
+				.ToList();
 
-            Article.Published = _clock.GetCurrentInstant();
-            Article.Slug = slug;
+			_context.Attach(Article).State = EntityState.Modified;
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ArticleExists(Article.Id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+			Article.Published = _clock.GetCurrentInstant();
+			Article.Slug = slug;
 
-            return Redirect($"/{(Article.Slug == "home-page" ? "" : Article.Slug)}");
-        }
+			if (!string.Equals(Article.Slug, existingArticle.Slug, StringComparison.InvariantCulture))
+			{
+				var historical = new SlugHistory()
+				{
+					OldSlug = existingArticle.Slug,
+					Article = Article,
+					Added = _clock.GetCurrentInstant(),
+				};
 
-        private bool ArticleExists(int id)
-        {
-            return _context.Articles.Any(e => e.Id == id);
-        }
-    }
+				_context.Attach(historical).State = EntityState.Added;
+			}
+
+			try
+			{
+				await _context.SaveChangesAsync();
+			}
+			catch (DbUpdateConcurrencyException)
+			{
+				if (!ArticleExists(Article.Id))
+				{
+					return new ArticleNotFoundResult();
+				}
+				else
+				{
+					throw;
+				}
+			}
+
+			if (articlesToCreateFromLinks.Count > 0)
+			{
+				return RedirectToPage("CreateArticleFromLink", new { id = slug });
+			}
+
+			return Redirect($"/{(Article.Slug == "home-page" ? "" : Article.Slug)}");
+		}
+
+		private bool ArticleExists(int id)
+		{
+			return _context.Articles.Any(e => e.Id == id);
+		}
+	}
+
 }

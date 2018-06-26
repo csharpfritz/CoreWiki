@@ -1,0 +1,34 @@
+﻿<select id="selectTheme" class="form-control form-control-sm text-muted">
+	<option value="default">@Localizer["Default"]</option>
+	<option value="themeDark">@Localizer["Dark"]</option>
+	<option value="themeOuch">@Localizer["Vivid"]</option>
+</select>
+<script>
+	(function () {
+		'use strict';
+
+		const themeCookieName = "CoreWiki.Theme";
+		const DefaultTheme = "light";
+
+		function getCookie(name) {
+			var value = "; " + document.cookie;
+			var parts = value.split("; " + name + "=");
+			if (parts.length == 2) return parts.pop().split(";").shift();
+		}
+
+		var themeName = getCookie(themeCookieName);
+		if (themeName == undefined) {
+			themeName = DefaultTheme;
+		}
+
+		document.querySelector("#selectTheme").value = themeName;
+
+		var select = document.getElementById("selectTheme");
+		select.addEventListener("change", function (ev) {
+			console.log("Select Theme: " + ev.target.value);
+			document.cookie = encodeURIComponent(themeCookieName) + "=" + encodeURIComponent(ev.target.value) + ";Max-Age=" + (10 * 365 * 24 * 60 * 60) + " ;SameSite=Strict; Path=/";
+			location.reload();
+		});
+	})();
+</script>
+
