@@ -50,6 +50,7 @@ namespace CoreWiki.Pages
 
 			var existingArticle = _context.Articles.AsNoTracking().First(a => a.Id == Article.Id);
 			Article.ViewCount = existingArticle.ViewCount;
+			Article.Version = existingArticle.Version + 1;
 
 			//check if the slug already exists in the database.
 			var slug = UrlHelpers.URLFriendly(Article.Topic.ToLower());
@@ -110,7 +111,6 @@ namespace CoreWiki.Pages
 		private void AddNewArticleVersion()
 		{
 
-			Article.Version++;
 			_context.ArticleHistories.Add(ArticleHistory.FromArticle(Article));
 
 		}
