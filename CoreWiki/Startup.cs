@@ -25,12 +25,15 @@ using CoreWiki.Helpers;
 using Microsoft.ApplicationInsights.Extensibility;
 using CoreWiki.Areas.Identity.Data;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using CoreWiki.Services;
+using Microsoft.AspNetCore.Localization;
 
 namespace CoreWiki
 {
 	public class Startup
 	{
-		public Startup(IConfiguration configuration)
+		public Startup(IConfiguration configuration, IHostingEnvironment hostingEnvironment)
 		{
 			Configuration = configuration;
 		}
@@ -53,7 +56,7 @@ namespace CoreWiki
 
 			services.AddEntityFrameworkSqlite()
 				.AddDbContextPool<ApplicationDbContext>(options =>
-					options.UseSqlite("Data Source=./wiki.db")
+					options.UseSqlite(Configuration.GetConnectionString("CoreWikiData"))
 				);
 
 
@@ -61,17 +64,27 @@ namespace CoreWiki
 			services.AddSingleton<IClock>(SystemClock.Instance);
 
 			services.AddScoped<IArticlesSearchEngine, ArticlesDbSearchEngine>();
+			services.AddScoped<ITemplateProvider ,TemplateProvider>();
+			services.AddScoped<ITemplateParser, TemplateParser>();
+			services.AddScoped<IEmailMessageFormatter, EmailMessageFormatter>();
+			services.AddScoped<IEmailNotifier, EmailNotifier>();
+			services.AddScoped<INotificationService, NotificationService>();
 
 			services.AddRouting(options => options.LowercaseUrls = true);
 			services.AddHttpContextAccessor();
 
+			services.AddLocalization(options => options.ResourcesPath = "Globalization");
+
 			services.AddMvc()
+				.AddViewLocalization()
+				.AddDataAnnotationsLocalization()
 				.AddRazorPagesOptions(options =>
 				{
 					options.Conventions.AddPageRoute("/Edit", "/{Slug}/Edit");
 					options.Conventions.AddPageRoute("/Delete", "{Slug}/Delete");
 					options.Conventions.AddPageRoute("/Details", "{Slug?}");
 					options.Conventions.AddPageRoute("/Details", @"Index");
+					options.Conventions.AddPageRoute("/Create", "{Slug?}/Create");
 				});
 
 			services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
@@ -96,8 +109,13 @@ namespace CoreWiki
 			} else
 			{
 				app.UseExceptionHandler("/Error");
-				app.UseHsts();
 			}
+
+			app.UseHsts(options => options.MaxAge(days: 365).IncludeSubdomains());
+			app.UseXContentTypeOptions();
+			app.UseReferrerPolicy(options => options.NoReferrer());
+			app.UseXXssProtection(options => options.EnabledWithBlockMode());
+			app.UseXfo(options => options.Deny());
 
 			app.UseHttpsRedirection();
 			app.UseStaticFiles();
@@ -111,6 +129,11 @@ namespace CoreWiki
 				Copyright = DateTime.UtcNow.Year.ToString(),
 				Description = "RSS Feed for CoreWiki",
 				Url = settings.Value.Url
+			});
+
+			app.UseRequestLocalization(new RequestLocalizationOptions
+			{
+				DefaultRequestCulture = new RequestCulture("en-US"),
 			});
 
 			var scope = app.ApplicationServices.CreateScope();

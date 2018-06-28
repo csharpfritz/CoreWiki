@@ -4,14 +4,14 @@
 	ViewData["Title"] = "CreateArticleFromLink";
 }
 
-<h2>Found links to articles that do not yet exist</h2>
+<h2>@Localizer["FoundLinksText"]</h2>
 <hr />
 <br />
 <div class="row">
 	<div class="col-md-12">
 		<form method="post">
 			<div>
-				<div>The following links to CoreWiki articles that do not yet exist were found in the Article:</div>
+				<div>@Localizer["FoundLinksDetail"]:</div>
 				<br />
 				@if (Model.LinksToCreate != null && Model.LinksToCreate.Count > 0)
 				{
@@ -24,14 +24,14 @@
 				}
 			</div>
 			<br />
-			<div>Would you link to create these articles now?</div>
+			<div>@Localizer["FoundLinksQuestion"]</div>
 			<br />
 			<div class="form-group">
 				<input type="hidden" asp-for="Article.Slug" />
 				<div class="input-group mb-3">
-					<input type="submit" value="Yes" class="btn btn-default" asp-page-handler="CreateLinks" asp-route-slug=@Model.Article.Slug />
+					<button type="submit" value=@Localizer["Yes"] class="btn btn-outline-primary" asp-page-handler="CreateLinks" asp-route-slug=@Model.Article.Slug>@Localizer["Yes"]</button>
 					<span>&nbsp;</span>
-					<input type="submit" value="No" class="btn btn-default" asp-page-handler="Cancel" asp-route-slug=@Model.Article.Slug />
+					<button type="submit" value=@Localizer["No"] class="btn btn-outline-primary" asp-page-handler="Cancel" asp-route-slug=@Model.Article.Slug>@Localizer["No"]</button>
 				</div>
 			</div>
 		</form>

@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using CoreWiki.Models;
 using NodaTime;
 using CoreWiki.Helpers;
+using System;
 
 namespace CoreWiki.Pages
 {
@@ -47,10 +48,10 @@ namespace CoreWiki.Pages
 				return Page();
 			}
 
-			var existingArticle = _context.Articles.AsNoTracking().First(a => a.Topic == Article.Topic);
+			var existingArticle = _context.Articles.AsNoTracking().First(a => a.Id == Article.Id);
 			Article.ViewCount = existingArticle.ViewCount;
 
-			//check if the slug already exists in the database.  
+			//check if the slug already exists in the database.
 			var slug = UrlHelpers.URLFriendly(Article.Topic.ToLower());
 			var isAvailable = !_context.Articles.Any(x => x.Slug == slug && x.Id != Article.Id);
 
@@ -67,6 +68,18 @@ namespace CoreWiki.Pages
 
 			Article.Published = _clock.GetCurrentInstant();
 			Article.Slug = slug;
+
+			if (!string.Equals(Article.Slug, existingArticle.Slug, StringComparison.InvariantCulture))
+			{
+				var historical = new SlugHistory()
+				{
+					OldSlug = existingArticle.Slug,
+					Article = Article,
+					Added = _clock.GetCurrentInstant(),
+				};
+
+				_context.Attach(historical).State = EntityState.Added;
+			}
 
 			try
 			{

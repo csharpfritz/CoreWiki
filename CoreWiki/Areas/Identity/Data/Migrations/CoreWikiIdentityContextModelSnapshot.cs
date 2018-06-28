@@ -14,7 +14,7 @@ namespace CoreWiki.Areas.Identity.Data.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.1.0-rtm-30799");
+                .HasAnnotation("ProductVersion", "2.1.1-rtm-30846");
 
             modelBuilder.Entity("CoreWiki.Areas.Identity.Data.CoreWikiUser", b =>
                 {
@@ -22,6 +22,8 @@ namespace CoreWiki.Areas.Identity.Data.Migrations
                         .ValueGeneratedOnAdd();
 
                     b.Property<int>("AccessFailedCount");
+
+                    b.Property<bool>("CanNotify");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken();
@@ -87,6 +89,12 @@ namespace CoreWiki.Areas.Identity.Data.Migrations
                         .HasName("RoleNameIndex");
 
                     b.ToTable("AspNetRoles");
+
+                    b.HasData(
+                        new { Id = "5ca00d44-70cc-44a1-947d-a8daeb526ef0", ConcurrencyStamp = "615c7a08-8148-4add-b333-f5ca305400ac", Name = "Authors", NormalizedName = "Authors" },
+                        new { Id = "a8f0e30f-73f2-44db-90b3-11797e5d2c5c", ConcurrencyStamp = "4f044959-1a5e-488b-a12d-daa39b5b2722", Name = "Editors", NormalizedName = "Editors" },
+                        new { Id = "8b46d803-42ab-411a-ad96-21f58234c3fc", ConcurrencyStamp = "d2e1787b-db7a-424e-8ecb-56754fc0d71a", Name = "Administrators", NormalizedName = "Administrators" }
+                    );
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

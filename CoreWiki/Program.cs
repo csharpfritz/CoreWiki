@@ -21,6 +21,10 @@ namespace CoreWiki
             WebHost.CreateDefaultBuilder(args)
                 .UseApplicationInsights()
                 .UseStartup<Startup>()
+                .UseKestrel(options =>
+                {
+                    options.AddServerHeader = false;
+                })
                 .Build();
     }
 }

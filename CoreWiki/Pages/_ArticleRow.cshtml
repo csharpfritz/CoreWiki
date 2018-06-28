@@ -1,3 +1,5 @@
+@using Microsoft.AspNetCore.Authorization
+@inject IAuthorizationService AuthorizationService
 @model Models.Article
 
 
@@ -12,12 +14,12 @@
 		</div>
 		<div class="card-body">
 			<h6 class="card-subtitle mb-2 text-muted"><span data-value="@Model.Published" class="timeStampValue"> @Model.Published</span></h6>
-			<h6 class="card-subtitle mb-2 text-muted">View Count: <span> @Model.ViewCount</span></h6>
+			<h6 class="card-subtitle mb-2 text-muted">@Localizer["ViewCount"]: <span> @Model.ViewCount</span></h6>
 
-			<a class="card-link btn btn-outline-info btn-sm" asp-page="/Edit" asp-route-slug="@Model.Slug">Edit</a>
+			<a class="card-link btn btn-outline-info btn-sm" asp-page="/Edit" asp-route-slug="@Model.Slug">@Localizer["Edit"]</a>
 			@if (Model.Slug != "home-page")
 			{
-			<a class="card-link btn btn-outline-danger btn-sm" asp-page="/Delete" asp-route-slug="@Model.Slug">Delete</a>
+			<a class="card-link btn btn-outline-danger btn-sm" asp-policy="CanDeleteArticles" asp-policy-message="You do not have permission to delete this article." asp-page="/Delete" asp-route-slug="@Model.Slug">@Localizer["Delete"]</a>
 			}
 		</div>
 	</div>

@@ -24,11 +24,15 @@ namespace CoreWiki.Models
         [Display(Name = "Name")]
         public string DisplayName { get; set; }
 
-        [Required, MaxLength(100), DataType(DataType.EmailAddress), EmailAddress(ErrorMessage = "Not a valid Email address")]
+		[Display(Name = "Email")]
+		[Required, MaxLength(100), DataType(DataType.EmailAddress), EmailAddress(ErrorMessage = "Not a valid Email address")]
         public string Email { get; set; }
 
         [NotMapped]
         public Instant Submitted { get; set; }
+
+				[Required]
+				public Guid AuthorId { get; set; } = Guid.NewGuid();
 
         // Buddy property (?)
         [Obsolete("This property only exists for EF-serialization purposes")]
@@ -42,7 +46,8 @@ namespace CoreWiki.Models
         }
 
         [Required]
-        [DataType(DataType.MultilineText)]
+		[Display(Name = "Content")]
+		[DataType(DataType.MultilineText)]
         public string Content { get; set; }
     }
 }

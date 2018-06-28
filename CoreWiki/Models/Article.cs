@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
+using CoreWiki.Areas.Identity.Data;
 using NodaTime;
 using NodaTime.Extensions;
 
@@ -17,12 +18,16 @@ namespace CoreWiki.Models
 		public int Id { get; set; }
 
 		[Required, MaxLength(100)]
+		[Display(Name = "Topic")]
 		public string Topic { get; set; }
 
 		public string Slug { get; set; }
 
 		[NotMapped]
 		public Instant Published { get; set; }
+
+		[Required]
+		public Guid AuthorId { get; set; } = Guid.NewGuid();
 
 		// Buddy property (?)
 		[Obsolete("This property only exists for EF-serialization purposes")]
@@ -37,6 +42,7 @@ namespace CoreWiki.Models
 		}
 
 		[DataType(DataType.MultilineText)]
+		[Display(Name = "Content")]
 		public string Content { get; set; }
 		public virtual ICollection<Comment> Comments { get; set; }
 		public Article()
