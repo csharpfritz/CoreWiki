@@ -57,6 +57,7 @@ namespace CoreWiki
 			services.AddEntityFrameworkSqlite()
 				.AddDbContextPool<ApplicationDbContext>(options =>
 					options.UseSqlite(Configuration.GetConnectionString("CoreWikiData"))
+						.EnableSensitiveDataLogging(true)
 				);
 
 

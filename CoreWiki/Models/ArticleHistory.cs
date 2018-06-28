@@ -18,6 +18,9 @@ namespace CoreWiki.Models
 
 		public virtual Article Article { get; set; }
 
+		[ForeignKey(nameof(Article))]
+		public int ArticleId { get; set; }
+
 		[Required]
 		public int Version { get; set; }
 
@@ -46,11 +49,14 @@ namespace CoreWiki.Models
 		[Display(Name = "Content")]
 		public string Content { get; set; }
 
-		public static ArticleHistory FromArticle(Article article) {
+		public static ArticleHistory FromArticle(Article article)
+		{
 
 			return new ArticleHistory
 			{
+				Id = 1,
 				Article = article,
+				ArticleId = article.Id,
 				Content = article.Content,
 				Published = article.Published,
 				Slug = article.Slug,
