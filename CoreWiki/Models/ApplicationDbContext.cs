@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using NodaTime;
+using System;
 using System.Linq;
 
 namespace CoreWiki.Models
@@ -14,9 +15,22 @@ namespace CoreWiki.Models
 
 		}
 
-		protected override void OnModelCreating(ModelBuilder modelBuilder) {
+		protected override void OnModelCreating(ModelBuilder modelBuilder)
+		{
 
 			modelBuilder.Entity<Article>().HasIndex(a => a.Slug).IsUnique();
+
+			modelBuilder.Entity<Article>().HasData(new[] {
+				new Article
+					{
+						Id=1,
+						Topic = "HomePage",
+						Slug= "home-page",
+						Content = "This is the default home page.  Please change me!",
+						Published = SystemClock.Instance.GetCurrentInstant(),
+						AuthorId = Guid.NewGuid()
+					}
+			});
 
 			modelBuilder.Entity<SlugHistory>().HasIndex(a => new { a.OldSlug, a.AddedDateTime });
 
@@ -30,26 +44,6 @@ namespace CoreWiki.Models
 		{
 
 			context.Database.Migrate();
-
-
-			// Load an initial home page
-			if (!context.Articles.Any(a => a.Topic == "Home Page"))
-			{
-
-				var homePageArticle = new Article
-				{
-
-					Topic = "Home Page",
-					Slug= "home-page",
-					Content = "This is the default home page.  Please change me!",
-					Published = SystemClock.Instance.GetCurrentInstant()
-
-				};
-				context.Articles.Add(homePageArticle);
-				context.SaveChanges();
-
-			}
-
 
 		}
 

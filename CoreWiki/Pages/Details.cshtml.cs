@@ -8,6 +8,16 @@ using Microsoft.EntityFrameworkCore;
 using CoreWiki.Models;
 using NodaTime;
 using CoreWiki.Helpers;
+using SendGrid;
+using SendGrid.Helpers.Mail;
+using Microsoft.AspNetCore.Identity;
+using CoreWiki.Areas.Identity.Data;
+using System.Security.Policy;
+using Microsoft.AspNetCore.Mvc.Routing;
+using Microsoft.AspNetCore.Http.Extensions;
+using Microsoft.Extensions.Configuration;
+using CoreWiki.Services;
+using Microsoft.AspNetCore.Identity.UI.Services;
 
 namespace CoreWiki.Pages
 {
@@ -15,10 +25,21 @@ namespace CoreWiki.Pages
 	{
 		private readonly CoreWiki.Models.ApplicationDbContext _context;
 		private readonly IClock _clock;
-		public DetailsModel(CoreWiki.Models.ApplicationDbContext context, IClock clock)
+		private readonly UserManager<CoreWikiUser> _UserManager;
+		private readonly INotificationService _notificationService;
+
+		public IConfiguration Configuration { get; }
+		public IEmailSender Notifier { get; }
+
+		public DetailsModel(CoreWiki.Models.ApplicationDbContext context, UserManager<CoreWikiUser> userManager,
+			IConfiguration config, INotificationService notificationService,
+			IClock clock)
 		{
 			_context = context;
 			_clock = clock;
+			_UserManager = userManager;
+			_notificationService = notificationService;
+			this.Configuration = config;
 		}
 
 		public Article Article { get; set; }
@@ -82,7 +103,9 @@ namespace CoreWiki.Pages
 			comment.Submitted = _clock.GetCurrentInstant();
 
 			_context.Comments.Add(comment);
+			var author = await _UserManager.FindByIdAsync(this.Article.AuthorId.ToString());
 			await _context.SaveChangesAsync();
+			await _notificationService.NotifyAuthorNewComment(author, Article, comment);
 
 			return Redirect($"/{Article.Slug}");
 		}

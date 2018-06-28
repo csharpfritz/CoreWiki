@@ -11,6 +11,7 @@ namespace CoreWiki.Configuration
 		public Uri Url { get; set; }
 		public Connectionstrings ConnectionStrings { get; set; }
 		public Comments Comments { get; set; }
+		public EmailNotifications EmailNotifications { get; set; }
 		public CspSettings CspSettings { get; set; }
 
 	}
@@ -48,5 +49,12 @@ namespace CoreWiki.Configuration
 	{
 		public string ShortName { get; set; }
 
+	}
+
+	public class EmailNotifications
+	{
+		public string SendGridApiKey { get; set; }
+		public string FromEmailAddress { get; set; }
+		public string FromName { get; set; }
 	}
 }

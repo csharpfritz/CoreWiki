@@ -9,23 +9,43 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CoreWiki.Models
 {
-    public class CoreWikiIdentityContext : IdentityDbContext<CoreWikiUser>
-    {
-        public CoreWikiIdentityContext(DbContextOptions<CoreWikiIdentityContext> options)
-            : base(options)
-        {
-        }
+	public class CoreWikiIdentityContext : IdentityDbContext<CoreWikiUser>
+	{
+		public CoreWikiIdentityContext(DbContextOptions<CoreWikiIdentityContext> options)
+				: base(options)
+		{
+		}
 
-        protected override void OnModelCreating(ModelBuilder builder)
-        {
-            base.OnModelCreating(builder);
-            // Customize the ASP.NET Identity model and override the defaults if needed.
-            // For example, you can rename the ASP.NET Identity table names and more.
-            // Add your customizations after calling base.OnModelCreating(builder);
-        }
+		protected override void OnModelCreating(ModelBuilder builder)
+		{
+			base.OnModelCreating(builder);
+
+			builder.Entity<IdentityRole>().HasData(new[] {
+
+				new IdentityRole
+					{
+						Name = "Authors",
+						NormalizedName = "Authors"
+					},
+					new IdentityRole
+				{
+					Name = "Editors",
+					NormalizedName = "Editors"
+				},
+				new IdentityRole
+				{
+					Name = "Administrators",
+					NormalizedName = "Administrators"
+				}
+
+			});
+
+		}
 		internal static void SeedData(CoreWikiIdentityContext context)
 		{
+
 			context.Database.Migrate();
+
 		}
 	}
 }
