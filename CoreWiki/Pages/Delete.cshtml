@@ -34,7 +34,7 @@
 
     <form method="post">
         <input type="hidden" asp-for="Article.Id" />
-        <button type="submit" class="btn btn-outline-primary">@Localizer["Delete"]</button>
+        <button type="submit" class="btn btn-outline-primary" asp-policy="CanDeleteArticles" asp-policy-message="You do not have permission to delete this article.">@Localizer["Delete"]</button>
 
     </form>
     <div>

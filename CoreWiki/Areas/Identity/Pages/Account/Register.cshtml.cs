@@ -55,7 +55,10 @@ namespace CoreWiki.Areas.Identity.Pages.Account
             [Display(Name = "Confirm password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
-        }
+
+			[Display(Name = "Opt-in to notifications?")]
+			public bool CanNotify { get; set; }
+		}
 
         public void OnGet(string returnUrl = null)
         {
@@ -67,7 +70,13 @@ namespace CoreWiki.Areas.Identity.Pages.Account
             returnUrl = returnUrl ?? Url.Content("~/");
             if (ModelState.IsValid)
             {
-                var user = new CoreWikiUser { UserName = Input.Email, Email = Input.Email };
+                var user = new CoreWikiUser
+				{
+					UserName = Input.Email,
+					Email = Input.Email,
+					CanNotify = Input.CanNotify
+				};
+
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {

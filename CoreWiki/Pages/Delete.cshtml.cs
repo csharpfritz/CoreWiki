@@ -6,10 +6,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using CoreWiki.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CoreWiki.Pages
 {
-    public class DeleteModel : PageModel
+		[Authorize("CanDeleteArticles")]
+
+		public class DeleteModel : PageModel
     {
         private readonly CoreWiki.Models.ApplicationDbContext _context;
 
