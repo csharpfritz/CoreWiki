@@ -4,9 +4,16 @@
 <h1>@Localizer["ArticleNotFound"]</h1>
 
 <ul>
-	<li>Please check that the URL you entered is correct.</li>
-	<li>It's also possible that an article at this address was deleted.</li>
-	<li>Would you like to <a asp-page="/Create">create</a> the page?</li>
+	<li>@Localizer["ListItem1"]</li>
+	<li>@Localizer["ListItem2"]</li>
+
+	@* TODO: Only show ListItem3 if the user satisfies the policy to create articles *@
+	<li>@Localizer["ListItem3"]</li>
 </ul>
 
-<a href="~/">Go to Homepage</a>
+@* TODO: Only show button if the user satisfies the policy to create articles *@
+<div>
+<a class="btn btn-outline-info" asp-page="/Create">@Localizer["Create"]</a>
+</div>
+<br />
+<a href="~/">@Localizer["GoHome"]</a>

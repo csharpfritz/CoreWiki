@@ -8,12 +8,6 @@ namespace CoreWiki.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AlterColumn<string>(
-                name: "Slug",
-                table: "Articles",
-                nullable: true,
-                oldClrType: typeof(string));
-
             migrationBuilder.CreateTable(
                 name: "Comments",
                 columns: table => new
@@ -48,13 +42,6 @@ namespace CoreWiki.Migrations
         {
             migrationBuilder.DropTable(
                 name: "Comments");
-
-            migrationBuilder.AlterColumn<string>(
-                name: "Slug",
-                table: "Articles",
-                nullable: false,
-                oldClrType: typeof(string),
-                oldNullable: true);
         }
     }
 }

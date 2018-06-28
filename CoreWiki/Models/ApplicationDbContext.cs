@@ -29,17 +29,17 @@ namespace CoreWiki.Models
 	internal static void SeedData(ApplicationDbContext context)
 		{
 
-			context.Database.EnsureCreated();
+			context.Database.Migrate();
 
 
 			// Load an initial home page
-			if (!context.Articles.Any(a => a.Topic == "HomePage"))
+			if (!context.Articles.Any(a => a.Topic == "Home Page"))
 			{
 
 				var homePageArticle = new Article
 				{
 
-					Topic = "HomePage",
+					Topic = "Home Page",
 					Slug= "home-page",
 					Content = "This is the default home page.  Please change me!",
 					Published = SystemClock.Instance.GetCurrentInstant()
