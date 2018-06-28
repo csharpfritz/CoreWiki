@@ -107,10 +107,11 @@ namespace CoreWiki.TagHelpers
 		{
 			var first = CreatePageItem();
 			var previous = CreatePageItem();
-			var clickable = CurrentPage != 1;
+			var clickable = CurrentPage > 1;
+			var previous_page_number = CurrentPage - 1 > TotalPages ? TotalPages : CurrentPage - 1;
 
 			first.InnerHtml.AppendHtml(CreatePaginatorButton(localizer["FirstPage"], "<<", 1, clickable));
-			previous.InnerHtml.AppendHtml(CreatePaginatorButton(localizer["PreviousPage"], "<", CurrentPage - 1, clickable));
+			previous.InnerHtml.AppendHtml(CreatePaginatorButton(localizer["PreviousPage"], "<", previous_page_number, clickable));
 
 			if (!clickable)
 			{
@@ -127,9 +128,10 @@ namespace CoreWiki.TagHelpers
 		{
 			var next = CreatePageItem();
 			var last = CreatePageItem();
-			var clickable = CurrentPage != TotalPages;
+			var clickable = TotalPages > 0 && CurrentPage < TotalPages;
+			var next_page_number = CurrentPage < 1 ? 1 : CurrentPage + 1;
 
-			next.InnerHtml.AppendHtml(CreatePaginatorButton(localizer["NextPage"], ">", CurrentPage + 1, clickable));
+			next.InnerHtml.AppendHtml(CreatePaginatorButton(localizer["NextPage"], ">", next_page_number, clickable));
 			last.InnerHtml.AppendHtml(CreatePaginatorButton(localizer["LastPage"], ">>", TotalPages, clickable));
 
 			if (!clickable)
