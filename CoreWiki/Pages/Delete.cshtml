@@ -2,12 +2,12 @@
 @model CoreWiki.Pages.DeleteModel
 
 @{
-    ViewData["Title"] = "Delete";
+    ViewData["Title"] = Localizer["Delete"];
 }
 
-<h2>Delete</h2>
+<h2>@Localizer["Delete"]</h2>
 
-<h3>Are you sure you want to delete this article?</h3>
+<h3>@Localizer["DeleteQuestion"]</h3>
 <hr />
 <br/>
 <div>
@@ -34,10 +34,10 @@
 
     <form method="post">
         <input type="hidden" asp-for="Article.Id" />
-        <input asp-policy="CanDeleteArticles" asp-policy-message="You do not have permission to delete this article." type="submit" value="Delete" class="btn btn-default" />
+        <button type="submit" class="btn btn-outline-primary" asp-policy="CanDeleteArticles" asp-policy-message="You do not have permission to delete this article.">@Localizer["Delete"]</button>
 
     </form>
     <div>
-        <a asp-page="./Details">Back to Home</a>
+        <a asp-page="./Details">@Localizer["GoHome"]</a>
     </div>
 </div>

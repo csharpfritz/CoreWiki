@@ -1,24 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using CoreWiki.Models;
 using NodaTime;
 using CoreWiki.Helpers;
+using System;
 
 namespace CoreWiki.Pages
 {
 
 	public class EditModel : PageModel
 	{
-		private readonly CoreWiki.Models.ApplicationDbContext _context;
+		private readonly ApplicationDbContext _context;
 		private readonly IClock _clock;
 
-		public EditModel(CoreWiki.Models.ApplicationDbContext context, IClock clock)
+		public EditModel(ApplicationDbContext context, IClock clock)
 		{
 			_context = context;
 			_clock = clock;
@@ -50,10 +48,10 @@ namespace CoreWiki.Pages
 				return Page();
 			}
 
-			var existingArticle = _context.Articles.AsNoTracking().First(a => a.Topic == Article.Topic);
+			var existingArticle = _context.Articles.AsNoTracking().First(a => a.Id == Article.Id);
 			Article.ViewCount = existingArticle.ViewCount;
 
-			//check if the slug already exists in the database.  
+			//check if the slug already exists in the database.
 			var slug = UrlHelpers.URLFriendly(Article.Topic.ToLower());
 			var isAvailable = !_context.Articles.Any(x => x.Slug == slug && x.Id != Article.Id);
 
@@ -63,10 +61,25 @@ namespace CoreWiki.Pages
 				return Page();
 			}
 
+			var articlesToCreateFromLinks = ArticleHelpers.GetArticlesToCreate(_context, Article, createSlug: true)
+				.ToList();
+
 			_context.Attach(Article).State = EntityState.Modified;
 
 			Article.Published = _clock.GetCurrentInstant();
 			Article.Slug = slug;
+
+			if (!string.Equals(Article.Slug, existingArticle.Slug, StringComparison.InvariantCulture))
+			{
+				var historical = new SlugHistory()
+				{
+					OldSlug = existingArticle.Slug,
+					Article = Article,
+					Added = _clock.GetCurrentInstant(),
+				};
+
+				_context.Attach(historical).State = EntityState.Added;
+			}
 
 			try
 			{
@@ -82,6 +95,11 @@ namespace CoreWiki.Pages
 				{
 					throw;
 				}
+			}
+
+			if (articlesToCreateFromLinks.Count > 0)
+			{
+				return RedirectToPage("CreateArticleFromLink", new { id = slug });
 			}
 
 			return Redirect($"/{(Article.Slug == "home-page" ? "" : Article.Slug)}");

@@ -1,23 +1,24 @@
 @page
 @using System.Collections.Generic
 @using Microsoft.AspNetCore.Mvc.Rendering
+@using Humanizer;
 @model SearchModel
 @{
-	ViewData["Title"] = "Search";
+	ViewData["Title"] = Localizer["Search"];
 	var searchResult = Model.SearchResult;
 	var urlParams = new Dictionary<string, string>
 {
 {"Query", searchResult?.Query ?? ""}
 };
 }
-<h1 class="h1">Search CoreWiki</h1>
+<h1 class="h1">@Localizer["SearchText"]</h1>
 
 <form action="/search" method="get" class="my-2">
 	<div class="form-group">
 		<div class="input-group">
-			<input class="form-control" type="text" name="Query" value="@searchResult?.Query" placeholder="Search for articles on CoreWiki" />
+			<input class="form-control" type="text" name="Query" value="@searchResult?.Query" placeholder=@Localizer["SearchPlaceholderText"] />
 			<div class="input-group-append">
-				<button class="btn badge-primary" type="submit">Search</button>
+				<button class="btn badge-primary" type="submit">@Localizer["Search"]</button>
 			</div>
 		</div>
 	</div>
@@ -26,7 +27,7 @@
 @if (searchResult != null)
 {
 	<div class="mb-2">
-		@StringHelpers.Pluralize("result", "results", searchResult.TotalResults, prependCount: true)
+		@("result".ToQuantity(searchResult.TotalResults))
 		found for <strong>@searchResult.Query</strong>
 	</div>
 

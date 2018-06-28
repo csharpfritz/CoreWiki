@@ -80,10 +80,38 @@ namespace CoreWiki.Migrations
                     b.ToTable("Comments");
                 });
 
+            modelBuilder.Entity("CoreWiki.Models.SlugHistory", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("AddedDateTime")
+                        .HasColumnName("Added");
+
+                    b.Property<int?>("ArticleId");
+
+                    b.Property<string>("OldSlug");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ArticleId");
+
+                    b.HasIndex("OldSlug", "AddedDateTime");
+
+                    b.ToTable("SlugHistories");
+                });
+
             modelBuilder.Entity("CoreWiki.Models.Comment", b =>
                 {
                     b.HasOne("CoreWiki.Models.Article", "Article")
                         .WithMany("Comments")
+                        .HasForeignKey("ArticleId");
+                });
+
+            modelBuilder.Entity("CoreWiki.Models.SlugHistory", b =>
+                {
+                    b.HasOne("CoreWiki.Models.Article", "Article")
+                        .WithMany()
                         .HasForeignKey("ArticleId");
                 });
 #pragma warning restore 612, 618

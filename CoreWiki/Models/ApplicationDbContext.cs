@@ -32,10 +32,13 @@ namespace CoreWiki.Models
 					}
 			});
 
+			modelBuilder.Entity<SlugHistory>().HasIndex(a => new { a.OldSlug, a.AddedDateTime });
+
 		}
 
 		public DbSet<Article> Articles { get; set; }
 		public DbSet<Comment> Comments { get; set; }
+		public DbSet<SlugHistory> SlugHistories { get; set; }
 
 	internal static void SeedData(ApplicationDbContext context)
 		{

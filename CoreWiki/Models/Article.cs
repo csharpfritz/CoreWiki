@@ -18,6 +18,7 @@ namespace CoreWiki.Models
 		public int Id { get; set; }
 
 		[Required, MaxLength(100)]
+		[Display(Name = "Topic")]
 		public string Topic { get; set; }
 
 		public string Slug { get; set; }
@@ -41,6 +42,7 @@ namespace CoreWiki.Models
 		}
 
 		[DataType(DataType.MultilineText)]
+		[Display(Name = "Content")]
 		public string Content { get; set; }
 		public virtual ICollection<Comment> Comments { get; set; }
 		public Article()

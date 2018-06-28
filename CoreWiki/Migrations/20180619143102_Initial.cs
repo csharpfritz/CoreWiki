@@ -7,6 +7,7 @@ namespace CoreWiki.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+
             migrationBuilder.CreateTable(
                 name: "Articles",
                 columns: table => new
@@ -74,6 +75,7 @@ namespace CoreWiki.Migrations
 
             migrationBuilder.DropTable(
                 name: "Articles");
+
         }
     }
 }

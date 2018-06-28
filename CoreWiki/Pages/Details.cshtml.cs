@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -44,6 +44,9 @@ namespace CoreWiki.Pages
 
 		public Article Article { get; set; }
 
+		[ViewDataAttribute]
+		public string Slug { get; set; }
+
 		public async Task<IActionResult> OnGetAsync(string slug)
 		{
 
@@ -55,7 +58,19 @@ namespace CoreWiki.Pages
 
 			if (Article == null)
 			{
-				return new ArticleNotFoundResult(slug);
+				Slug = slug;
+				var historical = await _context.SlugHistories.Include(h => h.Article)
+					.OrderByDescending(h => h.Added)
+					.FirstOrDefaultAsync(h => h.OldSlug == slug.ToLowerInvariant());
+
+				if (historical != null)
+				{
+					return new RedirectResult($"~/{historical.Article.Slug}");
+				}
+				else
+				{
+					return new ArticleNotFoundResult(slug);
+				}
 			}
 
 			if (Request.Cookies[Article.Topic] == null)
