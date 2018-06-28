@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
+using CoreWiki.Areas.Identity.Data;
 using NodaTime;
 using NodaTime.Extensions;
 
@@ -27,6 +28,9 @@ namespace CoreWiki.Models
 
 		[NotMapped]
 		public Instant Published { get; set; }
+
+		[Required]
+		public Guid AuthorId { get; set; } = Guid.NewGuid();
 
 		// Buddy property (?)
 		[Obsolete("This property only exists for EF-serialization purposes")]

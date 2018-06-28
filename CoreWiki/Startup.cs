@@ -25,13 +25,15 @@ using CoreWiki.Helpers;
 using Microsoft.ApplicationInsights.Extensibility;
 using CoreWiki.Areas.Identity.Data;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using CoreWiki.Services;
 using Microsoft.AspNetCore.Localization;
 
 namespace CoreWiki
 {
 	public class Startup
 	{
-		public Startup(IConfiguration configuration)
+		public Startup(IConfiguration configuration, IHostingEnvironment hostingEnvironment)
 		{
 			Configuration = configuration;
 		}
@@ -54,7 +56,7 @@ namespace CoreWiki
 
 			services.AddEntityFrameworkSqlite()
 				.AddDbContextPool<ApplicationDbContext>(options =>
-					options.UseSqlite(Configuration.GetConnectionString("CoreWiki"))
+					options.UseSqlite(Configuration.GetConnectionString("CoreWikiData"))
 				);
 
 
@@ -62,6 +64,11 @@ namespace CoreWiki
 			services.AddSingleton<IClock>(SystemClock.Instance);
 
 			services.AddScoped<IArticlesSearchEngine, ArticlesDbSearchEngine>();
+			services.AddScoped<ITemplateProvider ,TemplateProvider>();
+			services.AddScoped<ITemplateParser, TemplateParser>();
+			services.AddScoped<IEmailMessageFormatter, EmailMessageFormatter>();
+			services.AddScoped<IEmailNotifier, EmailNotifier>();
+			services.AddScoped<INotificationService, NotificationService>();
 
 			services.AddRouting(options => options.LowercaseUrls = true);
 			services.AddHttpContextAccessor();
@@ -102,8 +109,13 @@ namespace CoreWiki
 			} else
 			{
 				app.UseExceptionHandler("/Error");
-				app.UseHsts();
 			}
+
+			app.UseHsts(options => options.MaxAge(days: 365).IncludeSubdomains());
+			app.UseXContentTypeOptions();
+			app.UseReferrerPolicy(options => options.NoReferrer());
+			app.UseXXssProtection(options => options.EnabledWithBlockMode());
+			app.UseXfo(options => options.Deny());
 
 			app.UseHttpsRedirection();
 			app.UseStaticFiles();

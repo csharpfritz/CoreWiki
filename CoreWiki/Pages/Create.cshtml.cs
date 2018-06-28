@@ -9,6 +9,8 @@ using NodaTime;
 using CoreWiki.Models;
 using CoreWiki.Helpers;
 using Microsoft.Extensions.Logging;
+using CoreWiki.Areas.Identity.Data;
+using System.Security.Claims;
 using Microsoft.EntityFrameworkCore;
 
 namespace CoreWiki.Pages
@@ -55,15 +57,16 @@ namespace CoreWiki.Pages
 		public async Task<IActionResult> OnPostAsync()
 		{
 
-			var slug = UrlHelpers.URLFriendly(Article.Topic.ToLower());
-			Article.Slug = slug;
+            var slug = UrlHelpers.URLFriendly(Article.Topic.ToLower());
+            Article.Slug = slug;
+			Article.AuthorId = Guid.Parse(this.User.FindFirstValue(ClaimTypes.NameIdentifier));
 
 			if (!ModelState.IsValid)
 			{
 				return Page();
 			}
 
-			//check if the slug already exists in the database.  
+			//check if the slug already exists in the database.
 			Logger.LogWarning($"Creating page with slug: {slug}");
 			var isAvailable = !_context.Articles.Any(x => x.Slug == slug);
 

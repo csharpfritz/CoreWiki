@@ -14,12 +14,14 @@ namespace CoreWiki.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.1.0-rtm-30799");
+                .HasAnnotation("ProductVersion", "2.1.1-rtm-30846");
 
             modelBuilder.Entity("CoreWiki.Models.Article", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
+
+                    b.Property<Guid>("AuthorId");
 
                     b.Property<string>("Content");
 
@@ -42,6 +44,10 @@ namespace CoreWiki.Migrations
                         .IsUnique();
 
                     b.ToTable("Articles");
+
+                    b.HasData(
+                        new { Id = 1, AuthorId = new Guid("d1cebc50-390b-45b5-ab5e-d8bb589d46e5"), Content = "This is the default home page.  Please change me!", PublishedDateTime = new DateTime(2018, 6, 19, 14, 31, 2, 265, DateTimeKind.Utc), Slug = "home-page", Topic = "HomePage", ViewCount = 0 }
+                    );
                 });
 
             modelBuilder.Entity("CoreWiki.Models.ArticleHistory", b =>
@@ -77,6 +83,8 @@ namespace CoreWiki.Migrations
                         .ValueGeneratedOnAdd();
 
                     b.Property<int?>("ArticleId");
+
+                    b.Property<Guid>("AuthorId");
 
                     b.Property<string>("Content")
                         .IsRequired();

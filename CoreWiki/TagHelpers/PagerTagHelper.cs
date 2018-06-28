@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc.TagHelpers;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Razor.Runtime.TagHelpers;
 using Microsoft.AspNetCore.Razor.TagHelpers;
+using Microsoft.Extensions.Localization;
 
 namespace CoreWiki.TagHelpers
 {
@@ -24,10 +25,12 @@ namespace CoreWiki.TagHelpers
 	public class PagerTagHelper : TagHelper
 	{
 		private readonly IHtmlGenerator _Generator;
+		private readonly IStringLocalizer<PagerTagHelper> localizer;
 
-		public PagerTagHelper(IHtmlGenerator generator)
+		public PagerTagHelper(IHtmlGenerator generator, IStringLocalizer<PagerTagHelper> localizer)
 		{
 			_Generator = generator;
+			this.localizer = localizer;
 		}
 
 		public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
@@ -35,7 +38,7 @@ namespace CoreWiki.TagHelpers
 			output.TagMode = TagMode.StartTagAndEndTag;
 			output.TagName = "ul";
 
-			TagBuilder ul = new TagBuilder("ul");
+			var ul = new TagBuilder("ul");
 			ul.AddCssClass("pagination");
 			output.MergeAttributes(ul);
 
@@ -104,10 +107,11 @@ namespace CoreWiki.TagHelpers
 		{
 			var first = CreatePageItem();
 			var previous = CreatePageItem();
-			var clickable = CurrentPage != 1;
+			var clickable = CurrentPage > 1;
+			var previous_page_number = CurrentPage - 1 > TotalPages ? TotalPages : CurrentPage - 1;
 
-			first.InnerHtml.AppendHtml(CreatePaginatorButton("First Page", "<<", 1, clickable));
-			previous.InnerHtml.AppendHtml(CreatePaginatorButton("Previous Page", "<", CurrentPage - 1, clickable));
+			first.InnerHtml.AppendHtml(CreatePaginatorButton(localizer["FirstPage"], "<<", 1, clickable));
+			previous.InnerHtml.AppendHtml(CreatePaginatorButton(localizer["PreviousPage"], "<", previous_page_number, clickable));
 
 			if (!clickable)
 			{
@@ -124,10 +128,11 @@ namespace CoreWiki.TagHelpers
 		{
 			var next = CreatePageItem();
 			var last = CreatePageItem();
-			var clickable = CurrentPage != TotalPages;
+			var clickable = TotalPages > 0 && CurrentPage < TotalPages;
+			var next_page_number = CurrentPage < 1 ? 1 : CurrentPage + 1;
 
-			next.InnerHtml.AppendHtml(CreatePaginatorButton("Next Page", ">", CurrentPage + 1, clickable));
-			last.InnerHtml.AppendHtml(CreatePaginatorButton("Last Page", ">>", TotalPages, clickable));
+			next.InnerHtml.AppendHtml(CreatePaginatorButton(localizer["NextPage"], ">", next_page_number, clickable));
+			last.InnerHtml.AppendHtml(CreatePaginatorButton(localizer["LastPage"], ">>", TotalPages, clickable));
 
 			if (!clickable)
 			{
@@ -150,11 +155,11 @@ namespace CoreWiki.TagHelpers
 				if (pageNum == CurrentPage)
 				{
 					li.AddCssClass("active");
-					li.InnerHtml.AppendHtml(CreatePaginatorButton("Current Page", $"{pageNum}", pageNum, false));
+					li.InnerHtml.AppendHtml(CreatePaginatorButton(localizer["CurrentPage"], $"{pageNum}", pageNum, false));
 				}
 				else
 				{
-					li.InnerHtml.AppendHtml(CreatePaginatorButton($"Page {pageNum}", $"{pageNum}", pageNum, true));
+					li.InnerHtml.AppendHtml(CreatePaginatorButton($"{localizer["Page"]} {pageNum}", $"{pageNum}", pageNum, true));
 				}
 
 				output.Content.AppendHtml(li);
