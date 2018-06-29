@@ -16,28 +16,34 @@ namespace CoreWiki.Models
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
-
-			modelBuilder.Entity<Article>().HasIndex(a => a.Slug).IsUnique();
-
 			var homePage = new Article
-					{
-						Id=1,
-						Topic = "HomePage",
-						Slug= "home-page",
-						Content = "This is the default home page.  Please change me!",
-						Published = SystemClock.Instance.GetCurrentInstant(),
-						AuthorId = Guid.NewGuid()
-					};
+			{
+				Id = 1,
+				Topic = "HomePage",
+				Slug = "home-page",
+				Content = "This is the default home page.  Please change me!",
+				Published = SystemClock.Instance.GetCurrentInstant(),
+				AuthorId = Guid.NewGuid()
+			};
+
 			var homePageHistory = ArticleHistory.FromArticle(homePage);
-			modelBuilder.Entity<Article>().HasData(new[] {
-				homePage
-			});
-			modelBuilder.Entity<ArticleHistory>().HasData(new[] {
-				homePageHistory
+			homePageHistory.Article = null;
+
+			modelBuilder.Entity<Article>(entity =>
+			{
+				entity.HasIndex(a => a.Slug).IsUnique();
+				entity.HasData(homePage);
 			});
 
-			modelBuilder.Entity<SlugHistory>().HasIndex(a => new { a.OldSlug, a.AddedDateTime });
+			modelBuilder.Entity<ArticleHistory>(entity =>
+			{
+				entity.HasData(homePageHistory);
+			});
 
+			modelBuilder.Entity<SlugHistory>(entity =>
+			{
+				entity.HasIndex(a => new { a.OldSlug, a.AddedDateTime });
+			});
 		}
 
 		public DbSet<Article> Articles { get; set; }
