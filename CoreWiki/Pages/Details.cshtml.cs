@@ -23,7 +23,7 @@ namespace CoreWiki.Pages
 {
 	public class DetailsModel : PageModel
 	{
-		private readonly CoreWiki.Models.ApplicationDbContext _context;
+		private readonly CoreWiki.Models.IApplicationDbContext _context;
 		private readonly IClock _clock;
 		private readonly UserManager<CoreWikiUser> _UserManager;
 		private readonly INotificationService _notificationService;
@@ -31,7 +31,7 @@ namespace CoreWiki.Pages
 		public IConfiguration Configuration { get; }
 		public IEmailSender Notifier { get; }
 
-		public DetailsModel(CoreWiki.Models.ApplicationDbContext context, UserManager<CoreWikiUser> userManager,
+		public DetailsModel(CoreWiki.Models.IApplicationDbContext context, UserManager<CoreWikiUser> userManager,
 			IConfiguration config, INotificationService notificationService,
 			IClock clock)
 		{
