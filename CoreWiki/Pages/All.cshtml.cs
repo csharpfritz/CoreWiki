@@ -12,10 +12,10 @@ namespace CoreWiki.Pages
 	public class AllModel : PageModel
 	{
 
-		private readonly ApplicationDbContext _Context;
+		private readonly IApplicationDbContext _Context;
 		private const int _PageSize = 10;
 
-		public AllModel(ApplicationDbContext context)
+		public AllModel(IApplicationDbContext context)
 		{
 			this._Context = context;
 		}
