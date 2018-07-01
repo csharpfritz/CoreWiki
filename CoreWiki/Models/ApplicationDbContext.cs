@@ -1,12 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using NodaTime;
 using System;
-using System.Linq;
+using System.Threading.Tasks;
 
 namespace CoreWiki.Models
 {
 
-	public class ApplicationDbContext : DbContext
+	public class ApplicationDbContext : DbContext, IApplicationDbContext
 	{
 
 		public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
@@ -40,7 +40,13 @@ namespace CoreWiki.Models
 		public DbSet<Comment> Comments { get; set; }
 		public DbSet<SlugHistory> SlugHistories { get; set; }
 
-	internal static void SeedData(ApplicationDbContext context)
+		async Task IApplicationDbContext.SaveChangesAsync()
+		{
+			await SaveChangesAsync();
+		}
+
+
+		internal static void SeedData(ApplicationDbContext context)
 		{
 
 			context.Database.Migrate();

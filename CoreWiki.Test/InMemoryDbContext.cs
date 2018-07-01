@@ -1,8 +1,8 @@
-﻿using System;
-using System.Threading.Tasks;
-using CoreWiki.Models;
+﻿using CoreWiki.Models;
 using Microsoft.EntityFrameworkCore;
 using NodaTime;
+using System;
+using System.Threading.Tasks;
 
 namespace CoreWiki.Test
 {
@@ -46,6 +46,7 @@ namespace CoreWiki.Test
 		{
 			await SaveChangesAsync();
 		}
+
 
 		public static void SeedData(InMemoryDbContext context)
 		{

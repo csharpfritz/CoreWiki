@@ -1,35 +1,35 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using CoreWiki.Helpers;
+﻿using CoreWiki.Helpers;
 using CoreWiki.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using NodaTime;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace CoreWiki.Pages
 {
 	[Authorize]
 	public class CreateArticleFromLinkModel : PageModel
-    {
+	{
 		[BindProperty]
 		public Article Article { get; set; }
 		[BindProperty]
 		public List<string> LinksToCreate { get; set; } = new List<string>();
 
-		private readonly ApplicationDbContext _context;
+		private readonly IApplicationDbContext _context;
 		private readonly IClock _clock;
 
-		public CreateArticleFromLinkModel(ApplicationDbContext context, IClock clock)
+		public CreateArticleFromLinkModel(IApplicationDbContext context, IClock clock)
 		{
 			_context = context;
 			_clock = clock;
 		}
 
 		public async Task<IActionResult> OnGetAsync(string id)
-        {
+		{
 			if (id == null)
 			{
 				return NotFound();
@@ -50,7 +50,7 @@ namespace CoreWiki.Pages
 			}
 
 			return Page();
-        }
+		}
 
 		public async Task<IActionResult> OnPostCreateLinksAsync(string slug)
 		{

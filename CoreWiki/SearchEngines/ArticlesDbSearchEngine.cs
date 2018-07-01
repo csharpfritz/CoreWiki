@@ -1,15 +1,15 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
-using CoreWiki.Models;
+﻿using CoreWiki.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace CoreWiki.SearchEngines
 {
 	public class ArticlesDbSearchEngine : IArticlesSearchEngine
 	{
-		private readonly ApplicationDbContext _context;
+		private readonly IApplicationDbContext _context;
 
-		public ArticlesDbSearchEngine(ApplicationDbContext context)
+		public ArticlesDbSearchEngine(IApplicationDbContext context)
 		{
 			_context = context;
 		}

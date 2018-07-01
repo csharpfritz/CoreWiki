@@ -1,28 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using CoreWiki.Models;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using CoreWiki.Models;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace CoreWiki.Pages
 {
-    public class IndexModel : PageModel
-    {
-        private readonly CoreWiki.Models.ApplicationDbContext _context;
+	public class IndexModel : PageModel
+	{
+		private readonly IApplicationDbContext _context;
 
-        public IndexModel(CoreWiki.Models.ApplicationDbContext context)
-        {
-            _context = context;
-        }
+		public IndexModel(IApplicationDbContext context)
+		{
+			_context = context;
+		}
 
-        public IList<Article> Article { get;set; }
+		public IList<Article> Article { get; set; }
 
-        public async Task OnGetAsync()
-        {
-            Article = await _context.Articles.ToListAsync();
-        }
-    }
+		public async Task OnGetAsync()
+		{
+			Article = await _context.Articles.ToListAsync();
+		}
+	}
 }

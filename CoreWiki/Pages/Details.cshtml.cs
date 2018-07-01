@@ -1,29 +1,23 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using CoreWiki.Areas.Identity.Data;
+using CoreWiki.Helpers;
+using CoreWiki.Models;
+using CoreWiki.Services;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using CoreWiki.Models;
-using NodaTime;
-using CoreWiki.Helpers;
-using SendGrid;
-using SendGrid.Helpers.Mail;
-using Microsoft.AspNetCore.Identity;
-using CoreWiki.Areas.Identity.Data;
-using System.Security.Policy;
-using Microsoft.AspNetCore.Mvc.Routing;
-using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.Extensions.Configuration;
-using CoreWiki.Services;
-using Microsoft.AspNetCore.Identity.UI.Services;
+using NodaTime;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace CoreWiki.Pages
 {
 	public class DetailsModel : PageModel
 	{
-		private readonly CoreWiki.Models.IApplicationDbContext _context;
+		private readonly IApplicationDbContext _context;
 		private readonly IClock _clock;
 		private readonly UserManager<CoreWikiUser> _UserManager;
 		private readonly INotificationService _notificationService;
@@ -31,7 +25,7 @@ namespace CoreWiki.Pages
 		public IConfiguration Configuration { get; }
 		public IEmailSender Notifier { get; }
 
-		public DetailsModel(CoreWiki.Models.IApplicationDbContext context, UserManager<CoreWikiUser> userManager,
+		public DetailsModel(IApplicationDbContext context, UserManager<CoreWikiUser> userManager,
 			IConfiguration config, INotificationService notificationService,
 			IClock clock)
 		{
@@ -50,9 +44,9 @@ namespace CoreWiki.Pages
 		public async Task<IActionResult> OnGetAsync(string slug)
 		{
 
-            // TODO: If topicName not specified, default to Home Page
+			// TODO: If topicName not specified, default to Home Page
 
-            slug = slug ?? "home-page";
+			slug = slug ?? "home-page";
 
 			Article = await _context.Articles.Include(x => x.Comments).SingleOrDefaultAsync(m => m.Slug == slug.ToLower());
 
@@ -85,7 +79,7 @@ namespace CoreWiki.Pages
 			}
 
 			return Page();
-	}
+		}
 
 		public async Task<IActionResult> OnPostAsync(Models.Comment comment)
 		{
@@ -93,10 +87,10 @@ namespace CoreWiki.Pages
 			Article = await _context.Articles.Include(x => x.Comments).SingleOrDefaultAsync(m => m.Id == comment.IdArticle);
 
 			if (Article == null)
-								 return new ArticleNotFoundResult();
+				return new ArticleNotFoundResult();
 
 			if (!ModelState.IsValid)
-								 return Page();
+				return Page();
 
 			comment.Article = this.Article;
 
