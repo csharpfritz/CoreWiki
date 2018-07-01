@@ -1,22 +1,22 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
+﻿using CoreWiki.Helpers;
+using CoreWiki.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using CoreWiki.Models;
 using NodaTime;
-using CoreWiki.Helpers;
 using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace CoreWiki.Pages
 {
 
 	public class EditModel : PageModel
 	{
-		private readonly ApplicationDbContext _context;
+		private readonly IApplicationDbContext _context;
 		private readonly IClock _clock;
 
-		public EditModel(ApplicationDbContext context, IClock clock)
+		public EditModel(IApplicationDbContext context, IClock clock)
 		{
 			_context = context;
 			_clock = clock;
@@ -64,7 +64,9 @@ namespace CoreWiki.Pages
 			var articlesToCreateFromLinks = ArticleHelpers.GetArticlesToCreate(_context, Article, createSlug: true)
 				.ToList();
 
-			_context.Attach(Article).State = EntityState.Modified;
+
+
+			_context.Articles.Attach(Article).State = EntityState.Modified;
 
 			Article.Published = _clock.GetCurrentInstant();
 			Article.Slug = slug;
@@ -78,7 +80,7 @@ namespace CoreWiki.Pages
 					Added = _clock.GetCurrentInstant(),
 				};
 
-				_context.Attach(historical).State = EntityState.Added;
+				_context.SlugHistories.Attach(historical).State = EntityState.Added;
 			}
 
 			try

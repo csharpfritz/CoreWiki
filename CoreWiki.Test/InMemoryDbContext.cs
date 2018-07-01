@@ -1,15 +1,16 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using CoreWiki.Models;
+using Microsoft.EntityFrameworkCore;
 using NodaTime;
 using System;
 using System.Threading.Tasks;
 
-namespace CoreWiki.Models
+namespace CoreWiki.Test
 {
 
-	public class ApplicationDbContext : DbContext, IApplicationDbContext
+	public class InMemoryDbContext : DbContext, IApplicationDbContext
 	{
 
-		public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+		public InMemoryDbContext(DbContextOptions<InMemoryDbContext> options)
 			: base(options)
 		{
 
@@ -36,9 +37,10 @@ namespace CoreWiki.Models
 
 		}
 
-		public DbSet<Article> Articles { get; set; }
+		public virtual DbSet<Article> Articles { get; set; }
 		public DbSet<Comment> Comments { get; set; }
 		public DbSet<SlugHistory> SlugHistories { get; set; }
+
 
 		async Task IApplicationDbContext.SaveChangesAsync()
 		{
@@ -46,10 +48,10 @@ namespace CoreWiki.Models
 		}
 
 
-		internal static void SeedData(ApplicationDbContext context)
+		public static void SeedData(InMemoryDbContext context)
 		{
 
-			context.Database.Migrate();
+			context.Database.EnsureCreated();
 
 		}
 

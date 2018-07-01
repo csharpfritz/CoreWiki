@@ -10,7 +10,7 @@ namespace CoreWiki.Helpers
 		private static readonly string articleLinksPattern = @"(\[[\w\s.\-_:;\!\?]*[\]][\(])((?!(http|https))[\w\s\-_]*)([\)])";
 		private static readonly string LinkPrefix = "](";
 
-		public static IList<string> GetArticlesToCreate(ApplicationDbContext context, Article article, bool createSlug = false)
+		public static IList<string> GetArticlesToCreate(IApplicationDbContext context, Article article, bool createSlug = false)
 		{
 			var articlesToCreate = new List<string>();
 

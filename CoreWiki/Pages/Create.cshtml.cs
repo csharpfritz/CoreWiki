@@ -17,12 +17,12 @@ namespace CoreWiki.Pages
 {
     public class CreateModel : PageModel
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IApplicationDbContext _context;
         private readonly IClock _clock;
 
     public ILogger Logger { get; private set; }
 
-    public CreateModel(ApplicationDbContext context, IClock clock, ILoggerFactory loggerFactory)
+    public CreateModel(IApplicationDbContext context, IClock clock, ILoggerFactory loggerFactory)
         {
             _context = context;
             _clock = clock;
@@ -36,7 +36,7 @@ namespace CoreWiki.Pages
                 return Page();
             }
 
-            Article article = await _context.Articles.SingleOrDefaultAsync(m => m.Slug == slug);
+            var article = await _context.Articles.SingleOrDefaultAsync(m => m.Slug == slug);
 
             if (article != null)
             {
