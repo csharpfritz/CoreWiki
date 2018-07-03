@@ -1,0 +1,45 @@
+﻿@page
+@model CoreWiki.Pages.HistoryModel
+@{
+    ViewData["Title"] = $"History of {Model.Article.Topic}";
+}
+
+<h2>History of @Model.Article.Topic</h2>
+
+<dl>
+	<dt>Current Title:</dt>
+	<dd>@Model.Article.Topic</dd>
+
+	<dt>Curent Version:</dt>
+	<dd>@Model.Article.Version</dd>
+
+	<dt>Last Update By:</dt>
+	<dd>@Model.Article.AuthorName</dd>	<!-- Need to replace with Author information -->
+
+	<dt>Last Updated:</dt>
+	<dd><span data-value="@Model.Article.Published" class="timeStampValue"> @Model.Article.Published</span></dd>
+
+</dl>
+
+<h3>Version History</h3>
+
+<table>
+	<thead>
+		<tr>
+			<th>Author</th>
+			<th>Version</th>
+			<th>Change Date</th>
+		</tr>
+	</thead>
+	<tbody>
+	@foreach (var history in Model.Article.History.OrderByDescending(a => a.Version))
+	{
+		<tr>
+			<td>@history.AuthorName</td>		<!-- NEED Author -->
+			<td>@history.Version</td>
+			<td><span data-value="@history.Published" class="timeStampValue"> @history.Published</span></td>
+		</tr>
+	}
+	</tbody>
+</table>
+

@@ -32,6 +32,9 @@ namespace CoreWiki.Models
 		[Required]
 		public Guid AuthorId { get; set; } = Guid.NewGuid();
 
+		[Required]
+		public string AuthorName { get; set; } = "Unknown";
+
 		// Buddy property (?)
 		[Obsolete("This property only exists for EF-serialization purposes")]
 		[DataType(DataType.DateTime)]

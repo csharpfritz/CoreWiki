@@ -90,6 +90,7 @@ namespace CoreWiki
 					options.Conventions.AddPageRoute("/Details", "{Slug?}");
 					options.Conventions.AddPageRoute("/Details", @"Index");
 					options.Conventions.AddPageRoute("/Create", "{Slug?}/Create");
+					options.Conventions.AddPageRoute("/History", "{Slug?}/History");
 				});
 
 			services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();

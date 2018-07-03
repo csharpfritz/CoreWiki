@@ -22,6 +22,11 @@ namespace CoreWiki.Models
 		public int ArticleId { get; set; }
 
 		[Required]
+		public Guid AuthorId { get; set; }
+
+		public string AuthorName { get; set; }
+
+		[Required]
 		public int Version { get; set; }
 
 		[Required, MaxLength(100)]
@@ -57,6 +62,8 @@ namespace CoreWiki.Models
 				Id = 1,
 				Article = article,
 				ArticleId = article.Id,
+				AuthorId = article.AuthorId,
+				AuthorName = article.AuthorName,
 				Content = article.Content,
 				Published = article.Published,
 				Slug = article.Slug,
