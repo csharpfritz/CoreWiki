@@ -1,4 +1,4 @@
-$CakeVersion = "0.26.1"
+$CakeVersion = "0.28.1"
 
 # Make sure tools folder exists
 $PSScriptRoot = Split-Path $MyInvocation.MyCommand.Path -Parent
