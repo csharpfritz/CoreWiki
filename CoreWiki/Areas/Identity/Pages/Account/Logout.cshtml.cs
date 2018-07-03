@@ -30,6 +30,15 @@ namespace CoreWiki.Areas.Identity.Pages.Account
         public async Task<IActionResult> OnPost(string returnUrl = null)
         {
             await _signInManager.SignOutAsync();
+
+			foreach (var cookie in Request.Cookies.Keys)
+			{
+				if (cookie.StartsWith(".AspNetCore.Antiforgery."))
+				{
+					Response.Cookies.Delete(cookie);
+				}
+			}
+
             _logger.LogInformation("User logged out.");
             if (returnUrl != null)
             {
