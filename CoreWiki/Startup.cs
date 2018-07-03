@@ -28,6 +28,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using CoreWiki.Services;
 using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CoreWiki
 {
@@ -76,7 +77,10 @@ namespace CoreWiki
 
 			services.AddLocalization(options => options.ResourcesPath = "Globalization");
 
-			services.AddMvc()
+			services.AddMvc(options =>
+			{
+				options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
+			})
 				.AddViewLocalization()
 				.AddDataAnnotationsLocalization()
 				.AddRazorPagesOptions(options =>
