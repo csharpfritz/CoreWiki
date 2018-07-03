@@ -28,6 +28,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using CoreWiki.Services;
 using Microsoft.AspNetCore.Localization;
+using FluentValidation.AspNetCore;
+using FluentValidation;
+using CoreWiki.Validation;
 
 namespace CoreWiki
 {
@@ -85,7 +88,10 @@ namespace CoreWiki
 					options.Conventions.AddPageRoute("/Details", "{Slug?}");
 					options.Conventions.AddPageRoute("/Details", @"Index");
 					options.Conventions.AddPageRoute("/Create", "{Slug?}/Create");
-				});
+				})
+				.AddFluentValidation();
+
+			services.AddTransient<IValidator<Article>, ArticleValidator>();
 
 			services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
