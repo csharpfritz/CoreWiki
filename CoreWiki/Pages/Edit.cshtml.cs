@@ -7,6 +7,7 @@ using CoreWiki.Models;
 using NodaTime;
 using CoreWiki.Helpers;
 using System;
+using System.Security.Claims;
 
 namespace CoreWiki.Pages
 {
@@ -69,6 +70,8 @@ namespace CoreWiki.Pages
 
 			Article.Published = _clock.GetCurrentInstant();
 			Article.Slug = slug;
+			Article.AuthorId = Guid.Parse(this.User.FindFirstValue(ClaimTypes.NameIdentifier));
+			Article.AuthorName = User.Identity.Name;
 
 			if (!string.Equals(Article.Slug, existingArticle.Slug, StringComparison.InvariantCulture))
 			{
