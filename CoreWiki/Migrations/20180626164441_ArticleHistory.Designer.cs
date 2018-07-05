@@ -3,28 +3,25 @@ using System;
 using CoreWiki.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CoreWiki.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180626164441_ArticleHistory")]
+    partial class ArticleHistory
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.1.1-rtm-30846");
+                .HasAnnotation("ProductVersion", "2.1.0-rtm-30799");
 
             modelBuilder.Entity("CoreWiki.Models.Article", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
-
-                    b.Property<Guid>("AuthorId");
-
-                    b.Property<string>("AuthorName")
-                        .IsRequired();
 
                     b.Property<string>("Content");
 
@@ -47,10 +44,6 @@ namespace CoreWiki.Migrations
                         .IsUnique();
 
                     b.ToTable("Articles");
-
-                    b.HasData(
-                        new { Id = 1, AuthorId = new Guid("a8cb43d7-0068-480b-806e-197381498dfe"), AuthorName = "Unknown", Content = "This is the default home page.  Please change me!", PublishedDateTime = new DateTime(2018, 7, 5, 15, 41, 28, 572, DateTimeKind.Utc), Slug = "home-page", Topic = "HomePage", Version = 1, ViewCount = 0 }
-                    );
                 });
 
             modelBuilder.Entity("CoreWiki.Models.ArticleHistory", b =>
@@ -58,11 +51,7 @@ namespace CoreWiki.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int>("ArticleId");
-
-                    b.Property<Guid>("AuthorId");
-
-                    b.Property<string>("AuthorName");
+                    b.Property<int?>("ArticleId");
 
                     b.Property<string>("Content");
 
@@ -82,10 +71,6 @@ namespace CoreWiki.Migrations
                     b.HasIndex("ArticleId");
 
                     b.ToTable("ArticleHistories");
-
-                    b.HasData(
-                        new { Id = 1, ArticleId = 1, AuthorId = new Guid("a8cb43d7-0068-480b-806e-197381498dfe"), AuthorName = "Unknown", Content = "This is the default home page.  Please change me!", PublishedDateTime = new DateTime(2018, 7, 5, 15, 41, 28, 572, DateTimeKind.Utc), Slug = "home-page", Topic = "HomePage", Version = 1 }
-                    );
                 });
 
             modelBuilder.Entity("CoreWiki.Models.Comment", b =>
@@ -94,8 +79,6 @@ namespace CoreWiki.Migrations
                         .ValueGeneratedOnAdd();
 
                     b.Property<int?>("ArticleId");
-
-                    b.Property<Guid>("AuthorId");
 
                     b.Property<string>("Content")
                         .IsRequired();
@@ -145,8 +128,7 @@ namespace CoreWiki.Migrations
                 {
                     b.HasOne("CoreWiki.Models.Article", "Article")
                         .WithMany("History")
-                        .HasForeignKey("ArticleId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("ArticleId");
                 });
 
             modelBuilder.Entity("CoreWiki.Models.Comment", b =>

@@ -7,6 +7,7 @@ using CoreWiki.Models;
 using NodaTime;
 using CoreWiki.Helpers;
 using System;
+using System.Security.Claims;
 
 namespace CoreWiki.Pages
 {
@@ -50,6 +51,7 @@ namespace CoreWiki.Pages
 
 			var existingArticle = _context.Articles.AsNoTracking().First(a => a.Id == Article.Id);
 			Article.ViewCount = existingArticle.ViewCount;
+			Article.Version = existingArticle.Version + 1;
 
 			//check if the slug already exists in the database.
 			var slug = UrlHelpers.URLFriendly(Article.Topic.ToLower());
@@ -68,6 +70,8 @@ namespace CoreWiki.Pages
 
 			Article.Published = _clock.GetCurrentInstant();
 			Article.Slug = slug;
+			Article.AuthorId = Guid.Parse(this.User.FindFirstValue(ClaimTypes.NameIdentifier));
+			Article.AuthorName = User.Identity.Name;
 
 			if (!string.Equals(Article.Slug, existingArticle.Slug, StringComparison.InvariantCulture))
 			{
@@ -80,6 +84,8 @@ namespace CoreWiki.Pages
 
 				_context.Attach(historical).State = EntityState.Added;
 			}
+
+			AddNewArticleVersion();
 
 			try
 			{
@@ -103,6 +109,13 @@ namespace CoreWiki.Pages
 			}
 
 			return Redirect($"/{(Article.Slug == "home-page" ? "" : Article.Slug)}");
+		}
+
+		private void AddNewArticleVersion()
+		{
+
+			_context.ArticleHistories.Add(ArticleHistory.FromArticle(Article));
+
 		}
 
 		private bool ArticleExists(int id)

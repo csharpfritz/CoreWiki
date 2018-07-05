@@ -3,14 +3,16 @@ using System;
 using CoreWiki.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CoreWiki.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180703155655_Add AuthorName to article")]
+    partial class AddAuthorNametoarticle
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -49,7 +51,7 @@ namespace CoreWiki.Migrations
                     b.ToTable("Articles");
 
                     b.HasData(
-                        new { Id = 1, AuthorId = new Guid("a8cb43d7-0068-480b-806e-197381498dfe"), AuthorName = "Unknown", Content = "This is the default home page.  Please change me!", PublishedDateTime = new DateTime(2018, 7, 5, 15, 41, 28, 572, DateTimeKind.Utc), Slug = "home-page", Topic = "HomePage", Version = 1, ViewCount = 0 }
+                        new { Id = 1, AuthorId = new Guid("e20373cc-26ed-4bb7-8856-ced0ff9c1d5f"), AuthorName = "Unknown", Content = "This is the default home page.  Please change me!", PublishedDateTime = new DateTime(2018, 7, 3, 15, 56, 55, 423, DateTimeKind.Utc), Slug = "home-page", Topic = "HomePage", Version = 1, ViewCount = 0 }
                     );
                 });
 
@@ -84,7 +86,7 @@ namespace CoreWiki.Migrations
                     b.ToTable("ArticleHistories");
 
                     b.HasData(
-                        new { Id = 1, ArticleId = 1, AuthorId = new Guid("a8cb43d7-0068-480b-806e-197381498dfe"), AuthorName = "Unknown", Content = "This is the default home page.  Please change me!", PublishedDateTime = new DateTime(2018, 7, 5, 15, 41, 28, 572, DateTimeKind.Utc), Slug = "home-page", Topic = "HomePage", Version = 1 }
+                        new { Id = 1, ArticleId = 1, AuthorId = new Guid("e20373cc-26ed-4bb7-8856-ced0ff9c1d5f"), AuthorName = "Unknown", Content = "This is the default home page.  Please change me!", PublishedDateTime = new DateTime(2018, 7, 3, 15, 56, 55, 423, DateTimeKind.Utc), Slug = "home-page", Topic = "HomePage", Version = 1 }
                     );
                 });
 
