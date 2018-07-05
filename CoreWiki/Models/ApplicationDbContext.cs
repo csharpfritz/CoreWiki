@@ -27,6 +27,7 @@ namespace CoreWiki.Models
 			};
 
 			var homePageHistory = ArticleHistory.FromArticle(homePage);
+			homePageHistory.Id = 1;
 			homePageHistory.Article = null;
 
 			modelBuilder.Entity<Article>(entity =>

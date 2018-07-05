@@ -126,11 +126,17 @@
   <data name="GoHome" xml:space="preserve">
     <value>Back to Home</value>
   </data>
+  <data name="HistoryFormat" xml:space="preserve">
+    <value>History: {0} version(s)</value>
+  </data>
   <data name="Published" xml:space="preserve">
     <value>Last Published</value>
   </data>
   <data name="ReadingTime" xml:space="preserve">
     <value>Estimated Reading Time</value>
+  </data>
+  <data name="Version" xml:space="preserve">
+    <value>Version</value>
   </data>
   <data name="ViewCount" xml:space="preserve">
     <value>View Count</value>

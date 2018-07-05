@@ -59,7 +59,7 @@ namespace CoreWiki.Models
 
 			return new ArticleHistory
 			{
-				Id = 1,
+				//Id = 1,
 				Article = article,
 				ArticleId = article.Id,
 				AuthorId = article.AuthorId,

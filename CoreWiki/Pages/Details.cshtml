@@ -26,6 +26,9 @@
 						<h5 class="col-xl-4 labelViewCount ">@Localizer["ViewCount"]: <span data-value="@Model.Article.ViewCount"> @Model.Article.ViewCount</span></h5>
 						<h5 class="col-xl-8 labelEstReadTime">@Localizer["ReadingTime"]: <span class="duration" data-duration="@Model.Article.Content.CalculateReadTime().TotalMilliseconds"></span></h5>
 					</div>
+					<div class="row">
+						<h5 class="col-xl-12 labelViewCount"><a asp-page="History" asp-route-slug="@Model.Article.Slug">@string.Format(Localizer["HistoryFormat"].Value, Model.Article.Version)</a></h5>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -38,7 +41,7 @@
 	<div>
 		<a asp-page="/Edit" asp-route-slug="@Model.Article.Slug" class="btn btn-outline-info">@Localizer["Edit"]</a>
 
-		@if (Model.Article.Slug != "homepage")
+		@if (Model.Article.Slug != "home-page")
 		{
 			<a href="~/" class="btn btn-secondary">@Localizer["GoHome"]</a>
 		}
