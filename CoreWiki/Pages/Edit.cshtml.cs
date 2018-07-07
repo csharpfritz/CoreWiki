@@ -54,7 +54,13 @@ namespace CoreWiki.Pages
 			Article.Version = existingArticle.Version + 1;
 
 			//check if the slug already exists in the database.
-			var slug = UrlHelpers.URLFriendly(Article.Topic.ToLower());
+			var slug = UrlHelpers.URLFriendly(Article.Topic);
+			if (String.IsNullOrWhiteSpace(slug))
+			{
+				ModelState.AddModelError("Article.Topic", "The Topic must contain at least one alphanumeric character.");
+				return Page();
+			}
+
 			var isAvailable = !_context.Articles.Any(x => x.Slug == slug && x.Id != Article.Id);
 
 			if (isAvailable == false)
