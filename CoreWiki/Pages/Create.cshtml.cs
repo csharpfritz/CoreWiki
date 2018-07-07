@@ -57,8 +57,14 @@ namespace CoreWiki.Pages
 		public async Task<IActionResult> OnPostAsync()
 		{
 
-            var slug = UrlHelpers.URLFriendly(Article.Topic.ToLower());
-            Article.Slug = slug;
+            var slug = UrlHelpers.URLFriendly(Article.Topic);
+			if (String.IsNullOrWhiteSpace(slug))
+			{
+				ModelState.AddModelError("Article.Topic", "The Topic must contain at least one alphanumeric character.");
+				return Page();
+			}
+
+			Article.Slug = slug;
 			Article.AuthorId = Guid.Parse(this.User.FindFirstValue(ClaimTypes.NameIdentifier));
 
 			if (!ModelState.IsValid)
