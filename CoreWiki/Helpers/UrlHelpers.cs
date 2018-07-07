@@ -7,6 +7,10 @@ namespace CoreWiki.Helpers
 	public class UrlHelpers
 	{
 
+		private static readonly Regex reSlugCharactersToBeDashes = new Regex(@"([\s,.//\\-_=])+");
+		private static readonly Regex reSlugCharactersToRemove = new Regex(@"([^0-9a-z\-])+");
+		private static readonly Regex reSlugDashes = new Regex(@"([\-])+");
+
 		private static readonly Regex reSlugCharacters = new Regex(@"([\s,.//\\-_=])+");
 
 		public static string SlugToTopic(string slug)
@@ -24,11 +28,22 @@ namespace CoreWiki.Helpers
 
 			if (string.IsNullOrEmpty(title)) return "";
 
-			var newTitle = title.ToLowerInvariant();
 
-			newTitle = reSlugCharacters.Replace(newTitle, "-");
+			var newTitle = RemoveDiacritics(title);
 
-			return RemoveDiacritics(newTitle);
+			newTitle = Regex.Replace(newTitle, "(?<!^)([A-Z][a-z]|(?<=[a-z])[A-Z])", @"-$1");
+
+			newTitle = reSlugCharactersToBeDashes.Replace(newTitle, "-");
+
+			newTitle = newTitle.ToLowerInvariant();
+
+			newTitle = reSlugCharactersToRemove.Replace(newTitle, "");
+
+			newTitle = reSlugDashes.Replace(newTitle, "-");
+
+			newTitle = newTitle.Trim('-');
+
+			return newTitle;
 
 		}
 

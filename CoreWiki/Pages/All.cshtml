@@ -42,4 +42,9 @@
 </style>
 }
 
-
+<script>
+    function UpdatePageSize(value) {
+        document.cookie = encodeURIComponent("PageSize") + "=" + encodeURIComponent(value) + "; path=/";
+        location = '/all/1';
+    }
+</script>

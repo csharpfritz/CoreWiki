@@ -28,6 +28,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using CoreWiki.Services;
 using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CoreWiki
 {
@@ -57,6 +58,7 @@ namespace CoreWiki
 			services.AddEntityFrameworkSqlite()
 				.AddDbContextPool<ApplicationDbContext>(options =>
 					options.UseSqlite(Configuration.GetConnectionString("CoreWikiData"))
+						.EnableSensitiveDataLogging(true)
 				);
 
 
@@ -75,7 +77,10 @@ namespace CoreWiki
 
 			services.AddLocalization(options => options.ResourcesPath = "Globalization");
 
-			services.AddMvc()
+			services.AddMvc(options =>
+			{
+				options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
+			})
 				.AddViewLocalization()
 				.AddDataAnnotationsLocalization()
 				.AddRazorPagesOptions(options =>
@@ -85,6 +90,7 @@ namespace CoreWiki
 					options.Conventions.AddPageRoute("/Details", "{Slug?}");
 					options.Conventions.AddPageRoute("/Details", @"Index");
 					options.Conventions.AddPageRoute("/Create", "{Slug?}/Create");
+					options.Conventions.AddPageRoute("/History", "{Slug?}/History");
 				});
 
 			services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
@@ -97,10 +103,10 @@ namespace CoreWiki
 		public void Configure(IApplicationBuilder app, IHostingEnvironment env, IOptionsSnapshot<AppSettings> settings)
 		{
 
-      var initializer = new ArticleNotFoundInitializer();
+			var initializer = new ArticleNotFoundInitializer();
 
-      var configuration = app.ApplicationServices.GetService<TelemetryConfiguration>();
-      configuration.TelemetryInitializers.Add(initializer);
+			var configuration = app.ApplicationServices.GetService<TelemetryConfiguration>();
+			configuration.TelemetryInitializers.Add(initializer);
 
 			if (env.IsDevelopment())
 			{
