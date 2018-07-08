@@ -36,20 +36,37 @@ Jeff has written about how he has the hardware configured as well as the softwar
 
 ## Watch recordings
 
-Archive of all shows from the stream can be found on [Jeff's YouTube Fritz and Friends](https://www.youtube.com/playlist?list=PLVMqA0_8O85zHkvIMHgG74eskQTO5nfWy)  playlist. To facilitate we're putting down the last streams:
+Archive of all shows from the stream can be found on [Jeff's YouTube Fritz and Friends](https://www.youtube.com/playlist?list=PLVMqA0_8O85zHkvIMHgG74eskQTO5nfWy)  playlist.
 
 Date | Topic
 ----|---
-March 27, 2018 | [From DevIntersection in Orlando, ASP.NET Core with guest Shayne Boyer](https://www.twitch.tv/videos/243463398)
-March 29, 2018 |  [Back in Philly working on our new Wiki project](https://www.twitch.tv/videos/244236019?t=52m50s) - _Start 00:52:50_
-April 5, 2018 | [Building a Wiki with ASP.NET Core - Updating to Bootstrap 4](https://www.twitch.tv/videos/246900841)
-April 10, 2018 | [Pair-programming with Jon Skeet, Handling Dates and Times](https://www.twitch.tv/videos/248778357)
-April 12, 2018 | [Pair-programming with YOU!  Your .NET questions and pull-requests](https://www.twitch.tv/videos/249500947)
-April 14, 2018 | [Coding ASP.NET Core: Building a Wiki](https://www.twitch.tv/videos/250258108)
-April 19, 2018 | [Chill coding today.. good music, good code, and YOU!](https://www.twitch.tv/videos/252089112)
-May 3, 2018 | [Answering your questions, reviewing pull-requests, and May is for Macs continues!](https://www.twitch.tv/videos/257242690)
-May 5, 2018 | [ASP.NET Core, live interactions with SignalR, and YOUR pull requests](https://www.twitch.tv/videos/257981634)
-May 5, 2018 | [ASP.NET Core, live interactions with SignalR, and YOUR pull requests](https://www.twitch.tv/videos/257985865)
+March 27, 2018 | [From DevIntersection in Orlando, ASP.NET Core with guest Shayne Boyer](https://youtu.be/aXkeJmlPDI4)
+March 29, 2018 |  [Back in Philly working on our new Wiki project](https://youtu.be/GrwhbK5KaGM?t=3170) - _Start 00:52:50_
+April 5, 2018 | [Building a Wiki with ASP.NET Core - Updating to Bootstrap 4](https://youtu.be/-20TcnVo0Bc?t=1720) - _Start 00:28:40_
+April 10, 2018 | [Pair-programming with Jon Skeet, Handling Dates and Times](https://youtu.be/mfsvh_IpGmw)
+April 12, 2018 | [Pair-programming with YOU!  Your .NET questions and pull-requests](https://youtu.be/e-OO717psPI?t=1385) - _Start 00:23:05_
+April 14, 2018 | [Coding ASP.NET Core: Building a Wiki](https://youtu.be/et8m8BPx8jI)
+April 19, 2018 | [Chill coding today.. good music, good code, and YOU!](https://youtu.be/1JamllV1M4s)
+May 3, 2018 | [Answering your questions, reviewing pull-requests, and May is for Macs continues!](https://youtu.be/gSncSG6aV3o?t=1375) - _Start 00:22:55_
+May 5, 2018 | ASP.NET Core, live interactions with SignalR, and YOUR pull requests - _No Video Available_
+May 22, 2018 | [May is for Macs - Reviewing GitHub scoreboard widget and working on our Wiki](https://youtu.be/kszoWHlSz4Q?t=4167) - _Start 01:09:27_
+May 24, 2018 | [May is for Macs - Working with Gravatar and Updating to ASP.NET Core 2.1](https://youtu.be/pakUjHUm1Hk)
+May 26, 2018 | [May is for Macs - Building an RSS Feed and adding some AI to our Bot](https://youtu.be/w3ccHbhIHdU?t=1127) - _Start 00:18:47_
+May 29, 2018 | [May is for Macs - Reviewing Pull Requests and making the realtime web with SignalR](https://youtu.be/dgl1MJFdBbM)
+May 31, 2018 | [The end of May is for Macs - Completing our realtime GitHub scoreboard SignalR](https://youtu.be/qEPEsyG5uh8) - _First hour_
+June 2, 2018 | [Finishing the GitHub Scoreboard and merging YOUR pull-requests](https://youtu.be/8oNWFroOn8w) - _First hour_
+June 7, 2018 | [Dotnet global tools and reviewing pull requests to the CoreWiki project](https://youtu.be/g4iGpL_OftQ)
+June 9, 2018 | [DotNet Global Tools - Delivering Sample Code Easier than Ever](https://youtu.be/rqoFg7aCsGc?t=1968) - _Start 00:32:48_
+June 12, 2018 | [Upgrading to ASP.NET Core 2.1.1 and finishing our .NET global tool](https://youtu.be/CskBccbe3rs?t=1447) - _Start 00:24:07_
+June 14, 2018 | [Monitoring Applications with Isaac Levin](https://youtu.be/m4LW95T7TQE)
+June 16, 2018 | [Authorization in C# and ASP.NET Applications, plus YOUR Pull Requests](https://youtu.be/yB79149ksk8?t=920) - _Start 00:15:20_
+June 19, 2018 | [Notifications and Razor Pages in ASP.NET Core with Amanda Iverson](https://youtu.be/cSHeFgqH4zc)
+June 23, 2018 | [Reviewing Pull Requests and talking about ASP.NET Performance](https://youtu.be/ggpUam985pU)
+June 28, 2018 | [Completing historical data storage and reviewing your pull requests](https://youtu.be/modeWmv87K8)
+June 30, 2018 | [Reviewing Pull Requests and Discussing Dependency Injection](https://youtu.be/lTK5dZLz0ak) - _Last 20 minutes_
+July 3, 2018 | [Building a user-interface to compare wiki article versions](https://youtu.be/BB3v70xFKtU)
+July 5, 2018 | [Day after Independence Day, building web pages with ASP.NET Core](https://youtu.be/Xx9UwxzicjE?t=2475) - _Start 00:41:15_
+July 7, 2018 | [Refactoring and Pull requests \| C# \| ASP.NET Core](https://youtu.be/ae2N10F6PgA?t=1785) - _Start 00:29:45 for about 15 minutes_
 
 #  1) Functionality that have already been implemented
 
