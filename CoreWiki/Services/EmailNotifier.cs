@@ -13,11 +13,42 @@ namespace CoreWiki.Services
 	{
 		private readonly EmailNotifications _configuration;
 		private readonly ILogger _logger;
+		private readonly ISendGridClient _sendGridClient;
 
-		public EmailNotifier(IConfiguration configuration, ILoggerFactory loggerFactory)
+		public EmailNotifier(EmailNotifications configuration, ILoggerFactory loggerFactory, ISendGridClient sendGridClient)
 		{
-			_configuration = configuration.GetSection(nameof(EmailNotifications)).Get<EmailNotifications>();
+			_configuration = configuration;
 			_logger = loggerFactory.CreateLogger<EmailNotifier>();
+			_sendGridClient = sendGridClient;
+
+			if (!ValidateConfiguration()) throw new ApplicationException("Invalid configuration");
+
+		}
+
+		private bool ValidateConfiguration() {
+
+			if (string.IsNullOrWhiteSpace(_configuration.SendGridApiKey))
+			{
+				_logger.LogWarning($"Missing SendGridApiKey setting in {nameof(EmailNotifications)}");
+
+				return false;
+			}
+
+			if (string.IsNullOrWhiteSpace(_configuration.FromEmailAddress))
+			{
+				_logger.LogWarning($"Missing from FromEmailAddress setting in {nameof(EmailNotifications)}");
+
+				return false;
+			}
+			if (string.IsNullOrWhiteSpace(_configuration.FromName))
+			{
+				_logger.LogWarning($"Missing from FromName setting in {nameof(EmailNotifications)}");
+
+				return false;
+			}
+
+			return true;
+
 		}
 
 		public async Task<bool> SendEmailAsync(string recipientEmail, string subject, string body)
@@ -27,19 +58,6 @@ namespace CoreWiki.Services
 
 		public async Task<bool> SendEmailAsync(string recipientEmail, string recipientName, string subject, string body)
 		{
-			if (string.IsNullOrWhiteSpace(_configuration.SendGridApiKey))
-			{
-				_logger.LogInformation($"Missing SendGridApiKey setting in {nameof(EmailNotifications)}");
-
-				return false;
-			}
-
-			if (string.IsNullOrWhiteSpace(_configuration.FromEmailAddress))
-			{
-				_logger.LogInformation($"Missing from FromEmailAddress setting in {nameof(EmailNotifications)}");
-
-				return false;
-			}
 
 			if (string.IsNullOrWhiteSpace(recipientEmail))
 			{
@@ -55,9 +73,9 @@ namespace CoreWiki.Services
 			message.SetSubject(subject);
 			message.AddContent(MimeType.Html, body);
 
-			var client = new SendGridClient(_configuration.SendGridApiKey);
+			//var client = new SendGridClient(_configuration.SendGridApiKey);
 
-			var response = await client.SendEmailAsync(message);
+			var response = await _sendGridClient.SendEmailAsync(message);
 
 			_logger.LogInformation($"Sent email form {from.Email} to {to.Email} response {response.StatusCode}");
 

@@ -29,6 +29,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using CoreWiki.Services;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
+using SendGrid;
 
 namespace CoreWiki
 {
@@ -65,12 +66,7 @@ namespace CoreWiki
 			// Add NodaTime clock for time-based testing
 			services.AddSingleton<IClock>(SystemClock.Instance);
 
-			services.AddScoped<IArticlesSearchEngine, ArticlesDbSearchEngine>();
-			services.AddScoped<ITemplateProvider ,TemplateProvider>();
-			services.AddScoped<ITemplateParser, TemplateParser>();
-			services.AddScoped<IEmailMessageFormatter, EmailMessageFormatter>();
-			services.AddScoped<IEmailNotifier, EmailNotifier>();
-			services.AddScoped<INotificationService, NotificationService>();
+			ConfigureNotificationServices(services);
 
 			services.AddRouting(options => options.LowercaseUrls = true);
 			services.AddHttpContextAccessor();
@@ -97,6 +93,23 @@ namespace CoreWiki
 
 			services.AddProgressiveWebApp();
 
+		}
+
+		private void ConfigureNotificationServices(IServiceCollection services) { 
+
+			services.Configure<EmailNotifications>(Configuration.GetSection(nameof(EmailNotifications)));
+
+			services.AddScoped<IArticlesSearchEngine, ArticlesDbSearchEngine>();
+			services.AddScoped<ITemplateProvider, TemplateProvider>();
+			services.AddScoped<ITemplateParser, TemplateParser>();
+			services.AddScoped<IEmailMessageFormatter, EmailMessageFormatter>();
+			services.AddScoped<IEmailNotifier, EmailNotifier>();
+			services.AddScoped<INotificationService, NotificationService>();
+			services.AddScoped<ISendGridClient>(s =>
+			{
+				var config = Configuration.GetSection(nameof(EmailNotifications)).Get<EmailNotifications>().SendGridApiKey;
+				return new SendGridClient(config);
+			});
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
