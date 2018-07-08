@@ -8,14 +8,14 @@ using System.Threading.Tasks;
 
 namespace CoreWiki.Data.Data.Repositories
 {
-	public class ArticleRepository : IArticleRepository
+	public class ArticleSqliteRepository : IArticleRepository
 	{
-		public ArticleRepository(IApplicationDbContext context)
+		public ArticleSqliteRepository(IApplicationDbContext context)
 		{
-			Context = (ApplicationDbContext)context;
+			Context = context;
 		}
 
-		public ApplicationDbContext Context { get; }
+		public IApplicationDbContext Context { get; }
 
 
 		public async Task<IEnumerable<Article>> GetAllArticlesPaged(int pageSize, int pageNumber)

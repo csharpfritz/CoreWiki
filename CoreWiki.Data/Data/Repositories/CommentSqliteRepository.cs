@@ -4,15 +4,15 @@ using System.Threading.Tasks;
 
 namespace CoreWiki.Data.Data.Repositories
 {
-	public class CommentRepository : ICommentRepository
+	public class CommentSqliteRepository : ICommentRepository
 	{
 
-		public CommentRepository(IApplicationDbContext context)
+		public CommentSqliteRepository(IApplicationDbContext context)
 		{
-			Context = (ApplicationDbContext)context;
+			Context = context;
 		}
 
-		public ApplicationDbContext Context { get; }
+		public IApplicationDbContext Context { get; }
 
 
 

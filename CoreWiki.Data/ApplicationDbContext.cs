@@ -2,6 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using NodaTime;
 using System;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace CoreWiki.Data
 {
@@ -52,6 +54,14 @@ namespace CoreWiki.Data
 		public DbSet<SlugHistory> SlugHistories { get; set; }
 
 		public DbSet<ArticleHistory> ArticleHistories { get; set; }
+
+
+		public override Task<int> SaveChangesAsync(
+			CancellationToken cancellationToken = default(CancellationToken))
+		{
+			return base.SaveChangesAsync(cancellationToken);
+		}
+
 
 		public static void SeedData(ApplicationDbContext context)
 		{

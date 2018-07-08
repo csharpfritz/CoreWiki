@@ -54,9 +54,9 @@ namespace CoreWiki
 				);
 
 			// db repos
-			services.AddTransient<IArticleRepository, ArticleRepository>();
-			services.AddTransient<ICommentRepository, CommentRepository>();
-			services.AddTransient<ISlugHistoryRepository, SlugHistoryRepository>();
+			services.AddTransient<IArticleRepository, ArticleSqliteRepository>();
+			services.AddTransient<ICommentRepository, CommentSqliteRepository>();
+			services.AddTransient<ISlugHistoryRepository, SlugHistorySqliteRepository>();
 
 
 			// Add NodaTime clock for time-based testing

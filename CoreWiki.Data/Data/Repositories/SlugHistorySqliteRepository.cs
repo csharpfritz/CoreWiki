@@ -6,15 +6,15 @@ using System.Threading.Tasks;
 
 namespace CoreWiki.Data.Data.Repositories
 {
-	public class SlugHistoryRepository : ISlugHistoryRepository
+	public class SlugHistorySqliteRepository : ISlugHistoryRepository
 	{
-		public SlugHistoryRepository(IApplicationDbContext context)
+		public SlugHistorySqliteRepository(IApplicationDbContext context)
 		{
-			Context = (ApplicationDbContext)context;
+			Context = context;
 		}
 
 
-		public ApplicationDbContext Context { get; }
+		public IApplicationDbContext Context { get; }
 
 
 		public async Task<SlugHistory> GetSlugHistoryWithArticle(string slug)

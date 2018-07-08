@@ -1,6 +1,8 @@
 ﻿using CoreWiki.Data.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace CoreWiki.Data
 {
@@ -12,6 +14,9 @@ namespace CoreWiki.Data
 		DbSet<SlugHistory> SlugHistories { get; set; }
 
 		DbSet<ArticleHistory> ArticleHistories { get; set; }
+
+
+		Task<int> SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken));
 
 	}
 }
