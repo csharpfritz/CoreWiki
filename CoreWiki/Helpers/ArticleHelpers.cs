@@ -1,16 +1,19 @@
-﻿using CoreWiki.Models;
+﻿using CoreWiki.Data.Data.Interfaces;
+using CoreWiki.Data.Models;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+
 
 namespace CoreWiki.Helpers
 {
 	public static class ArticleHelpers
-    {
+	{
 		private static readonly string articleLinksPattern = @"(\[[\w\s.\-_:;\!\?]*[\]][\(])((?!(http|https))[\w\s\-_]*)([\)])";
 		private static readonly string LinkPrefix = "](";
 
-		public static IList<string> GetArticlesToCreate(ApplicationDbContext context, Article article, bool createSlug = false)
+		public static async Task<IList<string>> GetArticlesToCreate(IArticleRepository articleRepo, Article article, bool createSlug = false)
 		{
 			var articlesToCreate = new List<string>();
 
@@ -23,7 +26,7 @@ namespace CoreWiki.Helpers
 					var slug = createSlug ? UrlHelpers.URLFriendly(link) : link;
 
 					// Does the slug already exist in the database?
-					if (!context.Articles.Any(x => x.Slug.Equals(slug) && x.Id != article.Id))
+					if (!await articleRepo.IsTopicAvailable(slug, article.Id))
 					{
 						if (createSlug && !slug.Equals(link))
 						{

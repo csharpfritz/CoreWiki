@@ -1,23 +1,17 @@
-﻿using System;
+﻿using CoreWiki.Configuration;
+using CoreWiki.Data;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
+using Snickler.RSSCore.Models;
+using Snickler.RSSCore.Providers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using CoreWiki.Models;
-using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
-using Snickler.RSSCore.Models;
-using Snickler.RSSCore.Providers;
-using System.Web;
-using Microsoft.Extensions.Configuration;
-using Microsoft.AspNetCore.Hosting.Server.Features;
-using Snickler.RSSCore;
-using Microsoft.AspNetCore.Http.Extensions;
-using Microsoft.Extensions.Options;
-using CoreWiki.Configuration;
 
 namespace CoreWiki
 {
-	public class RSSProvider: IRSSProvider
+	public class RSSProvider : IRSSProvider
 	{
 		private readonly ApplicationDbContext _context;
 		private readonly Uri baseURL;

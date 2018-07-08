@@ -30,4 +30,8 @@
     <Folder Include="wwwroot\lib\simplemde\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\CoreWiki.Data\CoreWiki.Data.csproj" />
+  </ItemGroup>
+
 </Project>

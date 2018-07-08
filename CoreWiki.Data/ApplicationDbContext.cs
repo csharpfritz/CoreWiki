@@ -1,12 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using CoreWiki.Data.Models;
+using Microsoft.EntityFrameworkCore;
 using NodaTime;
 using System;
-using System.Linq;
 
-namespace CoreWiki.Models
+namespace CoreWiki.Data
 {
 
-	public class ApplicationDbContext : DbContext
+	public class ApplicationDbContext : DbContext, IApplicationDbContext
 	{
 
 		public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
@@ -53,10 +53,10 @@ namespace CoreWiki.Models
 
 		public DbSet<ArticleHistory> ArticleHistories { get; set; }
 
-	internal static void SeedData(ApplicationDbContext context)
+		public static void SeedData(ApplicationDbContext context)
 		{
 
-			context.Database.Migrate();
+			//context.Database.Migrate();
 
 		}
 

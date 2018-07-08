@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using NodaTime;
+using NodaTime.Extensions;
+using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
-using NodaTime;
-using NodaTime.Extensions;
 
-namespace CoreWiki.Models
+namespace CoreWiki.Data.Models
 {
 	public class ArticleHistory
 	{

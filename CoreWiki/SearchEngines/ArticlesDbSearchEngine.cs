@@ -1,17 +1,19 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
-using CoreWiki.Models;
+﻿using CoreWiki.Data.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
+using System.Threading.Tasks;
+using CoreWiki.Data.Data.Interfaces;
 
 namespace CoreWiki.SearchEngines
 {
 	public class ArticlesDbSearchEngine : IArticlesSearchEngine
 	{
-		private readonly ApplicationDbContext _context;
 
-		public ArticlesDbSearchEngine(ApplicationDbContext context)
+		private readonly IArticleRepository _articleRepo;
+
+		public ArticlesDbSearchEngine(IArticleRepository articleRepo)
 		{
-			_context = context;
+			_articleRepo = articleRepo;
 		}
 
 		public async Task<SearchResult<Article>> SearchAsync(string query, int pageNumber, int resultsPerPage)
@@ -19,13 +21,7 @@ namespace CoreWiki.SearchEngines
 			var filteredQuery = query.Trim();
 			var offset = (pageNumber - 1) * resultsPerPage;
 
-			var dbQuery = _context
-				.Articles
-				.AsNoTracking()
-				.Where(article =>
-					article.Topic.ToUpper().Contains(filteredQuery.ToUpper()) ||
-					article.Content.ToUpper().Contains(filteredQuery.ToUpper())
-				);
+			var dbQuery = _articleRepo.GetArticlesForSearchQuery(filteredQuery);
 
 			var totalResults = await dbQuery.CountAsync();
 
