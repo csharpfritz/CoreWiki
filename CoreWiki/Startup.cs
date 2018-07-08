@@ -58,6 +58,7 @@ namespace CoreWiki
 			services.AddEntityFrameworkSqlite()
 				.AddDbContextPool<ApplicationDbContext>(options =>
 					options.UseSqlite(Configuration.GetConnectionString("CoreWikiData"))
+						.EnableSensitiveDataLogging(true)
 				);
 
 
@@ -89,6 +90,7 @@ namespace CoreWiki
 					options.Conventions.AddPageRoute("/Details", "{Slug?}");
 					options.Conventions.AddPageRoute("/Details", @"Index");
 					options.Conventions.AddPageRoute("/Create", "{Slug?}/Create");
+					options.Conventions.AddPageRoute("/History", "{Slug?}/History");
 				});
 
 			services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
@@ -101,10 +103,10 @@ namespace CoreWiki
 		public void Configure(IApplicationBuilder app, IHostingEnvironment env, IOptionsSnapshot<AppSettings> settings)
 		{
 
-      var initializer = new ArticleNotFoundInitializer();
+			var initializer = new ArticleNotFoundInitializer();
 
-      var configuration = app.ApplicationServices.GetService<TelemetryConfiguration>();
-      configuration.TelemetryInitializers.Add(initializer);
+			var configuration = app.ApplicationServices.GetService<TelemetryConfiguration>();
+			configuration.TelemetryInitializers.Add(initializer);
 
 			if (env.IsDevelopment())
 			{

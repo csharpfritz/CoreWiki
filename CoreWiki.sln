@@ -5,7 +5,7 @@ VisualStudioVersion = 15.0.27520.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoreWiki", "CoreWiki\CoreWiki.csproj", "{507DE33A-3FA2-40C9-BC88-E7C2B378D2B6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoreWiki.Test", "CoreWiki.Test\CoreWiki.Test.csproj", "{850F57FA-EC30-481B-B8F9-FAE364802864}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoreWiki.Test", "CoreWiki.Test\CoreWiki.Test.csproj", "{850F57FA-EC30-481B-B8F9-FAE364802864}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
