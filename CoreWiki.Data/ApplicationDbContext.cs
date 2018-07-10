@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace CoreWiki.Data
 {
 
-	public class ApplicationDbContext : DbContext, IApplicationDbContext
+	public class ApplicationDbContext : DbContext
 	{
 
 		public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)

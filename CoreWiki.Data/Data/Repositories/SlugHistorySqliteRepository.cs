@@ -9,13 +9,13 @@ namespace CoreWiki.Data.Data.Repositories
 {
 	public class SlugHistorySqliteRepository : ISlugHistoryRepository
 	{
-		public SlugHistorySqliteRepository(IApplicationDbContext context)
+		public SlugHistorySqliteRepository(ApplicationDbContext context)
 		{
 			Context = context;
 		}
 
 
-		public IApplicationDbContext Context { get; }
+		public ApplicationDbContext Context { get; }
 
 
 		public async Task<SlugHistory> GetSlugHistoryWithArticle(string slug)

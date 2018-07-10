@@ -47,17 +47,7 @@ namespace CoreWiki
 				options.MinimumSameSitePolicy = SameSiteMode.None;
 			});
 
-			services.AddEntityFrameworkSqlite()
-				.AddDbContextPool<IApplicationDbContext, ApplicationDbContext>(options =>
-					options.UseSqlite(Configuration.GetConnectionString("CoreWikiData"))
-						.EnableSensitiveDataLogging(true)
-				);
-
-			// db repos
-			services.AddTransient<IArticleRepository, ArticleSqliteRepository>();
-			services.AddTransient<ICommentRepository, CommentSqliteRepository>();
-			services.AddTransient<ISlugHistoryRepository, SlugHistorySqliteRepository>();
-
+			services.AddSqliteRepositories(Configuration);
 
 			// Add NodaTime clock for time-based testing
 			services.AddSingleton<IClock>(SystemClock.Instance);
@@ -141,13 +131,14 @@ namespace CoreWiki
 			});
 
 			var scope = app.ApplicationServices.CreateScope();
-			var context = scope.ServiceProvider.GetService<IApplicationDbContext>();
-			var identityContext = scope.ServiceProvider.GetService<CoreWikiIdentityContext>();
+			
+			var identityContext = scope.SeedData()
+				.ServiceProvider.GetService<CoreWikiIdentityContext>();
 
 			app.UseStatusCodePagesWithReExecute("/HttpErrors/{0}");
 
 			app.UseMvc();
-			ApplicationDbContext.SeedData((ApplicationDbContext)context);
+			
 			CoreWikiIdentityContext.SeedData(identityContext);
 		}
 
