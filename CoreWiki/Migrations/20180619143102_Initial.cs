@@ -54,7 +54,7 @@ namespace CoreWiki.Migrations
             migrationBuilder.InsertData(
                 table: "Articles",
                 columns: new[] { "Id", "AuthorId", "Content", "Published", "Slug", "Topic", "ViewCount" },
-                values: new object[] { 1, new Guid("d1cebc50-390b-45b5-ab5e-d8bb589d46e5"), "This is the default home page.  Please change me!", new DateTime(2018, 6, 19, 14, 31, 2, 265, DateTimeKind.Utc), "home-page", "HomePage", 0 });
+                values: new object[] { 1, Guid.Empty, "This is the default home page.  Please change me!", new DateTime(2018, 6, 19, 14, 31, 2, 265, DateTimeKind.Utc), "home-page", "HomePage", 0 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Articles_Slug",
