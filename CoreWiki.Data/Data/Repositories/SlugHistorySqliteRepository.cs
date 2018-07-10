@@ -1,6 +1,7 @@
 ﻿using CoreWiki.Data.Data.Interfaces;
 using CoreWiki.Data.Models;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -28,6 +29,21 @@ namespace CoreWiki.Data.Data.Repositories
 		public void Dispose()
 		{
 			Context.Dispose();
+		}
+
+		public Task AddToHistory(string oldSlug, Article article)
+		{
+
+			var newSlug = new SlugHistory()
+			{
+				OldSlug = oldSlug,
+				Article = article,
+				AddedDateTime = DateTime.UtcNow
+			};
+
+			Context.SlugHistories.Add(newSlug);
+			return Context.SaveChangesAsync();
+
 		}
 	}
 }

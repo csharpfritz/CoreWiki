@@ -10,12 +10,12 @@ namespace CoreWiki.Data.Data.Repositories
 {
 	public class ArticleSqliteRepository : IArticleRepository
 	{
-		public ArticleSqliteRepository(IApplicationDbContext context)
+		public ArticleSqliteRepository(ApplicationDbContext context)
 		{
 			Context = context;
 		}
 
-		public IApplicationDbContext Context { get; }
+		public ApplicationDbContext Context { get; }
 
 
 		public async Task<IEnumerable<Article>> GetAllArticlesPaged(int pageSize, int pageNumber)
@@ -97,5 +97,37 @@ namespace CoreWiki.Data.Data.Repositories
 		{
 			Context.Dispose();
 		}
+
+		public Task<bool> Exists(int id) {
+
+			return Context.Articles.AnyAsync(e => e.Id == id);
+
+		}
+
+		public async Task Update(Article article)
+		{
+
+			Context.Attach(article); //.State = EntityState.Modified;
+
+			Context.ArticleHistories.Add(ArticleHistory.FromArticle(article));
+
+			try
+			{
+				await Context.SaveChangesAsync();
+			}
+			catch (DbUpdateConcurrencyException)
+			{
+				if (!await Exists(article.Id))
+				{
+					throw new ArticleNotFoundException();
+				}
+				else
+				{
+					throw;
+				}
+			}
+
+		}
+
 	}
 }

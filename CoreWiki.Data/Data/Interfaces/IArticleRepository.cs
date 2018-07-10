@@ -28,5 +28,11 @@ namespace CoreWiki.Data.Data.Interfaces
 		IQueryable<Article> GetArticlesForSearchQuery(string filteredQuery);
 
 		Task<bool> IsTopicAvailable(string articleSlug, int articleId);
+
+		Task<bool> Exists(int id);
+
+		Task Update(Article article);
+
+
 	}
 }

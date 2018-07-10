@@ -1,5 +1,6 @@
 ﻿using CoreWiki.Data;
 using CoreWiki.Data.Data.Interfaces;
+using CoreWiki.Data.Data.Repositories;
 using CoreWiki.Data.Models;
 using CoreWiki.Helpers;
 using Microsoft.AspNetCore.Mvc;
@@ -16,14 +17,15 @@ namespace CoreWiki.Pages
 
 	public class EditModel : PageModel
 	{
-		private readonly ApplicationDbContext _context;
-		private readonly IArticleRepository _articleRepo;
+
+		private readonly IArticleRepository _Repo;
+		private readonly ISlugHistoryRepository _SlugRepo;
 		private readonly IClock _clock;
 
-		public EditModel(IApplicationDbContext context, IArticleRepository articleRepo, IClock clock)
+		public EditModel(IArticleRepository articleRepo, ISlugHistoryRepository slugHistoryRepository, IClock clock)
 		{
-			_context = (ApplicationDbContext)context;
-			_articleRepo = articleRepo;
+			_Repo = articleRepo;
+			_SlugRepo = slugHistoryRepository;
 			_clock = clock;
 		}
 
@@ -37,7 +39,7 @@ namespace CoreWiki.Pages
 				return NotFound();
 			}
 
-			Article = await _articleRepo.GetArticleBySlug(slug);
+			Article = await _Repo.GetArticleBySlug(slug);
 
 			if (Article == null)
 			{
@@ -53,7 +55,7 @@ namespace CoreWiki.Pages
 				return Page();
 			}
 
-			var existingArticle = await _articleRepo.GetArticleById(Article.Id);
+			var existingArticle = await _Repo.GetArticleById(Article.Id);
 			Article.ViewCount = existingArticle.ViewCount;
 			Article.Version = existingArticle.Version + 1;
 
@@ -65,16 +67,14 @@ namespace CoreWiki.Pages
 				return Page();
 			}
 
-			if (await _articleRepo.IsTopicAvailable(slug, Article.Id))
+			if (!await _Repo.IsTopicAvailable(slug, Article.Id))
 			{
 				ModelState.AddModelError("Article.Topic", "This Title already exists.");
 				return Page();
 			}
 
-			var articlesToCreateFromLinks = (await ArticleHelpers.GetArticlesToCreate(_articleRepo, Article, createSlug: true))
+			var articlesToCreateFromLinks = (await ArticleHelpers.GetArticlesToCreate(_Repo, Article, createSlug: true))
 				.ToList();
-
-			_context.Attach(Article).State = EntityState.Modified;
 
 			Article.Published = _clock.GetCurrentInstant();
 			Article.Slug = slug;
@@ -83,32 +83,15 @@ namespace CoreWiki.Pages
 
 			if (!string.Equals(Article.Slug, existingArticle.Slug, StringComparison.InvariantCulture))
 			{
-				var historical = new SlugHistory()
-				{
-					OldSlug = existingArticle.Slug,
-					Article = Article,
-					Added = _clock.GetCurrentInstant(),
-				};
-
-				_context.Attach(historical).State = EntityState.Added;
+				await _SlugRepo.AddToHistory(existingArticle.Slug, Article);
 			}
 
-			AddNewArticleVersion();
+			//AddNewArticleVersion();
 
-			try
-			{
-				await _context.SaveChangesAsync();
-			}
-			catch (DbUpdateConcurrencyException)
-			{
-				if (!ArticleExists(Article.Id))
-				{
-					return new ArticleNotFoundResult();
-				}
-				else
-				{
-					throw;
-				}
+			try {
+				await _Repo.Update(Article);
+			} catch (ArticleNotFoundException) {
+				return new ArticleNotFoundResult();
 			}
 
 			if (articlesToCreateFromLinks.Count > 0)
@@ -119,17 +102,7 @@ namespace CoreWiki.Pages
 			return Redirect($"/{(Article.Slug == "home-page" ? "" : Article.Slug)}");
 		}
 
-		private void AddNewArticleVersion()
-		{
-
-			_context.ArticleHistories.Add(ArticleHistory.FromArticle(Article));
-
-		}
-
-		private bool ArticleExists(int id)
-		{
-			return _context.Articles.Any(e => e.Id == id);
-		}
+	
 	}
 
 }
