@@ -1,15 +1,12 @@
-﻿using System;
+﻿using NodaTime;
+using NodaTime.Extensions;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
-using CoreWiki.Areas.Identity.Data;
-using NodaTime;
-using NodaTime.Extensions;
 
-namespace CoreWiki.Models
+namespace CoreWiki.Data.Models
 {
 	public class Article
 	{
