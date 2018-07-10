@@ -1,30 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using CoreWiki.Data;
+using CoreWiki.Data.Data.Interfaces;
+using CoreWiki.Data.Models;
+using CoreWiki.Helpers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using NodaTime;
-using CoreWiki.Models;
-using CoreWiki.Helpers;
 using Microsoft.Extensions.Logging;
-using CoreWiki.Areas.Identity.Data;
+using NodaTime;
+using System;
+using System.Linq;
 using System.Security.Claims;
-using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 namespace CoreWiki.Pages
 {
 	public class CreateModel : PageModel
 	{
-		private readonly ApplicationDbContext _context;
+
+		private readonly IArticleRepository _articleRepo;
 		private readonly IClock _clock;
 
 		public ILogger Logger { get; private set; }
 
-		public CreateModel(ApplicationDbContext context, IClock clock, ILoggerFactory loggerFactory)
+		public CreateModel(IArticleRepository articleRepo, IClock clock, ILoggerFactory loggerFactory)
 		{
-			_context = context;
+			_articleRepo = articleRepo;
 			_clock = clock;
 			this.Logger = loggerFactory.CreateLogger("CreatePage");
 		}
@@ -36,9 +35,7 @@ namespace CoreWiki.Pages
 				return Page();
 			}
 
-			Article article = await _context.Articles.SingleOrDefaultAsync(m => m.Slug == slug);
-
-			if (article != null)
+			if (await _articleRepo.GetArticleBySlug(slug) != null)
 			{
 				return Redirect($"/{slug}/Edit");
 			}
@@ -57,8 +54,8 @@ namespace CoreWiki.Pages
 		public async Task<IActionResult> OnPostAsync()
 		{
 
-            var slug = UrlHelpers.URLFriendly(Article.Topic);
-			if (String.IsNullOrWhiteSpace(slug))
+			var slug = UrlHelpers.URLFriendly(Article.Topic);
+			if (string.IsNullOrWhiteSpace(slug))
 			{
 				ModelState.AddModelError("Article.Topic", "The Topic must contain at least one alphanumeric character.");
 				return Page();
@@ -74,9 +71,8 @@ namespace CoreWiki.Pages
 
 			//check if the slug already exists in the database.
 			Logger.LogWarning($"Creating page with slug: {slug}");
-			var isAvailable = !_context.Articles.Any(x => x.Slug == slug);
 
-			if (isAvailable == false)
+			if (await _articleRepo.IsTopicAvailable(slug, 0))
 			{
 				ModelState.AddModelError("Article.Topic", "This Title already exists.");
 				return Page();
@@ -85,11 +81,10 @@ namespace CoreWiki.Pages
 			Article.Published = _clock.GetCurrentInstant();
 			// Article.Slug = slug;
 
-			_context.Articles.Add(Article);
-			_context.ArticleHistories.Add(ArticleHistory.FromArticle(Article));
-			await _context.SaveChangesAsync();
+			Article = await _articleRepo.CreateArticleAndHistory(Article);
 
-			var articlesToCreateFromLinks = ArticleHelpers.GetArticlesToCreate(_context, Article, createSlug: true)
+
+			var articlesToCreateFromLinks = (await ArticleHelpers.GetArticlesToCreate(_articleRepo, Article, createSlug: true))
 				.ToList();
 
 			if (articlesToCreateFromLinks.Count > 0)

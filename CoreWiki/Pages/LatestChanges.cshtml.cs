@@ -1,28 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using CoreWiki.Data.Data.Interfaces;
+using CoreWiki.Data.Models;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
-using CoreWiki.Models;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace CoreWiki.Pages
 {
-    public class LatestChangesModel : PageModel
-    {
-        private readonly CoreWiki.Models.ApplicationDbContext _context;
+	public class LatestChangesModel : PageModel
+	{
+		private readonly IArticleRepository _articleRepo;
 
-        public LatestChangesModel(CoreWiki.Models.ApplicationDbContext context)
-        {
-            _context = context;
-        }
+		public LatestChangesModel(IArticleRepository articleRepo)
+		{
+			_articleRepo = articleRepo;
+		}
 
-        public IList<Article> Article { get;set; }
 
-        public async Task OnGetAsync()
-        {
-            Article = await _context.Articles.OrderByDescending(a => a.Published).Take(10).ToListAsync();
-        }
-    }
+		public IList<Article> Articles { get; set; }
+
+
+		public async Task OnGetAsync()
+		{
+			Articles = await _articleRepo.GetLatestArticles(10);
+		}
+	}
 }

@@ -1,6 +1,6 @@
 ﻿using CoreWiki.Areas.Identity.Data;
 using CoreWiki.Configuration;
-using CoreWiki.Models;
+using CoreWiki.Data.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using System.Threading.Tasks;
@@ -34,7 +34,7 @@ namespace CoreWiki.Services
 			var model = new
 			{
 				AuthorName = author.UserName,
-				Title = "CoreWiki Notification", 
+				Title = "CoreWiki Notification",
 				CommentDisplayName = comment.DisplayName,
 				ArticleTitle = article.Topic,
 				ArticleUrl = GetUrlForArticle(article)

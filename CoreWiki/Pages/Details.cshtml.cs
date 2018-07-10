@@ -1,29 +1,24 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using CoreWiki.Areas.Identity.Data;
+using CoreWiki.Data.Data.Interfaces;
+using CoreWiki.Data.Models;
+using CoreWiki.Helpers;
+using CoreWiki.Services;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
-using CoreWiki.Models;
-using NodaTime;
-using CoreWiki.Helpers;
-using SendGrid;
-using SendGrid.Helpers.Mail;
-using Microsoft.AspNetCore.Identity;
-using CoreWiki.Areas.Identity.Data;
-using System.Security.Policy;
-using Microsoft.AspNetCore.Mvc.Routing;
-using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.Extensions.Configuration;
-using CoreWiki.Services;
-using Microsoft.AspNetCore.Identity.UI.Services;
+using NodaTime;
+using System;
+using System.Threading.Tasks;
 
 namespace CoreWiki.Pages
 {
 	public class DetailsModel : PageModel
 	{
-		private readonly CoreWiki.Models.ApplicationDbContext _context;
+		private readonly IArticleRepository _articleRepo;
+		private readonly ICommentRepository _commentRepo;
+		private readonly ISlugHistoryRepository _slugHistoryRepo;
 		private readonly IClock _clock;
 		private readonly UserManager<CoreWikiUser> _UserManager;
 		private readonly INotificationService _notificationService;
@@ -31,15 +26,22 @@ namespace CoreWiki.Pages
 		public IConfiguration Configuration { get; }
 		public IEmailSender Notifier { get; }
 
-		public DetailsModel(CoreWiki.Models.ApplicationDbContext context, UserManager<CoreWikiUser> userManager,
-			IConfiguration config, INotificationService notificationService,
+		public DetailsModel(
+			IArticleRepository articleRepo,
+			ICommentRepository commentRepo,
+			ISlugHistoryRepository slugHistoryRepo,
+			UserManager<CoreWikiUser> userManager,
+			IConfiguration config,
+			INotificationService notificationService,
 			IClock clock)
 		{
-			_context = context;
+			_articleRepo = articleRepo;
+			_commentRepo = commentRepo;
+			_slugHistoryRepo = slugHistoryRepo;
 			_clock = clock;
 			_UserManager = userManager;
 			_notificationService = notificationService;
-			this.Configuration = config;
+			Configuration = config;
 		}
 
 		public Article Article { get; set; }
@@ -50,18 +52,15 @@ namespace CoreWiki.Pages
 		public async Task<IActionResult> OnGetAsync(string slug)
 		{
 
-            // TODO: If topicName not specified, default to Home Page
+			// TODO: If topicName not specified, default to Home Page
 
-            slug = slug ?? "home-page";
-
-			Article = await _context.Articles.Include(x => x.Comments).SingleOrDefaultAsync(m => m.Slug == slug.ToLower());
+			slug = slug ?? "home-page";
+			Article = await _articleRepo.GetArticleBySlug(slug);
 
 			if (Article == null)
 			{
 				Slug = slug;
-				var historical = await _context.SlugHistories.Include(h => h.Article)
-					.OrderByDescending(h => h.Added)
-					.FirstOrDefaultAsync(h => h.OldSlug == slug.ToLowerInvariant());
+				var historical = await _slugHistoryRepo.GetSlugHistoryWithArticle(slug);
 
 				if (historical != null)
 				{
@@ -80,31 +79,27 @@ namespace CoreWiki.Pages
 				{
 					Expires = DateTime.UtcNow.AddMinutes(5)
 				});
-
-				await _context.SaveChangesAsync();
 			}
 
 			return Page();
-	}
+		}
 
-		public async Task<IActionResult> OnPostAsync(Models.Comment comment)
+		public async Task<IActionResult> OnPostAsync(Comment comment)
 		{
 			TryValidateModel(comment);
-			Article = await _context.Articles.Include(x => x.Comments).SingleOrDefaultAsync(m => m.Id == comment.IdArticle);
-
+			Article = await _articleRepo.GetArticleByComment(comment);
 			if (Article == null)
-								 return new ArticleNotFoundResult();
+				return new ArticleNotFoundResult();
 
 			if (!ModelState.IsValid)
-								 return Page();
+				return Page();
 
-			comment.Article = this.Article;
+			comment.Article = Article;
 
 			comment.Submitted = _clock.GetCurrentInstant();
 
-			_context.Comments.Add(comment);
-			var author = await _UserManager.FindByIdAsync(this.Article.AuthorId.ToString());
-			await _context.SaveChangesAsync();
+			var author = await _UserManager.FindByIdAsync(Article.AuthorId.ToString());
+			await _commentRepo.CreateComment(comment);
 			await _notificationService.NotifyAuthorNewComment(author, Article, comment);
 
 			return Redirect($"/{Article.Slug}");

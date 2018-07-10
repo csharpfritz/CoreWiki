@@ -1,34 +1,26 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
+using CoreWiki.Configuration;
+using CoreWiki.Data;
+using CoreWiki.Data.Data.Interfaces;
+using CoreWiki.Data.Data.Repositories;
+using CoreWiki.Helpers;
 using CoreWiki.Models;
 using CoreWiki.SearchEngines;
+using CoreWiki.Services;
+using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.FileProviders;
+using Microsoft.Extensions.Options;
 using NodaTime;
-using Snickler.RSSCore;
-using Snickler.RSSCore.Providers;
 using Snickler.RSSCore.Extensions;
 using Snickler.RSSCore.Models;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Hosting.Server.Features;
-using CoreWiki.Configuration;
-using Microsoft.Extensions.Options;
-using CoreWiki.Helpers;
-using Microsoft.ApplicationInsights.Extensibility;
-using CoreWiki.Areas.Identity.Data;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
-using CoreWiki.Services;
-using Microsoft.AspNetCore.Localization;
-using Microsoft.AspNetCore.Mvc;
+using System;
 
 namespace CoreWiki
 {
@@ -56,17 +48,22 @@ namespace CoreWiki
 			});
 
 			services.AddEntityFrameworkSqlite()
-				.AddDbContextPool<ApplicationDbContext>(options =>
+				.AddDbContextPool<IApplicationDbContext, ApplicationDbContext>(options =>
 					options.UseSqlite(Configuration.GetConnectionString("CoreWikiData"))
 						.EnableSensitiveDataLogging(true)
 				);
+
+			// db repos
+			services.AddTransient<IArticleRepository, ArticleSqliteRepository>();
+			services.AddTransient<ICommentRepository, CommentSqliteRepository>();
+			services.AddTransient<ISlugHistoryRepository, SlugHistorySqliteRepository>();
 
 
 			// Add NodaTime clock for time-based testing
 			services.AddSingleton<IClock>(SystemClock.Instance);
 
 			services.AddScoped<IArticlesSearchEngine, ArticlesDbSearchEngine>();
-			services.AddScoped<ITemplateProvider ,TemplateProvider>();
+			services.AddScoped<ITemplateProvider, TemplateProvider>();
 			services.AddScoped<ITemplateParser, TemplateParser>();
 			services.AddScoped<IEmailMessageFormatter, EmailMessageFormatter>();
 			services.AddScoped<IEmailNotifier, EmailNotifier>();
@@ -112,7 +109,8 @@ namespace CoreWiki
 			{
 				app.UseDeveloperExceptionPage();
 				app.UseDatabaseErrorPage();
-			} else
+			}
+			else
 			{
 				app.UseExceptionHandler("/Error");
 			}
@@ -143,13 +141,13 @@ namespace CoreWiki
 			});
 
 			var scope = app.ApplicationServices.CreateScope();
-			var context = scope.ServiceProvider.GetService<ApplicationDbContext>();
+			var context = scope.ServiceProvider.GetService<IApplicationDbContext>();
 			var identityContext = scope.ServiceProvider.GetService<CoreWikiIdentityContext>();
 
 			app.UseStatusCodePagesWithReExecute("/HttpErrors/{0}");
 
 			app.UseMvc();
-			ApplicationDbContext.SeedData(context);
+			ApplicationDbContext.SeedData((ApplicationDbContext)context);
 			CoreWikiIdentityContext.SeedData(identityContext);
 		}
 

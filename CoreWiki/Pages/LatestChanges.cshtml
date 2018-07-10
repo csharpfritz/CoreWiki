@@ -12,7 +12,7 @@
 </p>
 
 <div class="cwiki-flex-container">
-	@foreach (var article in Model.Article)
+	@foreach (var article in Model.Articles)
 	{
 		@await Html.PartialAsync("_ArticleRow", article)
 	}

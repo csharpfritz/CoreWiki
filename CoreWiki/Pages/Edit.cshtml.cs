@@ -1,13 +1,15 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
+﻿using CoreWiki.Data;
+using CoreWiki.Data.Data.Interfaces;
+using CoreWiki.Data.Models;
+using CoreWiki.Helpers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using CoreWiki.Models;
 using NodaTime;
-using CoreWiki.Helpers;
 using System;
+using System.Linq;
 using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace CoreWiki.Pages
 {
@@ -15,11 +17,13 @@ namespace CoreWiki.Pages
 	public class EditModel : PageModel
 	{
 		private readonly ApplicationDbContext _context;
+		private readonly IArticleRepository _articleRepo;
 		private readonly IClock _clock;
 
-		public EditModel(ApplicationDbContext context, IClock clock)
+		public EditModel(IApplicationDbContext context, IArticleRepository articleRepo, IClock clock)
 		{
-			_context = context;
+			_context = (ApplicationDbContext)context;
+			_articleRepo = articleRepo;
 			_clock = clock;
 		}
 
@@ -33,7 +37,7 @@ namespace CoreWiki.Pages
 				return NotFound();
 			}
 
-			Article = await _context.Articles.SingleOrDefaultAsync(m => m.Slug == slug);
+			Article = await _articleRepo.GetArticleBySlug(slug);
 
 			if (Article == null)
 			{
@@ -49,7 +53,7 @@ namespace CoreWiki.Pages
 				return Page();
 			}
 
-			var existingArticle = _context.Articles.AsNoTracking().First(a => a.Id == Article.Id);
+			var existingArticle = await _articleRepo.GetArticleById(Article.Id);
 			Article.ViewCount = existingArticle.ViewCount;
 			Article.Version = existingArticle.Version + 1;
 
@@ -61,15 +65,13 @@ namespace CoreWiki.Pages
 				return Page();
 			}
 
-			var isAvailable = !_context.Articles.Any(x => x.Slug == slug && x.Id != Article.Id);
-
-			if (isAvailable == false)
+			if (await _articleRepo.IsTopicAvailable(slug, Article.Id))
 			{
 				ModelState.AddModelError("Article.Topic", "This Title already exists.");
 				return Page();
 			}
 
-			var articlesToCreateFromLinks = ArticleHelpers.GetArticlesToCreate(_context, Article, createSlug: true)
+			var articlesToCreateFromLinks = (await ArticleHelpers.GetArticlesToCreate(_articleRepo, Article, createSlug: true))
 				.ToList();
 
 			_context.Attach(Article).State = EntityState.Modified;
