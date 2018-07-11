@@ -66,7 +66,7 @@ namespace CoreWiki.Data
 		public static void SeedData(ApplicationDbContext context)
 		{
 
-			//context.Database.Migrate();
+			context.Database.Migrate();
 
 		}
 

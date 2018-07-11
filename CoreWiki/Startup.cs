@@ -131,6 +131,9 @@ namespace CoreWiki
 			});
 
 			var scope = app.ApplicationServices.CreateScope();
+
+			var appContext = scope.SeedData()
+				.ServiceProvider.GetService<ApplicationDbContext>();
 			
 			var identityContext = scope.SeedData()
 				.ServiceProvider.GetService<CoreWikiIdentityContext>();
@@ -138,7 +141,9 @@ namespace CoreWiki
 			app.UseStatusCodePagesWithReExecute("/HttpErrors/{0}");
 
 			app.UseMvc();
-			
+
+			ApplicationDbContext.SeedData(appContext);
+
 			CoreWikiIdentityContext.SeedData(identityContext);
 		}
 
