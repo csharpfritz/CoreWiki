@@ -1,17 +1,18 @@
-﻿@model DetailsModel
+﻿@using Data.Models
+@model DetailsModel
 @inject IOptionsSnapshot<AppSettings> settings
 
 @if (User.Identity.IsAuthenticated)
 {
 
-@if (settings.Value.Comments.IsEngineLocal)
-{
-	@await Component.InvokeAsync("CreateComments", new Models.Comment { IdArticle = Model.Article.Id })
-	@await Component.InvokeAsync("ListComments", @Model.Article.Comments)
-}
-else
-{
-	<partial name="_DisqusComments" model="settings.Value.Comments.Disqus.ShortName" />
-}
+	if (settings.Value.Comments.IsEngineLocal)
+	{
+		@await Component.InvokeAsync("CreateComments", new Comment { IdArticle = Model.Article.Id })
+		@await Component.InvokeAsync("ListComments", @Model.Article.Comments)
+	}
+	else
+	{
+		<partial name="_DisqusComments" model="settings.Value.Comments.Disqus.ShortName" />
+	}
 
 }

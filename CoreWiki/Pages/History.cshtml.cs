@@ -1,27 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using CoreWiki.Data.Data.Interfaces;
+using CoreWiki.Data.Models;
 using CoreWiki.Helpers;
-using CoreWiki.Models;
 using DiffPlex.DiffBuilder;
 using DiffPlex.DiffBuilder.Model;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace CoreWiki.Pages
 {
 	public class HistoryModel : PageModel
 	{
 
-		private ApplicationDbContext _context { get; }
+		private readonly IArticleRepository _articleRepo;
 
-		public HistoryModel(ApplicationDbContext context)
+		public HistoryModel(IArticleRepository articleRepo)
 		{
-
-			this._context = context;
-
+			_articleRepo = articleRepo;
 		}
 
 
@@ -40,9 +36,7 @@ namespace CoreWiki.Pages
 				return NotFound();
 			}
 
-			Article = await _context.Articles
-				.Include(a => a.History)
-				.SingleOrDefaultAsync(m => m.Slug == slug);
+			Article = await _articleRepo.GetArticleWithHistoriesBySlug(slug);
 
 			if (Article == null)
 			{
@@ -53,11 +47,10 @@ namespace CoreWiki.Pages
 
 		}
 
-		public async Task<IActionResult> OnPost(string slug) {
+		public async Task<IActionResult> OnPost(string slug)
+		{
 
-			Article = await _context.Articles
-			.Include(a => a.History)
-			.SingleOrDefaultAsync(m => m.Slug == slug);
+			Article = await _articleRepo.GetArticleWithHistoriesBySlug(slug);
 
 			var histories = Article.History
 				.Where(h => Compare.Any(c => c == h.Version.ToString()))

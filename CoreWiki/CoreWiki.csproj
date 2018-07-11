@@ -7,7 +7,7 @@
     <PackageReference Include="BuildBundlerMinifier" Version="2.8.391" />
     <PackageReference Include="DiffPlex" Version="1.4.1" />
     <PackageReference Include="HtmlSanitizer" Version="4.0.185" />
-    <PackageReference Include="Humanizer" Version="2.3.3" />
+    <PackageReference Include="Humanizer" Version="2.4.2" />
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.3.0" />
     <PackageReference Include="Microsoft.AspNetCore.App" Version="2.1.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="2.1.1" />
@@ -17,7 +17,7 @@
     <PackageReference Include="NWebsec.AspNetCore.Mvc.TagHelpers" Version="2.0.0" />
     <PackageReference Include="sendgrid" Version="9.9.0" />
     <PackageReference Include="Snickler.RSSCore" Version="1.0.3" />
-    <PackageReference Include="WebEssentials.AspNetCore.PWA" Version="1.0.33" />
+    <PackageReference Include="WebEssentials.AspNetCore.PWA" Version="1.0.42" />
     <PackageReference Include="Westwind.AspNetCore.Markdown" Version="3.0.28" />
   </ItemGroup>
 
@@ -28,6 +28,10 @@
 		<Folder Include="wwwroot\lib\bootstrap\" />
 		<Folder Include="wwwroot\lib\moment\" />
     <Folder Include="wwwroot\lib\simplemde\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CoreWiki.Data\CoreWiki.Data.csproj" />
   </ItemGroup>
 
 </Project>

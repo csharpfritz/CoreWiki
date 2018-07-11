@@ -1,9 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using CoreWiki.Data.Models;
+using Microsoft.EntityFrameworkCore;
 using NodaTime;
 using System;
-using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
-namespace CoreWiki.Models
+namespace CoreWiki.Data
 {
 
 	public class ApplicationDbContext : DbContext
@@ -53,10 +55,18 @@ namespace CoreWiki.Models
 
 		public DbSet<ArticleHistory> ArticleHistories { get; set; }
 
-	internal static void SeedData(ApplicationDbContext context)
+
+		public override Task<int> SaveChangesAsync(
+			CancellationToken cancellationToken = default(CancellationToken))
+		{
+			return base.SaveChangesAsync(cancellationToken);
+		}
+
+
+		public static void SeedData(ApplicationDbContext context)
 		{
 
-			context.Database.Migrate();
+			//context.Database.Migrate();
 
 		}
 

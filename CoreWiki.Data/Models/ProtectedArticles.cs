@@ -1,4 +1,4 @@
-namespace CoreWiki.Models
+namespace CoreWiki.Data.Models
 {
 
 	public static class ProtectedArticles {

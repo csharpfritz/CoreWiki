@@ -1,9 +1,9 @@
-using System.Linq;
-using System.Threading.Tasks;
-using CoreWiki.Models;
+using CoreWiki.Data.Models;
 using CoreWiki.SearchEngines;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace CoreWiki.Pages
 {
