@@ -130,16 +130,21 @@ namespace CoreWiki
 				DefaultRequestCulture = new RequestCulture("en-US"),
 			});
 
-			var scope = app.ApplicationServices.CreateScope();
-			
-			var identityContext = scope.SeedData()
-				.ServiceProvider.GetService<CoreWikiIdentityContext>();
+			using (var scope = app.ApplicationServices.CreateScope())
+			{
+
+				scope.SeedData();
+
+				var identityContext = scope
+					.ServiceProvider.GetService<CoreWikiIdentityContext>();
+				CoreWikiIdentityContext.SeedData(identityContext);
+
+			}
 
 			app.UseStatusCodePagesWithReExecute("/HttpErrors/{0}");
 
 			app.UseMvc();
-			
-			CoreWikiIdentityContext.SeedData(identityContext);
+
 		}
 
 	}
