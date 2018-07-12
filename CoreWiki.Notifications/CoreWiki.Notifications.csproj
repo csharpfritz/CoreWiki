@@ -22,4 +22,7 @@
     <Folder Include="Templates\Shared\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <EmbeddedResource Include="Templates\**\*.cshtml" />
+  </ItemGroup>
 </Project>
