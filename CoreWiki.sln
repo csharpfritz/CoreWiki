@@ -7,7 +7,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoreWiki", "CoreWiki\CoreWi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoreWiki.Test", "CoreWiki.Test\CoreWiki.Test.csproj", "{850F57FA-EC30-481B-B8F9-FAE364802864}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoreWiki.Data", "CoreWiki.Data\CoreWiki.Data.csproj", "{E04F69D7-A635-4ECC-8326-E860486FB500}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoreWiki.Data", "CoreWiki.Data\CoreWiki.Data.csproj", "{E04F69D7-A635-4ECC-8326-E860486FB500}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F3951583-E144-47C0-917E-6EC0404E956E}"
+	ProjectSection(SolutionItems) = preProject
+		updateDb.cmd = updateDb.cmd
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

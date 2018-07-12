@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
@@ -8,5 +8,11 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="2.1.1" />
     <PackageReference Include="NodaTime" Version="2.3.0" />
   </ItemGroup>
+
+	<ItemGroup>
+		<Compile Update="**\*.Designer.cs">
+			<DependentUpon>$([System.String]::Copy("%(Filename)").Replace(".Designer","")).cs</DependentUpon>
+		</Compile>
+	</ItemGroup>
 
 </Project>
