@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
-    <UserSecretsId>7b1e67c2-befb-4e2e-957d-603f8b2e5491</UserSecretsId>
+    <UserSecretsId>7b1e67c2-befb-4e2e-957d-603f8b2e5491</UserSecretsId>    
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="BuildBundlerMinifier" Version="2.8.391" />
@@ -23,7 +23,6 @@
 
   <ItemGroup>
     <Folder Include="Areas\Identity\Services\" />
-    <Folder Include="Migrations\" />
     <Folder Include="App_Data\" />
 		<Folder Include="wwwroot\lib\bootstrap\" />
 		<Folder Include="wwwroot\lib\moment\" />
@@ -33,5 +32,15 @@
   <ItemGroup>
     <ProjectReference Include="..\CoreWiki.Data\CoreWiki.Data.csproj" />
   </ItemGroup>
+
+  <Target Name="DebugEnsureNodeEnv" BeforeTargets="BundleMinify;Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('.\node_modules') ">
+    <!-- Ensure Node.js is installed -->
+    <Exec Command="node --version" ContinueOnError="true">
+      <Output TaskParameter="ExitCode" PropertyName="ErrorCode" />
+    </Exec>
+    <Error Condition="'$(ErrorCode)' != '0'" Text="Node.js is required to build and run this project. To continue, please install Node.js from https://nodejs.org/, and then restart your command prompt or IDE." />
+    <Message Importance="high" Text="Restoring dependencies using 'npm'. This may take several minutes..." />
+    <Exec WorkingDirectory=".\" Command="npm install --no-save" />
+  </Target>
 
 </Project>
