@@ -38,14 +38,14 @@ namespace CoreWiki.Migrations
             migrationBuilder.InsertData(
                 table: "ArticleHistories",
                 columns: new[] { "Id", "ArticleId", "AuthorId", "AuthorName", "Content", "Published", "Slug", "Topic", "Version" },
-                values: new object[] { 1, 1, new Guid("e20373cc-26ed-4bb7-8856-ced0ff9c1d5f"), "Unknown", "This is the default home page.  Please change me!", new DateTime(2018, 7, 3, 15, 56, 55, 423, DateTimeKind.Utc), "home-page", "HomePage", 1 });
+                values: new object[] { 1, 1, new Guid("00000000-0000-0000-0000-000000000000"), "Unknown", "This is the default home page.  Please change me!", new DateTime(2018, 6, 19, 14, 31, 2, 265, DateTimeKind.Utc), "home-page", "HomePage", 1 });
 
             migrationBuilder.UpdateData(
                 table: "Articles",
                 keyColumn: "Id",
                 keyValue: 1,
                 columns: new[] { "AuthorId", "AuthorName", "Published", "Version" },
-                values: new object[] { new Guid("e20373cc-26ed-4bb7-8856-ced0ff9c1d5f"), "Unknown", new DateTime(2018, 7, 3, 15, 56, 55, 423, DateTimeKind.Utc), 1 });
+                values: new object[] { new Guid("00000000-0000-0000-0000-000000000000"), "Unknown", new DateTime(2018, 6, 19, 14, 31, 2, 265, DateTimeKind.Utc), 1 });
 
             //migrationBuilder.AddForeignKey(
             //    name: "FK_ArticleHistories_Articles_ArticleId",
@@ -90,7 +90,7 @@ namespace CoreWiki.Migrations
                 keyColumn: "Id",
                 keyValue: 1,
                 columns: new[] { "AuthorId", "Published", "Version" },
-                values: new object[] { new Guid("d1cebc50-390b-45b5-ab5e-d8bb589d46e5"), new DateTime(2018, 6, 19, 14, 31, 2, 265, DateTimeKind.Utc), 0 });
+                values: new object[] { new Guid("00000000-0000-0000-0000-000000000000"), new DateTime(2018, 6, 19, 14, 31, 2, 265, DateTimeKind.Utc), 0 });
 
             migrationBuilder.AddForeignKey(
                 name: "FK_ArticleHistories_Articles_ArticleId",
