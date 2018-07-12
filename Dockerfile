@@ -1,4 +1,4 @@
-FROM cakebuild/cake:2.1-sdk AS builder
+FROM cakebuild/cake:v0.28.1-2.1-sdk AS builder
 
 RUN apt-get update -qq \
     && curl -sL https://deb.nodesource.com/setup_9.x | bash - \
@@ -8,7 +8,7 @@ ADD .  /src
 
 RUN Cake /src/build.cake --Target=Publish
 
-FROM microsoft/aspnetcore:2.0.6
+FROM microsoft/dotnet:2.1.1-aspnetcore-runtime
 
 WORKDIR app
 

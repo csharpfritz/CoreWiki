@@ -13,33 +13,38 @@
 <div class="cwiki-flex-container">
 	@foreach (var article in Model.Articles)
 	{
-	@await Html.PartialAsync("_ArticleRow", article)
+		@await Html.PartialAsync("_ArticleRow", article)
 	}
 </div>
 @section Styles {
-<style>
-	.pageNumber {
-		margin: 0px 4px;
-	}
+	<style>
+		.pageNumber {
+			margin: 0px 4px;
+		}
 
-	.cwiki-flex-container {
-		padding: 0;
-		margin: 0;
-		display: -webkit-box;
-		display: -moz-box;
-		display: -ms-flexbox;
-		display: -webkit-flex;
-		display: flex;
-		-webkit-flex-flow: row wrap;
-		justify-content: space-around;
-	}
+		.cwiki-flex-container {
+			padding: 0;
+			margin: 0;
+			display: -webkit-box;
+			display: -moz-box;
+			display: -ms-flexbox;
+			display: -webkit-flex;
+			display: flex;
+			-webkit-flex-flow: row wrap;
+			justify-content: space-around;
+		}
 
-	.cwiki-flex-item {
-		width: 360px;
-		color: white;
-		border-radius: 20px;
-	}
-</style>
+		.cwiki-flex-item {
+			width: 360px;
+			color: white;
+			border-radius: 20px;
+		}
+	</style>
 }
 
-
+<script>
+	function UpdatePageSize(value) {
+		document.cookie = encodeURIComponent("PageSize") + "=" + encodeURIComponent(value) + "; path=/";
+		location = '/all/1';
+	}
+</script>

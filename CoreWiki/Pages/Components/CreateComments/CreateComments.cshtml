@@ -1,40 +1,42 @@
-﻿@model Models.Comment
+﻿@using Data.Models
+@model Data.Models.Comment
 <br />
 <br />
-<h1>@Localizer["NewComment"]</h1>
-<hr />
-<form method="post" autocomplete="off">
-	<input type="hidden" asp-for="@Model.IdArticle" />
-	<div class="container-fluid">
-		<div class="row">
-			<div class="col-sm">
-				<div class="form-group">
-					<label asp-for="@Model.DisplayName" class="control-label"></label>
-					<input asp-for="@Model.DisplayName" class="form-control" />
-					<span asp-validation-for="@Model.DisplayName" class="text-danger"></span>
+<div class="card card-header">
+	<h5>@Localizer["NewComment"]</h5>
+	<form method="post" autocomplete="off">
+		<input type="hidden" asp-for="@Model.IdArticle" />
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-sm">
+					<div class="form-group">
+						<label asp-for="@Model.DisplayName" class="control-label"></label>
+						<input asp-for="@Model.DisplayName" class="form-control" />
+						<span asp-validation-for="@Model.DisplayName" class="text-danger"></span>
+					</div>
+				</div>
+				<div class="col-sm">
+					<div class="form-group">
+						<label asp-for="@Model.Email" class="control-label"></label>
+						<input asp-for="@Model.Email" class="form-control" />
+						<span asp-validation-for="@Model.Email" class="text-danger"></span>
+					</div>
 				</div>
 			</div>
-			<div class="col-sm">
+			<div class="row">
+				<div class="col-sm">
+					<div class="form-group">
+						<label asp-for="@Model.Content" class="control-label"></label>
+						<textarea asp-for="@Model.Content" class="form-control"></textarea>
+						<span asp-validation-for="@Model.Content" class="text-danger"></span>
+					</div>
+				</div>
+			</div>
+			<div class="row">
 				<div class="form-group">
-					<label asp-for="@Model.Email" class="control-label"></label>
-					<input asp-for="@Model.Email" class="form-control" />
-					<span asp-validation-for="@Model.Email" class="text-danger"></span>
+					<input type="submit" value=@Localizer["Submit"] class="btn btn-outline-primary" />
 				</div>
 			</div>
 		</div>
-		<div class="row">
-			<div class="col-sm">
-				<div class="form-group">
-					<label asp-for="@Model.Content" class="control-label"></label>
-					<textarea asp-for="@Model.Content" class="form-control"></textarea>
-					<span asp-validation-for="@Model.Content" class="text-danger"></span>
-				</div>
-			</div>
-		</div>
-		<div class="row">
-			<div class="form-group">
-				<input type="submit" value=@Localizer["Submit"] class="btn btn-outline-primary" />
-			</div>
-		</div>
-	</div>
-</form>
+	</form>
+</div>

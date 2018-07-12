@@ -1,33 +1,26 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
+using CoreWiki.Configuration;
+using CoreWiki.Data;
+using CoreWiki.Data.Data.Interfaces;
+using CoreWiki.Data.Data.Repositories;
+using CoreWiki.Helpers;
 using CoreWiki.Models;
 using CoreWiki.SearchEngines;
+using CoreWiki.Services;
+using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.FileProviders;
+using Microsoft.Extensions.Options;
 using NodaTime;
-using Snickler.RSSCore;
-using Snickler.RSSCore.Providers;
 using Snickler.RSSCore.Extensions;
 using Snickler.RSSCore.Models;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Hosting.Server.Features;
-using CoreWiki.Configuration;
-using Microsoft.Extensions.Options;
-using CoreWiki.Helpers;
-using Microsoft.ApplicationInsights.Extensibility;
-using CoreWiki.Areas.Identity.Data;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
-using CoreWiki.Services;
-using Microsoft.AspNetCore.Localization;
+using System;
 
 namespace CoreWiki
 {
@@ -54,17 +47,13 @@ namespace CoreWiki
 				options.MinimumSameSitePolicy = SameSiteMode.None;
 			});
 
-			services.AddEntityFrameworkSqlite()
-				.AddDbContextPool<ApplicationDbContext>(options =>
-					options.UseSqlite(Configuration.GetConnectionString("CoreWikiData"))
-				);
-
+			services.AddSqliteRepositories(Configuration);
 
 			// Add NodaTime clock for time-based testing
 			services.AddSingleton<IClock>(SystemClock.Instance);
 
 			services.AddScoped<IArticlesSearchEngine, ArticlesDbSearchEngine>();
-			services.AddScoped<ITemplateProvider ,TemplateProvider>();
+			services.AddScoped<ITemplateProvider, TemplateProvider>();
 			services.AddScoped<ITemplateParser, TemplateParser>();
 			services.AddScoped<IEmailMessageFormatter, EmailMessageFormatter>();
 			services.AddScoped<IEmailNotifier, EmailNotifier>();
@@ -75,7 +64,10 @@ namespace CoreWiki
 
 			services.AddLocalization(options => options.ResourcesPath = "Globalization");
 
-			services.AddMvc()
+			services.AddMvc(options =>
+			{
+				options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
+			})
 				.AddViewLocalization()
 				.AddDataAnnotationsLocalization()
 				.AddRazorPagesOptions(options =>
@@ -85,6 +77,7 @@ namespace CoreWiki
 					options.Conventions.AddPageRoute("/Details", "{Slug?}");
 					options.Conventions.AddPageRoute("/Details", @"Index");
 					options.Conventions.AddPageRoute("/Create", "{Slug?}/Create");
+					options.Conventions.AddPageRoute("/History", "{Slug?}/History");
 				});
 
 			services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
@@ -97,16 +90,17 @@ namespace CoreWiki
 		public void Configure(IApplicationBuilder app, IHostingEnvironment env, IOptionsSnapshot<AppSettings> settings)
 		{
 
-      var initializer = new ArticleNotFoundInitializer();
+			var initializer = new ArticleNotFoundInitializer();
 
-      var configuration = app.ApplicationServices.GetService<TelemetryConfiguration>();
-      configuration.TelemetryInitializers.Add(initializer);
+			var configuration = app.ApplicationServices.GetService<TelemetryConfiguration>();
+			configuration.TelemetryInitializers.Add(initializer);
 
 			if (env.IsDevelopment())
 			{
 				app.UseDeveloperExceptionPage();
 				app.UseDatabaseErrorPage();
-			} else
+			}
+			else
 			{
 				app.UseExceptionHandler("/Error");
 			}
@@ -137,13 +131,14 @@ namespace CoreWiki
 			});
 
 			var scope = app.ApplicationServices.CreateScope();
-			var context = scope.ServiceProvider.GetService<ApplicationDbContext>();
-			var identityContext = scope.ServiceProvider.GetService<CoreWikiIdentityContext>();
+			
+			var identityContext = scope.SeedData()
+				.ServiceProvider.GetService<CoreWikiIdentityContext>();
 
 			app.UseStatusCodePagesWithReExecute("/HttpErrors/{0}");
 
 			app.UseMvc();
-			ApplicationDbContext.SeedData(context);
+			
 			CoreWikiIdentityContext.SeedData(identityContext);
 		}
 

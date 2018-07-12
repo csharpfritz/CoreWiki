@@ -12,23 +12,43 @@
 	}
 }
 
-<h2>@Model.Article.Topic</h2>
-<h5>@Localizer["Published"]: <span data-value="@Model.Article.Published" class="timeStampValue"> @Model.Article.Published</span></h5>
-<h5>@Localizer["ViewCount"]: <span data-value="@Model.Article.ViewCount"> @Model.Article.ViewCount</span></h5>
-<h5>@Localizer["ReadingTime"]: <span class="duration" data-duration="@Model.Article.Content.CalculateReadTime().TotalMilliseconds"></span></h5>
-<markdown markdown="Article.Content" />
+<div class="card card-header">
+	<div class="container">
+		<div class="row">
+			<h2 class="col-xl-7 col-lg-8 col-md-12">@Model.Article.Topic</h2>
+			<div class="col-xl-5 col-lg-4 col-md-12">
+				<div class="container">
+					<div class="row">
+						<h5 class="col-xl-12 labelLastPublished">@Localizer["Published"]: <span data-value="@Model.Article.Published" class="timeStampValue"> @Model.Article.Published</span></h5>
 
-<div>
-	<a asp-page="/Edit" asp-route-slug="@Model.Article.Slug">@Localizer["Edit"]</a>
-
-	@if (Model.Article.Slug != "home-page")
-	{
-		<text>| </text><a href="~/">@Localizer["GoHome"]</a>
-	}
+					</div>
+					<div class="row">
+						<h5 class="col-xl-4 labelViewCount ">@Localizer["ViewCount"]: <span data-value="@Model.Article.ViewCount"> @Model.Article.ViewCount</span></h5>
+						<h5 class="col-xl-8 labelEstReadTime">@Localizer["ReadingTime"]: <span class="duration" data-duration="@Model.Article.Content.CalculateReadTime().TotalMilliseconds"></span></h5>
+					</div>
+					<div class="row">
+						<h5 class="col-xl-12 labelViewCount"><a asp-page="History" asp-route-slug="@Model.Article.Slug">@string.Format(Localizer["HistoryFormat"].Value, Model.Article.Version)</a></h5>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
+<br />
+<div class="container">
+	<markdown markdown="Article.Content" />
 
-<partial name="_CommentsPartial" model="Model" />
+	<div>
+		<a asp-page="/Edit" asp-route-slug="@Model.Article.Slug" class="btn btn-outline-info">@Localizer["Edit"]</a>
 
+		@if (Model.Article.Slug != "home-page")
+		{
+			<a href="~/" class="btn btn-secondary">@Localizer["GoHome"]</a>
+		}
+	</div>
+
+	<partial name="_CommentsPartial" model="Model" />
+</div>
 @section Scripts {
 	@await Html.PartialAsync("_EditorScript")
 	<script type="text/javascript">
@@ -42,18 +62,44 @@
 @section Styles {
 	@await Html.PartialAsync("_EditorStyle")
 	<style>
-		.labelDisplayName
-		{
+		.labelDisplayName {
 			font-weight: bold;
 			text-transform: capitalize;
 			color: #007bb8 !important;
 		}
 
-		.labelCommentedOn
-		{
+		.labelCommentedOn {
 			color: #A6A6A6;
 			font-size: 10px;
 			height: 10px;
 		}
+
+		.labelLastPublished {
+			font-size: .75em;
+			padding-left: 1em;
+			color: #a6a6a6;
+		}
+
+		.labelViewCount {
+			font-size: .75em;
+		}
+
+			.labelViewCount > span {
+				padding: 1px 4px 1px 4px;
+				color: black;
+				background-color: white;
+				border-radius: 20px;
+			}
+
+		.labelEstReadTime {
+			font-size: .75em;
+		}
+
+			.labelEstReadTime > span {
+				padding: 1px 4px 1px 4px;
+				color: black;
+				background-color: white;
+				border-radius: 20px;
+			}
 	</style>
 }

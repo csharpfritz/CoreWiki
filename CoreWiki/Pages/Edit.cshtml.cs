@@ -1,24 +1,31 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
+﻿using CoreWiki.Data;
+using CoreWiki.Data.Data.Interfaces;
+using CoreWiki.Data.Data.Repositories;
+using CoreWiki.Data.Models;
+using CoreWiki.Helpers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using CoreWiki.Models;
 using NodaTime;
-using CoreWiki.Helpers;
 using System;
+using System.Linq;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace CoreWiki.Pages
 {
 
 	public class EditModel : PageModel
 	{
-		private readonly ApplicationDbContext _context;
+
+		private readonly IArticleRepository _Repo;
+		private readonly ISlugHistoryRepository _SlugRepo;
 		private readonly IClock _clock;
 
-		public EditModel(ApplicationDbContext context, IClock clock)
+		public EditModel(IArticleRepository articleRepo, ISlugHistoryRepository slugHistoryRepository, IClock clock)
 		{
-			_context = context;
+			_Repo = articleRepo;
+			_SlugRepo = slugHistoryRepository;
 			_clock = clock;
 		}
 
@@ -32,7 +39,7 @@ namespace CoreWiki.Pages
 				return NotFound();
 			}
 
-			Article = await _context.Articles.SingleOrDefaultAsync(m => m.Slug == slug);
+			Article = await _Repo.GetArticleBySlug(slug);
 
 			if (Article == null)
 			{
@@ -48,53 +55,43 @@ namespace CoreWiki.Pages
 				return Page();
 			}
 
-			var existingArticle = _context.Articles.AsNoTracking().First(a => a.Id == Article.Id);
+			var existingArticle = await _Repo.GetArticleById(Article.Id);
 			Article.ViewCount = existingArticle.ViewCount;
+			Article.Version = existingArticle.Version + 1;
 
 			//check if the slug already exists in the database.
-			var slug = UrlHelpers.URLFriendly(Article.Topic.ToLower());
-			var isAvailable = !_context.Articles.Any(x => x.Slug == slug && x.Id != Article.Id);
+			var slug = UrlHelpers.URLFriendly(Article.Topic);
+			if (String.IsNullOrWhiteSpace(slug))
+			{
+				ModelState.AddModelError("Article.Topic", "The Topic must contain at least one alphanumeric character.");
+				return Page();
+			}
 
-			if (isAvailable == false)
+			if (!await _Repo.IsTopicAvailable(slug, Article.Id))
 			{
 				ModelState.AddModelError("Article.Topic", "This Title already exists.");
 				return Page();
 			}
 
-			var articlesToCreateFromLinks = ArticleHelpers.GetArticlesToCreate(_context, Article, createSlug: true)
+			var articlesToCreateFromLinks = (await ArticleHelpers.GetArticlesToCreate(_Repo, Article, createSlug: true))
 				.ToList();
-
-			_context.Attach(Article).State = EntityState.Modified;
 
 			Article.Published = _clock.GetCurrentInstant();
 			Article.Slug = slug;
+			Article.AuthorId = Guid.Parse(this.User.FindFirstValue(ClaimTypes.NameIdentifier));
+			Article.AuthorName = User.Identity.Name;
 
 			if (!string.Equals(Article.Slug, existingArticle.Slug, StringComparison.InvariantCulture))
 			{
-				var historical = new SlugHistory()
-				{
-					OldSlug = existingArticle.Slug,
-					Article = Article,
-					Added = _clock.GetCurrentInstant(),
-				};
-
-				_context.Attach(historical).State = EntityState.Added;
+				await _SlugRepo.AddToHistory(existingArticle.Slug, Article);
 			}
 
-			try
-			{
-				await _context.SaveChangesAsync();
-			}
-			catch (DbUpdateConcurrencyException)
-			{
-				if (!ArticleExists(Article.Id))
-				{
-					return new ArticleNotFoundResult();
-				}
-				else
-				{
-					throw;
-				}
+			//AddNewArticleVersion();
+
+			try {
+				await _Repo.Update(Article);
+			} catch (ArticleNotFoundException) {
+				return new ArticleNotFoundResult();
 			}
 
 			if (articlesToCreateFromLinks.Count > 0)
@@ -105,10 +102,7 @@ namespace CoreWiki.Pages
 			return Redirect($"/{(Article.Slug == "home-page" ? "" : Article.Slug)}");
 		}
 
-		private bool ArticleExists(int id)
-		{
-			return _context.Articles.Any(e => e.Id == id);
-		}
+	
 	}
 
 }

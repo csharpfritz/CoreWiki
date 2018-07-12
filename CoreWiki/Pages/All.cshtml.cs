@@ -1,48 +1,59 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using CoreWiki.Models;
+﻿using CoreWiki.Data.Data.Interfaces;
+using CoreWiki.Data.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace CoreWiki.Pages
 {
 	public class AllModel : PageModel
 	{
 
-		private readonly ApplicationDbContext _Context;
-		private const int _PageSize = 10;
+		private readonly IArticleRepository _articleRepo;
 
-		public AllModel(ApplicationDbContext context)
+		public AllModel(IArticleRepository articleRepo)
 		{
-			this._Context = context;
+			_articleRepo = articleRepo;
 		}
 
 		[FromRoute]
 		public int PageNumber { get; set; } = 1;
 
-		public int TotalPages { get; set; }
+		[BindProperty]
+		public int PageSize { get; set; } = 10;
 
+		public SelectList PageSizeOptions { get; set; }
+
+		public int TotalPages { get; set; }
 
 		public IEnumerable<Article> Articles { get; set; }
 
 
-		public async Task OnGet(int PageNumber = 1)
+		public async Task OnGet(int pageNumber = 1)
 		{
-
-			Articles = await _Context.Articles
-				.AsNoTracking()
-				.OrderBy(a => a.Topic)
-				.Skip((PageNumber - 1) * _PageSize)
-				.Take(_PageSize)
-				.ToArrayAsync();
-
-			TotalPages = (int)Math.Ceiling((await _Context.Articles.CountAsync()) / (double)_PageSize);
-
+			ManagePageSize();
+			Articles = await _articleRepo.GetAllArticlesPaged(PageSize, pageNumber);
+			TotalPages = await _articleRepo.GetTotalPagesOfArticles(PageSize);
 		}
 
+		private void ManagePageSize()
+		{
+			if (int.TryParse(Request.Cookies["PageSize"], out var pageSize) == false)
+			{
+				pageSize = 20;
+				Response.Cookies.Append("PageSize", pageSize.ToString());
+			}
+			var selectPageSizes = new List<int> { 2, 5, 10, 20, 40 };
+			if (selectPageSizes.Contains(pageSize) == false)
+			{
+				selectPageSizes.Insert(0, pageSize);
+			}
+			PageSizeOptions = new SelectList(selectPageSizes);
+			PageSize = pageSize;
+		}
 
 	}
+
 }
