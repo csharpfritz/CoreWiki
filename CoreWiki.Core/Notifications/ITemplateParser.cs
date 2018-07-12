@@ -1,4 +1,4 @@
-﻿namespace CoreWiki.Services
+﻿namespace CoreWiki.Core.Notifications
 {
 	public interface ITemplateParser
     {

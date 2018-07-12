@@ -1,5 +1,6 @@
 ﻿using CoreWiki.Areas.Identity.Data;
 using CoreWiki.Configuration;
+using CoreWiki.Core.Notifications;
 using CoreWiki.Data.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;

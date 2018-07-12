@@ -1,9 +1,11 @@
 using CoreWiki.Configuration;
+using CoreWiki.Core.Notifications;
 using CoreWiki.Data;
 using CoreWiki.Data.Data.Interfaces;
 using CoreWiki.Data.Data.Repositories;
 using CoreWiki.Helpers;
 using CoreWiki.Models;
+using CoreWiki.Notifications;
 using CoreWiki.SearchEngines;
 using CoreWiki.Services;
 using Microsoft.ApplicationInsights.Extensibility;
@@ -53,10 +55,8 @@ namespace CoreWiki
 			services.AddSingleton<IClock>(SystemClock.Instance);
 
 			services.AddScoped<IArticlesSearchEngine, ArticlesDbSearchEngine>();
-			services.AddScoped<ITemplateProvider, TemplateProvider>();
-			services.AddScoped<ITemplateParser, TemplateParser>();
-			services.AddScoped<IEmailMessageFormatter, EmailMessageFormatter>();
-			services.AddScoped<IEmailNotifier, EmailNotifier>();
+
+			services.AddEmailNotifications();
 			services.AddScoped<INotificationService, NotificationService>();
 
 			services.AddRouting(options => options.LowercaseUrls = true);

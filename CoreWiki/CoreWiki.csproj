@@ -15,7 +15,6 @@
     <PackageReference Include="NodaTime" Version="2.3.0" />
     <PackageReference Include="NWebsec.AspNetCore.Middleware" Version="2.0.0" />
     <PackageReference Include="NWebsec.AspNetCore.Mvc.TagHelpers" Version="2.0.0" />
-    <PackageReference Include="sendgrid" Version="9.9.0" />
     <PackageReference Include="Snickler.RSSCore" Version="1.0.3" />
     <PackageReference Include="WebEssentials.AspNetCore.PWA" Version="1.0.42" />
     <PackageReference Include="Westwind.AspNetCore.Markdown" Version="3.0.28" />
@@ -30,7 +29,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\CoreWiki.Core\CoreWiki.Core.csproj" />
     <ProjectReference Include="..\CoreWiki.Data\CoreWiki.Data.csproj" />
+    <ProjectReference Include="..\CoreWiki.Notifications\CoreWiki.Notifications.csproj" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="BundleMinify;Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('.\node_modules') ">

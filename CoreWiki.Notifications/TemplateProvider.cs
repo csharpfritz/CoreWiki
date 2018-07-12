@@ -1,9 +1,10 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using CoreWiki.Core.Notifications;
+using Microsoft.AspNetCore.Hosting;
 using System;
 using System.IO;
 using System.Threading.Tasks;
 
-namespace CoreWiki.Services
+namespace CoreWiki.Notifications
 {
 	public class TemplateProvider : ITemplateProvider
     {

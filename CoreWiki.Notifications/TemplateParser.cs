@@ -1,7 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using CoreWiki.Core.Notifications;
+using System.Collections.Generic;
 using System.Reflection;
 
-namespace CoreWiki.Services
+namespace CoreWiki.Notifications
 {
 	public class TemplateParser : ITemplateParser
 	{
