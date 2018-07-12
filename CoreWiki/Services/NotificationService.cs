@@ -2,9 +2,11 @@
 using CoreWiki.Configuration;
 using CoreWiki.Core.Notifications;
 using CoreWiki.Data.Models;
+using CoreWiki.Notifications;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using System.Threading.Tasks;
+using CoreWiki.Notifications.Models;
 
 namespace CoreWiki.Services
 {
@@ -32,15 +34,15 @@ namespace CoreWiki.Services
 			if (!author.CanNotify) return false;
 			if (string.IsNullOrWhiteSpace(author.Email)) return false;
 
-			var model = new
+			var model = new NewCommentEmailModel()
 			{
 				AuthorName = author.UserName,
 				Title = "CoreWiki Notification",
-				CommentDisplayName = comment.DisplayName,
-				ArticleTitle = article.Topic,
+				CommenterDisplayName = comment.DisplayName,
+				ArticleTopic = article.Topic,
 				ArticleUrl = GetUrlForArticle(article)
 			};
-			var messageBody = await _emailMessageFormatter.FormatEmailMessage("NewComment", model);
+			var messageBody = await _emailMessageFormatter.FormatEmailMessage(TemplateProvider.NewCommentEmail, model);
 
 			return await _emailNotifier.SendEmailAsync(author.Email, "Someone said something about your article", messageBody);
 		}
