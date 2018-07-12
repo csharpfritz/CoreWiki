@@ -8,7 +8,7 @@ namespace CoreWiki.Notifications
     public class TemplateProvider : ITemplateProvider
     {
         public const string NewCommentEmail = "NewCommentEmail";
-        private const string TemplateRoot = "EmailTemplates";
+        private const string TemplateRoot = "Templates";
         private const string TemplateExtension = ".cshtml";
         private readonly IRazorViewEngine _viewEngine;
 
