@@ -1,12 +1,12 @@
 ﻿using CoreWiki.Areas.Identity.Data;
-using CoreWiki.Configuration;
+using CoreWiki.Core.Configuration;
 using CoreWiki.Core.Notifications;
 using CoreWiki.Data.Models;
 using CoreWiki.Notifications;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Configuration;
-using System.Threading.Tasks;
 using CoreWiki.Notifications.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Options;
+using System.Threading.Tasks;
 
 namespace CoreWiki.Services
 {
@@ -21,12 +21,12 @@ namespace CoreWiki.Services
 			IEmailMessageFormatter emailMessageFormatter,
 			IEmailNotifier emailNotifier,
 			UserManager<CoreWikiUser> userManager,
-			IConfiguration configuration)
+			IOptionsSnapshot<AppSettings> appSettings)
 		{
 			_emailMessageFormatter = emailMessageFormatter;
 			_emailNotifier = emailNotifier;
 			_userManager = userManager;
-			_appSettings = configuration.Get<AppSettings>();
+			_appSettings = appSettings.Value;
 		}
 
 		public async Task<bool> NotifyAuthorNewComment(CoreWikiUser author, Article article, Comment comment)

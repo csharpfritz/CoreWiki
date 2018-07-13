@@ -1,4 +1,4 @@
-using CoreWiki.Configuration;
+using CoreWiki.Core.Configuration;
 using CoreWiki.Core.Notifications;
 using CoreWiki.Data;
 using CoreWiki.Data.Data.Interfaces;
