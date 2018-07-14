@@ -14,9 +14,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		updateDb.cmd = updateDb.cmd
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoreWiki.Core", "CoreWiki.Core\CoreWiki.Core.csproj", "{569AB7F3-2183-4481-97E6-B37E4C48EEB0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoreWiki.Core", "CoreWiki.Core\CoreWiki.Core.csproj", "{569AB7F3-2183-4481-97E6-B37E4C48EEB0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoreWiki.Notifications", "CoreWiki.Notifications\CoreWiki.Notifications.csproj", "{45CB32F4-B770-4D10-A2B8-C7E7AD28A180}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoreWiki.Notifications", "CoreWiki.Notifications\CoreWiki.Notifications.csproj", "{45CB32F4-B770-4D10-A2B8-C7E7AD28A180}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

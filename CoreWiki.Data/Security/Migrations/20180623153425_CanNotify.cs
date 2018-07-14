@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace CoreWiki.Areas.Identity.Data.Migrations
+namespace CoreWiki.Data.Security.Migrations
 {
     public partial class CanNotify : Migration
     {
