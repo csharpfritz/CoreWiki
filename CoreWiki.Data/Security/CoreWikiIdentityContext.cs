@@ -2,12 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using CoreWiki.Areas.Identity.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace CoreWiki.Models
+namespace CoreWiki.Data.Security
 {
 	public class CoreWikiIdentityContext : IdentityDbContext<CoreWikiUser>
 	{
@@ -41,7 +40,7 @@ namespace CoreWiki.Models
 			});
 
 		}
-		internal static void SeedData(CoreWikiIdentityContext context)
+		public static void SeedData(CoreWikiIdentityContext context)
 		{
 
 			context.Database.Migrate();

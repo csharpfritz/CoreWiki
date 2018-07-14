@@ -1,6 +1,6 @@
-using CoreWiki.Areas.Identity.Data;
 using CoreWiki.Data.Data.Interfaces;
 using CoreWiki.Data.Models;
+using CoreWiki.Data.Security;
 using CoreWiki.Helpers;
 using CoreWiki.Services;
 using Microsoft.AspNetCore.Identity;

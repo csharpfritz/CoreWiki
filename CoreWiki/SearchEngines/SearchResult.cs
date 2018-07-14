@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using CoreWiki.Models;
 
 namespace CoreWiki.SearchEngines
 {
