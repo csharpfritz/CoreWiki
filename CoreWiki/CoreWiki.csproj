@@ -31,6 +31,7 @@
   <ItemGroup>
     <ProjectReference Include="..\CoreWiki.Core\CoreWiki.Core.csproj" />
     <ProjectReference Include="..\CoreWiki.Data\CoreWiki.Data.csproj" />
+    <ProjectReference Include="..\CoreWiki.FirstStart\CoreWiki.FirstStart.csproj" />
     <ProjectReference Include="..\CoreWiki.Notifications\CoreWiki.Notifications.csproj" />
   </ItemGroup>
 
