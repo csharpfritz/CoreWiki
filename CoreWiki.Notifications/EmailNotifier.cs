@@ -1,22 +1,23 @@
-﻿using CoreWiki.Configuration;
-using Microsoft.Extensions.Configuration;
+﻿using CoreWiki.Core.Configuration;
+using CoreWiki.Core.Notifications;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using SendGrid;
 using SendGrid.Helpers.Mail;
 using System;
 using System.Net;
 using System.Threading.Tasks;
 
-namespace CoreWiki.Services
+namespace CoreWiki.Notifications
 {
 	public class EmailNotifier : IEmailNotifier
 	{
 		private readonly EmailNotifications _configuration;
 		private readonly ILogger _logger;
 
-		public EmailNotifier(IConfiguration configuration, ILoggerFactory loggerFactory)
+		public EmailNotifier(IOptionsSnapshot<AppSettings> appSettings, ILoggerFactory loggerFactory)
 		{
-			_configuration = configuration.GetSection(nameof(EmailNotifications)).Get<EmailNotifications>();
+			_configuration = appSettings.Value.EmailNotifications;
 			_logger = loggerFactory.CreateLogger<EmailNotifier>();
 		}
 

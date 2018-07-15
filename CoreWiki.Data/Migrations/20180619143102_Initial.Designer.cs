@@ -45,7 +45,7 @@ namespace CoreWiki.Migrations
 						b.ToTable("Articles");
 
 						b.HasData(
-											new { Id = 1, AuthorId = new Guid("d1cebc50-390b-45b5-ab5e-d8bb589d46e5"), Content = "This is the default home page.  Please change me!", PublishedDateTime = new DateTime(2018, 6, 19, 14, 31, 2, 265, DateTimeKind.Utc), Slug = "home-page", Topic = "HomePage", ViewCount = 0 }
+											new { Id = 1, AuthorId = new Guid("00000000-0000-0000-0000-000000000000"), Content = "This is the default home page.  Please change me!", PublishedDateTime = new DateTime(2018, 6, 19, 14, 31, 2, 265, DateTimeKind.Utc), Slug = "home-page", Topic = "HomePage", ViewCount = 0 }
 									);
 					});
 

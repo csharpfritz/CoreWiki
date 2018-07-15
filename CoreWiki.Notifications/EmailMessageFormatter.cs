@@ -1,6 +1,7 @@
-﻿using System.Threading.Tasks;
+﻿using CoreWiki.Core.Notifications;
+using System.Threading.Tasks;
 
-namespace CoreWiki.Services
+namespace CoreWiki.Notifications
 {
 	public class EmailMessageFormatter : IEmailMessageFormatter
 	{

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 
-namespace CoreWiki.Areas.Identity.Data
+namespace CoreWiki.Data.Security
 {
     // Add profile data for application users by adding properties to the CoreWikiUser class
     public class CoreWikiUser : IdentityUser

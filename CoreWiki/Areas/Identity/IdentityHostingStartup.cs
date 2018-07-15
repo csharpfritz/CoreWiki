@@ -1,6 +1,5 @@
 ﻿using System;
-using CoreWiki.Areas.Identity.Data;
-using CoreWiki.Models;
+using CoreWiki.Data.Security;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;

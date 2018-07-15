@@ -14,6 +14,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\CoreWiki.Core\CoreWiki.Core.csproj" />
+    <ProjectReference Include="..\CoreWiki.Notifications\CoreWiki.Notifications.csproj" />
     <ProjectReference Include="..\CoreWiki\CoreWiki.csproj" />
   </ItemGroup>
 

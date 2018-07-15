@@ -1,5 +1,5 @@
-﻿using CoreWiki.Areas.Identity.Data;
-using CoreWiki.Data.Models;
+﻿using CoreWiki.Data.Models;
+using CoreWiki.Data.Security;
 using System.Threading.Tasks;
 
 namespace CoreWiki.Services
