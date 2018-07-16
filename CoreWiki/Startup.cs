@@ -1,5 +1,4 @@
 using CoreWiki.Core.Configuration;
-using CoreWiki.Core.Notifications;
 using CoreWiki.Data;
 using CoreWiki.Data.Data.Interfaces;
 using CoreWiki.Data.Data.Repositories;
@@ -7,7 +6,6 @@ using CoreWiki.Helpers;
 using CoreWiki.Models;
 using CoreWiki.Notifications;
 using CoreWiki.SearchEngines;
-using CoreWiki.Services;
 using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -57,7 +55,6 @@ namespace CoreWiki
 			services.AddScoped<IArticlesSearchEngine, ArticlesDbSearchEngine>();
 
 			services.AddEmailNotifications();
-			services.AddScoped<INotificationService, NotificationService>();
 
 			services.AddRouting(options => options.LowercaseUrls = true);
 			services.AddHttpContextAccessor();

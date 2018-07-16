@@ -2,7 +2,6 @@ using CoreWiki.Areas.Identity.Data;
 using CoreWiki.Data.Data.Interfaces;
 using CoreWiki.Data.Models;
 using CoreWiki.Helpers;
-using CoreWiki.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -11,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using NodaTime;
 using System;
 using System.Threading.Tasks;
+using CoreWiki.Core.Notifications;
 
 namespace CoreWiki.Pages
 {
@@ -100,7 +100,9 @@ namespace CoreWiki.Pages
 
 			var author = await _UserManager.FindByIdAsync(Article.AuthorId.ToString());
 			await _commentRepo.CreateComment(comment);
-			await _notificationService.NotifyAuthorNewComment(author, Article, comment);
+
+			if(author.CanNotify)
+				await _notificationService.SendNewCommentEmail(author.Email, author.UserName, comment.DisplayName, Article.Topic, Article.Slug);
 
 			return Redirect($"/{Article.Slug}");
 		}
