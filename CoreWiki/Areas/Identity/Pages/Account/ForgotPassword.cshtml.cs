@@ -51,7 +51,7 @@ namespace CoreWiki.Areas.Identity.Pages.Account
                 // For more information on how to enable account confirmation and password reset please 
                 // visit https://go.microsoft.com/fwlink/?LinkID=532713
                 var resetToken = await _userManager.GeneratePasswordResetTokenAsync(user);
-	            await _notificationService.SendForgotPasswordEmail(Input.Email, resetToken);
+	            await _notificationService.SendForgotPasswordEmail(Input.Email, resetToken, () => user.CanNotify);
 
                 return RedirectToPage("./ForgotPasswordConfirmation");
             }

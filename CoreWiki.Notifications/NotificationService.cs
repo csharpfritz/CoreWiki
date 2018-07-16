@@ -82,9 +82,14 @@ namespace CoreWiki.Notifications
             }
         }
 
-		public async Task<bool> SendForgotPasswordEmail(string accountEmail, string resetToken)
+		public async Task<bool> SendForgotPasswordEmail(string accountEmail, string resetToken, Func<bool> canNotifyUser)
 		{
 		    _logger.LogInformation("Sending password reset email");
+
+		    if (!canNotifyUser())
+		    {
+		        _logger.LogInformation("User has not consented to receiving emails, email not sent");
+            }
 
             if (string.IsNullOrWhiteSpace(accountEmail))
 		    {
@@ -128,9 +133,14 @@ namespace CoreWiki.Notifications
             }
         }
 
-		public async Task<bool> SendNewCommentEmail(string authorEmail, string authorName, string commenterName, string articleTopic, string articleSlug)
+		public async Task<bool> SendNewCommentEmail(string authorEmail, string authorName, string commenterName, string articleTopic, string articleSlug, Func<bool> canNotifyUser)
 		{
 		    _logger.LogInformation("Sending new comment email");
+
+		    if (!canNotifyUser())
+		    {
+		        _logger.LogInformation("User has not consented to receiving emails, email not sent");
+		    }
 
             if (string.IsNullOrWhiteSpace(authorEmail))
 		    {

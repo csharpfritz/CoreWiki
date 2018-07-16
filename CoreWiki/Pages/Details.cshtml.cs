@@ -101,8 +101,8 @@ namespace CoreWiki.Pages
 			var author = await _UserManager.FindByIdAsync(Article.AuthorId.ToString());
 			await _commentRepo.CreateComment(comment);
 
-			if(author.CanNotify)
-				await _notificationService.SendNewCommentEmail(author.Email, author.UserName, comment.DisplayName, Article.Topic, Article.Slug);
+			// TODO: Also check for verified email if required
+			await _notificationService.SendNewCommentEmail(author.Email, author.UserName, comment.DisplayName, Article.Topic, Article.Slug, () => author.CanNotify);
 
 			return Redirect($"/{Article.Slug}");
 		}
