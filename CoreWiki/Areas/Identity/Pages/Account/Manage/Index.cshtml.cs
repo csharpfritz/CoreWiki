@@ -69,7 +69,8 @@ namespace CoreWiki.Areas.Identity.Pages.Account.Manage
             Input = new InputModel
             {
                 Email = email,
-                PhoneNumber = phoneNumber
+                PhoneNumber = phoneNumber,
+				CanNotify = user.CanNotify
             };
 
             IsEmailConfirmed = await _userManager.IsEmailConfirmedAsync(user);
