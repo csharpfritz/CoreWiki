@@ -23,6 +23,7 @@ using NodaTime;
 using Snickler.RSSCore.Extensions;
 using Snickler.RSSCore.Models;
 using System;
+using WebEssentials.AspNetCore.Pwa;
 
 namespace CoreWiki
 {
@@ -82,7 +83,7 @@ namespace CoreWiki
 
 			services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
-			services.AddProgressiveWebApp();
+			services.AddProgressiveWebApp(new PwaOptions { EnableCspNonce = true });
 
 		}
 
