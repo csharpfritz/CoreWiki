@@ -1,4 +1,5 @@
 ﻿using System;
+using CoreWiki.Core.Configuration;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;

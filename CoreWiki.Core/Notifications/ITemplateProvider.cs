@@ -1,9 +1,9 @@
-﻿using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Mvc.ViewEngines;
 
 namespace CoreWiki.Core.Notifications
 {
-	public interface ITemplateProvider
+    public interface ITemplateProvider
     {
-		Task<string> GetTemplateContent(string templateName);
+		IView GetTemplate(string templateName);
     }
 }

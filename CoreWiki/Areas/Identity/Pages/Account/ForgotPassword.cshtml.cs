@@ -5,6 +5,7 @@ using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using CoreWiki.Data.Security;
+using CoreWiki.Core.Notifications;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -17,11 +18,13 @@ namespace CoreWiki.Areas.Identity.Pages.Account
     {
         private readonly UserManager<CoreWikiUser> _userManager;
         private readonly IEmailSender _emailSender;
+	    private readonly INotificationService _notificationService;
 
-        public ForgotPasswordModel(UserManager<CoreWikiUser> userManager, IEmailSender emailSender)
+	    public ForgotPasswordModel(UserManager<CoreWikiUser> userManager, IEmailSender emailSender, INotificationService notificationService)
         {
             _userManager = userManager;
             _emailSender = emailSender;
+	        _notificationService = notificationService;
         }
 
         [BindProperty]
@@ -45,19 +48,10 @@ namespace CoreWiki.Areas.Identity.Pages.Account
                     return RedirectToPage("./ForgotPasswordConfirmation");
                 }
 
-                // For more information on how to enable account confirmation and password reset please 
+                // For more information on how to enable account confirmation and password reset please
                 // visit https://go.microsoft.com/fwlink/?LinkID=532713
-                var code = await _userManager.GeneratePasswordResetTokenAsync(user);
-                var callbackUrl = Url.Page(
-                    "/Account/ResetPassword",
-                    pageHandler: null,
-                    values: new { code },
-                    protocol: Request.Scheme);
-
-                await _emailSender.SendEmailAsync(
-                    Input.Email,
-                    "Reset Password",
-                    $"Please reset your password by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                var resetToken = await _userManager.GeneratePasswordResetTokenAsync(user);
+	            await _notificationService.SendForgotPasswordEmail(Input.Email, resetToken, () => user.CanNotify);
 
                 return RedirectToPage("./ForgotPasswordConfirmation");
             }

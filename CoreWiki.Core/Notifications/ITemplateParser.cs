@@ -1,7 +1,10 @@
-﻿namespace CoreWiki.Core.Notifications
+﻿using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc.ViewEngines;
+
+namespace CoreWiki.Core.Notifications
 {
 	public interface ITemplateParser
-    {
-		string Format<T>(string template, T model) where T : class;
-    }
+	{
+	    Task<string> Parse<TModel>(IView view, TModel model) where TModel : class;
+	}
 }

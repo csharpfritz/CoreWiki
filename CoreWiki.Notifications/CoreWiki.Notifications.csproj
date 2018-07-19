@@ -6,7 +6,9 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Hosting.Abstractions" Version="2.1.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor" Version="2.1.1" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="2.1.1" />
+    <PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="2.1.1" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="2.1.1" />
     <PackageReference Include="Microsoft.Extensions.Options" Version="2.1.1" />
 		<PackageReference Include="sendgrid" Version="9.9.0" />
@@ -16,4 +18,17 @@
     <ProjectReference Include="..\CoreWiki.Core\CoreWiki.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Templates\Shared\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Templates\**\*.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Templates\ConfirmationEmail.cshtml" />
+    <None Remove="Templates\ForgotPasswordEmail.cshtml" />
+  </ItemGroup>
+  
 </Project>
