@@ -1,0 +1,40 @@
+﻿@page
+@model CoreWiki.Pages.CreateArticleFromLinkModel
+@{
+	ViewData["Title"] = "CreateArticleFromLink";
+}
+
+<h2>@Localizer["FoundLinksText"]</h2>
+<hr />
+<br />
+<div class="row">
+	<div class="col-md-12">
+		<form method="post">
+			<div>
+				<div>@Localizer["FoundLinksDetail"]:</div>
+				<br />
+				@if (Model.LinksToCreate != null && Model.LinksToCreate.Count > 0)
+				{
+					@for (var i = 0; i < Model.LinksToCreate.Count; i++)
+					{
+						<input asp-for="@Model.LinksToCreate[i]]" type="hidden" />
+						<span>* <b>@Model.LinksToCreate[i].ToTitleCase().RemoveHyphens()</b> (@Model.LinksToCreate[i])</span>
+						<br />
+					}
+				}
+			</div>
+			<br />
+			<div>@Localizer["FoundLinksQuestion"]</div>
+			<br />
+			<div class="form-group">
+				<input type="hidden" asp-for="Article.Slug" />
+				<div class="input-group mb-3">
+					<button type="submit" value=@Localizer["Yes"] class="btn btn-outline-primary" asp-page-handler="CreateLinks" asp-route-slug=@Model.Article.Slug>@Localizer["Yes"]</button>
+					<span>&nbsp;</span>
+					<button type="submit" value=@Localizer["No"] class="btn btn-outline-primary" asp-page-handler="Cancel" asp-route-slug=@Model.Article.Slug>@Localizer["No"]</button>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
+

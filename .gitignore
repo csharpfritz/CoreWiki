@@ -214,6 +214,9 @@ UpgradeLog*.htm
 *.mdf
 *.ldf
 
+# Ignore SQL-lite files
+*.db
+
 # Business Intelligence projects
 *.rdl.data
 *.bim.layout
@@ -259,3 +262,15 @@ paket-files/
 # Python Tools for Visual Studio (PTVS)
 __pycache__/
 *.pyc
+
+# Omit our lib folders that are being restored from npm
+CoreWiki/wwwroot/lib/
+!CoreWiki/wwwroot/lib/simplemde
+
+# Cake files
+[Tt]ools/
+[Oo]utput/
+*.pubxml
+
+# Minified and generated files
+*.min.js

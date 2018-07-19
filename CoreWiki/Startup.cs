@@ -1,20 +1,17 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using CoreWiki.Models;
+using CoreWiki.Configuration;
+using CoreWiki.Configuration.Startup;
+using CoreWiki.Core.Configuration;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 
 namespace CoreWiki
 {
 	public class Startup
 	{
-		public Startup(IConfiguration configuration)
+		public Startup(IConfiguration configuration, IHostingEnvironment hostingEnvironment)
 		{
 			Configuration = configuration;
 		}
@@ -24,35 +21,30 @@ namespace CoreWiki
 		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services)
 		{
-
-			services.AddEntityFrameworkSqlite()
-					.AddDbContext<ApplicationDbContext>(options =>
-							options.UseSqlite("Data Source=./wiki.db")
-					);
-
-			services.AddMvc()
-				.AddRazorPagesOptions(options =>
-				{
-					options.Conventions.AddPageRoute("/Details", "{topicName?}");
-				});
+			services.ConfigureRSSFeed();
+			services.Configure<AppSettings>(Configuration);
+			services.ConfigureSecurityAndAuthentication();
+			services.ConfigureDatabase(Configuration);
+			services.ConfigureScopedServices();
+			services.ConfigureRouting();
+			services.ConfigureLocalisation();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-		public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+		public void Configure(IApplicationBuilder app, IHostingEnvironment env, IOptionsSnapshot<AppSettings> settings)
 		{
-			if (env.IsDevelopment())
-			{
-				app.UseBrowserLink();
-				app.UseDeveloperExceptionPage();
-			}
-			else
-			{
-				app.UseExceptionHandler("/Error");
-			}
+			app.ConfigureTelemetry();
+			app.ConfigureExceptions(env);
+			app.ConfigureSecurityHeaders();
+			app.ConfigureRouting();
+			app.ConfigureAuthentication();
+			app.ConfigureRSSFeed(settings);
+			app.ConfigureLocalisation();
+			app.ConfigureDatabase();
 
-			app.UseStaticFiles();
-
+			app.UseStatusCodePagesWithReExecute("/HttpErrors/{0}");
 			app.UseMvc();
 		}
+
 	}
 }

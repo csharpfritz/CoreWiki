@@ -1,58 +1,61 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using CoreWiki.Data;
+using CoreWiki.Data.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using CoreWiki.Models;
+using System.Threading.Tasks;
 
 namespace CoreWiki.Pages
 {
-    public class DeleteModel : PageModel
-    {
-        private readonly CoreWiki.Models.ApplicationDbContext _context;
+	[Authorize("CanDeleteArticles")]
 
-        public DeleteModel(CoreWiki.Models.ApplicationDbContext context)
-        {
-            _context = context;
-        }
+	public class DeleteModel : PageModel
+	{
+		private readonly ApplicationDbContext _context;
 
-        [BindProperty]
-        public Article Article { get; set; }
+		public DeleteModel(ApplicationDbContext context)
+		{
+			_context = context;
+		}
 
-        public async Task<IActionResult> OnGetAsync(string id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
+		[BindProperty]
+		public Article Article { get; set; }
 
-            Article = await _context.Articles.SingleOrDefaultAsync(m => m.Topic == id);
+		///  TODO: Make it so you cannot delete the home page (deleting the home page will cause a 404)
+		///  or re-factor to make the home page dynamic or configurable.
+		public async Task<IActionResult> OnGetAsync(string slug)
+		{
+			if (slug == null)
+			{
+				return NotFound();
+			}
 
-            if (Article == null)
-            {
-                return NotFound();
-            }
-            return Page();
-        }
+			Article = await _context.Articles.SingleOrDefaultAsync(m => m.Slug == slug);
 
-        public async Task<IActionResult> OnPostAsync(string id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
+			if (Article == null)
+			{
+				return NotFound();
+			}
+			return Page();
+		}
 
-            Article = await _context.Articles.FindAsync(id);
+		public async Task<IActionResult> OnPostAsync(string slug)
+		{
+			if (slug == null)
+			{
+				return NotFound();
+			}
 
-            if (Article != null)
-            {
-                _context.Articles.Remove(Article);
-                await _context.SaveChangesAsync();
-            }
+			Article = await _context.Articles.SingleOrDefaultAsync(m => m.Slug == slug);
 
-            return RedirectToPage("./Index");
-        }
-    }
+			if (Article != null)
+			{
+				_context.Articles.Remove(Article);
+				await _context.SaveChangesAsync();
+			}
+
+			return RedirectToPage("/All");
+		}
+	}
 }
