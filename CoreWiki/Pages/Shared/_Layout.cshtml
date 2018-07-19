@@ -1,4 +1,5 @@
 ﻿@using System.IO
+@using CoreWiki.Areas.Identity
 
 @inject Microsoft.AspNetCore.Hosting.IHostingEnvironment env
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor context
@@ -71,7 +72,7 @@
 				</li>
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
-				<li class="nav-item"><a class="nav-link" href="/Create">@Localizer["menu_NewArticle"]</a></li>
+				<li class="nav-item"><a class="nav-link" href="/Create" asp-policy="@PolicyConstants.CanWriteArticles" asp-policy-hidden="true">@Localizer["menu_NewArticle"]</a></li>
 				<partial name="_LoginPartial" />
 			</ul>
 		</div>

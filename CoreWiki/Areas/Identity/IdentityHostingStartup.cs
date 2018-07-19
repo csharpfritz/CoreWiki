@@ -51,7 +51,7 @@ namespace CoreWiki.Areas.Identity
 
 				}
 
-				services.AddAuthorization(AuthorizationPolicy.Execute);
+				services.AddAuthorization(AuthPolicy.Execute);
 
 
 			});
