@@ -13,11 +13,12 @@ namespace CoreWiki.Notifications
 			_templateProvider = templateProvider;
 			_templateParser = templateParser;
 		}
-		public async Task<string> FormatEmailMessage<T>(string templateName, T model) where T : class
-		{
-			var template = await _templateProvider.GetTemplateContent(templateName);
 
-			return _templateParser.Format<T>(template, model);
+		public async Task<string> FormatEmailMessage<TModel>(string templateName, TModel model) where TModel : class
+		{
+			var template = _templateProvider.GetTemplate(templateName);
+
+			return await _templateParser.Parse(template, model);
 		}
 	}
 }

@@ -1,5 +1,6 @@
 using CoreWiki.Configuration;
 using CoreWiki.Configuration.Startup;
+using CoreWiki.Core.Configuration;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;

@@ -1,7 +1,6 @@
 ﻿using CoreWiki.Core.Notifications;
 using CoreWiki.Notifications;
 using CoreWiki.SearchEngines;
-using CoreWiki.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using NodaTime;
@@ -18,12 +17,8 @@ namespace CoreWiki.Configuration.Startup
 			services.AddHttpContextAccessor();
 			services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
+			services.AddEmailNotifications();
 			services.AddScoped<IArticlesSearchEngine, ArticlesDbSearchEngine>();
-			services.AddScoped<ITemplateProvider, TemplateProvider>();
-			services.AddScoped<ITemplateParser, TemplateParser>();
-			services.AddScoped<IEmailMessageFormatter, EmailMessageFormatter>();
-			services.AddScoped<IEmailNotifier, EmailNotifier>();
-			services.AddScoped<INotificationService, NotificationService>();
 
 			services.AddProgressiveWebApp(new PwaOptions { EnableCspNonce = true });
 

@@ -17,13 +17,16 @@ namespace CoreWiki.Areas.Identity
 		{
 			builder.ConfigureServices((context, services) =>
 			{
+				bool.TryParse(context.Configuration["Authentication:RequireConfirmedEmail"],
+					out var requireConfirmedEmail);
+
 				services.AddDbContext<CoreWikiIdentityContext>(options =>
 																	options.UseSqlite(
 																					context.Configuration.GetConnectionString("CoreWikiIdentityContextConnection")));
 
-				services.AddDefaultIdentity<CoreWikiUser>()
+				services.AddDefaultIdentity<CoreWikiUser>(options =>
+						options.SignIn.RequireConfirmedEmail = requireConfirmedEmail)
 																	.AddEntityFrameworkStores<CoreWikiIdentityContext>();
-
 				var authBuilder = services.AddAuthentication();
 
 				if (!string.IsNullOrEmpty(context.Configuration["Authentication:Microsoft:ApplicationId"]))
