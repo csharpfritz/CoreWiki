@@ -1,58 +1,50 @@
 ﻿@page "{PageNumber?}"
-	@model CoreWiki.Pages.AllModel
-		@{
-			ViewData["Title"] = "All";
+@model CoreWiki.Pages.AllModel
+@using Microsoft.AspNetCore.Mvc.Rendering
+
+@{
+	ViewData["Title"] = "All";
+}
+
+<h2>@Localizer["AllArticles"]</h2>
+
+<pager total-pages="Model.TotalPages" current-page="Model.PageNumber"></pager>
+
+<div class="cwiki-flex-container">
+	@foreach (var article in Model.Articles)
+	{
+		@await Html.PartialAsync("_ArticleRow", article)
+	}
+</div>
+@section Styles {
+	<style>
+		.pageNumber {
+			margin: 0px 4px;
 		}
 
-		<h2>All Articles</h2>
-
-		<pager total-pages="Model.TotalPages" current-page="Model.PageNumber"></pager>
-
-		@*<ul class="pagination">
-			@for (var pageNum = 1; pageNum <= Model.TotalPages; pageNum++)
-			{
-
-				<li class="page-item @(pageNum == Model.PageNumber ? "active" : "")">
-				@if (pageNum == Model.PageNumber)
-				{
-					<a class="page-link active" href="#">@pageNum</a>
-				}
-				else
-				{
-					<a class="page-link" asp-page="./All" asp-route-PageNumber="@pageNum">@pageNum</a>
-				}
-				</li>
-
-			}
-		</ul>*@
-
-		@foreach (var item in Model.Articles)
-		{
-
-			<div class="card border border-primary mb-3">
-				<div class="card-header">
-					<h3 class="card-title">
-						<a href="@($"/{(item.Slug == "home-page" ? "" : item.Slug)}")">@item.Topic</a>
-					</h3>
-				</div>
-				<div class="card-body">
-					<h6 class="card-subtitle mb-2 text-muted"><span data-value="@item.Published" class="timeStampValue"> @item.Published</span></h6>
-
-					<a class="card-link" asp-page="./Edit" asp-route-id="@item.Id">Edit</a>
-					<a class="card-link" asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
-
-				</div>
-
-
-			</div>
+		.cwiki-flex-container {
+			padding: 0;
+			margin: 0;
+			display: -webkit-box;
+			display: -moz-box;
+			display: -ms-flexbox;
+			display: -webkit-flex;
+			display: flex;
+			-webkit-flex-flow: row wrap;
+			justify-content: space-around;
 		}
 
-		@section Styles {
-			<style>
-				.pageNumber {
-					margin: 0px 4px;
-				}
-			</style>
+		.cwiki-flex-item {
+			width: 360px;
+			color: white;
+			border-radius: 20px;
 		}
+	</style>
+}
 
-
+<script>
+	function UpdatePageSize(value) {
+		document.cookie = encodeURIComponent("PageSize") + "=" + encodeURIComponent(value) + "; path=/";
+		location = '/all/1';
+	}
+</script>

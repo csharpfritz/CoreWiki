@@ -1,14 +1,22 @@
 ﻿[
-	{
-		"outputFile": "wwwroot/lib/popper.js/dist/umd/popper.es5.js",
-		"inputFile": "wwwroot/lib/popper.js/dist/umd/popper.js"
-	},
-	{
-		"outputFile": "wwwroot/lib/popper.js/dist/umd/popper-utils.es5.js",
-		"inputFile": "wwwroot/lib/popper.js/dist/umd/popper-utils.js"
-	},
-	{
-		"outputFile": "wwwroot/css/siteTheme.css",
-		"inputFile": "wwwroot/css/siteTheme.scss"
-	}
+  {
+    "outputFile": "wwwroot/lib/popper.js/dist/umd/popper.es5.js",
+    "inputFile": "wwwroot/lib/popper.js/dist/umd/popper.js"
+  },
+  {
+    "outputFile": "wwwroot/lib/popper.js/dist/umd/popper-utils.es5.js",
+    "inputFile": "wwwroot/lib/popper.js/dist/umd/popper-utils.js"
+  },
+  {
+    "outputFile": "wwwroot/css/siteTheme.css",
+    "inputFile": "wwwroot/css/siteTheme.scss"
+  },
+  {
+    "outputFile": "wwwroot/css/themeOuch.css",
+    "inputFile": "wwwroot/css/themeOuch.scss"
+  },
+  {
+    "outputFile": "wwwroot/css/themeDark.css",
+    "inputFile": "wwwroot/css/themeDark.scss"
+  }
 ]

@@ -17,3 +17,16 @@
 	reformatTimeStamps();
 
 })();
+
+//Prevent duplicate submit
+
+$("form").submit(function (e) {
+	if ($(this).valid()) {
+		if ($(this).attr('attempted') == 'true') {
+			e.preventDefault();
+		}
+		else {
+			$(this).attr('attempted', 'true');
+		}
+	}
+});

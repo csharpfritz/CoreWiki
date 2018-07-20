@@ -1,52 +1,48 @@
-﻿using System;
+﻿using CoreWiki.Data;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
+using Snickler.RSSCore.Models;
+using Snickler.RSSCore.Providers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using CoreWiki.Models;
-using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
-using Snickler.RSSCore.Models;
-using Snickler.RSSCore.Providers;
-using System.Web;
-using Microsoft.Extensions.Configuration;
+using CoreWiki.Core.Configuration;
 
 namespace CoreWiki
 {
-  public class RSSProvider : IRSSProvider
-  {
-	private ApplicationDbContext _context;
-
-    public IConfiguration Configuration { get; }
-
-    public RSSProvider(ApplicationDbContext context, IConfiguration config)
+	public class RSSProvider : IRSSProvider
 	{
-	  _context = context;
-		Configuration = config;
+		private readonly ApplicationDbContext _context;
+		private readonly Uri baseURL;
 
-	}
-
-	public async Task<IList<RSSItem>> RetrieveSyndicationItems()
-	{
-	  var articles = await _context.Articles.OrderByDescending(a => a.Published).Take(10).ToListAsync();
-	  return articles.Select(rssItem =>
-	  {
-		var wikiItem = new RSSItem
+		public RSSProvider(ApplicationDbContext context, IOptionsSnapshot<AppSettings> settings)
 		{
-		  Content = rssItem.Content,  // TODO: May need to truncate for VERY large articles in the future
-			//Will probably need FQDN for a permalink in RSS. May have to use _httpContextAccessor.HttpContext.Request.Host.Host.
-			//in Startup.cs, add _services.AddHttpContextAccessor();
-			PermaLink = new Uri($"{Configuration["Url"]}/{rssItem.Slug}"),
-		  LinkUri =		new Uri($"{Configuration["Url"]}/{rssItem.Slug}"),
-		  PublishDate = rssItem.PublishedDateTime,
-		  LastUpdated = rssItem.PublishedDateTime,
-		  Title = rssItem.Topic
+			_context = context;
+			baseURL = settings.Value.Url;
+		}
 
-		};
+		public async Task<IList<RSSItem>> RetrieveSyndicationItems()
+		{
+			var articles = await _context.Articles.OrderByDescending(a => a.Published).Take(10).ToListAsync();
+			return articles.Select(rssItem =>
+			{
+				var absoluteURL = new Uri(baseURL, $"/{rssItem.Slug}");
 
-		wikiItem.Authors.Add("Jeff Fritz"); // TODO: Grab from user who saved record... not this guy
-		return wikiItem;
-	  }).ToList();
+				var wikiItem = new RSSItem
+				{
+					Content = rssItem.Content,
+					PermaLink = absoluteURL,
+					LinkUri = absoluteURL,
+					PublishDate = rssItem.Published.ToDateTimeUtc(),
+					LastUpdated = rssItem.Published.ToDateTimeUtc(),
+					Title = rssItem.Topic,
+				};
+
+				wikiItem.Authors.Add("Jeff Fritz"); // TODO: Grab from user who saved record... not this guy
+				return wikiItem;
+			}).ToList();
+		}
+
 	}
-
-  }
 }

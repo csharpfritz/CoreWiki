@@ -1,45 +1,46 @@
-﻿@model ICollection<Models.Comment>
+﻿@using Data.Models
+@model ICollection<Data.Models.Comment>
 <br />
-<h1>Comments List</h1>
-<hr />
+<h4>@Localizer["CommentsList"]</h4>
+
 @if (@Model.Count == 0)
 {
-    <div class="container">
-        <div class="row">
-            <div class="col-sm-auto">
-                <h6>There is no comments to show!</h6>
-            </div>
-        </div>
-    </div>
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-auto">
+				<h6>@Localizer["NoComments"]</h6>
+			</div>
+		</div>
+	</div>
 }
 else
 {
-    @foreach (var item in Model.OrderByDescending(x => x.Submitted))
-		{
-        <div class="card border-primary mb-3">
-            <div class="card-header">
-                <div class="container">
-                    <div class="row">
-											<div class="col-sm-auto">
-												<img gravatar-email="@item.Email" alt="Avatar" />
-											</div>
-                        <div class="col-sm">
-                            <div class="row">
-                                <div class="col-sm">
-                                    <span class="labelDisplayName">
-                                        @item.DisplayName
-                                    </span>
-                                    <br />
-                                    <span class="labelCommentedOn">Commented on <span data-value="@item.Submitted" class="timeStampValue">@item.Submitted</span></span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="card-body">
-                <markdown markdown = "@item.Content" />
-            </div>
-        </div>
-    }
+	@foreach (var item in Model.OrderByDescending(x => x.Submitted))
+	{
+		<div class="card border-primary mb-3">
+			<div class="card-header">
+				<div class="container">
+					<div class="row">
+						<div class="col-sm-auto">
+							<img gravatar-email="@item.Email" alt="Avatar" />
+						</div>
+						<div class="col-sm">
+							<div class="row">
+								<div class="col-sm">
+									<span class="labelDisplayName">
+										@item.DisplayName
+									</span>
+									<br />
+									<span class="labelCommentedOn">Commented on <span data-value="@item.Submitted" class="timeStampValue">@item.Submitted</span></span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="card-body">
+				<markdown markdown="@item.Content" />
+			</div>
+		</div>
+	}
 }
