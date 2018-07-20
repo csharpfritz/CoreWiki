@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace CoreWiki.Data
 {
 
-	public class ApplicationDbContext : DbContext, IApplicationDbContext
+	public class ApplicationDbContext : DbContext
 	{
 
 		public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
@@ -24,8 +24,8 @@ namespace CoreWiki.Data
 				Topic = "HomePage",
 				Slug = "home-page",
 				Content = "This is the default home page.  Please change me!",
-				Published = SystemClock.Instance.GetCurrentInstant(),
-				AuthorId = Guid.NewGuid()
+				Published = Instant.FromDateTimeUtc(new DateTime(2018, 6, 19, 14, 31, 2, 265, DateTimeKind.Utc)),
+				AuthorId = Guid.Empty
 			};
 
 			var homePageHistory = ArticleHistory.FromArticle(homePage);
@@ -66,7 +66,7 @@ namespace CoreWiki.Data
 		public static void SeedData(ApplicationDbContext context)
 		{
 
-			//context.Database.Migrate();
+			context.Database.Migrate();
 
 		}
 

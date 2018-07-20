@@ -1,29 +1,37 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 
 namespace CoreWiki.Areas.Identity
 {
-	public class AuthorizationPolicy
+	public class AuthPolicy
 	{
+
 		internal static void Execute(AuthorizationOptions options)
 		{
 
-			options.AddPolicy("CanDeleteArticles", policy =>
+			options.AddPolicy(PolicyConstants.CanDeleteArticles, policy =>
 			{
 				policy.RequireAuthenticatedUser();
 				policy.RequireRole("Administrators");
 			});
 
-			// Logged in users can write comments
-			// Authors can write articles
+			options.AddPolicy(PolicyConstants.CanCreateComments, policy =>
+			{
+				policy.RequireAuthenticatedUser();
+			});
+
+			options.AddPolicy(PolicyConstants.CanWriteArticles, policy =>
+			{
+				policy.RequireAuthenticatedUser();
+				policy.RequireAnyRole("Authors", "Administrators");
+			});
+			
 			// Authors can edit their own articles
 			// Editors can edit anyones articles
-			// Administrators can delete articles
-
 
 		}
 	}
+
+
 }

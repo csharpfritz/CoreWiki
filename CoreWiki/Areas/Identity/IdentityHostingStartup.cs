@@ -1,6 +1,5 @@
 ﻿using System;
-using CoreWiki.Areas.Identity.Data;
-using CoreWiki.Models;
+using CoreWiki.Data.Security;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -18,13 +17,16 @@ namespace CoreWiki.Areas.Identity
 		{
 			builder.ConfigureServices((context, services) =>
 			{
+				bool.TryParse(context.Configuration["Authentication:RequireConfirmedEmail"],
+					out var requireConfirmedEmail);
+
 				services.AddDbContext<CoreWikiIdentityContext>(options =>
 																	options.UseSqlite(
 																					context.Configuration.GetConnectionString("CoreWikiIdentityContextConnection")));
 
-				services.AddDefaultIdentity<CoreWikiUser>()
+				services.AddDefaultIdentity<CoreWikiUser>(options =>
+						options.SignIn.RequireConfirmedEmail = requireConfirmedEmail)
 																	.AddEntityFrameworkStores<CoreWikiIdentityContext>();
-
 				var authBuilder = services.AddAuthentication();
 
 				if (!string.IsNullOrEmpty(context.Configuration["Authentication:Microsoft:ApplicationId"]))
@@ -49,7 +51,7 @@ namespace CoreWiki.Areas.Identity
 
 				}
 
-				services.AddAuthorization(AuthorizationPolicy.Execute);
+				services.AddAuthorization(AuthPolicy.Execute);
 
 
 			});

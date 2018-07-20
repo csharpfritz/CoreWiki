@@ -2,12 +2,13 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <UserSecretsId>7b1e67c2-befb-4e2e-957d-603f8b2e5491</UserSecretsId>
+	<UseRazorBuildServer>false</UseRazorBuildServer>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="BuildBundlerMinifier" Version="2.8.391" />
     <PackageReference Include="DiffPlex" Version="1.4.1" />
     <PackageReference Include="HtmlSanitizer" Version="4.0.185" />
-    <PackageReference Include="Humanizer" Version="2.3.3" />
+    <PackageReference Include="Humanizer" Version="2.4.2" />
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.3.0" />
     <PackageReference Include="Microsoft.AspNetCore.App" Version="2.1.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="2.1.1" />
@@ -15,15 +16,13 @@
     <PackageReference Include="NodaTime" Version="2.3.0" />
     <PackageReference Include="NWebsec.AspNetCore.Middleware" Version="2.0.0" />
     <PackageReference Include="NWebsec.AspNetCore.Mvc.TagHelpers" Version="2.0.0" />
-    <PackageReference Include="sendgrid" Version="9.9.0" />
     <PackageReference Include="Snickler.RSSCore" Version="1.0.3" />
-    <PackageReference Include="WebEssentials.AspNetCore.PWA" Version="1.0.33" />
+    <PackageReference Include="WebEssentials.AspNetCore.PWA" Version="1.0.42" />
     <PackageReference Include="Westwind.AspNetCore.Markdown" Version="3.0.28" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Areas\Identity\Services\" />
-    <Folder Include="Migrations\" />
     <Folder Include="App_Data\" />
 		<Folder Include="wwwroot\lib\bootstrap\" />
 		<Folder Include="wwwroot\lib\moment\" />
@@ -31,7 +30,19 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\CoreWiki.Core\CoreWiki.Core.csproj" />
     <ProjectReference Include="..\CoreWiki.Data\CoreWiki.Data.csproj" />
+    <ProjectReference Include="..\CoreWiki.Notifications\CoreWiki.Notifications.csproj" />
   </ItemGroup>
+
+  <Target Name="DebugEnsureNodeEnv" BeforeTargets="BundleMinify;Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('.\node_modules') ">
+    <!-- Ensure Node.js is installed -->
+    <Exec Command="node --version" ContinueOnError="true">
+      <Output TaskParameter="ExitCode" PropertyName="ErrorCode" />
+    </Exec>
+    <Error Condition="'$(ErrorCode)' != '0'" Text="Node.js is required to build and run this project. To continue, please install Node.js from https://nodejs.org/, and then restart your command prompt or IDE." />
+    <Message Importance="high" Text="Restoring dependencies using 'npm'. This may take several minutes..." />
+    <Exec WorkingDirectory=".\" Command="npm install --no-save" />
+  </Target>
 
 </Project>

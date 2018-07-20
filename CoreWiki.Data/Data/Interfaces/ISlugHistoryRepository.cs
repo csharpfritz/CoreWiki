@@ -9,5 +9,7 @@ namespace CoreWiki.Data.Data.Interfaces
 
 		Task<SlugHistory> GetSlugHistoryWithArticle(string slug);
 
+		Task AddToHistory(string oldSlug, Article article);
+
 	}
 }

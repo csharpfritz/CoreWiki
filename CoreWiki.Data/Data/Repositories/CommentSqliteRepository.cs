@@ -7,12 +7,12 @@ namespace CoreWiki.Data.Data.Repositories
 	public class CommentSqliteRepository : ICommentRepository
 	{
 
-		public CommentSqliteRepository(IApplicationDbContext context)
+		public CommentSqliteRepository(ApplicationDbContext context)
 		{
 			Context = context;
 		}
 
-		public IApplicationDbContext Context { get; }
+		public ApplicationDbContext Context { get; }
 
 
 
