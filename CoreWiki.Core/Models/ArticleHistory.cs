@@ -1,18 +1,30 @@
 ﻿using NodaTime;
 using NodaTime.Extensions;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace CoreWiki.Data.Models
+namespace CoreWiki.Core.Models
 {
-	public class Article
+	public class ArticleHistory
 	{
 		[Key]
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 		public int Id { get; set; }
+
+		public virtual Article Article { get; set; }
+
+		[ForeignKey(nameof(Article))]
+		public int ArticleId { get; set; }
+
+		[Required]
+		public Guid AuthorId { get; set; }
+
+		public string AuthorName { get; set; }
+
+		[Required]
+		public int Version { get; set; }
 
 		[Required, MaxLength(100)]
 		[Display(Name = "Topic")]
@@ -20,17 +32,8 @@ namespace CoreWiki.Data.Models
 
 		public string Slug { get; set; }
 
-		[Required]
-		public int Version { get; set; } = 1;
-
 		[NotMapped]
 		public Instant Published { get; set; }
-
-		[Required]
-		public Guid AuthorId { get; set; } = Guid.NewGuid();
-
-		[Required]
-		public string AuthorName { get; set; } = "Unknown";
 
 		// Buddy property (?)
 		[Obsolete("This property only exists for EF-serialization purposes")]
@@ -47,15 +50,25 @@ namespace CoreWiki.Data.Models
 		[DataType(DataType.MultilineText)]
 		[Display(Name = "Content")]
 		public string Content { get; set; }
-		public virtual ICollection<Comment> Comments { get; set; }
-		public virtual ICollection<ArticleHistory> History { get; set; }
-		public Article()
-		{
-			this.Comments = new HashSet<Comment>();
-			this.History = new HashSet<ArticleHistory>();
-		}
 
-		public int ViewCount { get; set; } = 0;
+		public static ArticleHistory FromArticle(Article article)
+		{
+
+			return new ArticleHistory
+			{
+				//Id = 1,
+				Article = article,
+				ArticleId = article.Id,
+				AuthorId = article.AuthorId,
+				AuthorName = article.AuthorName,
+				Content = article.Content,
+				Published = article.Published,
+				Slug = article.Slug,
+				Topic = article.Topic,
+				Version = article.Version
+			};
+
+		}
 
 	}
 
