@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace CoreWiki.Configuration.Startup
 {
@@ -20,7 +20,8 @@ namespace CoreWiki.Configuration.Startup
 				{
 					options.Conventions.AddPageRoute("/Edit", "/{Slug}/Edit");
 					options.Conventions.AddPageRoute("/Delete", "{Slug}/Delete");
-					options.Conventions.AddPageRoute("/Details", "{Slug?}");
+					options.Conventions.AddPageRoute("/Details", "/");
+					options.Conventions.AddPageRoute("/Details", "/wiki/{Slug?}");
 					options.Conventions.AddPageRoute("/Details", @"Index");
 					options.Conventions.AddPageRoute("/Create", "{Slug?}/Create");
 					options.Conventions.AddPageRoute("/History", "{Slug?}/History");
