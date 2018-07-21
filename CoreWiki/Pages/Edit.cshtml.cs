@@ -1,11 +1,9 @@
 ﻿using CoreWiki.Data;
 using CoreWiki.Data.Data.Interfaces;
-using CoreWiki.Data.Data.Repositories;
 using CoreWiki.Data.Models;
 using CoreWiki.Helpers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
 using NodaTime;
 using System;
 using System.Linq;
@@ -67,12 +65,6 @@ namespace CoreWiki.Pages
 				return Page();
 			}
 
-			if (!await _Repo.IsTopicAvailable(slug, Article.Id))
-			{
-				ModelState.AddModelError("Article.Topic", "This Title already exists.");
-				return Page();
-			}
-
 			var articlesToCreateFromLinks = (await ArticleHelpers.GetArticlesToCreate(_Repo, Article, createSlug: true))
 				.ToList();
 
@@ -88,9 +80,12 @@ namespace CoreWiki.Pages
 
 			//AddNewArticleVersion();
 
-			try {
+			try
+			{
 				await _Repo.Update(Article);
-			} catch (ArticleNotFoundException) {
+			}
+			catch (ArticleNotFoundException)
+			{
 				return new ArticleNotFoundResult();
 			}
 
@@ -102,7 +97,7 @@ namespace CoreWiki.Pages
 			return Redirect($"/{(Article.Slug == "home-page" ? "" : Article.Slug)}");
 		}
 
-	
+
 	}
 
 }

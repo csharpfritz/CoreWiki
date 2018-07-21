@@ -63,6 +63,7 @@ namespace CoreWiki.Pages
 
 			Article.Slug = slug;
 			Article.AuthorId = Guid.Parse(this.User.FindFirstValue(ClaimTypes.NameIdentifier));
+			Article.AuthorName = User.Identity.Name;
 
 			if (!ModelState.IsValid)
 			{
