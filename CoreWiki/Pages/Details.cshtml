@@ -39,7 +39,7 @@
 	<markdown markdown="Article.Content" />
 
 	<div>
-		<a asp-page="/Edit" asp-route-slug="@Model.Article.Slug" class="btn btn-outline-info">@Localizer["Edit"]</a>
+		<a asp-page="/Edit" asp-route-slug="@Model.Article.Slug" asp-policy="@PolicyConstants.CanEditArticles" class="btn btn-outline-info">@Localizer["Edit"]</a>
 
 		@if (Model.Article.Slug != UrlHelpers.HomePageSlug)
 		{

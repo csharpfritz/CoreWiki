@@ -26,7 +26,16 @@ namespace CoreWiki.Areas.Identity
 				policy.RequireAuthenticatedUser();
 				policy.RequireAnyRole("Authors", "Administrators");
 			});
-			
+
+			options.AddPolicy(PolicyConstants.CanEditArticles, policy =>
+			{
+				policy.RequireAuthenticatedUser();
+
+				// TODO: After we can assign users to roles, we will want to re-enable this
+
+				// policy.RequireAnyRole("Authors", "Administrators");
+			});
+
 			// Authors can edit their own articles
 			// Editors can edit anyones articles
 
