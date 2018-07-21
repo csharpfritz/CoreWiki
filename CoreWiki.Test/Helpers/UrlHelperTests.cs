@@ -21,6 +21,7 @@ namespace CoreWiki.Test
 
 		[Theory]
 		[InlineData("OneTwo", "one-two")]
+		[InlineData("HomePage", "home-page")]
 		public void ShouldAddDashBetweenWords(string givenText, string expectedUrlFriendly)
 		{
 

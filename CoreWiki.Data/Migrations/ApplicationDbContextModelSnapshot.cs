@@ -48,7 +48,7 @@ namespace CoreWiki.Migrations
 						b.ToTable("Articles");
 
 						b.HasData(
-											new { Id = 1, AuthorId = new Guid("00000000-0000-0000-0000-000000000000"), AuthorName = "Unknown", Content = "This is the default home page.  Please change me!", PublishedDateTime = new DateTime(2018, 6, 19, 14, 31, 2, 265, DateTimeKind.Utc), Slug = "home-page", Topic = "HomePage", Version = 1, ViewCount = 0 }
+											new { Id = 1, AuthorId = new Guid("00000000-0000-0000-0000-000000000000"), AuthorName = "Unknown", Content = "This is the default home page.  Please change me!", PublishedDateTime = new DateTime(2018, 6, 19, 14, 31, 2, 265, DateTimeKind.Utc), Slug = "home-page", Topic = "Home Page", Version = 1, ViewCount = 0 }
 									);
 					});
 
@@ -83,7 +83,7 @@ namespace CoreWiki.Migrations
 						b.ToTable("ArticleHistories");
 
 						b.HasData(
-											new { Id = 1, ArticleId = 1, AuthorId = new Guid("00000000-0000-0000-0000-000000000000"), AuthorName = "Unknown", Content = "This is the default home page.  Please change me!", PublishedDateTime = new DateTime(2018, 6, 19, 14, 31, 2, 265, DateTimeKind.Utc), Slug = "home-page", Topic = "HomePage", Version = 1 }
+											new { Id = 1, ArticleId = 1, AuthorId = new Guid("00000000-0000-0000-0000-000000000000"), AuthorName = "Unknown", Content = "This is the default home page.  Please change me!", PublishedDateTime = new DateTime(2018, 6, 19, 14, 31, 2, 265, DateTimeKind.Utc), Slug = "home-page", Topic = "Home Page", Version = 1 }
 									);
 					});
 
