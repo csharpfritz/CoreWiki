@@ -1,5 +1,4 @@
-﻿using CoreWiki.Data;
-using CoreWiki.Data.Data.Interfaces;
+﻿using CoreWiki.Data.Data.Interfaces;
 using CoreWiki.Data.Models;
 using CoreWiki.Helpers;
 using Microsoft.AspNetCore.Mvc;
@@ -93,7 +92,7 @@ namespace CoreWiki.Pages
 				return RedirectToPage("CreateArticleFromLink", new { id = slug });
 			}
 
-			return Redirect($"/{Article.Slug}");
+			return Redirect($"/wiki/{Article.Slug}");
 		}
 	}
 }
