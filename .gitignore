@@ -274,3 +274,5 @@ CoreWiki/wwwroot/lib/
 
 # Minified and generated files
 *.min.js
+/CoreWiki.v3.ncrunchsolution
+/CoreWiki.Test/CoreWiki.Test.v3.ncrunchproject
