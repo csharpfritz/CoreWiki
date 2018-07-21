@@ -8,7 +8,7 @@
 @if (settings.Value.Comments.IsEngineLocal)
 {
 
-	@if ((await AuthorizationService.AuthorizeAsync(User, null, PolicyConstants.CanCreateComments)).Succeeded) {
+	if ((await AuthorizationService.AuthorizeAsync(User, null, PolicyConstants.CanCreateComments)).Succeeded) {
 		@await Component.InvokeAsync("CreateComments", new Comment { IdArticle = Model.Article.Id })
 	}
 
@@ -19,4 +19,3 @@ else
 {
 	<partial name="_DisqusComments" model="settings.Value.Comments.Disqus.ShortName" />
 }
-

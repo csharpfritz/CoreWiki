@@ -98,7 +98,8 @@ namespace CoreWiki.Data.Data.Repositories
 			Context.Dispose();
 		}
 
-		public Task<bool> Exists(int id) {
+		public Task<bool> Exists(int id)
+		{
 
 			return Context.Articles.AnyAsync(e => e.Id == id);
 
@@ -107,7 +108,7 @@ namespace CoreWiki.Data.Data.Repositories
 		public async Task Update(Article article)
 		{
 
-			Context.Attach(article); //.State = EntityState.Modified;
+			Context.Attach(article).State = EntityState.Modified;
 
 			Context.ArticleHistories.Add(ArticleHistory.FromArticle(article));
 
