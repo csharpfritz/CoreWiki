@@ -15,10 +15,10 @@
 				<br />
 				@if (Model.LinksToCreate != null && Model.LinksToCreate.Count > 0)
 				{
-					@for (var i = 0; i < Model.LinksToCreate.Count; i++)
+					foreach (var link in Model.LinksToCreate)
 					{
-						<input asp-for="@Model.LinksToCreate[i]]" type="hidden" />
-						<span>* <b>@Model.LinksToCreate[i].ToTitleCase().RemoveHyphens()</b> (@Model.LinksToCreate[i])</span>
+						<input asp-for="@link]" type="hidden" />
+						<span>* <strong>@link.ToTitleCase().RemoveHyphens()</strong> (@link)</span>
 						<br />
 					}
 				}
