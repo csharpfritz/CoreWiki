@@ -41,7 +41,7 @@
 	<div>
 		<a asp-page="/Edit" asp-route-slug="@Model.Article.Slug" class="btn btn-outline-info">@Localizer["Edit"]</a>
 
-		@if (Model.Article.Slug != "home-page")
+		@if (Model.Article.Slug != UrlHelpers.HomePageSlug)
 		{
 			<a href="~/" class="btn btn-secondary">@Localizer["GoHome"]</a>
 		}

@@ -46,7 +46,7 @@ namespace CoreWiki.Pages
 
 			if (LinksToCreate.Count == 0)
 			{
-				return Redirect($"/wiki/{(Article.Slug == "home-page" ? "" : Article.Slug)}");
+				return Redirect($"/wiki/{(Article.Slug == UrlHelpers.HomePageSlug ? "" : Article.Slug)}");
 			}
 
 			return Page();
@@ -69,12 +69,12 @@ namespace CoreWiki.Pages
 
 			}
 
-			return Redirect($"/a/{(slug == "home-page" ? "" : slug)}");
+			return Redirect($"/wiki/{(slug == UrlHelpers.HomePageSlug ? "" : slug)}");
 		}
 
 		public IActionResult OnPostCancel(string slug)
 		{
-			return Redirect($"/a/{(slug == "home-page" ? "" : slug)}");
+			return Redirect($"/wiki/{(slug == UrlHelpers.HomePageSlug ? "" : slug)}");
 		}
 	}
 }

@@ -54,7 +54,7 @@ namespace CoreWiki.Pages
 
 			// TODO: If topicName not specified, default to Home Page
 
-			slug = slug ?? "home-page";
+			slug = slug ?? UrlHelpers.HomePageSlug;
 			Article = await _articleRepo.GetArticleBySlug(slug);
 
 			if (Article == null)
@@ -64,7 +64,7 @@ namespace CoreWiki.Pages
 
 				if (historical != null)
 				{
-					return new RedirectResult($"~/{historical.Article.Slug}");
+					return new RedirectResult($"~/wiki/{historical.Article.Slug}");
 				}
 				else
 				{
@@ -104,7 +104,7 @@ namespace CoreWiki.Pages
 			// TODO: Also check for verified email if required
 			await _notificationService.SendNewCommentEmail(author.Email, author.UserName, comment.DisplayName, Article.Topic, Article.Slug, () => author.CanNotify);
 
-			return Redirect($"/{Article.Slug}");
+			return Redirect($"/wiki/{Article.Slug}");
 		}
 	}
 }
