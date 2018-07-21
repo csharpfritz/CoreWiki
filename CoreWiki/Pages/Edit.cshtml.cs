@@ -94,7 +94,7 @@ namespace CoreWiki.Pages
 				return RedirectToPage("CreateArticleFromLink", new { id = slug });
 			}
 
-			return Redirect($"/{(Article.Slug == "home-page" ? "" : Article.Slug)}");
+			return Redirect($"/wiki/{(Article.Slug == "home-page" ? "" : Article.Slug)}");
 		}
 
 
