@@ -1,4 +1,6 @@
 ﻿using CoreWiki.Extensibility.Common;
+using CoreWiki.Extensibility.Common.Events;
+using Microsoft.Extensions.Logging;
 using System;
 
 namespace CoreWiki.Extensibility.TheChapel
@@ -10,18 +12,40 @@ namespace CoreWiki.Extensibility.TheChapel
             _BadWords = GetProfanityWords();
         }
 
-        void ICoreWikiModule.Initialize(CoreWikiModuleEvents moduleEvents)
+        void ICoreWikiModule.Initialize(ICoreWikiModuleHost coreWikiModuleHost)
         {
-            moduleEvents.PreSubmitArticle += OnPreSubmitArticle;
+            coreWikiModuleHost.Events.PreCreateArticle += OnPreSubmitArticle;
+            coreWikiModuleHost.Events.PostCreateArticle += OnPostSubmitArticle;
+            coreWikiModuleHost.Events.PreEditArticle += OnPreEditArticle;
+            coreWikiModuleHost.Events.PostEditArticle+= OnPostEditArticle;
+
+            _logger = coreWikiModuleHost.LoggerFactory.CreateLogger(nameof(ProfanityCheck));
+            _logger.LogInformation("ProfanityCheck CoreWikiModule Initialized");
         }
 
-        string[] _BadWords;
+        private void OnPostEditArticle(PostArticleEditEventArgs obj)
+        {
+            throw new NotImplementedException();
+        }
 
-        void OnPreSubmitArticle(PreSubmitArticleEventArgs e)
+        private void OnPreEditArticle(PreArticleEditEventArgs obj)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void OnPreSubmitArticle(PreArticleCreateEventArgs e)
         {
             e.Topic = RemoveProfanity(e.Topic);
             e.Content = RemoveProfanity(e.Content);
         }
+
+        private void OnPostSubmitArticle(PostArticleCreateEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        string[] _BadWords;
+        private ILogger _logger;
 
         string RemoveProfanity(string text)
         {
