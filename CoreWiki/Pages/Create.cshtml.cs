@@ -12,6 +12,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using CoreWiki.Extensibility.Common.Extensions;
 
 namespace CoreWiki.Pages
 {
@@ -20,18 +21,16 @@ namespace CoreWiki.Pages
 
 		private readonly IArticleRepository _articleRepo;
 		private readonly IClock _clock;
+		private readonly IExtensibilityManager _extensibilityManager;
 
 		public ILogger Logger { get; private set; }
 
-        private readonly CoreWikiModuleEvents _moduleEvents;
-
-		public CreateModel(IArticleRepository articleRepo, IClock clock, ILoggerFactory loggerFactory)
+		public CreateModel(IArticleRepository articleRepo, IClock clock, IExtensibilityManager extensibilityManager, ILoggerFactory loggerFactory)
 		{
 			_articleRepo = articleRepo;
 			_clock = clock;
+			_extensibilityManager = extensibilityManager;
 			this.Logger = loggerFactory.CreateLogger("CreatePage");
-
-            _moduleEvents = Startup.ModuleEvents;
 		}
 
 		public async Task<IActionResult> OnGetAsync(string slug)
@@ -59,41 +58,13 @@ namespace CoreWiki.Pages
 
 		public async Task<IActionResult> OnPostAsync()
 		{
-            // MAC
-            if (_moduleEvents.PreSubmitArticle != null)
-            {
-                var args = new PreSubmitArticleEventArgs(Article.Topic, Article.Content);
+			var result = _extensibilityManager.InvokePreArticleCreateEvent(Article.Topic, Article.Content);
+			ModelState.BindValidationResult(result?.ValidationResults);
 
-                //_extensibilityManager.InvokeCancelableModuleEvent(_moduleEvents.PreSubmitArticle, args);
+			Article.Topic = result.Topic;
+			Article.Content = result.Content;
 
-                var cancel = false;
-                var invocationList = _moduleEvents.PreSubmitArticle.GetInvocationList();
-                foreach (Action<PreSubmitArticleEventArgs> eventModule in invocationList)
-                {
-                    if (!cancel)
-                    {
-                        eventModule(args);
-                        if (args is CancelEventArgs)
-                            cancel = (args as CancelEventArgs).Cancel;
-                    }
-                    else
-                        break;
-                }
-
-                if (args.Cancel)
-                {
-                    if (!string.IsNullOrWhiteSpace(args.ModelErrorProperty))
-                        ModelState.AddModelError("Article" + args.ModelErrorProperty, args.ModelErrorMessage);
-
-                    return Page();
-                }
-
-                Article.Topic = args.Topic;
-                Article.Content = args.Content;
-
-            }
-
-            var slug = UrlHelpers.URLFriendly(Article.Topic);
+			var slug = UrlHelpers.URLFriendly(Article.Topic);
 			if (string.IsNullOrWhiteSpace(slug))
 			{
 				ModelState.AddModelError("Article.Topic", "The Topic must contain at least one alphanumeric character.");
@@ -122,12 +93,7 @@ namespace CoreWiki.Pages
 
 			Article = await _articleRepo.CreateArticleAndHistory(Article);
 
-            // MAC
-            if (_moduleEvents.ArticleSubmitted != null)
-            {
-                var args = new ArticleSubmittedEventArgs(Article.Topic, Article.Content);
-                _moduleEvents.ArticleSubmitted?.Invoke(args);
-            }
+			_extensibilityManager.InvokePostArticleCreateEvent(Article.Topic, Article.Content);
 
             var articlesToCreateFromLinks = (await ArticleHelpers.GetArticlesToCreate(_articleRepo, Article, createSlug: true))
 				.ToList();
