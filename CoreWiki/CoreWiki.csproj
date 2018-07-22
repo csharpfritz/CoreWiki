@@ -27,6 +27,7 @@
 		<Folder Include="wwwroot\lib\bootstrap\" />
 		<Folder Include="wwwroot\lib\moment\" />
     <Folder Include="wwwroot\lib\simplemde\" />
+	<Folder Include="CoreWikiModules" />
   </ItemGroup>
 
   <ItemGroup>
