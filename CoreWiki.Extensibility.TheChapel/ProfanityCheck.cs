@@ -52,7 +52,7 @@ namespace CoreWiki.Extensibility.TheChapel
             string newText = text;
 
             foreach (string badWord in _BadWords)
-                newText = newText.Replace(badWord, "$%!@&*#$");
+                newText = newText.Replace(badWord, "[No Profanity]");
 
             return newText;
         }
