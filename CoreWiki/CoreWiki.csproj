@@ -32,6 +32,8 @@
   <ItemGroup>
     <ProjectReference Include="..\CoreWiki.Core\CoreWiki.Core.csproj" />
     <ProjectReference Include="..\CoreWiki.Data\CoreWiki.Data.csproj" />
+    <ProjectReference Include="..\CoreWiki.Extensibility.Common\CoreWiki.Extensibility.Common.csproj" />
+    <ProjectReference Include="..\CoreWiki.Extensibility.TheChapel\CoreWiki.Extensibility.TheChapel.csproj" />
     <ProjectReference Include="..\CoreWiki.Notifications\CoreWiki.Notifications.csproj" />
   </ItemGroup>
 
