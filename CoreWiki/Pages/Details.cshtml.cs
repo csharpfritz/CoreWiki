@@ -11,6 +11,7 @@ using NodaTime;
 using System;
 using System.Threading.Tasks;
 using CoreWiki.Core.Notifications;
+using System.Linq;
 
 namespace CoreWiki.Pages
 {
@@ -44,7 +45,7 @@ namespace CoreWiki.Pages
 			Configuration = config;
 		}
 
-		public Article Article { get; set; }
+		public ArticleDetailsDTO Article { get; set; }
 
 		[ViewDataAttribute]
 		public string Slug { get; set; }
@@ -55,9 +56,10 @@ namespace CoreWiki.Pages
 			// TODO: If topicName not specified, default to Home Page
 
 			slug = slug ?? UrlHelpers.HomePageSlug;
-			Article = await _articleRepo.GetArticleBySlug(slug);
 
-			if (Article == null)
+			var article = await _articleRepo.GetArticleBySlug(slug);
+
+			if (article == null)
 			{
 				Slug = slug;
 				var historical = await _slugHistoryRepo.GetSlugHistoryWithArticle(slug);
@@ -71,6 +73,31 @@ namespace CoreWiki.Pages
 					return new ArticleNotFoundResult(slug);
 				}
 			}
+
+			var comments = (
+				from comment in article.Comments
+				select new CommentDTO
+				{
+					ArticleId = comment.Id,
+					DisplayName = comment.DisplayName,
+					Email = comment.Email,
+					Content = comment.Content,
+					Submitted = comment.Submitted
+				}
+			).ToList();
+
+			Article = new ArticleDetailsDTO
+			{
+				Id = article.Id,
+				AuthorId = article.AuthorId,
+				Slug = article.Slug,
+				Topic = article.Topic,
+				Content = article.Content,
+				Published = article.Published,
+				Version = article.Version,
+				ViewCount = article.ViewCount,
+				Comments = comments
+			};
 
 			if (Request.Cookies[Article.Topic] == null)
 			{
@@ -87,24 +114,23 @@ namespace CoreWiki.Pages
 		public async Task<IActionResult> OnPostAsync(Comment comment)
 		{
 			TryValidateModel(comment);
-			Article = await _articleRepo.GetArticleByComment(comment);
-			if (Article == null)
+			var article = await _articleRepo.GetArticleByComment(comment);
+			if (article == null)
 				return new ArticleNotFoundResult();
 
 			if (!ModelState.IsValid)
 				return Page();
 
-			comment.Article = Article;
-
+			comment.Article = article;
 			comment.Submitted = _clock.GetCurrentInstant();
-
-			var author = await _UserManager.FindByIdAsync(Article.AuthorId.ToString());
 			await _commentRepo.CreateComment(comment);
 
+			// IDEA: Make this an extensibility module, we should only be creating a comment here (single responsibility principle)
 			// TODO: Also check for verified email if required
-			await _notificationService.SendNewCommentEmail(author.Email, author.UserName, comment.DisplayName, Article.Topic, Article.Slug, () => author.CanNotify);
+			var author = await _UserManager.FindByIdAsync(article.AuthorId.ToString());
+			await _notificationService.SendNewCommentEmail(author.Email, author.UserName, comment.DisplayName, article.Topic, article.Slug, () => author.CanNotify);
 
-			return Redirect($"/wiki/{Article.Slug}");
+			return Redirect($"/wiki/{article.Slug}");
 		}
 	}
 }
