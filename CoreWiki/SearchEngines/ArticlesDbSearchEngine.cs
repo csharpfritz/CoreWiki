@@ -16,7 +16,7 @@ namespace CoreWiki.SearchEngines
 			_articleRepo = articleRepo;
 		}
 
-		public async Task<SearchResult<ArticleSummaryDTO>> SearchAsync(string query, int pageNumber, int resultsPerPage)
+		public async Task<SearchResult<Article>> SearchAsync(string query, int pageNumber, int resultsPerPage)
 		{
 			var filteredQuery = query.Trim();
 			var offset = (pageNumber - 1) * resultsPerPage;
@@ -25,23 +25,16 @@ namespace CoreWiki.SearchEngines
 
 			var totalResults = await dbQuery.CountAsync();
 
-			var articles = from article in await dbQuery
+			var articles = await dbQuery
 				.Skip(offset)
 				.Take(resultsPerPage)
 				.OrderByDescending(a => a.ViewCount)
-				.ToListAsync()
-				select new ArticleSummaryDTO
-			{
-				Slug = article.Slug,
-				Topic = article.Topic,
-				Published = article.Published,
-				ViewCount = article.ViewCount
-			};;
+				.ToListAsync();
 
-			return new SearchResult<ArticleSummaryDTO>
+			return new SearchResult<Article>
 			{
 				Query = filteredQuery,
-				Results = articles.ToList(),
+				Results = articles,
 				CurrentPage = pageNumber,
 				ResultsPerPage = resultsPerPage,
 				TotalResults = totalResults
