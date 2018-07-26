@@ -3,13 +3,13 @@
 		var simplemde = new SimpleMDE();
 
 		var openFile = function(event)  {
-			let input = event.target;
+			const input = event.target;
 
-			let reader = new FileReader();
+			const reader = new FileReader();
 			reader.onload = function () {
 				let text = simplemde.value();
 				
-				text += "\n" + reader.result;
+				text += `\n${reader.result}`;
 				simplemde.value(text);
 			};
 			reader.readAsText(input.files[0]);
