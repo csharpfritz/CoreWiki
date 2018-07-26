@@ -10,7 +10,7 @@ namespace CoreWiki.Pages
 {
 	public class SearchModel : PageModel
 	{
-		public SearchResult<Article> SearchResult;
+		public SearchResult<ArticleSummaryDTO> SearchResult;
 		private readonly IArticlesSearchEngine _articlesSearchEngine;
 		private readonly IArticleRepository _repository;
 		private const int ResultsPerPage = 10;
