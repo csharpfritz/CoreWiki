@@ -1,5 +1,4 @@
-﻿using CoreWiki.Data;
-using CoreWiki.Data.Data.Interfaces;
+﻿using CoreWiki.Data.Data.Interfaces;
 using CoreWiki.Data.Models;
 using CoreWiki.Extensibility.Common;
 using CoreWiki.Helpers;
@@ -17,7 +16,6 @@ namespace CoreWiki.Pages
 {
 	public class CreateModel : PageModel
 	{
-
 		private readonly IArticleRepository _articleRepo;
 		private readonly IClock _clock;
 
@@ -59,7 +57,7 @@ namespace CoreWiki.Pages
 
 		public async Task<IActionResult> OnPostAsync()
 		{
-            // MAC
+
             if (_moduleEvents.PreSubmitArticle != null)
             {
                 var args = new PreSubmitArticleEventArgs(Article.Topic, Article.Content);
@@ -94,6 +92,7 @@ namespace CoreWiki.Pages
             }
 
             var slug = UrlHelpers.URLFriendly(Article.Topic);
+
 			if (string.IsNullOrWhiteSpace(slug))
 			{
 				ModelState.AddModelError("Article.Topic", "The Topic must contain at least one alphanumeric character.");
@@ -102,6 +101,7 @@ namespace CoreWiki.Pages
 
 			Article.Slug = slug;
 			Article.AuthorId = Guid.Parse(this.User.FindFirstValue(ClaimTypes.NameIdentifier));
+			Article.AuthorName = User.Identity.Name;
 
 			if (!ModelState.IsValid)
 			{
@@ -122,12 +122,12 @@ namespace CoreWiki.Pages
 
 			Article = await _articleRepo.CreateArticleAndHistory(Article);
 
-            // MAC
-            if (_moduleEvents.ArticleSubmitted != null)
-            {
-                var args = new ArticleSubmittedEventArgs(Article.Topic, Article.Content);
-                _moduleEvents.ArticleSubmitted?.Invoke(args);
-            }
+			// Check ArticleSubmitted extensibility event
+			if (_moduleEvents.ArticleSubmitted != null)
+			{
+				var args = new ArticleSubmittedEventArgs(Article.Topic, Article.Content);
+				_moduleEvents.ArticleSubmitted?.Invoke(args);
+			}
 
             var articlesToCreateFromLinks = (await ArticleHelpers.GetArticlesToCreate(_articleRepo, Article, createSlug: true))
 				.ToList();
@@ -137,7 +137,7 @@ namespace CoreWiki.Pages
 				return RedirectToPage("CreateArticleFromLink", new { id = slug });
 			}
 
-			return Redirect($"/{Article.Slug}");
+			return Redirect($"/wiki/{Article.Slug}");
 		}
 	}
 }
