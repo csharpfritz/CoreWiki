@@ -1,14 +1,27 @@
-﻿namespace CoreWiki.Extensibility.Common
+﻿using System.IO;
+using System.Reflection;
+
+namespace CoreWiki.Extensibility.Common
 {
     public abstract class ExtensibilityManagerBase
     {
+        public const string ModulesPath = "CoreWikiModules";
+
         protected ExtensibilityManagerBase(ICoreWikiModuleHost coreWikiModuleHost, ICoreWikiModuleLoader moduleLoader)
         {
-            OnRegisterCoreWikiModules(coreWikiModuleHost, moduleLoader);
+            RegisterCoreWikiModules(coreWikiModuleHost, moduleLoader);
         }
 
-        protected internal virtual void OnRegisterCoreWikiModules(ICoreWikiModuleHost coreWikiModuleHost, ICoreWikiModuleLoader moduleLoader)
+        private void RegisterCoreWikiModules(ICoreWikiModuleHost coreWikiModuleHost, ICoreWikiModuleLoader moduleLoader)
         {
+            var rootModulesPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            var modulesPath = Path.Join(rootModulesPath, ModulesPath);
+
+            var modules = moduleLoader.Load(rootModulesPath, modulesPath);
+            foreach (var coreWikiModule in modules)
+            {
+                coreWikiModule.Initialize(coreWikiModuleHost);
+            }
         }
     }
 }

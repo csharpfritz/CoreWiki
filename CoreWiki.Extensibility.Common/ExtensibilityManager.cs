@@ -2,15 +2,11 @@
 using Microsoft.Extensions.Logging;
 using System;
 using System.ComponentModel;
-using System.IO;
-using System.Reflection;
 
 namespace CoreWiki.Extensibility.Common
 {
     public class ExtensibilityManager : ExtensibilityManagerBase, IExtensibilityManager
     {
-        private const string ModulesPath = "CoreWikiModules";
-
         private readonly ICoreWikiModuleHost _coreWikiModuleHost;
         private readonly ILogger<ExtensibilityManager> _logger;
 
@@ -220,18 +216,6 @@ namespace CoreWiki.Extensibility.Common
             }
 
             return args;
-        }
-
-        protected internal override void OnRegisterCoreWikiModules(ICoreWikiModuleHost coreWikiModuleHost, ICoreWikiModuleLoader moduleLoader)
-        {
-            var rootModulesPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            var modulesPath = Path.Join(rootModulesPath, ModulesPath);
-
-            var modules = moduleLoader.Load(rootModulesPath, modulesPath);
-            foreach (var coreWikiModule in modules)
-            {
-                coreWikiModule.Initialize(coreWikiModuleHost);
-            }
         }
     }
 }
