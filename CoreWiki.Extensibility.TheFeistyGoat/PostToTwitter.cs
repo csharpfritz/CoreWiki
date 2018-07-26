@@ -1,27 +1,27 @@
 ﻿using CoreWiki.Extensibility.Common;
+using CoreWiki.Extensibility.Common.Events;
 using System;
 
 namespace CoreWiki.Extensibility.TheFeistyGoat
 {
-    public class PostToTwitter : ICoreWikiModule
-    {
-        void ICoreWikiModule.Initialize(CoreWikiModuleEvents moduleEvents)
-        {
-            moduleEvents.ArticleSubmitted += OnArticleSubmitted;
-        }
+	public class PostToTwitter : ICoreWikiModule
+	{
+		public void Initialize(ICoreWikiModuleHost coreWikiModuleHost)
+		{
+			coreWikiModuleHost.Events.PostCreateArticle += OnArticleSubmitted;
+			coreWikiModuleHost.Events.PostEditArticle += OnArticleEdited;
 
-        void OnArticleSubmitted(ArticleSubmittedEventArgs e)
-        {
-            /*
-             * Pesudo-code example using TweetSharp
-             * 
-            var twitterService = new TwitterService("key", "secret");
+		}
 
-            SendTweetOptions options = new SendTweetOptions();
-            options.Status = "The Feisty Goat has just published a new article to its Wiki!";
-            
-            twitterService.SendTweet(options);
-            */
-        }
-    }
+		private void OnArticleEdited(PostArticleEditEventArgs obj)
+		{
+			throw new NotImplementedException();
+		}
+
+		private void OnArticleSubmitted(PostArticleCreateEventArgs obj)
+		{
+			throw new NotImplementedException();
+		}
+
+	}
 }

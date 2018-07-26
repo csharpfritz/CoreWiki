@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using System;
+using CoreWiki.Notifications;
 
 namespace CoreWiki
 {
@@ -30,8 +31,7 @@ namespace CoreWiki
 			services.ConfigureScopedServices();
 			services.ConfigureRouting();
 			services.ConfigureLocalisation();
-
-			services.AddSingleton<IExtensibilityManager, ExtensibilityManager>(); // MAC
+			services.ConfigureExtensibility();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -46,24 +46,10 @@ namespace CoreWiki
 			app.ConfigureLocalisation();
 			app.ConfigureDatabase();
 
+			app.UseExtensibility();
 			app.UseStatusCodePagesWithReExecute("/HttpErrors/{0}");
 			app.UseMvc();
 
-            ModuleEvents = new CoreWikiModuleEvents();
-
-            var modulesConfig = Configuration.Get<AppSettings>().ExtensibilityModules;
-            foreach (var moduleConfig in modulesConfig)
-            {
-                var module = Activator.CreateInstance(Type.GetType(moduleConfig.Type)) as ICoreWikiModule;
-                if (module != null)
-                {
-                    module.Initialize(ModuleEvents);
-                }
-            }
-
-        }
-
-        static public CoreWikiModuleEvents ModuleEvents { get; set; }
-
+    }
 	}
 }

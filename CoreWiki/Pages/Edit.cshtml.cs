@@ -3,6 +3,7 @@ using CoreWiki.Data.Data.Interfaces;
 using CoreWiki.Data.Models;
 using CoreWiki.Extensibility.Common;
 using CoreWiki.Helpers;
+using CoreWiki.Extensibility.Common.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using NodaTime;
@@ -21,18 +22,19 @@ namespace CoreWiki.Pages
 		private readonly ISlugHistoryRepository _SlugRepo;
 		private readonly IClock _clock;
 
-		private readonly CoreWikiModuleEvents _moduleEvents; // MAC - this can be obtained from an injected service to make it mockable (testable)
 		private readonly IExtensibilityManager _extensibilityManager; // MAC
+		private readonly ICoreWikiModuleEvents _moduleEvents;
 
 		public EditModel(IArticleRepository articleRepo, ISlugHistoryRepository slugHistoryRepository, IClock clock,
-						 IExtensibilityManager extensibilityManager)
+						 IExtensibilityManager extensibilityManager,
+						 ICoreWikiModuleEvents moduleEvents)
 		{
 			_Repo = articleRepo;
 			_SlugRepo = slugHistoryRepository;
 			_clock = clock;
 
 			_extensibilityManager = extensibilityManager; // MAC
-			_moduleEvents = Startup.ModuleEvents; // MAC
+			_moduleEvents = moduleEvents;
 		}
 
 		[BindProperty]
@@ -66,16 +68,15 @@ namespace CoreWiki.Pages
 			Article.Version = existingArticle.Version + 1;
 
 			// MAC - check PreSubmitArticle extensibility event
-			if (_moduleEvents.PreSubmitArticle != null)
+			if (_moduleEvents.PreEditArticle != null)
 			{
-				var args = new PreSubmitArticleEventArgs(Article.Topic, Article.Content);
 
-				_extensibilityManager.InvokeCancelableModuleEvent(_moduleEvents.PreSubmitArticle, args);
+				var args = _extensibilityManager.InvokePreArticleEditEvent(Article.Topic, Article.Content);
 
 				if (args.Cancel)
 				{
-					if (!string.IsNullOrWhiteSpace(args.ModelErrorProperty))
-						ModelState.AddModelError("Article" + args.ModelErrorProperty, args.ModelErrorMessage);
+
+					ModelState.BindValidationResult(args.ValidationResults);
 
 					return Page();
 				}
@@ -109,10 +110,11 @@ namespace CoreWiki.Pages
 			//AddNewArticleVersion();
 
 			// MAC - check ArticleSubmitted extensibility event
-			if (_moduleEvents.ArticleSubmitted != null)
+			if (_moduleEvents.PostEditArticle != null)
 			{
-				var args = new ArticleSubmittedEventArgs(Article.Topic, Article.Content);
-				_extensibilityManager.InvokeModuleEvent(_moduleEvents.ArticleSubmitted, args);
+
+				_extensibilityManager.InvokePostArticleEditEvent(Article.Topic, Article.Content);
+
 			}
 			// MAC
 
