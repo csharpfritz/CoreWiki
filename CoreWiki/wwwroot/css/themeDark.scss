@@ -20,6 +20,8 @@ $body-bg: $dark !default;
 $body-color: $light !default;
 $card-bg: $body-bg !default;
 $table-head-bg: $body-bg !default;
+$text-muted: $gray-500 !default;
+
 
 @import 'custom-variables';
 
@@ -35,3 +37,56 @@ $table-head-bg: $body-bg !default;
 	background-color: $gray-400;
 	color: $dark;
 }
+
+/// Diff colors
+#diffBar {
+	background: $gray-400;
+}
+
+.diffHeader {
+	background-color: $black !important;
+}
+
+.lineNumber {
+	background-color: $black !important;
+}
+
+.InsertedLine {
+	background-color: #FFFF00;
+	color: $dark;
+}
+
+.ModifiedLine {
+	background-color: $gray-400 !important;
+	color: $dark;
+}
+
+.DeletedLine {
+	background-color: #FFC864;
+	color: $dark;
+}
+
+.UnchangedLine {
+	background-color: $black !important;
+}
+
+.ImaginaryLine {
+	background-color: $gray-600 !important;
+}
+
+.InsertedCharacter {
+	background-color: #FFFF96;
+	color: $dark;
+}
+
+.DeletedCharacter {
+	background-color: #C86464;
+	color: $dark;
+}
+
+.UnchangedCharacter {
+}
+
+.ImaginaryCharacter {
+}
+
