@@ -1,0 +1,21 @@
+﻿.pageNumber {
+	margin: 0px 4px;
+}
+
+.cwiki-flex-container {
+	padding: 0;
+	margin: 0;
+	display: -webkit-box;
+	display: -moz-box;
+	display: -ms-flexbox;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-flex-flow: row wrap;
+	justify-content: space-around;
+}
+
+.cwiki-flex-item {
+	width: 360px;
+	color: white;
+	border-radius: 20px;
+}

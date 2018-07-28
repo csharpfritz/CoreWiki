@@ -24,7 +24,8 @@ namespace CoreWiki.Areas.Identity
 			options.AddPolicy(PolicyConstants.CanWriteArticles, policy =>
 			{
 				policy.RequireAuthenticatedUser();
-				policy.RequireAnyRole("Authors", "Administrators");
+				// TODO: Re-enable when we can assign users to a role
+				// policy.RequireAnyRole("Authors", "Administrators");
 			});
 
 			options.AddPolicy(PolicyConstants.CanEditArticles, policy =>

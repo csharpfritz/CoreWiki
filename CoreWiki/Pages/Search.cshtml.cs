@@ -1,3 +1,4 @@
+using CoreWiki.Data.Data.Interfaces;
 using CoreWiki.Data.Models;
 using CoreWiki.SearchEngines;
 using Microsoft.AspNetCore.Mvc;
@@ -11,55 +12,46 @@ namespace CoreWiki.Pages
 	{
 		public SearchResult<Article> SearchResult;
 		private readonly IArticlesSearchEngine _articlesSearchEngine;
+		private readonly IArticleRepository _repository;
 		private const int ResultsPerPage = 10;
 
-		public SearchModel(IArticlesSearchEngine articlesSearchEngine)
+		public SearchModel(IArticlesSearchEngine articlesSearchEngine, IArticleRepository repository)
 		{
 			_articlesSearchEngine = articlesSearchEngine;
+			_repository = repository;
 		}
 
-		public async Task<IActionResult> OnGetAsync()
-		{
-			var isQueryPresent = TryGetSearchQuery(out var query);
+		public string RequestedPage {  get { return Request.Path.Value.ToLowerInvariant().Substring(1); } }
 
-			if (isQueryPresent)
-			{
-				SearchResult = await _articlesSearchEngine.SearchAsync(
-					query,
-					GetPageNumberOrDefault(),
-					ResultsPerPage
-				);
+		public async Task<IActionResult> OnGetAsync([FromQuery(Name = "Query")]string query = "", [FromQuery(Name ="PageNumber")]int pageNumber = 1)
+		{
+
+			switch (RequestedPage) {
+				case "search":
+					if (!string.IsNullOrEmpty(query))
+					{
+						SearchResult = await _articlesSearchEngine.SearchAsync(
+							query,
+							pageNumber,
+							ResultsPerPage
+						);
+					}
+					break;
+				case "latestchanges":
+					SearchResult = new SearchResult<Article>
+					{
+						Results = await _repository.GetLatestArticles(10),
+						ResultsPerPage=11
+					};
+					SearchResult.TotalResults = SearchResult.Results.Count();
+					break;
+
 			}
 
 			return Page();
+
 		}
 
-		private bool TryGetSearchQuery(out string query)
-		{
-			var isQueryParamPresent = Request.Query.TryGetValue("Query", out var queryParams);
-
-			if (isQueryParamPresent && !string.IsNullOrEmpty(queryParams.First()))
-			{
-				query = queryParams.First();
-				return true;
-			}
-
-			query = "";
-			return false;
-		}
-
-		private int GetPageNumberOrDefault()
-		{
-			var isPageParamPresent = Request.Query.TryGetValue("PageNumber", out var pageParams);
-
-			if (isPageParamPresent && !string.IsNullOrEmpty(pageParams.First()))
-			{
-				var isValidNumber = int.TryParse(pageParams.First(), out var pageNumber);
-				return isValidNumber ? pageNumber : 1;
-			}
-
-			return 1;
-		}
 	}
 
 }

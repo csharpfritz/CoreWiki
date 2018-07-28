@@ -23,6 +23,7 @@ namespace CoreWiki.Configuration.Startup
 					options.Conventions.AddPageRoute("/Details", "/");
 					options.Conventions.AddPageRoute("/Details", "/wiki/{Slug?}");
 					options.Conventions.AddPageRoute("/Details", @"Index");
+					options.Conventions.AddPageRoute("/Search", "/LatestChanges");
 					options.Conventions.AddPageRoute("/Create", "{Slug?}/Create");
 					options.Conventions.AddPageRoute("/History", "{Slug?}/History");
 				});

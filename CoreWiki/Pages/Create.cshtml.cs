@@ -1,6 +1,8 @@
-﻿using CoreWiki.Data.Data.Interfaces;
+﻿using CoreWiki.Areas.Identity;
+using CoreWiki.Data.Data.Interfaces;
 using CoreWiki.Data.Models;
 using CoreWiki.Helpers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
@@ -12,6 +14,8 @@ using System.Threading.Tasks;
 
 namespace CoreWiki.Pages
 {
+
+	[Authorize(Policy =PolicyConstants.CanWriteArticles)]
 	public class CreateModel : PageModel
 	{
 

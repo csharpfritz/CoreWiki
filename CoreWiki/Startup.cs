@@ -28,6 +28,7 @@ namespace CoreWiki
 			services.ConfigureScopedServices();
 			services.ConfigureRouting();
 			services.ConfigureLocalisation();
+
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -4,15 +4,21 @@
 @using Humanizer;
 @model SearchModel
 @{
-	ViewData["Title"] = Localizer["Search"];
+	ViewData["Title"] = Model.RequestedPage == "search" ? Localizer["Search"] : Localizer["LatestChanges"];
 	var searchResult = Model.SearchResult;
 	var urlParams = new Dictionary<string, string>
 {
 {"Query", searchResult?.Query ?? ""}
 };
 }
-<h1 class="h1">@Localizer["SearchText"]</h1>
+<h1 class="h1">@ViewData["Title"]</h1>
 
+<p>
+	<a href="/Create" class="btn btn-outline-success">@Localizer["NewArticle"]</a>
+</p>
+
+@if (Model.RequestedPage == "search")
+{
 <form action="/search" method="get" class="my-2">
 	<div class="form-group">
 		<div class="input-group">
@@ -23,6 +29,7 @@
 		</div>
 	</div>
 </form>
+}
 
 @if (searchResult != null)
 {
@@ -31,11 +38,15 @@
 		found for <strong>@searchResult.Query</strong>
 	</div>
 
+	@if (searchResult.TotalPages > 1)
+	{
 	<pager asp-page="Search"
 				 url-params="urlParams"
 				 current-page="searchResult.CurrentPage"
 				 total-pages="searchResult.TotalPages">
 	</pager>
+	}
+
 	<div class="cwiki-flex-container">
 		@foreach (var article in searchResult.Results)
 		{
@@ -43,25 +54,4 @@
 		}
 	</div>
 
-}
-@section Styles {
-	<style>
-		.cwiki-flex-container {
-			padding: 0;
-			margin: 0;
-			display: -webkit-box;
-			display: -moz-box;
-			display: -ms-flexbox;
-			display: -webkit-flex;
-			display: flex;
-			-webkit-flex-flow: row wrap;
-			justify-content: space-around;
-		}
-
-		.cwiki-flex-item {
-			width: 360px;
-			color: white;
-			border-radius: 20px;
-		}
-	</style>
 }
