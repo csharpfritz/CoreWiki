@@ -184,7 +184,7 @@ table {
 caption {
   padding-top: 0.75rem;
   padding-bottom: 0.75rem;
-  color: #6c757d;
+  color: #495057;
   text-align: left;
   caption-side: bottom; }
 
@@ -1369,7 +1369,7 @@ textarea.form-control {
   margin-top: 0.3rem;
   margin-left: -1.25rem; }
   .form-check-input:disabled ~ .form-check-label {
-    color: #6c757d; }
+    color: #495057; }
 
 .form-check-label {
   margin-bottom: 0; }
@@ -6221,7 +6221,7 @@ a.text-dark:hover, a.text-dark:focus {
   color: #151417 !important; }
 
 .text-muted {
-  color: #6c757d !important; }
+  color: #495057 !important; }
 
 .text-black-50 {
   color: rgba(0, 0, 0, 0.5) !important; }
@@ -6311,24 +6311,8 @@ body {
   padding-right: 15px;
   padding-left: 15px; }
 
-/* Carousel */
-.carousel-caption p {
-  font-size: 20px;
-  line-height: 1.4; }
-
-/* Make .svg files in the carousel display properly in older browsers */
-.carousel-inner .item img[src$=".svg"] {
-  width: 100%; }
-
-/* QR code generator */
-#qrCode {
-  margin: 15px; }
-
-/* Hide/rearrange for smaller screens */
-@media screen and (max-width: 767px) {
-  /* Hide captions */
-  .carousel-caption {
-    display: none; } }
+.pageNumber {
+  margin: 0px 4px; }
 
 .navbar .navbar-brand {
   color: #0d24e5 !important;
@@ -6337,4 +6321,39 @@ body {
 
 .navbar .nav-link {
   color: #02f722 !important; }
+
+#diffBar {
+  background: #ced4da; }
+
+.diffHeader {
+  background-color: #b6ff00 !important; }
+
+.lineNumber {
+  background-color: #b6ff00 !important; }
+
+.InsertedLine {
+  background-color: #FFFF00;
+  color: #ff6a00; }
+
+.ModifiedLine {
+  background-color: #ced4da !important;
+  color: #ff6a00; }
+
+.DeletedLine {
+  background-color: #FFC864;
+  color: #ff6a00; }
+
+.UnchangedLine {
+  background-color: #b6ff00 !important; }
+
+.ImaginaryLine {
+  background-color: #6c757d !important; }
+
+.InsertedCharacter {
+  background-color: #FFFF96;
+  color: #ff6a00; }
+
+.DeletedCharacter {
+  background-color: #C86464;
+  color: #ff6a00; }
 
