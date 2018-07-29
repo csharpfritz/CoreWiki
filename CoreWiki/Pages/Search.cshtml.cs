@@ -25,33 +25,30 @@ namespace CoreWiki.Pages
 
 		public async Task<IActionResult> OnGetAsync([FromQuery(Name = "Query")]string query = "", [FromQuery(Name ="PageNumber")]int pageNumber = 1)
 		{
-
-			switch (RequestedPage) {
-				case "search":
-					if (!string.IsNullOrEmpty(query))
-					{
-						SearchResult = await _articlesSearchEngine.SearchAsync(
-							query,
-							pageNumber,
-							ResultsPerPage
-						);
-					}
-					break;
-				case "latestchanges":
-					SearchResult = new SearchResult<Article>
-					{
-						Results = await _repository.GetLatestArticles(10),
-						ResultsPerPage=11
-					};
-					SearchResult.TotalResults = SearchResult.Results.Count();
-					break;
-
+			if (!string.IsNullOrEmpty(query))
+			{
+				SearchResult = await _articlesSearchEngine.SearchAsync(
+					query,
+					pageNumber,
+					ResultsPerPage
+				);
+				SearchResult.CurrentPage = 1;
 			}
 
 			return Page();
-
 		}
 
+		public async Task<IActionResult> OnGetLatestChangesAsync()
+		{
+			SearchResult = new SearchResult<Article>
+			{
+				Results = await _repository.GetLatestArticles(10),
+				ResultsPerPage = 11,
+				CurrentPage = 1
+			};
+			SearchResult.TotalResults = SearchResult.Results.Count();
+			return Page();
+		}
 	}
 
 }
