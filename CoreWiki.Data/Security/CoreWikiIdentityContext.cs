@@ -19,27 +19,26 @@ namespace CoreWiki.Data.Security
 		{
 			base.OnModelCreating(builder);
 
-			builder.Entity<IdentityRole>().HasData(new[] {
-
+			builder.Entity<IdentityRole>().HasData(new[]
+			{
 				new IdentityRole
-					{
-						Name = "Authors",
-						NormalizedName = "Authors"
-					},
-					new IdentityRole
+				{
+					Name = "Authors",
+					NormalizedName = "Authors".ToUpper()
+				},
+				new IdentityRole
 				{
 					Name = "Editors",
-					NormalizedName = "Editors"
+					NormalizedName = "Editors".ToUpper()
 				},
 				new IdentityRole
 				{
 					Name = "Administrators",
-					NormalizedName = "Administrators"
+					NormalizedName = "Administrators".ToUpper()
 				}
-
 			});
-
 		}
+
 		public static void SeedData(CoreWikiIdentityContext context)
 		{
 

@@ -3,14 +3,16 @@ using System;
 using CoreWiki.Data.Security;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CoreWiki.Data.Security.Migrations
 {
     [DbContext(typeof(CoreWikiIdentityContext))]
-    partial class CoreWikiIdentityContextModelSnapshot : ModelSnapshot
+    [Migration("20180801205508_NormalizedRoleNamesToUpper")]
+    partial class NormalizedRoleNamesToUpper
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

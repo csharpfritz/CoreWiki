@@ -26,7 +26,10 @@ namespace CoreWiki.Areas.Identity
 
 				services.AddDefaultIdentity<CoreWikiUser>(options =>
 						options.SignIn.RequireConfirmedEmail = requireConfirmedEmail)
-																	.AddEntityFrameworkStores<CoreWikiIdentityContext>();
+					.AddRoles<IdentityRole>()
+					.AddRoleManager<RoleManager<IdentityRole>>()
+					.AddEntityFrameworkStores<CoreWikiIdentityContext>();
+
 				var authBuilder = services.AddAuthentication();
 
 				if (!string.IsNullOrEmpty(context.Configuration["Authentication:Microsoft:ApplicationId"]))
