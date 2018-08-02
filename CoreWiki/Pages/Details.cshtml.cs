@@ -12,6 +12,7 @@ using System;
 using System.Threading.Tasks;
 using CoreWiki.Core.Notifications;
 using System.Linq;
+using System.Security.Claims;
 
 namespace CoreWiki.Pages
 {
@@ -111,9 +112,19 @@ namespace CoreWiki.Pages
 			return Page();
 		}
 
-		public async Task<IActionResult> OnPostAsync(Comment comment)
+		public async Task<IActionResult> OnPostAsync(CommentDTO dto)
 		{
-			TryValidateModel(comment);
+			TryValidateModel(dto);
+
+			var comment = new Comment
+			{
+				IdArticle = dto.ArticleId,
+				Content = dto.Content,
+				DisplayName = dto.DisplayName,
+				Email = dto.Email,
+				AuthorId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)),
+			};
+
 			var article = await _articleRepo.GetArticleByComment(comment);
 			if (article == null)
 				return new ArticleNotFoundResult();
