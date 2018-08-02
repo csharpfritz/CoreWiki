@@ -60,7 +60,7 @@ namespace CoreWiki.Pages
 			var slug = UrlHelpers.URLFriendly(Article.Topic);
 			if (string.IsNullOrWhiteSpace(slug))
 			{
-				ModelState.AddModelError(nameof(Article.Topic), "The Topic must contain at least one alphanumeric character.");
+				ModelState.AddModelError("Article.Topic", "The Topic must contain at least one alphanumeric character.");
 				return Page();
 			}
 
