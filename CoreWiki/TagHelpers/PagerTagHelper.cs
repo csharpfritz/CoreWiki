@@ -42,6 +42,8 @@ namespace CoreWiki.TagHelpers
 			ul.AddCssClass("pagination");
 			output.MergeAttributes(ul);
 
+			if (CurrentPage < 1) CurrentPage = 1;
+
 			AppendPreNavigationButtons(output);
 			AppendNavigationButtons(output);
 			AppendPostNavigationButtons(output);
