@@ -1,0 +1,106 @@
+﻿@page
+@inject RoleManager<IdentityRole> RoleManager
+@inject UserManager<CoreWikiUser> UserManager
+@model IndexModel
+@{
+}
+
+<h2>Current Roles:</h2>
+<table class="table table-striped table-hover table-condensed table-bordered">
+	<tr>
+		<th>Role Id</th>
+		<th>Role Name (Normalized)</th>
+		<th>Role Name</th>
+		<th>Actions</th>
+	</tr>
+	<tr>
+		@foreach (var role in Model.RolesList)
+		{
+		<tr>
+			<td> @role.Id </td>
+			<td> @role.NormalizedName </td>
+			<td> @role.Name </td>
+			<td>
+				<form method="post"><input type="hidden" asp-for="@Model.RoleToRemove" value="@role.NormalizedName" /><input type="submit" class="btn btn-danger" value="Delete Role" asp-page-handler="DeleteRole" /></form>
+				<a class="btn btn-warning disabled">Amend Role</a>
+			</td>
+		</tr>
+	}
+		<tr>
+			<td colspan="4" class="text-center"><a asp-page="./Roles" class="btn btn-sm btn-success"><i class="fa fa-plus">&nbsp;</i>&nbsp;Create role</a></td>
+		</tr>
+	</table>
+
+	<h2>Current Users:</h2>
+	<table class="table table-striped table-hover table-condensed table-bordered">
+		<tr>
+			<th>User Name</th>
+			<th>Current Roles</th>
+
+			<th>Add Roles</th>
+			<th>Remove Roles</th>
+		</tr>
+		@foreach (var user in Model.UsersList)
+		{
+			<tr>
+				<td> @user.UserName </td>
+				<td>
+					@{
+						var currentUsersRoles = await UserManager.GetRolesAsync(user);
+						if (currentUsersRoles.Count == 0)
+						{
+							@: User not assigned to any roles
+						}
+						else
+						{
+							<ul>
+								@foreach (var userRole in currentUsersRoles)
+								{
+									<li> @userRole </li>
+								}
+							</ul>
+						}
+					}
+				</td>
+				@if (Model.Roles.Count < 1)
+				{
+					<td colspan="2" class="text-center">
+						No roles are currently available. Please add a role.
+					</td>
+
+				}
+				else
+				{
+					<td class="text-center">
+						<form method="post">
+							<input type="hidden" asp-for="@Model.UsernameToAddRoleTo" value="@user.UserName" />
+							<select asp-for="RoleToAdd" asp-items="@Model.Roles" class="form-control"></select><br />
+							<input type="submit" asp-page-handler="AddRoleToUser" class="btn btn-sm btn-success" value="Add Role to user" />
+						</form>
+						<br />
+						<br />
+						<form method="post">
+							<input type="hidden" asp-for="@Model.UsernameToAddRoleTo" value="@user.UserName" />
+							<input type="submit" asp-page-handler="AddAllRolesToUser" class="btn btn-sm btn-success" value="Add all roles to user" />
+						</form>
+					</td>
+					<td class="text-center">
+						<form method="post">
+							<input type="hidden" asp-for="@Model.UsernameToRemoveRoleFrom" value="@user.UserName" />
+							<select asp-for="RoleToRemove" asp-items="@Model.Roles" class="form-control"></select><br />
+							<input type="submit" asp-page-handler="RemoveRoleFromUser" class="btn btn-sm btn-danger" value="Remove role from user" />
+						</form>
+						<br />
+						<br />
+						<form method="post">
+							<input type="hidden" asp-for="@Model.UsernameToRemoveRoleFrom" value="@user.UserName" />
+							<input type="submit" asp-page-handler="RemoveAllRolesFromUser" class="btn btn-sm btn-danger" value="Remove all roles from user" />
+						</form>
+					</td>
+				}
+			</tr>
+		}
+		<tr>
+			<td colspan="4" class="text-center"><a asp-page="./User" class="disabled btn btn-sm btn-success"><i class="fa fa-plus">&nbsp;</i>&nbsp;Create new user</a></td>
+		</tr>
+	</table>
