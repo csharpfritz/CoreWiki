@@ -47,7 +47,7 @@
 	</pager>
 	}
 
-	<div class="cwiki-flex-container">
+	<div class="container-fluid row justify-content-around">
 		@foreach (var article in searchResult.Results)
 		{
 			@await Html.PartialAsync("_ArticleRow", article)

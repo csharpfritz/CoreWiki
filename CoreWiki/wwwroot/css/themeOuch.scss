@@ -1,4 +1,17 @@
-﻿// Changing the body background and text
+﻿// Changing the theme colors
+$white: #fff !default;
+$gray-100: #f8f9fa !default;
+$gray-200: #e9ecef !default;
+$gray-300: #dee2e6 !default;
+$gray-400: #ced4da !default;
+$gray-500: #adb5bd !default;
+$gray-600: #6c757d !default;
+$gray-700: #495057 !default;
+$gray-800: #343a40 !default;
+$gray-900: #212529 !default;
+$black: #000 !default;
+
+// Changing the body background and text
 $body-bg: #b6ff00;
 $body-color: #151417;
 
@@ -7,6 +20,7 @@ $primary: #2c0570;
 $dark: #ff6a00;
 $card-bg: #e8a6a6;
 $pagination-bg: rgba(251, 28, 230, 1.00);
+$text-muted: $gray-700 !default;
 
 @import '../../node_modules/bootstrap/scss/bootstrap';
 @import 'custom-styles';
@@ -22,3 +36,57 @@ $pagination-bg: rgba(251, 28, 230, 1.00);
 		color: #02f722 !important;
 	}
 }
+
+
+/// Diff colors
+#diffBar {
+	background: $gray-400;
+}
+
+.diffHeader {
+	background-color: $body-bg !important;
+}
+
+.lineNumber {
+	background-color: $body-bg !important;
+}
+
+.InsertedLine {
+	background-color: #FFFF00;
+	color: $dark;
+}
+
+.ModifiedLine {
+	background-color: $gray-400 !important;
+	color: $dark;
+}
+
+.DeletedLine {
+	background-color: #FFC864;
+	color: $dark;
+}
+
+.UnchangedLine {
+	background-color: $body-bg !important;
+}
+
+.ImaginaryLine {
+	background-color: $gray-600 !important;
+}
+
+.InsertedCharacter {
+	background-color: #FFFF96;
+	color: $dark;
+}
+
+.DeletedCharacter {
+	background-color: #C86464;
+	color: $dark;
+}
+
+.UnchangedCharacter {
+}
+
+.ImaginaryCharacter {
+}
+
