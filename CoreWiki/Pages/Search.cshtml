@@ -41,7 +41,8 @@
 	@if (searchResult.TotalPages > 1)
 	{
 	<pager asp-page="Search"
-		navigation-button-visibility="Always"
+	       navigation-button-visibility="Always"
+		   navigation-buttons="OnlyNextAndPrevious"
 		url-params="urlParams"
 		current-page="searchResult.CurrentPage"
 		total-pages="searchResult.TotalPages">
