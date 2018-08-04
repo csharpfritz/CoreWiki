@@ -21,7 +21,7 @@ namespace CoreWiki.Pages
 		}
 
 
-		public ArticleHistoryDto Article { get; private set; }
+		public ArticleHistoryDTO Article { get; private set; }
 
 		[BindProperty()]
 		public string[] Compare { get; set; }
@@ -45,7 +45,7 @@ namespace CoreWiki.Pages
 
 			var histories = (
 				from history in article.History
-				select new ArticleHistoryDetailDto
+				select new ArticleHistoryDetailDTO
 				{
 					AuthorName = history.AuthorName,
 					Version = history.Version,
@@ -53,7 +53,7 @@ namespace CoreWiki.Pages
 				}
 			).ToList();
 
-			Article = new ArticleHistoryDto
+			Article = new ArticleHistoryDTO
 			{
 				Topic = article.Topic,
 				Version = article.Version,
@@ -78,7 +78,7 @@ namespace CoreWiki.Pages
 			this.DiffModel = new SideBySideDiffBuilder(new DiffPlex.Differ())
 				.BuildDiffModel(histories[0].Content ?? "", histories[1].Content ?? "");
 
-			Article = new ArticleHistoryDto
+			Article = new ArticleHistoryDTO
 			{
 				Topic = article.Topic,
 				Version = article.Version,

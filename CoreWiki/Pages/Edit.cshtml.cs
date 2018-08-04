@@ -28,7 +28,7 @@ namespace CoreWiki.Pages
 		}
 
 		[BindProperty]
-		public ArticleEditDto Article { get; set; }
+		public ArticleEditDTO Article { get; set; }
 
 		public async Task<IActionResult> OnGetAsync(string slug)
 		{
@@ -44,7 +44,7 @@ namespace CoreWiki.Pages
 				return new ArticleNotFoundResult();
 			}
 
-			Article = new ArticleEditDto
+			Article = new ArticleEditDTO
 			{
 				Id = article.Id,
 				Topic = article.Topic,

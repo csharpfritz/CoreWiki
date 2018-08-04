@@ -15,7 +15,7 @@ namespace CoreWiki.Pages
 	public class CreateArticleFromLinkModel : PageModel
 	{
 		[BindProperty]
-		public ArticleCreateFromLinkDto Article { get; set; }
+		public ArticleCreateFromLinkDTO Article { get; set; }
 		[BindProperty]
 		public List<string> LinksToCreate { get; set; } = new List<string>();
 
@@ -49,7 +49,7 @@ namespace CoreWiki.Pages
 				return Redirect($"/wiki/{(article.Slug == UrlHelpers.HomePageSlug ? "" : article.Slug)}");
 			}
 
-			Article = new ArticleCreateFromLinkDto
+			Article = new ArticleCreateFromLinkDTO
 			{
 				Slug = article.Slug
 			};

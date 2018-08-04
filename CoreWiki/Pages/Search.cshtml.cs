@@ -25,10 +25,10 @@ namespace CoreWiki.Pages
 
 		public async Task<IActionResult> OnGetAsync([FromQuery(Name = "Query")]string query = "", [FromQuery(Name ="PageNumber")]int pageNumber = 1)
 		{
-			if (!string.IsNullOrWhiteSpace(query))
-			{
+			//if (!string.IsNullOrWhiteSpace(query))
+			//{
 				var result = await _articlesSearchEngine.SearchAsync(
-					query,
+					query ?? "",
 					pageNumber,
 					ResultsPerPage
 				);
@@ -48,7 +48,7 @@ namespace CoreWiki.Pages
 							ViewCount = article.ViewCount
 						}).ToList()
 				};
-			}
+			//}
 
 			return Page();
 

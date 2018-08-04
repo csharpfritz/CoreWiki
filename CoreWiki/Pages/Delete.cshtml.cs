@@ -21,7 +21,7 @@ namespace CoreWiki.Pages
 		}
 
 		[BindProperty]
-		public ArticleDeleteDto Article { get; set; }
+		public ArticleDeleteDTO Article { get; set; }
 
 		///  TODO: Make it so you cannot delete the home page (deleting the home page will cause a 404)
 		///  or re-factor to make the home page dynamic or configurable.
@@ -39,7 +39,7 @@ namespace CoreWiki.Pages
 				return NotFound();
 			}
 
-			Article = new ArticleDeleteDto
+			Article = new ArticleDeleteDTO
 			{
 				Content = article.Content,
 				Published = article.Published,

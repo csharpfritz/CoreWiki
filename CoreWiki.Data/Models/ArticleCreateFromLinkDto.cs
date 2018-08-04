@@ -1,6 +1,6 @@
 ﻿namespace CoreWiki.Data.Models
 {
-	public class ArticleCreateFromLinkDto
+	public class ArticleCreateFromLinkDTO
 	{
 		public string Slug { get; set; }
 	}

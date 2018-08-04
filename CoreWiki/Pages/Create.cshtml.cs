@@ -43,7 +43,7 @@ namespace CoreWiki.Pages
 				return Redirect($"/{slug}/Edit");
 			}
 
-			Article = new ArticleCreateDto()
+			Article = new ArticleCreateDTO()
 			{
 				Topic = UrlHelpers.SlugToTopic(slug)
 			};
@@ -52,7 +52,7 @@ namespace CoreWiki.Pages
 		}
 
 		[BindProperty]
-		public ArticleCreateDto Article { get; set; }
+		public ArticleCreateDTO Article { get; set; }
 
 		public async Task<IActionResult> OnPostAsync()
 		{

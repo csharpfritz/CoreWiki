@@ -2,7 +2,7 @@
 
 namespace CoreWiki.Data.Models
 {
-	public class ArticleDeleteDto
+	public class ArticleDeleteDTO
 	{
 		public string Topic { get; set; }
 		public string Content { get; set; }
