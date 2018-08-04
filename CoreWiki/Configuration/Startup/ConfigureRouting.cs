@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using CoreWiki.Areas.Identity;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -26,6 +27,7 @@ namespace CoreWiki.Configuration.Startup
 					options.Conventions.AddPageRoute("/Search", "/LatestChanges");
 					options.Conventions.AddPageRoute("/Create", "{Slug?}/Create");
 					options.Conventions.AddPageRoute("/History", "{Slug?}/History");
+					options.Conventions.AuthorizeAreaFolder("Identity", "/UserAdmin", PolicyConstants.CanManageRoles);
 				});
 
 			return services;

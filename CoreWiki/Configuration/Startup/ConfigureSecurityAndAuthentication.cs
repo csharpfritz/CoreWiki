@@ -1,5 +1,8 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using System.Threading.Tasks;
+using CoreWiki.Data.Security;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace CoreWiki.Configuration.Startup
@@ -28,10 +31,11 @@ namespace CoreWiki.Configuration.Startup
 			return app;
 		}
 
-		public static IApplicationBuilder ConfigureAuthentication(this IApplicationBuilder app)
+		public static async Task<IApplicationBuilder> ConfigureAuthentication(this IApplicationBuilder app, UserManager<CoreWikiUser> userManager, RoleManager<IdentityRole> roleManager)
 		{
 			app.UseCookiePolicy();
 			app.UseAuthentication();
+			await SeedDefaultAdminUserToAdminRole.Seed(userManager, roleManager);
 			return app;
 		}
 	}

@@ -1,8 +1,12 @@
 ﻿@using System.IO
+@using System.Security.Claims
 @using CoreWiki.Areas.Identity
+@using Data.Security
+@using Microsoft.AspNetCore.Identity
 
 @inject Microsoft.AspNetCore.Hosting.IHostingEnvironment env
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor context
+@inject UserManager<CoreWikiUser> UserManager
 @inject IOptionsSnapshot<AppSettings> settings
 
 <!DOCTYPE html>
@@ -59,9 +63,15 @@
 		<div class="navbar-collapse collapse justify-content-between" id="navbarToggler">
 			<ul class="navbar-nav">
 				<li class="nav-item"><a class="nav-link" href="/LatestChanges">@Localizer["menu_LatestChanges"]</a></li>
-				<li class="nav-item">
-					<a class="nav-link" href="/identity/UserAdmin">User Admin</a>
-				</li>
+				@if (User.Identity.IsAuthenticated)
+				{
+					if (User.IsInRole("Administrators"))
+					{
+						<li class="nav-item">
+							<a class="nav-link" href="/identity/UserAdmin">User Admin</a>
+						</li>
+					}
+				}
 				<li>
 					<form class="form-inline mx-0 mx-lg-2 my-2 my-lg-0" action="/search" method="get">
 						<div class="input-group">
@@ -82,21 +92,27 @@
 
 	<partial name="_CookieConsentPartial" />
 
-	<div class="container body-content">
-		@RenderBody()
-		<hr />
-		<footer>
-			<div class="row justify-content-between">
-				<div class="col-sm-12 col-md-8">
-					&copy; @DateTime.UtcNow.Year - <a target="_blank" href="https://github.com/csharpfritz/CoreWiki">@Localizer["CopyrightLinkText"]</a>
-				</div>
-				<div class="col-sm-12 col-md-auto">
-					<partial name="_ThemePartial" />
-				</div>
+<div class="container body-content">
+	@if (await UserManager.FindByEmailAsync("admin@corewiki.com") != null)
+	{
+		<div class="alert alert-danger" role="alert">
+			You still have the default administrator account enabled. Please create a new user with admin role and delete this account.
+		</div>
+	}
+	@RenderBody()
+	<hr/>
+	<footer>
+		<div class="row justify-content-between">
+			<div class="col-sm-12 col-md-8">
+				&copy; @DateTime.UtcNow.Year - <a target="_blank" href="https://github.com/csharpfritz/CoreWiki">@Localizer["CopyrightLinkText"]</a>
 			</div>
+			<div class="col-sm-12 col-md-auto">
+				<partial name="_ThemePartial"/>
+			</div>
+		</div>
 
-		</footer>
-	</div>
+	</footer>
+</div>
 
 	<script src="~/lib/moment/min/moment.min.js"></script>
 	<environment include="Development">
