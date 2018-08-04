@@ -21,7 +21,7 @@ namespace CoreWiki.Pages
 		}
 
 
-		public Article Article { get; private set; }
+		public ArticleHistoryDto Article { get; private set; }
 
 		[BindProperty()]
 		public string[] Compare { get; set; }
@@ -36,30 +36,55 @@ namespace CoreWiki.Pages
 				return NotFound();
 			}
 
-			Article = await _articleRepo.GetArticleWithHistoriesBySlug(slug);
+			var article = await _articleRepo.GetArticleWithHistoriesBySlug(slug);
 
-			if (Article == null)
+			if (article == null)
 			{
 				return new ArticleNotFoundResult();
 			}
 
-			return Page();
+			var histories = (
+				from history in article.History
+				select new ArticleHistoryDetailDto
+				{
+					AuthorName = history.AuthorName,
+					Version = history.Version,
+					Published = history.Published,
+				}
+			).ToList();
 
+			Article = new ArticleHistoryDto
+			{
+				Topic = article.Topic,
+				Version = article.Version,
+				AuthorName = article.AuthorName,
+				Published = article.Published,
+				History = histories
+			};
+
+			return Page();
 		}
 
 		public async Task<IActionResult> OnPost(string slug)
 		{
 
-			Article = await _articleRepo.GetArticleWithHistoriesBySlug(slug);
+			var article = await _articleRepo.GetArticleWithHistoriesBySlug(slug);
 
-			var histories = Article.History
+			var histories = article.History
 				.Where(h => Compare.Any(c => c == h.Version.ToString()))
 				.OrderBy(h => h.Version)
 				.ToArray();
 
-
 			this.DiffModel = new SideBySideDiffBuilder(new DiffPlex.Differ())
-				.BuildDiffModel(histories[0].Content, histories[1].Content);
+				.BuildDiffModel(histories[0].Content ?? "", histories[1].Content ?? "");
+
+			Article = new ArticleHistoryDto
+			{
+				Topic = article.Topic,
+				Version = article.Version,
+				AuthorName = article.AuthorName,
+				Published = article.Published
+			};
 
 			return Page();
 

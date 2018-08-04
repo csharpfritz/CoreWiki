@@ -10,7 +10,7 @@ namespace CoreWiki.Pages
 {
 	public class SearchModel : PageModel
 	{
-		public SearchResult<Article> SearchResult;
+		public SearchResult<ArticleSummaryDTO> SearchResult;
 		private readonly IArticlesSearchEngine _articlesSearchEngine;
 		private readonly IArticleRepository _repository;
 		private const int ResultsPerPage = 10;
@@ -25,27 +25,29 @@ namespace CoreWiki.Pages
 
 		public async Task<IActionResult> OnGetAsync([FromQuery(Name = "Query")]string query = "", [FromQuery(Name ="PageNumber")]int pageNumber = 1)
 		{
+			if (!string.IsNullOrWhiteSpace(query))
+			{
+				var result = await _articlesSearchEngine.SearchAsync(
+					query,
+					pageNumber,
+					ResultsPerPage
+				);
 
-			switch (RequestedPage) {
-				case "search":
-					if (!string.IsNullOrEmpty(query))
-					{
-						SearchResult = await _articlesSearchEngine.SearchAsync(
-							query,
-							pageNumber,
-							ResultsPerPage
-						);
-					}
-					break;
-				case "latestchanges":
-					SearchResult = new SearchResult<Article>
-					{
-						Results = await _repository.GetLatestArticles(10),
-						ResultsPerPage=11
-					};
-					SearchResult.TotalResults = SearchResult.Results.Count();
-					break;
-
+				SearchResult = new SearchResult<ArticleSummaryDTO>()
+				{
+					Query = result.Query,
+					TotalResults = result.TotalResults,
+					ResultsPerPage = result.ResultsPerPage,
+					CurrentPage = result.CurrentPage,
+					Results = (from article in result.Results
+						select new ArticleSummaryDTO
+						{
+							Slug = article.Slug,
+							Topic = article.Topic,
+							Published = article.Published,
+							ViewCount = article.ViewCount
+						}).ToList()
+				};
 			}
 
 			return Page();
