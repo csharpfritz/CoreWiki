@@ -9,7 +9,7 @@
 {
 
 	if ((await AuthorizationService.AuthorizeAsync(User, null, PolicyConstants.CanCreateComments)).Succeeded) {
-		@await Component.InvokeAsync("CreateComments", new Comment { IdArticle = Model.Article.Id })
+		@await Component.InvokeAsync("CreateComments", new CommentDTO { ArticleId = Model.Article.Id })
 	}
 
 	@await Component.InvokeAsync("ListComments", @Model.Article.Comments)

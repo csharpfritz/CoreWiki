@@ -1,4 +1,4 @@
-@page
+@page "{handler?}"
 @using System.Collections.Generic
 @using Microsoft.AspNetCore.Mvc.Rendering
 @using Humanizer;
@@ -9,6 +9,7 @@
 	var urlParams = new Dictionary<string, string>
 {
 {"Query", searchResult?.Query ?? ""}
+
 };
 }
 <h1 class="h1">@ViewData["Title"]</h1>
@@ -41,9 +42,11 @@
 	@if (searchResult.TotalPages > 1)
 	{
 	<pager asp-page="Search"
-				 url-params="urlParams"
-				 current-page="searchResult.CurrentPage"
-				 total-pages="searchResult.TotalPages">
+        navigation-button-visibility="Always"
+	    navigation-buttons="All"
+		url-params="urlParams"
+		current-page="searchResult.CurrentPage"
+		total-pages="searchResult.TotalPages">
 	</pager>
 	}
 

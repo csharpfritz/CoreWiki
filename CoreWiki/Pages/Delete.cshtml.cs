@@ -1,5 +1,6 @@
 ﻿using CoreWiki.Data;
 using CoreWiki.Data.Models;
+using CoreWiki.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -20,7 +21,7 @@ namespace CoreWiki.Pages
 		}
 
 		[BindProperty]
-		public Article Article { get; set; }
+		public ArticleDeleteDTO Article { get; set; }
 
 		///  TODO: Make it so you cannot delete the home page (deleting the home page will cause a 404)
 		///  or re-factor to make the home page dynamic or configurable.
@@ -31,12 +32,20 @@ namespace CoreWiki.Pages
 				return NotFound();
 			}
 
-			Article = await _context.Articles.SingleOrDefaultAsync(m => m.Slug == slug);
+			var article = await _context.Articles.SingleOrDefaultAsync(m => m.Slug == slug);
 
-			if (Article == null)
+			if (article == null)
 			{
 				return NotFound();
 			}
+
+			Article = new ArticleDeleteDTO
+			{
+				Content = article.Content,
+				Published = article.Published,
+				Topic = article.Topic
+			};
+
 			return Page();
 		}
 
@@ -47,15 +56,18 @@ namespace CoreWiki.Pages
 				return NotFound();
 			}
 
-			Article = await _context.Articles.SingleOrDefaultAsync(m => m.Slug == slug);
+			var article = await _context.Articles
+				.Include(o => o.History)
+				.Include(o => o.Comments)
+				.SingleOrDefaultAsync(o => o.Slug == slug);
 
-			if (Article != null)
+			if (article != null)
 			{
-				_context.Articles.Remove(Article);
+				_context.Articles.Remove(article);
 				await _context.SaveChangesAsync();
 			}
 
-			return RedirectToPage("/All");
+			return LocalRedirect($"/wiki/{UrlHelpers.HomePageSlug}");
 		}
 	}
 }
