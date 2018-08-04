@@ -35,6 +35,12 @@
     <ProjectReference Include="..\CoreWiki.Notifications\CoreWiki.Notifications.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Update="Areas\Identity\Pages\Account\Manage\MyRoles.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+  </ItemGroup>
+
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="BundleMinify;Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('.\node_modules') ">
     <!-- Ensure Node.js is installed -->
     <Exec Command="node --version" ContinueOnError="true">
