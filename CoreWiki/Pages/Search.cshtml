@@ -42,9 +42,11 @@
 	@if (searchResult.TotalPages > 1)
 	{
 	<pager asp-page="Search"
-				 url-params="urlParams"
-				 current-page="searchResult.CurrentPage"
-				 total-pages="searchResult.TotalPages">
+        navigation-button-visibility="Always"
+	    navigation-buttons="All"
+		url-params="urlParams"
+		current-page="searchResult.CurrentPage"
+		total-pages="searchResult.TotalPages">
 	</pager>
 	}
 
