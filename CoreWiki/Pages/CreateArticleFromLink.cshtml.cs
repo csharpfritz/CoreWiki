@@ -15,7 +15,7 @@ namespace CoreWiki.Pages
 	public class CreateArticleFromLinkModel : PageModel
 	{
 		[BindProperty]
-		public Article Article { get; set; }
+		public ArticleCreateFromLinkDTO Article { get; set; }
 		[BindProperty]
 		public List<string> LinksToCreate { get; set; } = new List<string>();
 
@@ -35,19 +35,24 @@ namespace CoreWiki.Pages
 				return NotFound();
 			}
 
-			Article = await _articleRepo.GetArticleBySlug(id);
+			var article = await _articleRepo.GetArticleBySlug(id);
 
-			if (Article == null)
+			if (article == null)
 			{
 				return new ArticleNotFoundResult();
 			}
 
-			LinksToCreate = (await ArticleHelpers.GetArticlesToCreate(_articleRepo, Article)).ToList();
+			LinksToCreate = (await ArticleHelpers.GetArticlesToCreate(_articleRepo, article)).ToList();
 
 			if (LinksToCreate.Count == 0)
 			{
-				return Redirect($"/wiki/{(Article.Slug == UrlHelpers.HomePageSlug ? "" : Article.Slug)}");
+				return Redirect($"/wiki/{(article.Slug == UrlHelpers.HomePageSlug ? "" : article.Slug)}");
 			}
+
+			Article = new ArticleCreateFromLinkDTO
+			{
+				Slug = article.Slug
+			};
 
 			return Page();
 		}

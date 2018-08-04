@@ -43,7 +43,7 @@ namespace CoreWiki.Pages
 				return Redirect($"/{slug}/Edit");
 			}
 
-			Article = new Article()
+			Article = new ArticleCreateDTO()
 			{
 				Topic = UrlHelpers.SlugToTopic(slug)
 			};
@@ -52,7 +52,7 @@ namespace CoreWiki.Pages
 		}
 
 		[BindProperty]
-		public Article Article { get; set; }
+		public ArticleCreateDTO Article { get; set; }
 
 		public async Task<IActionResult> OnPostAsync()
 		{
@@ -64,9 +64,11 @@ namespace CoreWiki.Pages
 				return Page();
 			}
 
-			Article.Slug = slug;
-			Article.AuthorId = Guid.Parse(this.User.FindFirstValue(ClaimTypes.NameIdentifier));
-			Article.AuthorName = User.Identity.Name;
+			var article = new Article();
+			article.Topic = Article.Topic;
+			article.Slug = slug;
+			article.AuthorId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+			article.AuthorName = User.Identity.Name;
 
 			if (!ModelState.IsValid)
 			{
@@ -82,13 +84,12 @@ namespace CoreWiki.Pages
 				return Page();
 			}
 
-			Article.Published = _clock.GetCurrentInstant();
-			// Article.Slug = slug;
+			article.Published = _clock.GetCurrentInstant();
 
-			Article = await _articleRepo.CreateArticleAndHistory(Article);
+			article = await _articleRepo.CreateArticleAndHistory(article);
 
 
-			var articlesToCreateFromLinks = (await ArticleHelpers.GetArticlesToCreate(_articleRepo, Article, createSlug: true))
+			var articlesToCreateFromLinks = (await ArticleHelpers.GetArticlesToCreate(_articleRepo, article, createSlug: true))
 				.ToList();
 
 			if (articlesToCreateFromLinks.Count > 0)
@@ -96,7 +97,7 @@ namespace CoreWiki.Pages
 				return RedirectToPage("CreateArticleFromLink", new { id = slug });
 			}
 
-			return Redirect($"/wiki/{Article.Slug}");
+			return Redirect($"/wiki/{article.Slug}");
 		}
 	}
 }

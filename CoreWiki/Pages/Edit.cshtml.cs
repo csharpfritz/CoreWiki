@@ -28,7 +28,7 @@ namespace CoreWiki.Pages
 		}
 
 		[BindProperty]
-		public Article Article { get; set; }
+		public ArticleEditDTO Article { get; set; }
 
 		public async Task<IActionResult> OnGetAsync(string slug)
 		{
@@ -37,12 +37,20 @@ namespace CoreWiki.Pages
 				return NotFound();
 			}
 
-			Article = await _Repo.GetArticleBySlug(slug);
+			var article = await _Repo.GetArticleBySlug(slug);
 
-			if (Article == null)
+			if (article == null)
 			{
 				return new ArticleNotFoundResult();
 			}
+
+			Article = new ArticleEditDTO
+			{
+				Id = article.Id,
+				Topic = article.Topic,
+				Content = article.Content
+			};
+
 			return Page();
 		}
 
@@ -53,51 +61,65 @@ namespace CoreWiki.Pages
 				return Page();
 			}
 
-			var existingArticle = await _Repo.GetArticleById(Article.Id);
-			Article.ViewCount = existingArticle.ViewCount;
-			Article.Version = existingArticle.Version + 1;
-
-			//check if the slug already exists in the database.
 			var slug = UrlHelpers.URLFriendly(Article.Topic);
 			if (String.IsNullOrWhiteSpace(slug))
 			{
-				ModelState.AddModelError("Article.Topic", "The Topic must contain at least one alphanumeric character.");
+				ModelState.AddModelError("Article.Topic", "The topic must contain at least one alphanumeric character.");
 				return Page();
 			}
 
-			var articlesToCreateFromLinks = (await ArticleHelpers.GetArticlesToCreate(_Repo, Article, createSlug: true))
-				.ToList();
-
-			Article.Published = _clock.GetCurrentInstant();
-			Article.Slug = slug;
-			Article.AuthorId = Guid.Parse(this.User.FindFirstValue(ClaimTypes.NameIdentifier));
-			Article.AuthorName = User.Identity.Name;
-
-			if (!string.Equals(Article.Slug, existingArticle.Slug, StringComparison.InvariantCulture))
+			var existingArticle = await _Repo.GetArticleBySlug(slug);
+			if (existingArticle != null && existingArticle.Id != Article.Id)
 			{
-				await _SlugRepo.AddToHistory(existingArticle.Slug, Article);
+				ModelState.AddModelError("Article.Topic", "The topic conflicts with an existing article.");
+				return Page();
 			}
 
-			//AddNewArticleVersion();
+			if (existingArticle == null)
+			{
+				existingArticle = await _Repo.GetArticleById(Article.Id);
+			}
+
+			if (!Changed(existingArticle.Topic, Article.Topic) && !Changed(existingArticle.Content, Article.Content))
+			{
+				return Redirect($"/wiki/{existingArticle.Slug}");
+			}
+
+			var oldSlug = existingArticle.Slug;
+
+			existingArticle.Topic = Article.Topic;
+			existingArticle.Slug = slug;
+			existingArticle.Content = Article.Content;
+			existingArticle.Version = existingArticle.Version + 1;
+			existingArticle.Published = _clock.GetCurrentInstant();
+			existingArticle.AuthorId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+			existingArticle.AuthorName = User.Identity.Name;
 
 			try
 			{
-				await _Repo.Update(Article);
+				await _Repo.Update(existingArticle);
+
+				if (Changed(oldSlug, existingArticle.Slug))
+				{
+					await _SlugRepo.AddToHistory(oldSlug, existingArticle);
+				}
 			}
 			catch (ArticleNotFoundException)
 			{
 				return new ArticleNotFoundResult();
 			}
 
+			var articlesToCreateFromLinks = (await ArticleHelpers.GetArticlesToCreate(_Repo, existingArticle, createSlug: true)).ToList();
 			if (articlesToCreateFromLinks.Count > 0)
 			{
 				return RedirectToPage("CreateArticleFromLink", new { id = slug });
 			}
 
-			return Redirect($"/wiki/{(Article.Slug == UrlHelpers.HomePageSlug ? "" : Article.Slug)}");
+			return Redirect($"/wiki/{(existingArticle.Slug == UrlHelpers.HomePageSlug ? "" : existingArticle.Slug)}");
 		}
 
-
+		private bool Changed(string v1, string v2)
+			=> !string.Equals(v1, v2, StringComparison.InvariantCulture);
 	}
 
 }
