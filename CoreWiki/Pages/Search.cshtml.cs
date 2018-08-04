@@ -25,13 +25,13 @@ namespace CoreWiki.Pages
 
 		public async Task<IActionResult> OnGetAsync([FromQuery(Name = "Query")]string query = "", [FromQuery(Name ="PageNumber")]int pageNumber = 1)
 		{
-			//if (!string.IsNullOrWhiteSpace(query))
-			//{
+
+			if (!string.IsNullOrEmpty(query))
+			{
 				var result = await _articlesSearchEngine.SearchAsync(
-					query ?? "",
+					query,
 					pageNumber,
 					ResultsPerPage
-				);
 
 				SearchResult = new SearchResult<ArticleSummaryDTO>()
 				{
@@ -48,12 +48,25 @@ namespace CoreWiki.Pages
 							ViewCount = article.ViewCount
 						}).ToList()
 				};
-			//}
+
+				);
+				SearchResult.CurrentPage = 1;
+			}
 
 			return Page();
-
 		}
 
+		public async Task<IActionResult> OnGetLatestChangesAsync()
+		{
+			SearchResult = new SearchResult<Article>
+			{
+				Results = await _repository.GetLatestArticles(10),
+				ResultsPerPage = 11,
+				CurrentPage = 1
+			};
+			SearchResult.TotalResults = SearchResult.Results.Count();
+			return Page();
+		}
 	}
 
 }
