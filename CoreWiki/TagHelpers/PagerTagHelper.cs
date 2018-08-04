@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using CoreWiki.Helpers;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Razor.TagHelpers;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.AspNetCore.Mvc.TagHelpers;
@@ -107,43 +108,64 @@ namespace CoreWiki.TagHelpers
 
 		private void AppendPreNavigationButtons(TagHelperOutput output)
 		{
-			var first = CreatePageItem();
-			var previous = CreatePageItem();
 			var clickable = CurrentPage > 1;
-			var previous_page_number = CurrentPage - 1 > TotalPages ? TotalPages : CurrentPage - 1;
+			if (!AreNavigationButtonsVisible(clickable)) return;
 
+			var first = CreatePageItem();
 			first.InnerHtml.AppendHtml(CreatePaginatorButton(localizer["FirstPage"], "<<", 1, clickable));
-			previous.InnerHtml.AppendHtml(CreatePaginatorButton(localizer["PreviousPage"], "<", previous_page_number, clickable));
 
 			if (!clickable)
 			{
 				first.AddCssClass("disabled");
+			}
+
+			output.Content.AppendHtml(first);
+
+			var previous = CreatePageItem();
+			var previousPageNumber = CurrentPage - 1 > TotalPages ? TotalPages : CurrentPage - 1;
+
+			previous.InnerHtml.AppendHtml(CreatePaginatorButton(localizer["PreviousPage"], "<", previousPageNumber, clickable));
+
+			if (!clickable)
+			{
 				previous.AddCssClass("disabled");
 			}
 
-
-			output.Content.AppendHtml(first);
 			output.Content.AppendHtml(previous);
 		}
 
 		private void AppendPostNavigationButtons(TagHelperOutput output)
 		{
-			var next = CreatePageItem();
-			var last = CreatePageItem();
 			var clickable = TotalPages > 0 && CurrentPage < TotalPages;
-			var next_page_number = CurrentPage < 1 ? 1 : CurrentPage + 1;
+			if (!AreNavigationButtonsVisible(clickable)) return;
 
-			next.InnerHtml.AppendHtml(CreatePaginatorButton(localizer["NextPage"], ">", next_page_number, clickable));
-			last.InnerHtml.AppendHtml(CreatePaginatorButton(localizer["LastPage"], ">>", TotalPages, clickable));
+			var next = CreatePageItem();
+			var nextPageNumber = CurrentPage < 1 ? 1 : CurrentPage + 1;
+			next.InnerHtml.AppendHtml(CreatePaginatorButton(localizer["NextPage"], ">", nextPageNumber, clickable));
 
 			if (!clickable)
 			{
 				next.AddCssClass("disabled");
-				last.AddCssClass("disabled");
 			}
 
 			output.Content.AppendHtml(next);
+
+			var last = CreatePageItem();
+			last.InnerHtml.AppendHtml(CreatePaginatorButton(localizer["LastPage"], ">>", TotalPages, clickable));
+
+			if (!clickable)
+			{
+				last.AddCssClass("disabled");
+			}
+
 			output.Content.AppendHtml(last);
+		}
+
+		private bool AreNavigationButtonsVisible(bool clickable)
+		{
+			if (NavigationButtonVisibility == ButtonVisibility.Never) return false;
+			if (NavigationButtonVisibility == ButtonVisibility.Auto && !clickable) return false;
+			return true;
 		}
 
 		private void AppendNavigationButtons(TagHelperOutput output)
@@ -234,10 +256,25 @@ namespace CoreWiki.TagHelpers
 		public int MaxPagesDisplayed { get; set; } = 10;
 
 		/// <summary>
+		/// Gets or sets whether arrows will be displayed when they aren't necessary.
+		/// </summary>
+		/// <remarks>
+		///	If not specified this will default to <c>Always</c>
+		/// </remarks>
+		public ButtonVisibility NavigationButtonVisibility { get; set; } = ButtonVisibility.Always;
+		
+		/// <summary>
 		/// Gets or sets the <see cref="Rendering.ViewContext"/> for the current request.
 		/// </summary>
 		[HtmlAttributeNotBound]
 		[ViewContext]
 		public ViewContext ViewContext { get; set; }
+	}
+
+	public enum ButtonVisibility
+	{
+		Auto,
+		Always,
+		Never
 	}
 }
