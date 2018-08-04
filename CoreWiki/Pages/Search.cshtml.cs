@@ -31,7 +31,7 @@ namespace CoreWiki.Pages
 				var result = await _articlesSearchEngine.SearchAsync(
 					query,
 					pageNumber,
-					ResultsPerPage
+					ResultsPerPage);
 
 				SearchResult = new SearchResult<ArticleSummaryDTO>()
 				{
@@ -48,8 +48,6 @@ namespace CoreWiki.Pages
 							ViewCount = article.ViewCount
 						}).ToList()
 				};
-
-				);
 				SearchResult.CurrentPage = 1;
 			}
 
@@ -58,9 +56,19 @@ namespace CoreWiki.Pages
 
 		public async Task<IActionResult> OnGetLatestChangesAsync()
 		{
-			SearchResult = new SearchResult<Article>
+
+			var results = await _repository.GetLatestArticles(10);
+
+			SearchResult = new SearchResult<ArticleSummaryDTO>
 			{
-				Results = await _repository.GetLatestArticles(10),
+				Results = (from article in results
+									 select new ArticleSummaryDTO
+									 {
+										 Slug = article.Slug,
+										 Topic = article.Topic,
+										 Published = article.Published,
+										 ViewCount = article.ViewCount
+									 }).ToList(),
 				ResultsPerPage = 11,
 				CurrentPage = 1
 			};

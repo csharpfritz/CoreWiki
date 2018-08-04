@@ -67,6 +67,7 @@ namespace CoreWiki.Pages
 			var article = new Article();
 			article.Topic = Article.Topic;
 			article.Slug = slug;
+			article.Content = Article.Content;
 			article.AuthorId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
 			article.AuthorName = User.Identity.Name;
 
