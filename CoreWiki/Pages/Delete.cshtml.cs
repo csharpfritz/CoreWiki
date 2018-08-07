@@ -1,5 +1,5 @@
 ﻿using CoreWiki.Data;
-using CoreWiki.Data.Models;
+using CoreWiki.Models;
 using CoreWiki.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

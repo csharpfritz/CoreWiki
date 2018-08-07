@@ -1,5 +1,5 @@
 ﻿using CoreWiki.Data;
-using CoreWiki.Data.Models;
+using CoreWiki.Models;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;

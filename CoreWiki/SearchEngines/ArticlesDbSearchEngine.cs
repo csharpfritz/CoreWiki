@@ -1,4 +1,4 @@
-﻿using CoreWiki.Data.Models;
+﻿using CoreWiki.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;

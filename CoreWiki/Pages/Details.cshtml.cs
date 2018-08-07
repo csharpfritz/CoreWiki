@@ -1,5 +1,5 @@
-using CoreWiki.Data.Data.Interfaces;
-using CoreWiki.Data.Models;
+using CoreWiki.Core.Interfaces;
+using CoreWiki.Models;
 using CoreWiki.Data.Security;
 using CoreWiki.Helpers;
 using Microsoft.AspNetCore.Identity;

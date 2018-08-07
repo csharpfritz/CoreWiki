@@ -1,6 +1,6 @@
 ﻿using CoreWiki.Data;
 using CoreWiki.Data.Data.Interfaces;
-using CoreWiki.Data.Models;
+using CoreWiki.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CoreWiki.Pages.Components.CreateComments

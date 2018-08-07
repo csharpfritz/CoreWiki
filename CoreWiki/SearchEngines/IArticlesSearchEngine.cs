@@ -1,4 +1,4 @@
-﻿using CoreWiki.Data.Models;
+﻿using CoreWiki.Models;
 using System.Threading.Tasks;
 
 namespace CoreWiki.SearchEngines

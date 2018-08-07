@@ -1,8 +1,8 @@
-﻿using CoreWiki.Data.Models;
+﻿using CoreWiki.Core.Domain;
 using System;
 using System.Threading.Tasks;
 
-namespace CoreWiki.Data.Data.Interfaces
+namespace CoreWiki.Core.Interfaces
 {
 	public interface ICommentRepository : IDisposable
 	{

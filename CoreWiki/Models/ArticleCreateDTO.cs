@@ -1,4 +1,4 @@
-﻿namespace CoreWiki.Data.Models
+﻿namespace CoreWiki.Models
 {
 	public class ArticleCreateDTO
 	{

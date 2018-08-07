@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using NodaTime;
 
-namespace CoreWiki.Data.Models
+namespace CoreWiki.Models
 {
 	public class ArticleHistoryDTO
 	{

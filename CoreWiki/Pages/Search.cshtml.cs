@@ -1,5 +1,5 @@
 using CoreWiki.Data.Data.Interfaces;
-using CoreWiki.Data.Models;
+using CoreWiki.Models;
 using CoreWiki.SearchEngines;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;

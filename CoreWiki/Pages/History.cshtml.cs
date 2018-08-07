@@ -1,5 +1,5 @@
 ﻿using CoreWiki.Data.Data.Interfaces;
-using CoreWiki.Data.Models;
+using CoreWiki.Models;
 using CoreWiki.Helpers;
 using DiffPlex.DiffBuilder;
 using DiffPlex.DiffBuilder.Model;

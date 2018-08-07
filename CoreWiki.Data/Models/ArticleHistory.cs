@@ -5,7 +5,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace CoreWiki.Core.Models
+namespace CoreWiki.Data.Models
 {
 	public class ArticleHistory
 	{
@@ -68,6 +68,43 @@ namespace CoreWiki.Core.Models
 				Version = article.Version
 			};
 
+		}
+
+		public static ArticleHistory FromDomain(Core.Domain.ArticleHistory history) {
+
+			return new ArticleHistory {
+
+				ArticleId = history.Article.Id,
+				AuthorId = history.AuthorId,
+				AuthorName = history.AuthorName,
+				Content = history.Content,
+				Id = history.Id,
+				Published = history.Published,
+				Slug = history.Slug,
+				Topic = history.Topic,
+				Version = history.Version
+
+			};
+
+		}
+
+		public Core.Domain.ArticleHistory ToDomain() {
+
+			return new Core.Domain.ArticleHistory
+			{
+
+				Article = Article.ToDomain(),
+				AuthorId = AuthorId,
+				AuthorName = AuthorName,
+				Content = Content,
+				Id = Id,
+				Published = Published,
+				Slug = Slug,
+				Topic = Topic,
+				Version = Version
+
+			};
+			
 		}
 
 	}

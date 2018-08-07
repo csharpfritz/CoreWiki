@@ -1,10 +1,10 @@
-﻿using CoreWiki.Data.Models;
+﻿using CoreWiki.Core.Domain;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace CoreWiki.Data.Data.Interfaces
+namespace CoreWiki.Core.Interfaces
 {
 	public interface IArticleRepository : IDisposable
 	{

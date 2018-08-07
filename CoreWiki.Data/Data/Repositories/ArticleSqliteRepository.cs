@@ -1,10 +1,11 @@
-﻿using CoreWiki.Data.Data.Interfaces;
+﻿using CoreWiki.Core.Interfaces;
 using CoreWiki.Data.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Domain = CoreWiki.Core.Domain;
 
 namespace CoreWiki.Data.Data.Repositories
 {
@@ -18,20 +19,23 @@ namespace CoreWiki.Data.Data.Repositories
 		public ApplicationDbContext Context { get; }
 
 
-		public async Task<IEnumerable<Article>> GetAllArticlesPaged(int pageSize, int pageNumber)
+		public async Task<IEnumerable<Domain.Article>> GetAllArticlesPaged(int pageSize, int pageNumber)
 		{
-			return await Context.Articles
+			var articles = await Context.Articles
 				.AsNoTracking()
 				.OrderBy(a => a.Topic)
 				.Skip((pageNumber - 1) * pageSize)
 				.Take(pageSize)
 				.ToArrayAsync();
+
+				return articles.Select(a => a.ToDomain());
 		}
 
 
-		public async Task<List<Article>> GetLatestArticles(int numOfArticlesToGet)
+		public async Task<List<Core.Domain.Article>> GetLatestArticles(int numOfArticlesToGet)
 		{
-			return await Context.Articles.OrderByDescending(a => a.Published).Take(numOfArticlesToGet).ToListAsync();
+			var articles = await Context.Articles.OrderByDescending(a => a.Published).Take(numOfArticlesToGet).ToListAsync();
+			return articles.Select(a => a.ToDomain()).ToList();
 		}
 
 
@@ -41,38 +45,44 @@ namespace CoreWiki.Data.Data.Repositories
 		}
 
 
-		public async Task<Article> GetArticleBySlug(string articleSlug)
+		public async Task<Core.Domain.Article> GetArticleBySlug(string articleSlug)
 		{
-			return await Context.Articles.Include(a => a.Comments).SingleOrDefaultAsync(m => m.Slug == articleSlug.ToLower());
+			var article = await Context.Articles.Include(a => a.Comments).SingleOrDefaultAsync(m => m.Slug == articleSlug.ToLower());
+			return article.ToDomain();
 		}
 
 
-		public async Task<Article> GetArticleByComment(Comment comment)
+		public async Task<Core.Domain.Article> GetArticleByComment(Domain.Comment comment)
 		{
-			return await Context.Articles.Include(a => a.Comments)
+			var article = await Context.Articles.Include(a => a.Comments)
 				.SingleOrDefaultAsync(a => a.Id == comment.IdArticle);
+			return article.ToDomain();
 		}
 
 
-		public async Task<Article> GetArticleWithHistoriesBySlug(string articleSlug)
+		public async Task<Core.Domain.Article> GetArticleWithHistoriesBySlug(string articleSlug)
 		{
-			return await Context.Articles.Include(a => a.History).SingleOrDefaultAsync(m => m.Slug == articleSlug.ToLower());
+			var article = await Context.Articles.Include(a => a.History).SingleOrDefaultAsync(m => m.Slug == articleSlug.ToLower());
+			return article.ToDomain();
 		}
 
 
-		public async Task<Article> GetArticleById(int articleId)
+		public async Task<Core.Domain.Article> GetArticleById(int articleId)
 		{
-			return await Context.Articles.AsNoTracking().FirstAsync(a => a.Id == articleId);
+			var article = await Context.Articles.AsNoTracking().FirstAsync(a => a.Id == articleId);
+			return article.ToDomain();
 		}
 
 
-		public async Task<Article> CreateArticleAndHistory(Article article)
+		public async Task<Domain.Article> CreateArticleAndHistory(Domain.Article article)
 		{
 
-			Context.Articles.Add(article);
-			Context.ArticleHistories.Add(ArticleHistory.FromArticle(article));
+			var efArticle = Article.FromDomain(article);
+
+			Context.Articles.Add(efArticle);
+			Context.ArticleHistories.Add(ArticleHistory.FromArticle(efArticle));
 			await Context.SaveChangesAsync();
-			return article;
+			return efArticle.ToDomain();
 		}
 
 
@@ -84,6 +94,9 @@ namespace CoreWiki.Data.Data.Repositories
 
 		public IQueryable<Article> GetArticlesForSearchQuery(string filteredQuery)
 		{
+
+			// TODO:  Need to convert to Domain objects 
+
 			return Context.Articles
 				.AsNoTracking()
 				.Where(a =>
@@ -105,12 +118,14 @@ namespace CoreWiki.Data.Data.Repositories
 
 		}
 
-		public async Task Update(Article article)
+		public async Task Update(Core.Domain.Article article)
 		{
 
-			Context.Attach(article).State = EntityState.Modified;
+			var efArticle = Article.FromDomain(article);
 
-			Context.ArticleHistories.Add(ArticleHistory.FromArticle(article));
+			Context.Attach(efArticle).State = EntityState.Modified;
+
+			Context.ArticleHistories.Add(ArticleHistory.FromArticle(efArticle));
 
 			try
 			{

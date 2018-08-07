@@ -5,8 +5,9 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 
-namespace CoreWiki.Core.Models
+namespace CoreWiki.Data.Models
 {
 	public class Article
 	{
@@ -62,6 +63,47 @@ namespace CoreWiki.Core.Models
 		}
 
 		public int ViewCount { get; set; } = 0;
+
+		public static Article FromDomain(Core.Domain.Article article) {
+
+			return new Article
+			{
+
+				AuthorId = article.AuthorId,
+				AuthorName = article.AuthorName,
+				Comments = article.Comments.Select(c => Comment.FromDomain(c)).ToHashSet(),
+				Content = article.Content,
+				History = article.History.Select(h => ArticleHistory.FromDomain(h)).ToHashSet(),
+				Id = article.Id,
+				Published = article.Published,
+				Slug = article.Slug,
+				Topic = article.Topic,
+				Version = article.Version,
+				ViewCount = article.ViewCount
+
+			};
+
+		}
+
+		public Core.Domain.Article ToDomain() {
+
+			return new Core.Domain.Article
+			{
+
+				AuthorId = AuthorId,
+				AuthorName = AuthorName,
+				Comments = Comments.Select(c => c.ToDomain()).ToHashSet(),
+				Content = Content,
+				History = History.Select(h => h.ToDomain()).ToHashSet(),
+				Id = Id,
+				Published = Published,
+				Slug = Slug,
+				Topic = Topic,
+				Version = Version,
+				ViewCount = ViewCount
+			};
+
+		}
 
 	}
 

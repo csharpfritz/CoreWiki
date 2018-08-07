@@ -4,7 +4,7 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace CoreWiki.Core.Models
+namespace CoreWiki.Data.Models
 {
 	public class Comment
 	{
@@ -46,5 +46,42 @@ namespace CoreWiki.Core.Models
 		[Display(Name = "Content")]
 		[DataType(DataType.MultilineText)]
 		public string Content { get; set; }
+
+		public static Comment FromDomain(Core.Domain.Comment comment)
+		{
+
+			return new Comment
+			{
+
+				AuthorId = comment.AuthorId,
+				Content = comment.Content,
+				DisplayName = comment.DisplayName,
+				Email = comment.Email,
+				Id = comment.Id,
+				IdArticle = comment.IdArticle,
+				Submitted = comment.Submitted
+
+			};
+
+		}
+
+		public Core.Domain.Comment ToDomain()
+		{
+
+			return new Core.Domain.Comment
+			{
+
+				AuthorId = AuthorId,
+				Content = Content,
+				DisplayName = DisplayName,
+				Email = Email,
+				Id = Id,
+				Article = this.Article.ToDomain(),
+				Submitted = Submitted
+
+			};
+
+		}
+
 	}
 }
