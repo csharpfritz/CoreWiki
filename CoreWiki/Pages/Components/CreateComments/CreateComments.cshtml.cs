@@ -8,7 +8,7 @@ namespace CoreWiki.Pages.Components.CreateComments
 	[ViewComponent(Name = "CreateComments")]
 	public class CreateComments : ViewComponent
 	{
-		public IViewComponentResult Invoke(Comment comment)
+		public IViewComponentResult Invoke(CommentDTO comment)
 		{
 			return View("CreateComments", comment);
 		}

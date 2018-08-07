@@ -14,7 +14,7 @@ namespace CoreWiki.Pages.Components.ListComments
 
 		}
 
-		public IViewComponentResult Invoke(ICollection<Comment> comments)
+		public IViewComponentResult Invoke(ICollection<CommentDTO> comments)
 		{
 			return View("ListComments", comments);
 		}

@@ -13,12 +13,12 @@ namespace CoreWiki.Core.Models
 		[Key]
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 		public int Id { get; set; }
-		
-		public Article(string topic, Author authorName )
-		{
-			Topic=topic;
-			AuthorId=Guid.NewGuid
-		}
+
+		// public Article(string topic, Author authorName )
+		// {
+		// 	Topic=topic;
+		// 	AuthorId=Guid.NewGuid
+		// }
 
 		//[Required, MaxLength(100)]
 		//[Display(Name = "Topic")]

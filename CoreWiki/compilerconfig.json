@@ -18,5 +18,9 @@
   {
     "outputFile": "wwwroot/css/themeDark.css",
     "inputFile": "wwwroot/css/themeDark.scss"
+  },
+  {
+    "outputFile": "wwwroot/css/diff.css",
+    "inputFile": "wwwroot/css/diff.scss"
   }
 ]

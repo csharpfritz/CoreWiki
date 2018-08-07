@@ -1,0 +1,38 @@
+﻿@page
+@model MyRolesDataModel
+@{
+	ViewData["Title"] = "My Roles & Permissions";
+	ViewData["ActivePage"] = ManageNavPages.MyRoles;
+}
+
+<h4>@ViewData["Title"]</h4>
+
+<div class="row">
+	<div class="col-md-6">
+		<div class="card text-center">
+			<div class="card-body">
+				<p class="card-text">
+					@if (Model.Roles.Any())
+					{
+						@: Your account may have 1 or more permissions (AKA Roles). Below are what is assigned to your account:
+					}
+					else
+					{
+						@: You do not currently have any roles. Please speak to an administratior or raise a support ticket.
+					}
+				</p>
+				<h6 class="card-title">You have <span class="badge badge-dark">@Model.Roles.Count</span> Roles/Permissions </h6>
+			</div>
+			<ul class="list-group list-group-flush">
+				@foreach (var role in Model.Roles)
+				{
+					<li class="list-group-item">@role</li>
+				}
+			</ul> 
+		</div>
+	</div>
+</div>
+
+@section Scripts {
+	<partial name="_ValidationScriptsPartial" />
+}

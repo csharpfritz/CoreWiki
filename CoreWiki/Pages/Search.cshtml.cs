@@ -1,3 +1,4 @@
+using CoreWiki.Data.Data.Interfaces;
 using CoreWiki.Data.Models;
 using CoreWiki.SearchEngines;
 using Microsoft.AspNetCore.Mvc;
@@ -9,56 +10,70 @@ namespace CoreWiki.Pages
 {
 	public class SearchModel : PageModel
 	{
-		public SearchResult<Article> SearchResult;
+		public SearchResult<ArticleSummaryDTO> SearchResult;
 		private readonly IArticlesSearchEngine _articlesSearchEngine;
+		private readonly IArticleRepository _repository;
 		private const int ResultsPerPage = 10;
 
-		public SearchModel(IArticlesSearchEngine articlesSearchEngine)
+		public SearchModel(IArticlesSearchEngine articlesSearchEngine, IArticleRepository repository)
 		{
 			_articlesSearchEngine = articlesSearchEngine;
+			_repository = repository;
 		}
 
-		public async Task<IActionResult> OnGetAsync()
-		{
-			var isQueryPresent = TryGetSearchQuery(out var query);
+		public string RequestedPage {  get { return Request.Path.Value.ToLowerInvariant().Substring(1); } }
 
-			if (isQueryPresent)
+		public async Task<IActionResult> OnGetAsync([FromQuery(Name = "Query")]string query = "", [FromQuery(Name ="PageNumber")]int pageNumber = 1)
+		{
+
+			if (!string.IsNullOrEmpty(query))
 			{
-				SearchResult = await _articlesSearchEngine.SearchAsync(
+				var result = await _articlesSearchEngine.SearchAsync(
 					query,
-					GetPageNumberOrDefault(),
-					ResultsPerPage
-				);
+					pageNumber,
+					ResultsPerPage);
+
+				SearchResult = new SearchResult<ArticleSummaryDTO>()
+				{
+					Query = result.Query,
+					TotalResults = result.TotalResults,
+					ResultsPerPage = result.ResultsPerPage,
+					CurrentPage = result.CurrentPage,
+					Results = (from article in result.Results
+						select new ArticleSummaryDTO
+						{
+							Slug = article.Slug,
+							Topic = article.Topic,
+							Published = article.Published,
+							ViewCount = article.ViewCount
+						}).ToList()
+				};
+				SearchResult.CurrentPage = 1;
 			}
 
 			return Page();
 		}
 
-		private bool TryGetSearchQuery(out string query)
+		public async Task<IActionResult> OnGetLatestChangesAsync()
 		{
-			var isQueryParamPresent = Request.Query.TryGetValue("Query", out var queryParams);
 
-			if (isQueryParamPresent && !string.IsNullOrEmpty(queryParams.First()))
+			var results = await _repository.GetLatestArticles(10);
+
+			SearchResult = new SearchResult<ArticleSummaryDTO>
 			{
-				query = queryParams.First();
-				return true;
-			}
-
-			query = "";
-			return false;
-		}
-
-		private int GetPageNumberOrDefault()
-		{
-			var isPageParamPresent = Request.Query.TryGetValue("PageNumber", out var pageParams);
-
-			if (isPageParamPresent && !string.IsNullOrEmpty(pageParams.First()))
-			{
-				var isValidNumber = int.TryParse(pageParams.First(), out var pageNumber);
-				return isValidNumber ? pageNumber : 1;
-			}
-
-			return 1;
+				Results = (from article in results
+									 select new ArticleSummaryDTO
+									 {
+										 Slug = article.Slug,
+										 Topic = article.Topic,
+										 Published = article.Published,
+										 ViewCount = article.ViewCount
+									 }).ToList(),
+				ResultsPerPage = 11,
+				CurrentPage = 1
+			};
+			SearchResult.TotalResults = SearchResult.Results.Count();
+			return Page();
 		}
 	}
 
