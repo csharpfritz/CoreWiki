@@ -7,13 +7,15 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CoreWiki.Data.Models
 {
-	public class SlugHistory
+
+	[Table("SlugHistories")]
+	public class SlugHistoryDAO
 	{
 		[Required, Key]
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 		public int Id { get; set; }
 
-		public virtual Article Article { get; set; }
+		public virtual ArticleDAO Article { get; set; }
 
 		public string OldSlug { get; set; }
 
@@ -29,5 +31,20 @@ namespace CoreWiki.Data.Models
 			get => Added.ToDateTimeUtc();
 			set => Added = DateTime.SpecifyKind(value, DateTimeKind.Utc).ToInstant();
 		}
+
+		public Core.Domain.SlugHistory ToDomain() {
+
+			return new Core.Domain.SlugHistory
+			{
+
+				Added = this.Added,
+				Article = this.Article.ToDomain(),
+				Id = this.Id,
+				OldSlug = this.OldSlug
+
+			};
+
+		}
+
 	}
 }

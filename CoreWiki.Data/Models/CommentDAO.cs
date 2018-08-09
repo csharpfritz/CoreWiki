@@ -6,7 +6,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CoreWiki.Data.Models
 {
-	public class Comment
+	[Table("Comments")]
+	public class CommentDAO
 	{
 		[Required, Key]
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -15,7 +16,7 @@ namespace CoreWiki.Data.Models
 		[Required]
 		public int IdArticle { get; set; }
 
-		public virtual Article Article { get; set; }
+		public virtual ArticleDAO Article { get; set; }
 
 		[Required, MaxLength(100)]
 		[Display(Name = "Name")]
@@ -47,10 +48,10 @@ namespace CoreWiki.Data.Models
 		[DataType(DataType.MultilineText)]
 		public string Content { get; set; }
 
-		public static Comment FromDomain(Core.Domain.Comment comment)
+		public static CommentDAO FromDomain(Core.Domain.Comment comment)
 		{
 
-			return new Comment
+			return new CommentDAO
 			{
 
 				AuthorId = comment.AuthorId,
@@ -76,7 +77,7 @@ namespace CoreWiki.Data.Models
 				DisplayName = DisplayName,
 				Email = Email,
 				Id = Id,
-				Article = this.Article.ToDomain(),
+				IdArticle = this.Article.Id,
 				Submitted = Submitted
 
 			};

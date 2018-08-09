@@ -11,7 +11,6 @@ namespace CoreWiki.Areas.Identity.Pages.Account.Manage
     public class MyRolesDataModel : PageModel
     {
         private readonly UserManager<CoreWikiUser> _userManager;
-        private readonly RoleManager<IdentityRole> _roleManager;
 		private readonly ILogger<MyRolesDataModel> _logger;
 
         public MyRolesDataModel(

@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using CoreWiki.Core.Notifications;
 using System.Linq;
 using System.Security.Claims;
+using CoreWiki.Core.Domain;
 
 namespace CoreWiki.Pages
 {
@@ -132,7 +133,7 @@ namespace CoreWiki.Pages
 			if (!ModelState.IsValid)
 				return Page();
 
-			comment.Article = article;
+			comment.IdArticle = article.Id;
 			comment.Submitted = _clock.GetCurrentInstant();
 			await _commentRepo.CreateComment(comment);
 

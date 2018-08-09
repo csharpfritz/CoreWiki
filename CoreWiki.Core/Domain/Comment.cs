@@ -8,9 +8,7 @@ namespace CoreWiki.Core.Domain
 
 		public int Id { get; set; }
 
-		public int IdArticle { get { return Article.Id; } }
-
-		public virtual Article Article { get; set; }
+		public int IdArticle { get; set; }
 
 		public string DisplayName { get; set; }
 
@@ -18,7 +16,7 @@ namespace CoreWiki.Core.Domain
 
 		public Instant Submitted { get; set; }
 
-		public Guid AuthorId { get; set; };
+		public Guid AuthorId { get; set; }
 
 		public string Content { get; set; }
 

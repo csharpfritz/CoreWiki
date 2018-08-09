@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
-using CoreWiki.Data.Data.Interfaces;
+using CoreWiki.Core.Domain;
+using CoreWiki.Core.Interfaces;
 using CoreWiki.Data.Models;
 using CoreWiki.Pages;
 using Microsoft.AspNetCore.Mvc;

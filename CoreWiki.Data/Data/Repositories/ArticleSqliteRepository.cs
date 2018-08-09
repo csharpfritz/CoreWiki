@@ -34,7 +34,9 @@ namespace CoreWiki.Data.Data.Repositories
 
 		public async Task<List<Core.Domain.Article>> GetLatestArticles(int numOfArticlesToGet)
 		{
-			var articles = await Context.Articles.OrderByDescending(a => a.Published).Take(numOfArticlesToGet).ToListAsync();
+			var articles = await Context.Articles
+				.AsNoTracking()
+				.OrderByDescending(a => a.Published).Take(numOfArticlesToGet).ToListAsync();
 			return articles.Select(a => a.ToDomain()).ToList();
 		}
 
@@ -47,14 +49,19 @@ namespace CoreWiki.Data.Data.Repositories
 
 		public async Task<Core.Domain.Article> GetArticleBySlug(string articleSlug)
 		{
-			var article = await Context.Articles.Include(a => a.Comments).SingleOrDefaultAsync(m => m.Slug == articleSlug.ToLower());
+			var article = await Context.Articles
+				.AsNoTracking()
+				.Include(a => a.Comments)
+				.SingleOrDefaultAsync(m => m.Slug == articleSlug.ToLower());
 			return article.ToDomain();
 		}
 
 
 		public async Task<Core.Domain.Article> GetArticleByComment(Domain.Comment comment)
 		{
-			var article = await Context.Articles.Include(a => a.Comments)
+			var article = await Context.Articles
+				.AsNoTracking()
+				.Include(a => a.Comments)
 				.SingleOrDefaultAsync(a => a.Id == comment.IdArticle);
 			return article.ToDomain();
 		}
@@ -62,7 +69,9 @@ namespace CoreWiki.Data.Data.Repositories
 
 		public async Task<Core.Domain.Article> GetArticleWithHistoriesBySlug(string articleSlug)
 		{
-			var article = await Context.Articles.Include(a => a.History).SingleOrDefaultAsync(m => m.Slug == articleSlug.ToLower());
+			var article = await Context.Articles
+				.AsNoTracking()
+				.Include(a => a.History).SingleOrDefaultAsync(m => m.Slug == articleSlug.ToLower());
 			return article.ToDomain();
 		}
 
@@ -77,10 +86,10 @@ namespace CoreWiki.Data.Data.Repositories
 		public async Task<Domain.Article> CreateArticleAndHistory(Domain.Article article)
 		{
 
-			var efArticle = Article.FromDomain(article);
+			var efArticle = ArticleDAO.FromDomain(article);
 
 			Context.Articles.Add(efArticle);
-			Context.ArticleHistories.Add(ArticleHistory.FromArticle(efArticle));
+			Context.ArticleHistories.Add(ArticleHistoryDAO.FromArticle(efArticle));
 			await Context.SaveChangesAsync();
 			return efArticle.ToDomain();
 		}
@@ -88,21 +97,23 @@ namespace CoreWiki.Data.Data.Repositories
 
 		public async Task<bool> IsTopicAvailable(string articleSlug, int articleId)
 		{
-			return await Context.Articles.AnyAsync(a => a.Slug == articleSlug && a.Id != articleId);
+			return await Context.Articles
+				.AsNoTracking()
+				.AnyAsync(a => a.Slug == articleSlug && a.Id != articleId);
 		}
 
 
-		public IQueryable<Article> GetArticlesForSearchQuery(string filteredQuery)
+		public IQueryable<Domain.Article> GetArticlesForSearchQuery(string filteredQuery)
 		{
 
-			// TODO:  Need to convert to Domain objects 
+			// WARNING:  This may need to be further refactored to allow for database optimized search queries
 
 			return Context.Articles
 				.AsNoTracking()
 				.Where(a =>
 					a.Topic.ToUpper().Contains(filteredQuery.ToUpper()) ||
 					a.Content.ToUpper().Contains(filteredQuery.ToUpper())
-				);
+				).Select(a => a.ToDomain());
 		}
 
 
@@ -121,11 +132,11 @@ namespace CoreWiki.Data.Data.Repositories
 		public async Task Update(Core.Domain.Article article)
 		{
 
-			var efArticle = Article.FromDomain(article);
+			var efArticle = ArticleDAO.FromDomain(article);
 
 			Context.Attach(efArticle).State = EntityState.Modified;
 
-			Context.ArticleHistories.Add(ArticleHistory.FromArticle(efArticle));
+			Context.ArticleHistories.Add(ArticleHistoryDAO.FromArticle(efArticle));
 
 			try
 			{

@@ -16,9 +16,9 @@ namespace CoreWiki.Data.Data.Repositories
 
 
 
-		public async Task CreateComment(Comment commentModel)
+		public async Task CreateComment(Core.Domain.Comment commentModel)
 		{
-			await Context.Comments.AddAsync(commentModel);
+			await Context.Comments.AddAsync(CommentDAO.FromDomain(commentModel));
 			await Context.SaveChangesAsync();
 		}
 

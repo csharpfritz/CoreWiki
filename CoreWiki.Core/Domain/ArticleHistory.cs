@@ -7,8 +7,6 @@ namespace CoreWiki.Core.Domain
 	{
 		public int Id { get; set; }
 
-		public virtual Article Article { get; set; }
-
 		public Guid AuthorId { get; set; }
 
 		public string AuthorName { get; set; }
@@ -23,12 +21,14 @@ namespace CoreWiki.Core.Domain
 
 		public string Content { get; set; }
 
+		public int ArticleId { get; set; }
+
 		public static ArticleHistory FromArticle(Article article)
 		{
 
 			return new ArticleHistory
 			{
-				Article = article,
+				ArticleId = article.Id,
 				AuthorId = article.AuthorId,
 				AuthorName = article.AuthorName,
 				Content = article.Content,

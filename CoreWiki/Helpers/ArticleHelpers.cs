@@ -1,4 +1,5 @@
-﻿using CoreWiki.Data.Data.Interfaces;
+﻿using CoreWiki.Core.Domain;
+using CoreWiki.Core.Interfaces;
 using CoreWiki.Models;
 using System.Collections.Generic;
 using System.Linq;

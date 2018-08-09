@@ -1,5 +1,5 @@
 ﻿using CoreWiki.Areas.Identity;
-using CoreWiki.Data.Data.Interfaces;
+using CoreWiki.Core.Interfaces;
 using CoreWiki.Models;
 using CoreWiki.Helpers;
 using Microsoft.AspNetCore.Authorization;
@@ -11,6 +11,7 @@ using System;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using CoreWiki.Core.Domain;
 
 namespace CoreWiki.Pages
 {

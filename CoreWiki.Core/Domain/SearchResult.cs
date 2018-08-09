@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace CoreWiki.SearchEngines
+namespace CoreWiki.Core.Domain
 {
 	public class SearchResult<T>
 	{

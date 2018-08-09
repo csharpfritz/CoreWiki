@@ -1,4 +1,5 @@
-﻿using CoreWiki.Core.Notifications;
+﻿using CoreWiki.Core.Interfaces;
+using CoreWiki.Core.Notifications;
 using CoreWiki.Notifications;
 using CoreWiki.SearchEngines;
 using Microsoft.AspNetCore.Http;

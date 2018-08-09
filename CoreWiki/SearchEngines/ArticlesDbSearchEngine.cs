@@ -2,7 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
-using CoreWiki.Data.Data.Interfaces;
+using CoreWiki.Core.Interfaces;
+using CoreWiki.Core.Domain;
 
 namespace CoreWiki.SearchEngines
 {
@@ -31,7 +32,7 @@ namespace CoreWiki.SearchEngines
 				.OrderByDescending(a => a.ViewCount)
 				.ToListAsync();
 
-			return new SearchResult<Article>
+			return new SearchResult<Core.Domain.Article>
 			{
 				Query = filteredQuery,
 				Results = articles,

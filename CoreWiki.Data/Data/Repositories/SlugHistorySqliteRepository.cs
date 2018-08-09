@@ -18,11 +18,12 @@ namespace CoreWiki.Data.Data.Repositories
 		public ApplicationDbContext Context { get; }
 
 
-		public async Task<SlugHistory> GetSlugHistoryWithArticle(string slug)
+		public async Task<Core.Domain.SlugHistory> GetSlugHistoryWithArticle(string slug)
 		{
-			return await Context.SlugHistories.Include(h => h.Article)
+			return (await Context.SlugHistories.Include(h => h.Article)
 				.OrderByDescending(h => h.Added)
-				.FirstOrDefaultAsync(h => h.OldSlug == slug.ToLowerInvariant());
+				.FirstOrDefaultAsync(h => h.OldSlug == slug.ToLowerInvariant()))
+				.ToDomain();
 		}
 
 
@@ -31,13 +32,13 @@ namespace CoreWiki.Data.Data.Repositories
 			Context.Dispose();
 		}
 
-		public Task AddToHistory(string oldSlug, Article article)
+		public Task AddToHistory(string oldSlug, Core.Domain.Article article)
 		{
 
-			var newSlug = new SlugHistory()
+			var newSlug = new SlugHistoryDAO()
 			{
 				OldSlug = oldSlug,
-				Article = article,
+				Article = ArticleDAO.FromDomain(article),
 				AddedDateTime = DateTime.UtcNow
 			};
 

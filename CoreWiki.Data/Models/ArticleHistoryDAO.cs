@@ -7,13 +7,14 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CoreWiki.Data.Models
 {
-	public class ArticleHistory
+	[Table("ArticleHistories")]
+	public class ArticleHistoryDAO
 	{
 		[Key]
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 		public int Id { get; set; }
 
-		public virtual Article Article { get; set; }
+		public virtual ArticleDAO Article { get; set; }
 
 		[ForeignKey(nameof(Article))]
 		public int ArticleId { get; set; }
@@ -51,10 +52,10 @@ namespace CoreWiki.Data.Models
 		[Display(Name = "Content")]
 		public string Content { get; set; }
 
-		public static ArticleHistory FromArticle(Article article)
+		public static ArticleHistoryDAO FromArticle(ArticleDAO article)
 		{
 
-			return new ArticleHistory
+			return new ArticleHistoryDAO
 			{
 				//Id = 1,
 				Article = article,
@@ -70,11 +71,11 @@ namespace CoreWiki.Data.Models
 
 		}
 
-		public static ArticleHistory FromDomain(Core.Domain.ArticleHistory history) {
+		public static ArticleHistoryDAO FromDomain(Core.Domain.ArticleHistory history) {
 
-			return new ArticleHistory {
+			return new ArticleHistoryDAO {
 
-				ArticleId = history.Article.Id,
+				ArticleId = history.ArticleId,
 				AuthorId = history.AuthorId,
 				AuthorName = history.AuthorName,
 				Content = history.Content,
@@ -93,7 +94,6 @@ namespace CoreWiki.Data.Models
 			return new Core.Domain.ArticleHistory
 			{
 
-				Article = Article.ToDomain(),
 				AuthorId = AuthorId,
 				AuthorName = AuthorName,
 				Content = Content,

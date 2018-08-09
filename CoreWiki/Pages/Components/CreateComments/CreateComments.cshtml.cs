@@ -1,5 +1,5 @@
 ﻿using CoreWiki.Data;
-using CoreWiki.Data.Data.Interfaces;
+using CoreWiki.Core.Interfaces;
 using CoreWiki.Models;
 using Microsoft.AspNetCore.Mvc;
 

@@ -1,4 +1,4 @@
-﻿using CoreWiki.Data.Data.Interfaces;
+﻿using CoreWiki.Core.Interfaces;
 using CoreWiki.Models;
 using CoreWiki.Helpers;
 using DiffPlex.DiffBuilder;

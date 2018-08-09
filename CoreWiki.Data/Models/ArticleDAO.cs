@@ -9,7 +9,9 @@ using System.Linq;
 
 namespace CoreWiki.Data.Models
 {
-	public class Article
+
+	[Table("Articles")]
+	public class ArticleDAO
 	{
 		[Key]
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -54,26 +56,26 @@ namespace CoreWiki.Data.Models
 		[DataType(DataType.MultilineText)]
 		[Display(Name = "Content")]
 		public string Content { get; set; }
-		public virtual ICollection<Comment> Comments { get; set; }
-		public virtual ICollection<ArticleHistory> History { get; set; }
-		public Article()
+		public virtual ICollection<CommentDAO> Comments { get; set; }
+		public virtual ICollection<ArticleHistoryDAO> History { get; set; }
+		public ArticleDAO()
 		{
-			this.Comments = new HashSet<Comment>();
-			this.History = new HashSet<ArticleHistory>();
+			this.Comments = new HashSet<CommentDAO>();
+			this.History = new HashSet<ArticleHistoryDAO>();
 		}
 
 		public int ViewCount { get; set; } = 0;
 
-		public static Article FromDomain(Core.Domain.Article article) {
+		public static ArticleDAO FromDomain(Core.Domain.Article article) {
 
-			return new Article
+			return new ArticleDAO
 			{
 
 				AuthorId = article.AuthorId,
 				AuthorName = article.AuthorName,
-				Comments = article.Comments.Select(c => Comment.FromDomain(c)).ToHashSet(),
+				Comments = article.Comments.Select(c => CommentDAO.FromDomain(c)).ToHashSet(),
 				Content = article.Content,
-				History = article.History.Select(h => ArticleHistory.FromDomain(h)).ToHashSet(),
+				History = article.History.Select(h => ArticleHistoryDAO.FromDomain(h)).ToHashSet(),
 				Id = article.Id,
 				Published = article.Published,
 				Slug = article.Slug,

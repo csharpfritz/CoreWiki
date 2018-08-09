@@ -1,4 +1,4 @@
-﻿using CoreWiki.Data.Data.Interfaces;
+﻿using CoreWiki.Core.Interfaces;
 using CoreWiki.Models;
 using CoreWiki.Helpers;
 using Microsoft.AspNetCore.Authorization;
@@ -8,6 +8,7 @@ using NodaTime;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CoreWiki.Core.Domain;
 
 namespace CoreWiki.Pages
 {
