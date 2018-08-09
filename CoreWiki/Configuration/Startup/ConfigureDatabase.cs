@@ -1,7 +1,7 @@
 ﻿using CoreWiki.Core.Interfaces;
-using CoreWiki.Data;
+using CoreWiki.Data.EntityFramework;
 using CoreWiki.Data.EntityFramework.Repositories;
-using CoreWiki.Data.Security;
+using CoreWiki.Data.EntityFramework.Security;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;

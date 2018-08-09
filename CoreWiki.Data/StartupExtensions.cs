@@ -1,5 +1,6 @@
 ﻿using CoreWiki.Core.Interfaces;
 using CoreWiki.Data.EntityFramework.Repositories;
+using CoreWiki.Data.EntityFramework;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -7,7 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace CoreWiki.Data
+namespace CoreWiki.Data.EntityFramework
 {
 
 	public static class StartupExtensions

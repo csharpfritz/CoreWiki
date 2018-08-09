@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace CoreWiki.Migrations
+namespace CoreWiki.Data.EntityFramework.Migrations
 {
     public partial class AddAuthorNametoarticle : Migration
     {

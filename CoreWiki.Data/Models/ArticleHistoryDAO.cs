@@ -1,11 +1,12 @@
-﻿using NodaTime;
+﻿using CoreWiki.Core.Domain;
+using NodaTime;
 using NodaTime.Extensions;
 using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace CoreWiki.Data.Models
+namespace CoreWiki.Data.EntityFramework.Models
 {
 	[Table("ArticleHistories")]
 	public class ArticleHistoryDAO
@@ -71,7 +72,7 @@ namespace CoreWiki.Data.Models
 
 		}
 
-		public static ArticleHistoryDAO FromDomain(Core.Domain.ArticleHistory history) {
+		public static ArticleHistoryDAO FromDomain(ArticleHistory history) {
 
 			return new ArticleHistoryDAO {
 
@@ -89,9 +90,9 @@ namespace CoreWiki.Data.Models
 
 		}
 
-		public Core.Domain.ArticleHistory ToDomain() {
+		public ArticleHistory ToDomain() {
 
-			return new Core.Domain.ArticleHistory
+			return new ArticleHistory
 			{
 
 				AuthorId = AuthorId,

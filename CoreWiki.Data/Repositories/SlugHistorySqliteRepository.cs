@@ -1,5 +1,5 @@
 ﻿using CoreWiki.Core.Interfaces;
-using CoreWiki.Data.Models;
+using CoreWiki.Data.EntityFramework.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;

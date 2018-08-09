@@ -9,6 +9,7 @@ using System;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using CoreWiki.Data.EntityFramework;
 
 namespace CoreWiki.Pages
 {

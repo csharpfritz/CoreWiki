@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
-using CoreWiki.Data.Security;
+using CoreWiki.Data.EntityFramework.Security;
 
 namespace CoreWiki.Areas.Identity.Pages.Account
 {
