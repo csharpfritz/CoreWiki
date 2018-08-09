@@ -7,7 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Domain = CoreWiki.Core.Domain;
 
-namespace CoreWiki.Data.Data.Repositories
+namespace CoreWiki.Data.EntityFramework.Repositories
 {
 	public class ArticleSqliteRepository : IArticleRepository
 	{

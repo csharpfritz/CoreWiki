@@ -2,7 +2,7 @@
 using CoreWiki.Data.Models;
 using System.Threading.Tasks;
 
-namespace CoreWiki.Data.Data.Repositories
+namespace CoreWiki.Data.EntityFramework.Repositories
 {
 	public class CommentSqliteRepository : ICommentRepository
 	{

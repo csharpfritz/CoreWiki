@@ -1,5 +1,5 @@
 ﻿using CoreWiki.Core.Interfaces;
-using CoreWiki.Data.Data.Repositories;
+using CoreWiki.Data.EntityFramework.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

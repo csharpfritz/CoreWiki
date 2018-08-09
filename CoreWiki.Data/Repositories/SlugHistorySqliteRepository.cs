@@ -5,7 +5,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace CoreWiki.Data.Data.Repositories
+namespace CoreWiki.Data.EntityFramework.Repositories
 {
 	public class SlugHistorySqliteRepository : ISlugHistoryRepository
 	{
