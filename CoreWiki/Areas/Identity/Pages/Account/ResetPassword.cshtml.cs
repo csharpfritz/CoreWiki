@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using CoreWiki.Data.Security;
+using CoreWiki.Data.EntityFramework.Security;
 
 namespace CoreWiki.Areas.Identity.Pages.Account
 {

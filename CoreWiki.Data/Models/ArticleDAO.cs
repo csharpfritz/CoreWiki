@@ -1,4 +1,5 @@
-﻿using NodaTime;
+﻿using CoreWiki.Core.Domain;
+using NodaTime;
 using NodaTime.Extensions;
 using System;
 using System.Collections.Generic;
@@ -7,7 +8,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 
-namespace CoreWiki.Data.Models
+namespace CoreWiki.Data.EntityFramework.Models
 {
 
 	[Table("Articles")]
@@ -66,7 +67,7 @@ namespace CoreWiki.Data.Models
 
 		public int ViewCount { get; set; } = 0;
 
-		public static ArticleDAO FromDomain(Core.Domain.Article article) {
+		public static ArticleDAO FromDomain(Article article) {
 
 			return new ArticleDAO
 			{

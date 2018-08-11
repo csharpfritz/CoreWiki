@@ -1,11 +1,11 @@
-﻿using CoreWiki.Data.Models;
+﻿using CoreWiki.Data.EntityFramework.Models;
 using Microsoft.EntityFrameworkCore;
 using NodaTime;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace CoreWiki.Data
+namespace CoreWiki.Data.EntityFramework
 {
 
 	public class ApplicationDbContext : DbContext

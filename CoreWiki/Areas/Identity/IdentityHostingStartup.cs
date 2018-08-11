@@ -1,4 +1,4 @@
-﻿using CoreWiki.Data.Security;
+﻿using CoreWiki.Data.EntityFramework.Security;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;

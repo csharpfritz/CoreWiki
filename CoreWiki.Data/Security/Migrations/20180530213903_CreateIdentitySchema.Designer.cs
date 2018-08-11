@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace CoreWiki.Data.Security.Migrations
+namespace CoreWiki.Data.EntityFramework.Security.Migrations
 {
     [DbContext(typeof(CoreWikiIdentityContext))]
     [Migration("20180530213903_CreateIdentitySchema")]

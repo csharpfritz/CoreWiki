@@ -1,5 +1,4 @@
-﻿using CoreWiki.Data;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Snickler.RSSCore.Models;
 using Snickler.RSSCore.Providers;
@@ -8,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CoreWiki.Core.Configuration;
+using CoreWiki.Data.EntityFramework;
 
 namespace CoreWiki
 {

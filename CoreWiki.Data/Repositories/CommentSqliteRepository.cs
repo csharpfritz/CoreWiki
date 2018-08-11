@@ -1,5 +1,5 @@
 ﻿using CoreWiki.Core.Interfaces;
-using CoreWiki.Data.Models;
+using CoreWiki.Data.EntityFramework.Models;
 using System.Threading.Tasks;
 
 namespace CoreWiki.Data.EntityFramework.Repositories

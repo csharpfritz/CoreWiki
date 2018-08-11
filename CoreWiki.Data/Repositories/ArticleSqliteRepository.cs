@@ -1,11 +1,11 @@
-﻿using CoreWiki.Core.Interfaces;
-using CoreWiki.Data.Models;
+﻿using CoreWiki.Core.Domain;
+using CoreWiki.Core.Interfaces;
+using CoreWiki.Data.EntityFramework.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Domain = CoreWiki.Core.Domain;
 
 namespace CoreWiki.Data.EntityFramework.Repositories
 {
@@ -19,7 +19,7 @@ namespace CoreWiki.Data.EntityFramework.Repositories
 		public ApplicationDbContext Context { get; }
 
 
-		public async Task<IEnumerable<Domain.Article>> GetAllArticlesPaged(int pageSize, int pageNumber)
+		public async Task<IEnumerable<Article>> GetAllArticlesPaged(int pageSize, int pageNumber)
 		{
 			var articles = await Context.Articles
 				.AsNoTracking()
@@ -32,7 +32,7 @@ namespace CoreWiki.Data.EntityFramework.Repositories
 		}
 
 
-		public async Task<List<Core.Domain.Article>> GetLatestArticles(int numOfArticlesToGet)
+		public async Task<List<Article>> GetLatestArticles(int numOfArticlesToGet)
 		{
 			var articles = await Context.Articles
 				.AsNoTracking()
@@ -47,7 +47,7 @@ namespace CoreWiki.Data.EntityFramework.Repositories
 		}
 
 
-		public async Task<Core.Domain.Article> GetArticleBySlug(string articleSlug)
+		public async Task<Article> GetArticleBySlug(string articleSlug)
 		{
 			var article = await Context.Articles
 				.AsNoTracking()
@@ -57,7 +57,7 @@ namespace CoreWiki.Data.EntityFramework.Repositories
 		}
 
 
-		public async Task<Core.Domain.Article> GetArticleByComment(Domain.Comment comment)
+		public async Task<Article> GetArticleByComment(Comment comment)
 		{
 			var article = await Context.Articles
 				.AsNoTracking()
@@ -67,7 +67,7 @@ namespace CoreWiki.Data.EntityFramework.Repositories
 		}
 
 
-		public async Task<Core.Domain.Article> GetArticleWithHistoriesBySlug(string articleSlug)
+		public async Task<Article> GetArticleWithHistoriesBySlug(string articleSlug)
 		{
 			var article = await Context.Articles
 				.AsNoTracking()
@@ -76,14 +76,14 @@ namespace CoreWiki.Data.EntityFramework.Repositories
 		}
 
 
-		public async Task<Core.Domain.Article> GetArticleById(int articleId)
+		public async Task<Article> GetArticleById(int articleId)
 		{
 			var article = await Context.Articles.AsNoTracking().FirstAsync(a => a.Id == articleId);
 			return article.ToDomain();
 		}
 
 
-		public async Task<Domain.Article> CreateArticleAndHistory(Domain.Article article)
+		public async Task<Article> CreateArticleAndHistory(Article article)
 		{
 
 			var efArticle = ArticleDAO.FromDomain(article);
@@ -103,7 +103,7 @@ namespace CoreWiki.Data.EntityFramework.Repositories
 		}
 
 
-		public IQueryable<Domain.Article> GetArticlesForSearchQuery(string filteredQuery)
+		public IQueryable<Article> GetArticlesForSearchQuery(string filteredQuery)
 		{
 
 			// WARNING:  This may need to be further refactored to allow for database optimized search queries
@@ -129,7 +129,7 @@ namespace CoreWiki.Data.EntityFramework.Repositories
 
 		}
 
-		public async Task Update(Core.Domain.Article article)
+		public async Task Update(Article article)
 		{
 
 			var efArticle = ArticleDAO.FromDomain(article);

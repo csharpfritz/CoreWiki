@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace CoreWiki.Data.Security
+namespace CoreWiki.Data.EntityFramework.Security
 {
 	public class CoreWikiIdentityContext : IdentityDbContext<CoreWikiUser>
 	{

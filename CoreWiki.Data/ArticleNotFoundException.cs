@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.Serialization;
 
-namespace CoreWiki.Data
+namespace CoreWiki.Data.EntityFramework
 {
 	[Serializable]
 	public class ArticleNotFoundException : Exception

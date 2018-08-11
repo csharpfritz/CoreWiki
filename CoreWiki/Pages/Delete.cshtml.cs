@@ -1,4 +1,4 @@
-﻿using CoreWiki.Data;
+﻿using CoreWiki.Data.EntityFramework;
 using CoreWiki.Models;
 using CoreWiki.Helpers;
 using Microsoft.AspNetCore.Authorization;
@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
+
 
 namespace CoreWiki.Pages
 {

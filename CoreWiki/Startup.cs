@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using CoreWiki.Configuration.Startup;
 using CoreWiki.Core.Configuration;
-using CoreWiki.Data.Security;
+using CoreWiki.Data.EntityFramework.Security;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
