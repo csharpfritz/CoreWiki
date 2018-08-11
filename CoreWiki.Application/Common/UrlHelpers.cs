@@ -1,11 +1,10 @@
-﻿using CoreWiki.Models;
-using System.Globalization;
+﻿using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace CoreWiki.Helpers
+namespace CoreWiki.Application.Helpers
 {
-	public static class UrlHelpers
+	public class UrlHelpers
 	{
 
 		public static string HomePageSlug = "home-page";
@@ -15,16 +14,6 @@ namespace CoreWiki.Helpers
 		private static readonly Regex reSlugDashes = new Regex(@"([\-])+");
 
 		private static readonly Regex reSlugCharacters = new Regex(@"([\s,.//\\-_=])+");
-
-		public static string SlugToTopic(this BaseArticleDTO dto, string slug)
-		{
-			if (string.IsNullOrEmpty(slug))
-			{
-				return "";
-			}
-
-			return slug.ToTitleCase().RemoveHyphens();
-		}
 
 		public static string URLFriendly(string title)
 		{
