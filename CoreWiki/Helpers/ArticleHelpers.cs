@@ -9,6 +9,10 @@ using System.Threading.Tasks;
 
 namespace CoreWiki.Helpers
 {
+
+	// TODO: Refactor this into an ArticleApplicationService
+	// TODO: Name this thing 
+
 	public static class ArticleHelpers
 	{
 		private static readonly string articleLinksPattern = @"(\[[\w\s.\-_:;\!\?]*[\]][\(])((?!(http|https))[\w\s\-_]*)([\)])";

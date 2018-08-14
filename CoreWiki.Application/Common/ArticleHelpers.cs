@@ -1,5 +1,5 @@
-﻿using CoreWiki.Data.Data.Interfaces;
-using CoreWiki.Data.Models;
+﻿using CoreWiki.Core.Interfaces;
+using CoreWiki.Core.Domain;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;

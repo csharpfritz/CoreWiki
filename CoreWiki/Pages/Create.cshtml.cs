@@ -16,6 +16,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using CoreWiki.Core.Domain;
 using System.Globalization;
+using CoreWiki.Application.Articles.Queries;
 
 namespace CoreWiki.Pages
 {
@@ -34,13 +35,27 @@ namespace CoreWiki.Pages
 			this.Logger = loggerFactory.CreateLogger("CreatePage");
 		}
 
-		public IActionResult OnGet(string slug = "")
+		public async Task<IActionResult> OnGetAsync(string slug = "")
 		{
 
-			Article = new Models.ArticleCreateDTO()
+			if (!string.IsNullOrEmpty(slug))
 			{
-				Topic = SlugToTopic(slug ?? "")
-			};
+
+				var request = new GetArticle(slug);
+				var result = await _mediator.Send(request);
+				if (result == null)
+				{
+					Article = new ArticleCreateDTO
+					{
+						Topic = SlugToTopic(slug)
+					};
+				}
+				else
+				{
+					return Redirect($"/{slug}/Edit");
+				}
+
+			}
 
 			return Page();
 		}
@@ -67,20 +82,27 @@ namespace CoreWiki.Pages
 				return Page();
 			}
 
-			// -- THIS NEEDS TO BE FIXED --  
+			var cmd = new CreateNewArticleCommand(
+				authorId: Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)),
+				authorName: User.Identity.Name,
+				content: Article.Content,
+				slug: slug,
+				topic: Article.Topic
+			);
 
-			Article.AuthorId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
-			Article.AuthorName = User.Identity.Name;
-			Article.Slug = slug;
+			await _mediator.Send(cmd);
 
-			var _articleLinks = await _mediator.Send(new CreateNewArticleCommand(Article));
+			// TODO: Query and identify whether to prompt the user if they would like to create additional articles
 
-			if (_articleLinks.Count > 0)
-			{
-				return RedirectToPage("CreateArticleFromLink", new { id = slug });
-			}
+			//	.ContinueWith()
+
+			//if (_articleLinks.Count > 0)
+			//{
+			//	return RedirectToPage("CreateArticleFromLink", new { id = slug });
+			// }
 
 			return Redirect($"/wiki/{slug}");
+
 		}
 
 		public static string SlugToTopic(string slug)

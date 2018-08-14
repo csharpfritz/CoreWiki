@@ -16,16 +16,6 @@ namespace CoreWiki.Helpers
 
 		private static readonly Regex reSlugCharacters = new Regex(@"([\s,.//\\-_=])+");
 
-		public static string SlugToTopic(this BaseArticleDTO dto, string slug)
-		{
-			if (string.IsNullOrEmpty(slug))
-			{
-				return "";
-			}
-
-			return slug.ToTitleCase().RemoveHyphens();
-		}
-
 		public static string URLFriendly(string title)
 		{
 

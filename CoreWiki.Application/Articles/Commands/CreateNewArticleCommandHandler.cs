@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace CoreWiki.Application.Articles.Commands
 {
-	public class CreateNewArticleCommandHandler : IRequestHandler<CreateNewArticleCommand, List<string>>
+	public class CreateNewArticleCommandHandler : AsyncRequestHandler<CreateNewArticleCommand>
 	{
 		private readonly IArticleRepository _articleRepo;
 		private readonly IClock _clock;
@@ -21,17 +21,17 @@ namespace CoreWiki.Application.Articles.Commands
 		{
 			_articleRepo = articleRepo; _clock = clock;
 		}
-		public async Task<List<string>> Handle(CreateNewArticleCommand request, CancellationToken cancellationToken)
+		protected override async Task Handle(CreateNewArticleCommand request, CancellationToken cancellationToken)
 		{
 			try
 			{
 				var article = new Article
 				{
-					Topic = request.NewArticle.Topic,
-					Slug = request.NewArticle.Slug,
-					Content = request.NewArticle.Content,
-					AuthorId = request.NewArticle.AuthorId,
-					AuthorName = request.NewArticle.AuthorName,
+					Topic = request.Topic,
+					Slug = request.Slug,
+					Content = request.Content,
+					AuthorId = request.AuthorId,
+					AuthorName = request.AuthorName,
 					Published = _clock.GetCurrentInstant()
 				};
 
@@ -41,17 +41,13 @@ namespace CoreWiki.Application.Articles.Commands
 				// ArticleHelpers / UrlHelpers / StringHelper was copied into the
 				//CoreWiki.Application Common folder and namespace renamed _DUPLICATES
 
-				var _articlesLinks = (await ArticleHelpers.GetArticlesToCreate(_articleRepo, article, createSlug: true))
-				.ToList();
-
-
-				return _articlesLinks;
-
 			}
 			catch (Exception)
 			{
 				throw new CreateArticleException();
 			}
+
 		}
+
 	}
 }

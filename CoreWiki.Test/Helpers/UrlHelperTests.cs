@@ -17,7 +17,7 @@ namespace CoreWiki.Test
 		[InlineData("él-sofá", "Él Sofá")]
 		public void SlugShouldBeATopic(string slug, string expected_topic)
 		{
-			var actual_topic = CreateModel.SlugToTopic(slug);
+			var actual_topic = Core.Domain.Article.SlugToTopic(slug);
 			Assert.Equal(expected_topic, actual_topic);
 		}
 

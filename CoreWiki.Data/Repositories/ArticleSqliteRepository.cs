@@ -53,7 +53,7 @@ namespace CoreWiki.Data.EntityFramework.Repositories
 				.AsNoTracking()
 				.Include(a => a.Comments)
 				.SingleOrDefaultAsync(m => m.Slug == articleSlug.ToLower());
-			return article.ToDomain();
+			return article == null ? null : article.ToDomain();
 		}
 
 
