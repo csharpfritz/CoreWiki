@@ -36,7 +36,7 @@ Jeff has written about how he has the hardware configured as well as the softwar
 
 ## Watch recordings
 
-Archive of all shows from the stream can be found on [Jeff's YouTube Fritz and Friends](https://www.youtube.com/playlist?list=PLVMqA0_8O85zHkvIMHgG74eskQTO5nfWy)  playlist.
+Archive of all shows from the stream can be found on [Jeff's YouTube 'Building the CoreWiki'](https://www.youtube.com/playlist?list=PLVMqA0_8O85yC78I4Xj7z48ES48IQBa7p)  playlist.
 
 Date | Topic
 ----|---
