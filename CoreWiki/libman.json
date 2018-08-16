@@ -1,0 +1,84 @@
+{
+	"version": "1.0",
+	"defaultProvider": "cdnjs",
+	"libraries": [
+		{
+			"provider": "cdnjs",
+			"library": "twitter-bootstrap@4.1.3",
+			"destination": "wwwroot/lib/bootstrap/dist/",
+			"files": [
+				"css/bootstrap.css",
+				"css/bootstrap.css.map",
+				"css/bootstrap.min.css",
+				"css/bootstrap.min.css.map",
+				"js/bootstrap.js",
+				"js/bootstrap.js.map",
+				"js/bootstrap.min.js",
+				"js/bootstrap.min.js.map"
+			]
+		},
+		{
+			"provider": "cdnjs",
+			"library": "popper.js@1.14.3",
+			"destination": "wwwroot/lib/popper.js/dist",
+			"files": [
+				"umd/popper.js",
+				"umd/popper.js.map",
+				"umd/popper.min.js",
+				"umd/popper.min.js.map",
+				"umd/popper-utils.js",
+				"umd/popper-utils.js.map",
+				"umd/popper-utils.min.js",
+				"umd/popper-utils.min.js.map"
+			]
+		},
+		{
+			"provider": "cdnjs",
+			"library": "jquery@3.3.1",
+			"destination": "wwwroot/lib/jquery/dist",
+			"files": [
+				"core.js",
+				"jquery.js",
+				"jquery.min.js",
+				"jquery.min.map"
+			]
+		},
+		{
+			"provider": "cdnjs",
+			"library": "jquery-validate@1.17.0",
+			"destination": "wwwroot/lib/jquery-validation/dist",
+			"files": [
+				"jquery.validate.js",
+				"jquery.validate.min.js",
+				"additional-methods.js",
+				"additional-methods.min.js"
+			]
+		},
+		{
+			"provider": "cdnjs",
+			"library": "jquery-validation-unobtrusive@3.2.10",
+			"destination": "wwwroot/lib/jquery-validation-unobtrusive/dist",
+			"files": [
+				"jquery.validate.unobtrusive.js",
+				"jquery.validate.unobtrusive.min.js"
+			]
+		},
+		{
+			"provider": "cdnjs",
+			"library": "moment.js@2.22.2",
+			"destination": "wwwroot/lib/moment/min",
+			"files": [
+			]
+		},
+		{
+			"provider": "cdnjs",
+			"library": "simplemde@1.11.2",
+			"destination": "wwwroot/lib/simplemde/dist",
+			"files": [
+				"simplemde.min.css",
+				"simplemde.min.js"
+			]
+		}
+
+	]
+}
