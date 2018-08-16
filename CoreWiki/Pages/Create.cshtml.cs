@@ -90,16 +90,17 @@ namespace CoreWiki.Pages
 				topic: Article.Topic
 			);
 
-			await _mediator.Send(cmd);
+			var cmdResult = await _mediator.Send(cmd);
 
-			// TODO: Query and identify whether to prompt the user if they would like to create additional articles
+			// TODO: Inspect result to ensure it ran properly
 
-			//	.ContinueWith()
+			var query = new GetArticlesToCreateFromArticle(slug);
+			var listOfSlugs = await _mediator.Send(query);
 
-			//if (_articleLinks.Count > 0)
-			//{
-			//	return RedirectToPage("CreateArticleFromLink", new { id = slug });
-			// }
+			if (listOfSlugs.Any())
+			{
+				return RedirectToPage("CreateArticleFromLink", new { id = slug });
+			}
 
 			return Redirect($"/wiki/{slug}");
 

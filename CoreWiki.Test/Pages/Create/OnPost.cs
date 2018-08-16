@@ -46,7 +46,7 @@ namespace CoreWiki.Test.Pages.Create
 			_articleRepo.Setup(repo => repo.IsTopicAvailable(_expectedSlug, It.IsAny<int>()))
 				.Returns(() => Task.FromResult(false));
 			_mediator.Setup(mediator => mediator.Send(It.IsAny<CreateNewArticleCommand>(), It.IsAny<CancellationToken>()))
-				.Returns(() => Task.FromResult(default(Unit)));
+				.Returns(() => Task.FromResult(new CommandResult {Successful=true }));
 
 			_sut = new CreateModel(_mediator.Object, _articleRepo.Object, new NullLoggerFactory())
 			{

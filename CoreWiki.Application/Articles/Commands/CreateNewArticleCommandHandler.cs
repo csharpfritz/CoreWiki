@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace CoreWiki.Application.Articles.Commands
 {
-	public class CreateNewArticleCommandHandler : AsyncRequestHandler<CreateNewArticleCommand>
+	public class CreateNewArticleCommandHandler : IRequestHandler<CreateNewArticleCommand, CommandResult>
 	{
 		private readonly IArticleRepository _articleRepo;
 		private readonly IClock _clock;
@@ -21,8 +21,11 @@ namespace CoreWiki.Application.Articles.Commands
 		{
 			_articleRepo = articleRepo; _clock = clock;
 		}
-		protected override async Task Handle(CreateNewArticleCommand request, CancellationToken cancellationToken)
+		public async Task<CommandResult> Handle(CreateNewArticleCommand request, CancellationToken cancellationToken)
 		{
+
+			var result = new CommandResult() { Successful = true };
+
 			try
 			{
 				var article = new Article
@@ -42,10 +45,13 @@ namespace CoreWiki.Application.Articles.Commands
 				//CoreWiki.Application Common folder and namespace renamed _DUPLICATES
 
 			}
-			catch (Exception)
+			catch (Exception ex)
 			{
-				throw new CreateArticleException();
+				result.Successful = false;
+				result.Exception = new CreateArticleException("There was an error creating the article", ex);
 			}
+
+			return result;
 
 		}
 

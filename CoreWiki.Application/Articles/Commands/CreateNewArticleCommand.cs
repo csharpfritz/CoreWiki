@@ -8,7 +8,7 @@ namespace CoreWiki.Application.Articles.Commands
 
 	// NOTE:  We would rather have all of the primitive fields listed here instead of embedding a DTO
 
-	public class CreateNewArticleCommand : IRequest
+	public class CreateNewArticleCommand : IRequest<CommandResult>
 	{
 		public CreateNewArticleCommand(string topic, string slug, string content, Guid authorId, string authorName)
 		{
