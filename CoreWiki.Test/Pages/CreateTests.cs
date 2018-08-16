@@ -5,6 +5,7 @@ using System.Security.Principal;
 using System.Threading;
 using System.Threading.Tasks;
 using CoreWiki.Application.Articles.Commands;
+using CoreWiki.Application.Articles.Queries;
 using CoreWiki.Core.Domain;
 using CoreWiki.Core.Interfaces;
 using CoreWiki.Models;
@@ -18,6 +19,7 @@ using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 using Moq;
 using NodaTime;
 using Xunit;
@@ -33,18 +35,19 @@ namespace CoreWiki.Test.Pages
 		private Guid userId = Guid.NewGuid();
 		private readonly FakeMediator _mockMediatr;
 		private readonly Mock<IArticleRepository> _articleRepo;
-		private readonly ILoggerFactory _loggerFactory;
+		private readonly Mock<IMediator> _mediator;
 		private CreateModel _sut;
+
+		private Article GetExistingArticle() => new Article { Slug = _existingArticleSlug };
 
 		public CreateTests()
 		{
-			_articleRepo = new Mock<IArticleRepository>();
-			var serviceProvider = new ServiceCollection()
-				.AddLogging()
-				.BuildServiceProvider();
-			_loggerFactory = serviceProvider.GetService<ILoggerFactory>();
 
-			_articleRepo.Setup(o => o.GetArticleBySlug(_existingArticleSlug)).Returns(Task.FromResult(GetExistingArticle()));
+			var articleRepo = new Mock<IArticleRepository>();
+			_mediator = new Mock<IMediator>();
+
+			articleRepo.Setup(o => o.GetArticleBySlug(_existingArticleSlug)).Returns(Task.FromResult(GetExistingArticle()));
+			_sut = new CreateModel(_mediator.Object, articleRepo.Object, new NullLoggerFactory());
 
 		}
 
@@ -75,21 +78,9 @@ namespace CoreWiki.Test.Pages
 			};
 		}
 
-		private Article GetExistingArticle()
-		{
-			return new Article
-			{
-				Slug = _existingArticleSlug
-			};
-		}
-
 		[Fact]
 		public async Task OnGetAsync_WithEmptyOrNullSlug_ShouldReturnPageResultWithNullArticle()
 		{
-
-			var fakeMediator = new FakeMediator(null);
-
-			_sut = new CreateModel(fakeMediator, _articleRepo.Object, _loggerFactory);
 
 			Assert.IsType<PageResult>(await _sut.OnGetAsync(null));
 			Assert.Null(_sut.Article);
@@ -102,8 +93,7 @@ namespace CoreWiki.Test.Pages
 		public async Task OnGetAsync_WithExistingSlug_ShouldRedirectToArticleEditPage()
 		{
 
-			var fakeMediator = new FakeMediator(GetExistingArticle());
-			_sut = new CreateModel(fakeMediator, _articleRepo.Object, _loggerFactory);
+			_mediator.Setup(o => o.Send(It.IsAny<GetArticle>(), default(CancellationToken))).ReturnsAsync(GetExistingArticle());
 
 			var result = await _sut.OnGetAsync(_existingArticleSlug);
 			Assert.IsType<RedirectResult>(result);
@@ -113,8 +103,6 @@ namespace CoreWiki.Test.Pages
 		[Fact]
 		public async Task OnGetAsync_WithNewSlug_ShouldReturnPageResultWithArticleThatHasTopicAndNullContent()
 		{
-			var fakeMediator = new FakeMediator(null);
-			_sut = new CreateModel(fakeMediator, _articleRepo.Object, _loggerFactory);
 
 			var result = await _sut.OnGetAsync(_newArticleSlug);
 			Assert.IsType<PageResult>(result);
@@ -142,7 +130,7 @@ namespace CoreWiki.Test.Pages
 			mediatr.Setup(mediator => mediator.Send(It.IsAny<CreateNewArticleCommand>(), It.IsAny<CancellationToken>()))
 				.Returns(() => Task.FromResult(default(Unit)));
 
-			_sut = new CreateModel(mediatr.Object, articleRepo.Object, _loggerFactory)
+			_sut = new CreateModel(mediatr.Object, articleRepo.Object, new NullLoggerFactory())
 			{
 				PageContext = MockPageContext(), //we depend on a valid ClaimsPrinciple!! No check on User yet before sending the command
 				Article = new ArticleCreateDTO
@@ -165,5 +153,7 @@ namespace CoreWiki.Test.Pages
 					request.AuthorId.Equals(userId)),
 				It.Is<CancellationToken>(token => token.Equals(CancellationToken.None))), Times.Once);
 		}
+
 	}
+
 }
