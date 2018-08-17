@@ -1,4 +1,6 @@
-﻿using NodaTime;
+﻿using CoreWiki.Core.Domain;
+using NodaTime;
+using System;
 
 namespace CoreWiki.Models
 {
@@ -9,5 +11,6 @@ namespace CoreWiki.Models
 		public string DisplayName { get; set; }
 		public string Content { get; set; }
 		public Instant Submitted { get; set; }
+
 	}
 }

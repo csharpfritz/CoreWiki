@@ -33,6 +33,7 @@ namespace CoreWiki.Core.Interfaces
 
 		Task Update(Article article);
 
+		Task IncrementViewCount(string slug);
 
 	}
 }

@@ -78,7 +78,8 @@ namespace CoreWiki.Data.EntityFramework.Repositories
 
 		public async Task<Article> GetArticleById(int articleId)
 		{
-			var article = await Context.Articles.AsNoTracking().FirstAsync(a => a.Id == articleId);
+			var article = await Context.Articles.AsNoTracking().FirstOrDefaultAsync(a => a.Id == articleId);
+			if (article == null) return null;
 			return article.ToDomain();
 		}
 
@@ -156,5 +157,13 @@ namespace CoreWiki.Data.EntityFramework.Repositories
 
 		}
 
+		public async Task IncrementViewCount(string slug)
+		{
+
+			var article = Context.Articles.Single(a => a.Slug == slug);
+			article.ViewCount++;
+			await Context.SaveChangesAsync();
+
+		}
 	}
 }
