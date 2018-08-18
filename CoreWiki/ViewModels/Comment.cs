@@ -2,9 +2,9 @@
 using NodaTime;
 using System;
 
-namespace CoreWiki.Models
+namespace CoreWiki.ViewModels
 {
-	public class CommentDTO
+	public class Comment
 	{
 		public int ArticleId { get; set; }
 		public string Email { get; set; }

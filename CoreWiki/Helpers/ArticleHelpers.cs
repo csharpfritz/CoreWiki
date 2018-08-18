@@ -1,6 +1,6 @@
 ﻿using CoreWiki.Core.Domain;
 using CoreWiki.Core.Interfaces;
-using CoreWiki.Models;
+using CoreWiki.ViewModels;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;

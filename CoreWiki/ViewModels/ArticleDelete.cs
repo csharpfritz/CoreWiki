@@ -1,8 +1,8 @@
 ﻿using NodaTime;
 
-namespace CoreWiki.Models
+namespace CoreWiki.ViewModels
 {
-	public class ArticleDeleteDTO
+	public class ArticleDelete
 	{
 		public string Topic { get; set; }
 		public string Content { get; set; }

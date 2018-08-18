@@ -1,4 +1,4 @@
-﻿using CoreWiki.Models;
+﻿using CoreWiki.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 
@@ -14,7 +14,7 @@ namespace CoreWiki.Pages.Components.ListComments
 
 		}
 
-		public IViewComponentResult Invoke(ICollection<CommentDTO> comments)
+		public IViewComponentResult Invoke(ICollection<Comment> comments)
 		{
 			return View("ListComments", comments);
 		}

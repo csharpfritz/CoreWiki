@@ -1,5 +1,5 @@
 ﻿using CoreWiki.Data.EntityFramework;
-using CoreWiki.Models;
+using CoreWiki.ViewModels;
 using CoreWiki.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -22,7 +22,7 @@ namespace CoreWiki.Pages
 		}
 
 		[BindProperty]
-		public ArticleDeleteDTO Article { get; set; }
+		public ArticleDelete Article { get; set; }
 
 		///  TODO: Make it so you cannot delete the home page (deleting the home page will cause a 404)
 		///  or re-factor to make the home page dynamic or configurable.
@@ -40,7 +40,7 @@ namespace CoreWiki.Pages
 				return NotFound();
 			}
 
-			Article = new ArticleDeleteDTO
+			Article = new ArticleDelete
 			{
 				Content = article.Content,
 				Published = article.Published,

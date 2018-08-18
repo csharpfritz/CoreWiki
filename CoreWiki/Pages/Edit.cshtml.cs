@@ -1,6 +1,6 @@
 ﻿using CoreWiki.Data;
 using CoreWiki.Core.Interfaces;
-using CoreWiki.Models;
+using CoreWiki.ViewModels;
 using CoreWiki.Helpers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -29,7 +29,7 @@ namespace CoreWiki.Pages
 		}
 
 		[BindProperty]
-		public ArticleEditDTO Article { get; set; }
+		public ArticleEdit Article { get; set; }
 
 		public async Task<IActionResult> OnGetAsync(string slug)
 		{
@@ -45,7 +45,7 @@ namespace CoreWiki.Pages
 				return new ArticleNotFoundResult();
 			}
 
-			Article = new ArticleEditDTO
+			Article = new ArticleEdit
 			{
 				Id = article.Id,
 				Topic = article.Topic,

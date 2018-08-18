@@ -6,6 +6,7 @@
 	<TieredCompilation>true</TieredCompilation>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="7.0.1" />
     <PackageReference Include="BuildBundlerMinifier" Version="2.8.391" />
     <PackageReference Include="DiffPlex" Version="1.4.1" />
     <PackageReference Include="HtmlSanitizer" Version="4.0.187" />

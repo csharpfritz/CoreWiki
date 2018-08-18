@@ -1,5 +1,5 @@
 using CoreWiki.Core.Interfaces;
-using CoreWiki.Models;
+using CoreWiki.ViewModels;
 using CoreWiki.Data.EntityFramework.Security;
 using CoreWiki.Helpers;
 using Microsoft.AspNetCore.Identity;
@@ -17,6 +17,7 @@ using CoreWiki.Core.Domain;
 using MediatR;
 using CoreWiki.Application.Articles.Queries;
 using CoreWiki.Application.Articles.Commands;
+using AutoMapper;
 
 namespace CoreWiki.Pages
 {
@@ -24,34 +25,34 @@ namespace CoreWiki.Pages
 	{
 		private readonly IArticleRepository _articleRepo;
 		private readonly IMediator _mediator;
+		private readonly IMapper _mapper;
 		private readonly ICommentRepository _commentRepo;
 		private readonly ISlugHistoryRepository _slugHistoryRepo;
 		private readonly IClock _clock;
 		private readonly UserManager<CoreWikiUser> _UserManager;
 		private readonly INotificationService _notificationService;
 
-		public IConfiguration Configuration { get; }
 		public IEmailSender Notifier { get; }
 
 		public DetailsModel(
 			IMediator mediator,
+			IMapper mapper,
 			ICommentRepository commentRepo,
 			ISlugHistoryRepository slugHistoryRepo,
 			UserManager<CoreWikiUser> userManager,
-			IConfiguration config,
 			INotificationService notificationService,
 			IClock clock)
 		{
 			_mediator = mediator;
+			_mapper = mapper;
 			_commentRepo = commentRepo;
 			_slugHistoryRepo = slugHistoryRepo;
 			_clock = clock;
 			_UserManager = userManager;
 			_notificationService = notificationService;
-			Configuration = config;
 		}
 
-		public ArticleDetailsDTO Article { get; set; }
+		public ArticleDetails Article { get; set; }
 
 		[ViewDataAttribute]
 		public string Slug { get; set; }
@@ -77,7 +78,7 @@ namespace CoreWiki.Pages
 				}
 			}
 
-			Article = ArticleDetailsDTO.FromDomain(article);
+			Article = _mapper.Map<ArticleDetails>(article); 
 
 			ManageViewCount(slug);
 
@@ -98,7 +99,7 @@ namespace CoreWiki.Pages
 			}
 		}
 
-		public async Task<IActionResult> OnPostAsync(CommentDTO dto)
+		public async Task<IActionResult> OnPostAsync(ViewModels.Comment dto)
 		{
 
 			TryValidateModel(dto);

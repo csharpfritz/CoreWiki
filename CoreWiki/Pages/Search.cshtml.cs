@@ -1,6 +1,6 @@
 using CoreWiki.Core.Domain;
 using CoreWiki.Core.Interfaces;
-using CoreWiki.Models;
+using CoreWiki.ViewModels;
 using CoreWiki.SearchEngines;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -11,7 +11,7 @@ namespace CoreWiki.Pages
 {
 	public class SearchModel : PageModel
 	{
-		public SearchResult<ArticleSummaryDTO> SearchResult;
+		public SearchResult<ArticleSummary> SearchResult;
 		private readonly IArticlesSearchEngine _articlesSearchEngine;
 		private readonly IArticleRepository _repository;
 		private const int ResultsPerPage = 10;
@@ -34,14 +34,14 @@ namespace CoreWiki.Pages
 					pageNumber,
 					ResultsPerPage);
 
-				SearchResult = new SearchResult<ArticleSummaryDTO>()
+				SearchResult = new SearchResult<ArticleSummary>()
 				{
 					Query = result.Query,
 					TotalResults = result.TotalResults,
 					ResultsPerPage = result.ResultsPerPage,
 					CurrentPage = result.CurrentPage,
 					Results = (from article in result.Results
-						select new ArticleSummaryDTO
+						select new ArticleSummary
 						{
 							Slug = article.Slug,
 							Topic = article.Topic,
@@ -60,10 +60,10 @@ namespace CoreWiki.Pages
 
 			var results = await _repository.GetLatestArticles(10);
 
-			SearchResult = new SearchResult<ArticleSummaryDTO>
+			SearchResult = new SearchResult<ArticleSummary>
 			{
 				Results = (from article in results
-									 select new ArticleSummaryDTO
+									 select new ArticleSummary
 									 {
 										 Slug = article.Slug,
 										 Topic = article.Topic,

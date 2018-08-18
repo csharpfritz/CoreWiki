@@ -1,6 +1,6 @@
-﻿namespace CoreWiki.Models
+﻿namespace CoreWiki.ViewModels
 {
-	public class ArticleEditDTO 
+	public class ArticleEdit 
 	{
 		public int Id { get; set; }
 		public string Topic { get; set; }

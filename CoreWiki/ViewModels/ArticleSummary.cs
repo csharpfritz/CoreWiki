@@ -1,8 +1,8 @@
 ﻿using NodaTime;
 
-namespace CoreWiki.Models
+namespace CoreWiki.ViewModels
 {
-	public class ArticleSummaryDTO
+	public class ArticleSummary
 	{
 		public string Slug { get; set; }
 		public string Topic { get; set; }

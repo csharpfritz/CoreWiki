@@ -4,15 +4,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace CoreWiki.Models
+namespace CoreWiki.ViewModels
 {
 	public static class DtoExtensions
 	{
 
-		public static Comment ToDomain(this CommentDTO dto, Guid authorId)
+		public static Core.Domain.Comment ToDomain(this Comment dto, Guid authorId)
 		{
 
-			return new Comment
+			return new Core.Domain.Comment
 			{
 				IdArticle = dto.ArticleId,
 				Content = dto.Content,

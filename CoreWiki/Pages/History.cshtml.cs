@@ -1,5 +1,5 @@
 ﻿using CoreWiki.Core.Interfaces;
-using CoreWiki.Models;
+using CoreWiki.ViewModels;
 using CoreWiki.Helpers;
 using DiffPlex.DiffBuilder;
 using DiffPlex.DiffBuilder.Model;
@@ -21,7 +21,7 @@ namespace CoreWiki.Pages
 		}
 
 
-		public ArticleHistoryDTO Article { get; private set; }
+		public ArticleHistory Article { get; private set; }
 
 		[BindProperty()]
 		public string[] Compare { get; set; }
@@ -53,7 +53,7 @@ namespace CoreWiki.Pages
 				}
 			).ToList();
 
-			Article = new ArticleHistoryDTO
+			Article = new ArticleHistory
 			{
 				Topic = article.Topic,
 				Version = article.Version,
@@ -78,7 +78,7 @@ namespace CoreWiki.Pages
 			this.DiffModel = new SideBySideDiffBuilder(new DiffPlex.Differ())
 				.BuildDiffModel(histories[0].Content ?? "", histories[1].Content ?? "");
 
-			Article = new ArticleHistoryDTO
+			Article = new ArticleHistory
 			{
 				Topic = article.Topic,
 				Version = article.Version,

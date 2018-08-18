@@ -8,7 +8,7 @@ using CoreWiki.Application.Articles.Commands;
 using CoreWiki.Application.Articles.Queries;
 using CoreWiki.Core.Domain;
 using CoreWiki.Core.Interfaces;
-using CoreWiki.Models;
+using CoreWiki.ViewModels;
 using CoreWiki.Pages;
 using MediatR;
 using Microsoft.AspNetCore.Http;
@@ -50,7 +50,7 @@ namespace CoreWiki.Test.Pages.Create
 
 			_sut = new CreateModel(_mediator.Object, _articleRepo.Object, new NullLoggerFactory())
 			{
-				Article = new ArticleCreateDTO
+				Article = new ArticleCreate
 				{
 					Topic = _topic,
 					Content = _content

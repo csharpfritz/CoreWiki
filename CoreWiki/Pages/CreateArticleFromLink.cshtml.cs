@@ -1,5 +1,5 @@
 ﻿using CoreWiki.Core.Interfaces;
-using CoreWiki.Models;
+using CoreWiki.ViewModels;
 using CoreWiki.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -16,7 +16,7 @@ namespace CoreWiki.Pages
 	public class CreateArticleFromLinkModel : PageModel
 	{
 		[BindProperty]
-		public ArticleCreateFromLinkDTO Article { get; set; }
+		public ArticleCreateFromLink Article { get; set; }
 		[BindProperty]
 		public List<string> LinksToCreate { get; set; } = new List<string>();
 
@@ -50,7 +50,7 @@ namespace CoreWiki.Pages
 				return Redirect($"/wiki/{(article.Slug == UrlHelpers.HomePageSlug ? "" : article.Slug)}");
 			}
 
-			Article = new ArticleCreateFromLinkDTO
+			Article = new ArticleCreateFromLink
 			{
 				Slug = article.Slug
 			};

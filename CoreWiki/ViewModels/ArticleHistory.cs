@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using NodaTime;
 
-namespace CoreWiki.Models
+namespace CoreWiki.ViewModels
 {
-	public class ArticleHistoryDTO
+	public class ArticleHistory
 	{
 		public string Topic { get; set; }
 		public int Version { get; set; }

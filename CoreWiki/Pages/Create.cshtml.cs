@@ -1,6 +1,6 @@
 using CoreWiki.Areas.Identity;
 using CoreWiki.Core.Interfaces;
-using CoreWiki.Models;
+using CoreWiki.ViewModels;
 using CoreWiki.Application;
 using CoreWiki.Application.Articles.Commands;
 using CoreWiki.Helpers;
@@ -45,7 +45,7 @@ namespace CoreWiki.Pages
 				var result = await _mediator.Send(request);
 				if (result == null)
 				{
-					Article = new ArticleCreateDTO
+					Article = new ArticleCreate
 					{
 						Topic = SlugToTopic(slug)
 					};
@@ -61,7 +61,7 @@ namespace CoreWiki.Pages
 		}
 
 		[BindProperty]
-		public Models.ArticleCreateDTO Article { get; set; }   //CoreWiki.Application DTO
+		public ArticleCreate Article { get; set; }   
 
 		public async Task<IActionResult> OnPostAsync()
 		{
