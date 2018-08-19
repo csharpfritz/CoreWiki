@@ -27,8 +27,8 @@ The API Controllers are described in [API Controllers](4-classes-apicontroller.m
 
 ## Article Application Service(s)
 
-The article application service provide all functionality required to interact with articles. It exposes an interface with its own set of DTO's. Internally, however, it works with Article Aggregates (which consists of Entities and value objects, which are provided by Article.Core), Automapper will map the dto's to their aggregates. That way it encapsulates the business logic from the rest of the application.
-Those aggregates can be sent to the Article persistence layer to be persisted for future queries.
+The article application service provide all functionality required to interact with articles. It exposes an interface with its own set of DTO's. Internally, however, it works with Article Aggregates (which consists of Entities and value objects, which in turn are provided by Article.Core), Automapper will map the applicatio dto's to their aggregates. That way it encapsulates the business logic from the rest of the application.
+Those aggregates are sent to the Article persistence layer to be persisted for future queries.
 
 > Never expose methods in the interface that aren't working with aggregates. Never act on an entities, only on aggregates.
 
@@ -39,6 +39,10 @@ The application services are described in [Application Services](4-classes-appli
 The article persistence layer takes in Domain objects (provided by Article.Core) and saves them to the article database. When requested again by the application layer, it fetches again from the DB and returns the result again as an Article Domain Object. (The DAOs are handled by EntityFrameWork, so no mapping is required here.)
 
 The article persistence uses a ReadRepository and a WriteRepository for each aggregate.
+
+## Lucene Persistence
+
+This part exposes the Lucene directories that hold the article index through two repositories, one for searching, one for updating the index.
 
 ## Article Core
 
