@@ -11,3 +11,5 @@ Comments can be displayed in a couple of fashions.
 - External comments through [Disqus](http://www.disqus.com)
 
 It also sends out notifications to users by usage of SendGrid, an external email service.
+
+The CoreWiki System is described more in detail in [CoreWiki Containers](2-containers.md)

@@ -23,12 +23,16 @@ We have an API for :
 - Writing articles (for the authors who manage the articles).
 - Authentication
 
+The API Controllers are described in [API Controllers](4-classes-apicontroller.md)
+
 ## Article Application Service(s)
 
 The article application service provide all functionality required to interact with articles. It exposes an interface with its own set of DTO's. Internally, however, it works with Article Aggregates (which consists of Entities and value objects, which are provided by Article.Core), Automapper will map the dto's to their aggregates. That way it encapsulates the business logic from the rest of the application.
 Those aggregates can be sent to the Article persistence layer to be persisted for future queries.
 
 > Never expose methods in the interface that aren't working with aggregates. Never act on an entities, only on aggregates.
+
+The application services are described in [Application Services](4-classes-applicationservice.md)
 
 ## Article Persistence
 
@@ -39,5 +43,4 @@ The article persistence uses a ReadRepository and a WriteRepository for each agg
 ## Article Core
 
 The Article.Core provides all business logic of articles and comments. It exposes articles aggregates. These aggregates consist of entities and value objects.
-
 
