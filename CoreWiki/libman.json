@@ -78,7 +78,17 @@
 				"simplemde.min.css",
 				"simplemde.min.js"
 			]
+		},
+		{
+			"provider": "filesystem",
+			"library": "node_modules/@fortawesome/fontawesome-free/",
+			"destination": "wwwroot/lib/fontawesome/",
+			"files": [
+				"css/all.css",
+				"css/all.min.css",
+				"js/all.js",
+				"js/all.min.js"
+			]
 		}
-
 	]
 }
