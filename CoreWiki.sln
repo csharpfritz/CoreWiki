@@ -19,7 +19,17 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoreWiki.Core", "CoreWiki.C
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoreWiki.Notifications", "CoreWiki.Notifications\CoreWiki.Notifications.csproj", "{45CB32F4-B770-4D10-A2B8-C7E7AD28A180}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoreWiki.Application", "CoreWiki.Application\CoreWiki.Application.csproj", "{18172D27-2165-4F34-AA93-F9DD58C2A926}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoreWiki.Application", "CoreWiki.Application\CoreWiki.Application.csproj", "{18172D27-2165-4F34-AA93-F9DD58C2A926}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build Items", "Build Items", "{5D6BD646-6065-4216-BFBA-897BCDFD025D}"
+	ProjectSection(SolutionItems) = preProject
+		.travis.yml = .travis.yml
+		appveyor.yml = appveyor.yml
+		build.cake = build.cake
+		build.ps1 = build.ps1
+		build.sh = build.sh
+		Dockerfile = Dockerfile
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
