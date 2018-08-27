@@ -90,3 +90,14 @@ $text-muted: $gray-500 !default;
 .ImaginaryCharacter {
 }
 
+.list-group-item {
+	background-color: $black;
+}
+
+hr {
+	background-color: $white !important;
+}
+
+.card {
+	border-color: $white;
+}

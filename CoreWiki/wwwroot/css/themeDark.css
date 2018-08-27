@@ -6356,3 +6356,12 @@ body {
   background-color: #C86464;
   color: #061935; }
 
+.list-group-item {
+  background-color: #000; }
+
+hr {
+  background-color: #fff !important; }
+
+.card {
+  border-color: #fff; }
+
