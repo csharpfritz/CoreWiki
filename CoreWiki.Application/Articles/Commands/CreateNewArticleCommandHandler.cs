@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using CoreWiki.Application.Articles.Notifications;
 using AutoMapper;
 
 namespace CoreWiki.Application.Articles.Commands
@@ -18,11 +19,13 @@ namespace CoreWiki.Application.Articles.Commands
 		private readonly IArticleRepository _articleRepo;
 		private readonly IClock _clock;
 		private readonly IMapper _mapper;
+		private readonly IMediator _mediator;
 
-		public CreateNewArticleCommandHandler(IArticleRepository articleRepo, IClock clock, IMapper mapper)
+		public CreateNewArticleCommandHandler(IArticleRepository articleRepo, IClock clock, IMapper mapper, IMediator mediator)
 		{
 			_articleRepo = articleRepo;
 			_clock = clock;
+			_mediator = mediator;
 			_mapper = mapper;
 		}
 
@@ -36,6 +39,7 @@ namespace CoreWiki.Application.Articles.Commands
 				article.Published = _clock.GetCurrentInstant();
 
 				var _createArticle = await _articleRepo.CreateArticleAndHistory(article);
+				await _mediator.Publish(new ArticleCreatedNotification(_createArticle));
 			}
 			catch (Exception ex)
 			{
