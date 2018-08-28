@@ -6,25 +6,26 @@ using MediatR;
 
 namespace CoreWiki.Application.Articles.Queries
 {
-	public class GetArticleHandler : IRequestHandler<GetArticle, Core.Domain.Article>
+	public class GetArticleHandler
+		: IRequestHandler<GetArticle, Article>,
+		  IRequestHandler<GetArticleById, Article>
 	{
+		public IArticleRepository Repository { get; }
 
 		public GetArticleHandler(IArticleRepository repository)
 		{
-
 			Repository = repository;
-
 		}
-
-		public IArticleRepository Repository { get; }
 
 		public Task<Article> Handle(GetArticle request, CancellationToken cancellationToken)
 		{
-
 			return Repository.GetArticleBySlug(request.Slug);
-
 		}
 
+		public Task<Article> Handle(GetArticleById request, CancellationToken cancellationToken)
+		{
+			return Repository.GetArticleById(request.Id);
+		}
 	}
 
 
