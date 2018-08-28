@@ -21,6 +21,9 @@ $body-color: $light !default;
 $card-bg: $body-bg !default;
 $table-head-bg: $body-bg !default;
 $text-muted: $gray-500 !default;
+$card-border-color: $light !default;
+$list-group-bg: $black !default;
+$hr-border-color: $white !default;
 
 
 @import 'custom-variables';
@@ -88,16 +91,4 @@ $text-muted: $gray-500 !default;
 }
 
 .ImaginaryCharacter {
-}
-
-.list-group-item {
-	background-color: $black;
-}
-
-hr {
-	background-color: $white !important;
-}
-
-.card {
-	border-color: $white;
 }
