@@ -35,5 +35,6 @@ namespace CoreWiki.Core.Interfaces
 
 		Task IncrementViewCount(string slug);
 
+		Task<Article> Delete(string slug);
 	}
 }

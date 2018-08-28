@@ -165,5 +165,21 @@ namespace CoreWiki.Data.EntityFramework.Repositories
 			await Context.SaveChangesAsync();
 
 		}
+
+		public async Task<Article> Delete(string slug)
+		{
+			var article = await Context.Articles
+				.Include(o => o.History)
+				.Include(o => o.Comments)
+				.SingleOrDefaultAsync(o => o.Slug == slug);
+
+			if (article != null)
+			{
+				Context.Articles.Remove(article);
+				await Context.SaveChangesAsync();
+			}
+
+			return article.ToDomain();
+		}
 	}
 }
