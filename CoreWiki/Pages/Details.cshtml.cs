@@ -18,38 +18,22 @@ using MediatR;
 using CoreWiki.Application.Articles.Queries;
 using CoreWiki.Application.Articles.Commands;
 using AutoMapper;
+using CoreWiki.Application.Articles.Notifications;
+using System.Threading;
 
 namespace CoreWiki.Pages
 {
 	public class DetailsModel : PageModel
 	{
-		private readonly IArticleRepository _articleRepo;
 		private readonly IMediator _mediator;
 		private readonly IMapper _mapper;
-		private readonly ICommentRepository _commentRepo;
-		private readonly ISlugHistoryRepository _slugHistoryRepo;
-		private readonly IClock _clock;
-		private readonly UserManager<CoreWikiUser> _UserManager;
-		private readonly INotificationService _notificationService;
 
 		public IEmailSender Notifier { get; }
 
-		public DetailsModel(
-			IMediator mediator,
-			IMapper mapper,
-			ICommentRepository commentRepo,
-			ISlugHistoryRepository slugHistoryRepo,
-			UserManager<CoreWikiUser> userManager,
-			INotificationService notificationService,
-			IClock clock)
+		public DetailsModel(IMediator mediator, IMapper mapper)
 		{
 			_mediator = mediator;
 			_mapper = mapper;
-			_commentRepo = commentRepo;
-			_slugHistoryRepo = slugHistoryRepo;
-			_clock = clock;
-			_UserManager = userManager;
-			_notificationService = notificationService;
 		}
 
 		public ArticleDetails Article { get; set; }
@@ -107,22 +91,38 @@ namespace CoreWiki.Pages
 			if (!ModelState.IsValid)
 				return Page();
 
-			var comment = dto.ToDomain(Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)));
+			var article = await _mediator.Send(new GetArticleById(dto.ArticleId));
 
-			var article = await _articleRepo.GetArticleByComment(comment);
 			if (article == null)
+			{
 				return new ArticleNotFoundResult();
+			}
 
-			comment.IdArticle = article.Id;
-			comment.Submitted = _clock.GetCurrentInstant();
-			await _commentRepo.CreateComment(comment);
+			var comment = _mapper.Map<Core.Domain.Comment>(dto);
+			comment.AuthorId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
 
-			// IDEA: Make this an extensibility module, we should only be creating a comment here (single responsibility principle)
-			// TODO: Also check for verified email if required
-			var author = await _UserManager.FindByIdAsync(article.AuthorId.ToString());
-			await _notificationService.SendNewCommentEmail(author.Email, author.UserName, comment.DisplayName, article.Topic, article.Slug, () => author.CanNotify);
+			var result = await _mediator.Send(new CreateNewCommentCommand(article, comment));
 
 			return Redirect($"/wiki/{article.Slug}");
+		}
+	}
+
+	// TODO: Move this to a more suitable location in the project
+	public class NewCommentNotificationHandler : INotificationHandler<CommentPostedNotification>
+	{
+		private readonly UserManager<CoreWikiUser> _userManager;
+		private readonly INotificationService _notificationService;
+
+		public NewCommentNotificationHandler(UserManager<CoreWikiUser> userManager, INotificationService notificationService)
+		{
+			_userManager = userManager;
+			_notificationService = notificationService;
+		}
+
+		public async Task Handle(CommentPostedNotification notification, CancellationToken cancellationToken)
+		{
+			var author = await _userManager.FindByIdAsync(notification.Article.AuthorId.ToString());
+			await _notificationService.SendNewCommentEmail(author.Email, author.UserName, notification.Comment.DisplayName, notification.Article.Topic, notification.Article.Slug, () => author.CanNotify);
 		}
 	}
 }
