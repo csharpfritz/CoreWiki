@@ -14,7 +14,22 @@ namespace CoreWiki.Data.EntityFramework.Models
 		public int Id { get; set; }
 
 		[Required]
-		public int IdArticle { get; set; }
+		[ForeignKey(nameof(Article))]
+		public int ArticleId { get; set; }
+
+		// TODO: Temporary until removed from database
+		[Required]
+		public int IdArticle
+		{
+			get
+			{
+				return ArticleId;
+			}
+			set
+			{
+				ArticleId = value;
+			}
+		}
 
 		public virtual ArticleDAO Article { get; set; }
 
@@ -59,9 +74,8 @@ namespace CoreWiki.Data.EntityFramework.Models
 				DisplayName = comment.DisplayName,
 				Email = comment.Email,
 				Id = comment.Id,
-				IdArticle = comment.IdArticle,
+				ArticleId = comment.ArticleId,
 				Submitted = comment.Submitted
-
 			};
 
 		}
@@ -77,7 +91,7 @@ namespace CoreWiki.Data.EntityFramework.Models
 				DisplayName = DisplayName,
 				Email = Email,
 				Id = Id,
-				IdArticle = this.Article.Id,
+				ArticleId = this.Article.Id,
 				Submitted = Submitted
 
 			};

@@ -14,7 +14,7 @@ namespace CoreWiki.ViewModels
 
 			return new Core.Domain.Comment
 			{
-				IdArticle = dto.ArticleId,
+				ArticleId = dto.ArticleId,
 				Content = dto.Content,
 				DisplayName = dto.DisplayName,
 				Email = dto.Email,

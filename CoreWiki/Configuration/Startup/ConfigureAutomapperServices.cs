@@ -20,7 +20,6 @@ namespace CoreWiki.Configuration.Startup
 				cfg.CreateMap<Article, ArticleDelete>();
 
 				cfg.CreateMap<ViewModels.Comment, Core.Domain.Comment>()
-					.ForMember(dst => dst.IdArticle, opt => opt.MapFrom(src => src.ArticleId))
 					.ForMember(dst => dst.Id, opt => opt.Ignore())
 					.ForMember(dst => dst.AuthorId, opt => opt.Ignore());
 
@@ -35,7 +34,7 @@ namespace CoreWiki.Configuration.Startup
 
 				cfg.CreateMap<CreateNewCommentCommand, Core.Domain.Comment>().ConvertUsing(o => new Core.Domain.Comment
 				{
-					IdArticle = o.Article.Id,
+					ArticleId = o.Article.Id,
 					AuthorId = o.Comment.AuthorId,
 					Content = o.Comment.Content,
 					DisplayName =o.Comment.DisplayName,

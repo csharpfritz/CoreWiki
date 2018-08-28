@@ -62,7 +62,7 @@ namespace CoreWiki.Data.EntityFramework.Repositories
 			var article = await Context.Articles
 				.AsNoTracking()
 				.Include(a => a.Comments)
-				.SingleOrDefaultAsync(a => a.Id == comment.IdArticle);
+				.SingleOrDefaultAsync(a => a.Id == comment.ArticleId);
 			return article.ToDomain();
 		}
 
