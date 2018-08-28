@@ -62,7 +62,7 @@ namespace CoreWiki.Data.EntityFramework.Repositories
 			var article = await Context.Articles
 				.AsNoTracking()
 				.Include(a => a.Comments)
-				.SingleOrDefaultAsync(a => a.Id == comment.IdArticle);
+				.SingleOrDefaultAsync(a => a.Id == comment.ArticleId);
 			return article.ToDomain();
 		}
 
@@ -164,6 +164,22 @@ namespace CoreWiki.Data.EntityFramework.Repositories
 			article.ViewCount++;
 			await Context.SaveChangesAsync();
 
+		}
+
+		public async Task<Article> Delete(string slug)
+		{
+			var article = await Context.Articles
+				.Include(o => o.History)
+				.Include(o => o.Comments)
+				.SingleOrDefaultAsync(o => o.Slug == slug);
+
+			if (article != null)
+			{
+				Context.Articles.Remove(article);
+				await Context.SaveChangesAsync();
+			}
+
+			return article.ToDomain();
 		}
 	}
 }
