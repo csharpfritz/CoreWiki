@@ -39,7 +39,7 @@ namespace CoreWiki.Application.Articles.Commands
 				article.Published = _clock.GetCurrentInstant();
 
 				var _createArticle = await _articleRepo.CreateArticleAndHistory(article);
-				await _mediator.Publish(new ArticleCreatedNotification(_createArticle));
+				_mediator.Publish(new ArticleCreatedNotification(_createArticle));
 			}
 			catch (Exception ex)
 			{
