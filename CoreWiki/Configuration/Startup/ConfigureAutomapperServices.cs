@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using CoreWiki.Application.Articles.Commands;
 using CoreWiki.Core.Domain;
+using CoreWiki.ViewModels;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -15,7 +16,8 @@ namespace CoreWiki.Configuration.Startup
 		public static IMapper ConfigureAutomapper(this IServiceCollection services) {
 
 			var config = new MapperConfiguration(cfg => {
-				cfg.CreateMap<Article, ViewModels.ArticleDetails>();
+				cfg.CreateMap<Article, ArticleDetails>();
+				cfg.CreateMap<Article, ArticleDelete>();
 				cfg.CreateMap<CreateNewArticleCommand, Article>().ConvertUsing(o => new Article
 				{
 					AuthorId = o.AuthorId,
