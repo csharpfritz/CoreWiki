@@ -1,30 +1,20 @@
-﻿<script src="~/lib/simplemde/dist/simplemde.min.js"></script>
+﻿<script src="~/lib/easymde/dist/easymde.min.js"></script>
 <script>
-	var simplemde = new SimpleMDE(
+	var easymde = new EasyMDE(
 		{
 			autoDownloadFontAwesome: false,
 			toolbar: [
 				"bold",
 				"italic",
 				"strikethrough",
-				{
-					name: "heading",
-					action: SimpleMDE.toggleHeadingSmaller,
-					className: "fas fa-heading",
-					title: "Heading"
-				},
+				"heading",
 				"|",
 				"quote",
 				"unordered-list",
 				"ordered-list",
 				"|",
 				"link",
-				{
-					name: "image",
-					className: "fas fa-image",
-					action: SimpleMDE.drawImage,
-					title: "Insert Image"
-				},
+				"image",
 				"|",
 				"code",
 				"table",
@@ -44,10 +34,10 @@
 
 		const reader = new FileReader();
 		reader.onload = function () {
-			let text = simplemde.value();
+			let text = easymde.value();
 
 			text += `\n${reader.result}`;
-			simplemde.value(text);
+			easymde.value(text);
 		};
 		reader.readAsText(input.files[0]);
 	};

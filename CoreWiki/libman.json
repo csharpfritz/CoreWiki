@@ -71,12 +71,12 @@
 			]
 		},
 		{
-			"provider": "cdnjs",
-			"library": "simplemde@1.11.2",
-			"destination": "wwwroot/lib/simplemde/dist",
+			"provider": "unpkg",
+			"library": "easymde@2.4.0",
+			"destination": "wwwroot/lib/easymde",
 			"files": [
-				"simplemde.min.css",
-				"simplemde.min.js"
+				"dist/easymde.min.css",
+				"dist/easymde.min.js"
 			]
 		},
 		{
