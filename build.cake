@@ -4,9 +4,10 @@
 
 var target = Argument("target", "Default");
 var configuration = Argument("configuration", "Release");
-var npmPath = IsRunningOnWindows()
+var npmPath = (IsRunningOnWindows()
                 ? Context.Tools.Resolve("npm.cmd")
-                : Context.Tools.Resolve("npm");
+                : Context.Tools.Resolve("npm"))
+                ?? throw new Exception("Failed to resolve npm, make sure Node is installed.");
 
 //////////////////////////////////////////////////////////////////////
 // PARAMETERS

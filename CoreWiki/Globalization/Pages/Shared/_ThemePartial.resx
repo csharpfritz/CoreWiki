@@ -123,6 +123,9 @@
   <data name="Default" xml:space="preserve">
     <value>Default</value>
   </data>
+  <data name="RainbowFritz" xml:space="preserve">
+    <value>Rainbow</value>
+  </data>
   <data name="Vivid" xml:space="preserve">
     <value>Ouch!</value>
   </data>

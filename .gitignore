@@ -6,6 +6,7 @@
 *.user
 *.userosscache
 *.sln.docstates
+.filenesting.json
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
@@ -271,6 +272,7 @@ CoreWiki/wwwroot/lib/
 [Tt]ools/
 [Oo]utput/
 *.pubxml
+.dotnet/
 
 # Minified and generated files
 *.min.js
