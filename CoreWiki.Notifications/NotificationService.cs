@@ -140,6 +140,7 @@ namespace CoreWiki.Notifications
 		    if (!canNotifyUser())
 		    {
 		        _logger.LogInformation("User has not consented to receiving emails, email not sent");
+				return false;
 		    }
 
             if (string.IsNullOrWhiteSpace(authorEmail))
