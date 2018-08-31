@@ -1,0 +1,122 @@
+﻿// Changing the theme colors
+$white: #fff !default;
+$gray-100: #f8f9fa !default;
+$gray-200: #e9ecef !default;
+$gray-300: #dee2e6 !default;
+$gray-400: #ced4da !default;
+$gray-500: #adb5bd !default;
+$gray-600: #6c757d !default;
+$gray-700: #495057 !default;
+$gray-800: #343a40 !default;
+$gray-900: #212529 !default;
+$black: #000 !default;
+
+$enable-gradients: true !default;
+
+$secondary: white;
+$success: #31f625;
+$info: #1829ad;
+$warning: #f3412d;
+
+// Changing the body background and text
+$body-bg: #b6ff00;
+$body-color: #151417;
+
+// Changing the theme colors
+$primary: #2c0570;
+$dark: #ff6a00;
+$card-bg: #147900;
+$card-cap-bg: #1a9403;
+$pagination-bg: rgba(251, 28, 230, 1.00);
+$text-muted: $gray-500 !default;
+
+body {
+	background-image: linear-gradient(to right, rgba(red, 0.9), rgba(orange, 0.6), rgba(yellow, 0.6), rgba(green, 0.6), rgba(blue, 0.6), rgba(indigo, 0.6), violet);
+}
+
+.navbar {
+	background-image: linear-gradient(110deg, red, orange, yellow, green, blue, indigo, violet);
+
+	.nav-link {
+		color: #fff !important;
+	}
+}
+
+.card-header {
+	background-image: linear-gradient(140deg, red, orange, yellow, green, blue, indigo, violet);
+}
+.card-body {
+	background-image: linear-gradient(to top, red, orange, yellow, green, blue, indigo, violet);
+	.card-text {
+		color: $white;
+	}
+}
+
+footer {
+	background-image: linear-gradient(80deg, red, orange, yellow, green, blue, indigo, violet);
+	color: white;
+
+	a {
+		color: white;
+	}
+}
+
+@import '../../node_modules/bootstrap/scss/bootstrap';
+@import 'custom-styles';
+
+
+
+
+
+
+/// Diff colors
+#diffBar {
+	background: $gray-400;
+}
+
+.diffHeader {
+	background-color: $body-bg !important;
+}
+
+.lineNumber {
+	background-color: $body-bg !important;
+}
+
+.InsertedLine {
+	background-color: #FFFF00;
+	color: $dark;
+}
+
+.ModifiedLine {
+	background-color: $gray-400 !important;
+	color: $dark;
+}
+
+.DeletedLine {
+	background-color: #FFC864;
+	color: $dark;
+}
+
+.UnchangedLine {
+	background-color: $body-bg !important;
+}
+
+.ImaginaryLine {
+	background-color: $gray-600 !important;
+}
+
+.InsertedCharacter {
+	background-color: #FFFF96;
+	color: $dark;
+}
+
+.DeletedCharacter {
+	background-color: #C86464;
+	color: $dark;
+}
+
+.UnchangedCharacter {
+}
+
+.ImaginaryCharacter {
+}
