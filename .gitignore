@@ -272,6 +272,7 @@ CoreWiki/wwwroot/lib/
 [Tt]ools/
 [Oo]utput/
 *.pubxml
+.dotnet/
 
 # Minified and generated files
 *.min.js

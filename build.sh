@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 # Define varibles
-CAKE_VERSION=0.28.1
-DOTNET_SDK_VERSION=2.1.4
+CAKE_VERSION=0.30.0
 SCRIPT_DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 TOOLS_DIR=$SCRIPT_DIR/tools
 CAKE_DLL=$TOOLS_DIR/Cake.CoreCLR.$CAKE_VERSION/Cake.dll
