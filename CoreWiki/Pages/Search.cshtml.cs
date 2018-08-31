@@ -48,7 +48,6 @@ namespace CoreWiki.Pages
 							ViewCount = article.ViewCount
 						}).ToList()
 				};
-				SearchResult.CurrentPage = 1;
 			}
 
 			return Page();
