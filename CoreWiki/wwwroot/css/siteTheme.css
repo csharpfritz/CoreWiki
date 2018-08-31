@@ -6319,3 +6319,7 @@ body {
 .pageNumber {
   margin: 0px 4px; }
 
+button.accept-policy {
+  font-size: 1rem;
+  line-height: inherit; }
+
