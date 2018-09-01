@@ -10,6 +10,12 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using CoreWiki.Data.EntityFramework;
+using CoreWiki.Application.Helpers;
+using MediatR;
+using AutoMapper;
+using CoreWiki.Application.Articles.Queries;
+using CoreWiki.Application.Articles.Commands;
+using CoreWiki.Application.Articles.Exceptions;
 
 namespace CoreWiki.Pages
 {
@@ -17,15 +23,17 @@ namespace CoreWiki.Pages
 	public class EditModel : PageModel
 	{
 
+		private readonly IMediator _Mediator;
+		private readonly IMapper _Mapper;
+
 		private readonly IArticleRepository _Repo;
 		private readonly ISlugHistoryRepository _SlugRepo;
 		private readonly IClock _clock;
 
-		public EditModel(IArticleRepository articleRepo, ISlugHistoryRepository slugHistoryRepository, IClock clock)
+		public EditModel(IMediator mediator, IMapper mapper)
 		{
-			_Repo = articleRepo;
-			_SlugRepo = slugHistoryRepository;
-			_clock = clock;
+			_Mediator = mediator;
+			_Mapper = mapper;
 		}
 
 		[BindProperty]
@@ -38,21 +46,17 @@ namespace CoreWiki.Pages
 				return NotFound();
 			}
 
-			var article = await _Repo.GetArticleBySlug(slug);
+			var article = await _Mediator.Send(new GetArticle(slug));
 
 			if (article == null)
 			{
 				return new ArticleNotFoundResult();
 			}
 
-			Article = new ArticleEdit
-			{
-				Id = article.Id,
-				Topic = article.Topic,
-				Content = article.Content
-			};
+			Article = _Mapper.Map<ArticleEdit>(article);
 
 			return Page();
+
 		}
 
 		public async Task<IActionResult> OnPostAsync()
@@ -62,65 +66,32 @@ namespace CoreWiki.Pages
 				return Page();
 			}
 
-			var slug = UrlHelpers.URLFriendly(Article.Topic);
-			if (String.IsNullOrWhiteSpace(slug))
+			var cmd = new EditArticleCommand(Article.Id, Article.Topic, Article.Content, Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)), User.Identity.Name);
+			var result = await _Mediator.Send(cmd);
+
+			if (result.Exception is InvalidTopicException)
 			{
-				ModelState.AddModelError("Article.Topic", "The topic must contain at least one alphanumeric character.");
+				ModelState.AddModelError("Article.Topic", result.Exception.Message);
 				return Page();
-			}
-
-			var existingArticle = await _Repo.GetArticleBySlug(slug);
-			if (existingArticle != null && existingArticle.Id != Article.Id)
-			{
-				ModelState.AddModelError("Article.Topic", "The topic conflicts with an existing article.");
-				return Page();
-			}
-
-			if (existingArticle == null)
-			{
-				existingArticle = await _Repo.GetArticleById(Article.Id);
-			}
-
-			if (!Changed(existingArticle.Topic, Article.Topic) && !Changed(existingArticle.Content, Article.Content))
-			{
-				return Redirect($"/wiki/{existingArticle.Slug}");
-			}
-
-			var oldSlug = existingArticle.Slug;
-
-			existingArticle.Topic = Article.Topic;
-			existingArticle.Slug = slug;
-			existingArticle.Content = Article.Content;
-			existingArticle.Version = existingArticle.Version + 1;
-			existingArticle.Published = _clock.GetCurrentInstant();
-			existingArticle.AuthorId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
-			existingArticle.AuthorName = User.Identity.Name;
-
-			try
-			{
-				await _Repo.Update(existingArticle);
-
-				if (Changed(oldSlug, existingArticle.Slug))
-				{
-					await _SlugRepo.AddToHistory(oldSlug, existingArticle);
-				}
-			}
-			catch (ArticleNotFoundException)
+			} else if (result.Exception is ArticleNotFoundException)
 			{
 				return new ArticleNotFoundResult();
 			}
 
-			var articlesToCreateFromLinks = (await ArticleHelpers.GetArticlesToCreate(_Repo, existingArticle, createSlug: true)).ToList();
-			if (articlesToCreateFromLinks.Count > 0)
+			var slug = UrlHelpers.URLFriendly(Article.Topic);
+			var query = new GetArticlesToCreateFromArticle(slug);
+			var listOfSlugs = await _Mediator.Send(query);
+
+			if (listOfSlugs.Any())
 			{
 				return RedirectToPage("CreateArticleFromLink", new { id = slug });
 			}
 
-			return Redirect($"/wiki/{(existingArticle.Slug == UrlHelpers.HomePageSlug ? "" : existingArticle.Slug)}");
+			return Redirect($"/wiki/{(slug == UrlHelpers.HomePageSlug ? "" : slug)}");
+
 		}
 
-		private bool Changed(string v1, string v2)
-			=> !string.Equals(v1, v2, StringComparison.InvariantCulture);
+		
 	}
 
 }
