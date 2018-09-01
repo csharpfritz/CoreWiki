@@ -20,6 +20,7 @@ using CoreWiki.Application.Articles.Commands;
 using AutoMapper;
 using CoreWiki.Application.Articles.Notifications;
 using System.Threading;
+using CoreWiki.Application.Helpers;
 
 namespace CoreWiki.Pages
 {

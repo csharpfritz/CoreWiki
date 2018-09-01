@@ -9,6 +9,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CoreWiki.Core.Domain;
+using CoreWiki.Application.Helpers;
+using MediatR;
+using CoreWiki.Application.Articles.Queries;
+using CoreWiki.Application.Articles.Commands;
+using System;
+using System.Security.Claims;
 
 namespace CoreWiki.Pages
 {
@@ -19,14 +25,11 @@ namespace CoreWiki.Pages
 		public ArticleCreateFromLink Article { get; set; }
 		[BindProperty]
 		public List<string> LinksToCreate { get; set; } = new List<string>();
+		public IMediator Mediator { get; }
 
-		private readonly IArticleRepository _articleRepo;
-		private readonly IClock _clock;
-
-		public CreateArticleFromLinkModel(IArticleRepository articleRepo, IClock clock)
+		public CreateArticleFromLinkModel(IMediator mediator)
 		{
-			_articleRepo = articleRepo;
-			_clock = clock;
+			this.Mediator = mediator;
 		}
 
 		public async Task<IActionResult> OnGetAsync(string id)
@@ -36,23 +39,21 @@ namespace CoreWiki.Pages
 				return NotFound();
 			}
 
-			var article = await _articleRepo.GetArticleBySlug(id);
-
-			if (article == null)
+			var theArticle = await Mediator.Send(new GetArticle(id));
+			if (theArticle == null)
 			{
 				return new ArticleNotFoundResult();
 			}
 
-			LinksToCreate = (await ArticleHelpers.GetArticlesToCreate(_articleRepo, article)).ToList();
-
+			LinksToCreate = (await Mediator.Send(new GetArticlesToCreateFromArticle(id))).ToList();
 			if (LinksToCreate.Count == 0)
 			{
-				return Redirect($"/wiki/{(article.Slug == UrlHelpers.HomePageSlug ? "" : article.Slug)}");
+				return Redirect($"/wiki/{(theArticle.Slug == UrlHelpers.HomePageSlug ? "" : theArticle.Slug)}");
 			}
 
 			Article = new ArticleCreateFromLink
 			{
-				Slug = article.Slug
+				Slug = theArticle.Slug
 			};
 
 			return Page();
@@ -60,20 +61,25 @@ namespace CoreWiki.Pages
 
 		public async Task<IActionResult> OnPostCreateLinksAsync(string slug)
 		{
-			foreach (var link in LinksToCreate)
+
+			var taskList = new List<Task>();
+
+			Parallel.ForEach(LinksToCreate, link =>
 			{
-				var newArticle = new Article
-				{
-					Slug = link,
-					Topic = link.ToTitleCase()
-								.RemoveHyphens(),
-					Published = _clock.GetCurrentInstant(),
-					Content = string.Empty
-				};
 
-				newArticle = await _articleRepo.CreateArticleAndHistory(newArticle);
+				var createCmd = new CreateNewArticleCommand(
+					topic: link.ToTitleCase().RemoveHyphens(),
+					slug: link,
+					content: string.Empty,
+					authorId: Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)),
+					authorName: User.Identity.Name
+				);
 
-			}
+				taskList.Add(Mediator.Send(createCmd));
+
+			});
+
+			Task.WaitAll(taskList.ToArray());
 
 			return Redirect($"/wiki/{(slug == UrlHelpers.HomePageSlug ? "" : slug)}");
 		}

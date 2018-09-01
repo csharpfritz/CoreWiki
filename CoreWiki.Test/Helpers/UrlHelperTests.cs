@@ -1,4 +1,5 @@
 using System;
+using CoreWiki.Application.Helpers;
 using CoreWiki.Helpers;
 using CoreWiki.Pages;
 using Xunit;

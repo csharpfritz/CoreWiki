@@ -17,6 +17,7 @@ using System.Threading.Tasks;
 using CoreWiki.Core.Domain;
 using System.Globalization;
 using CoreWiki.Application.Articles.Queries;
+using CoreWiki.Application.Helpers;
 
 namespace CoreWiki.Pages
 {
