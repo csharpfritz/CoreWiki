@@ -54,7 +54,7 @@ namespace CoreWiki.Test.Pages.Details
 			_Mediator.Setup(m => m.Send(It.IsAny<GetArticle>(), default(CancellationToken))).ReturnsAsync(article);
 
 			// act
-			var sut = new DetailsModel(_Mediator.Object, _Mapper, null, null, null, null, null);
+			var sut = new DetailsModel(_Mediator.Object, _Mapper);
 			sut.AddPageContext("", Guid.Empty);
 			await sut.OnGetAsync(article.Slug);
 

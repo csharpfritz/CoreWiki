@@ -12,12 +12,8 @@ namespace CoreWiki.Configuration.Startup
     {
 		public static IServiceCollection AddMediator(this IServiceCollection services)
 		{
-			services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestPreProcessorBehavior<,>));
-			
-			services.AddMediatR(typeof(Application.Articles.Commands.CreateNewArticleCommandHandler));
-		
+			services.AddMediatR();
 			return services;
-
 		}
 	}
 }

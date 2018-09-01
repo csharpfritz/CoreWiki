@@ -8,7 +8,7 @@ namespace CoreWiki.Core.Domain
 
 		public int Id { get; set; }
 
-		public int IdArticle { get; set; }
+		public int ArticleId { get; set; }
 
 		public string DisplayName { get; set; }
 
