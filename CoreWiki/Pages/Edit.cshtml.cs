@@ -16,10 +16,13 @@ using AutoMapper;
 using CoreWiki.Application.Articles.Queries;
 using CoreWiki.Application.Articles.Commands;
 using CoreWiki.Application.Articles.Exceptions;
+using Microsoft.AspNetCore.Authorization;
+using CoreWiki.Areas.Identity;
 
 namespace CoreWiki.Pages
 {
 
+	[Authorize(Policy = PolicyConstants.CanEditArticles)]
 	public class EditModel : PageModel
 	{
 
