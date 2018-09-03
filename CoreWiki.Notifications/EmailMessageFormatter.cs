@@ -1,5 +1,5 @@
-﻿using CoreWiki.Core.Notifications;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using CoreWiki.Notifications.Abstractions.Notifications;
 
 namespace CoreWiki.Notifications
 {

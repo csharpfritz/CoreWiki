@@ -6,7 +6,6 @@ using System;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using CoreWiki.Application.Helpers;
 using MediatR;
 using AutoMapper;
 using CoreWiki.Application.Articles.Managing.Commands;

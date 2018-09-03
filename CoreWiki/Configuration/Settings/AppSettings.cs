@@ -1,5 +1,5 @@
 ﻿using System;
-using CoreWiki.Core.Configuration;
+using CoreWiki.Notifications.Abstractions.Configuration;
 
 namespace CoreWiki.Configuration.Settings
 {

@@ -1,11 +1,11 @@
-﻿using CoreWiki.Core.Notifications;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using System.Reflection;
+using CoreWiki.Notifications.Abstractions.Notifications;
 
 namespace CoreWiki.Notifications
 {

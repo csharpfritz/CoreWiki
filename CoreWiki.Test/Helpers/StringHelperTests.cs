@@ -1,4 +1,4 @@
-using CoreWiki.Application.Helpers;
+using CoreWiki.Application.Common;
 using Xunit;
 
 namespace CoreWiki.Test.Helpers

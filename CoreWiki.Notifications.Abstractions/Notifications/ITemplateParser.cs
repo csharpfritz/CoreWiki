@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.ViewEngines;
 
-namespace CoreWiki.Core.Notifications
+namespace CoreWiki.Notifications.Abstractions.Notifications
 {
 	public interface ITemplateParser
 	{

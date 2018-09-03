@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using CoreWiki.Data.EntityFramework.Security;
-using CoreWiki.Core.Notifications;
+using CoreWiki.Notifications.Abstractions.Notifications;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;

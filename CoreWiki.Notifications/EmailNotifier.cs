@@ -1,11 +1,11 @@
-﻿using CoreWiki.Core.Configuration;
-using CoreWiki.Core.Notifications;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using SendGrid;
 using SendGrid.Helpers.Mail;
 using System.Net;
 using System.Threading.Tasks;
+using CoreWiki.Notifications.Abstractions.Configuration;
+using CoreWiki.Notifications.Abstractions.Notifications;
 
 namespace CoreWiki.Notifications
 {

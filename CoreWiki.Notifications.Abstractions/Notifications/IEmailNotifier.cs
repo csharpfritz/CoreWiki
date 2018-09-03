@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace CoreWiki.Core.Notifications
+namespace CoreWiki.Notifications.Abstractions.Notifications
 {
 	public interface IEmailNotifier
     {

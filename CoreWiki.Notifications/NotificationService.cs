@@ -1,11 +1,11 @@
 ﻿using System;
-using CoreWiki.Core.Configuration;
-using CoreWiki.Core.Notifications;
 using CoreWiki.Notifications.Models;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
+using CoreWiki.Notifications.Abstractions.Configuration;
+using CoreWiki.Notifications.Abstractions.Notifications;
 
 namespace CoreWiki.Notifications
 {

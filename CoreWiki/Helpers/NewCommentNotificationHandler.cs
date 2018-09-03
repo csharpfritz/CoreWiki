@@ -1,8 +1,8 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using CoreWiki.Application.Articles.Reading.Events;
-using CoreWiki.Core.Notifications;
 using CoreWiki.Data.EntityFramework.Security;
+using CoreWiki.Notifications.Abstractions.Notifications;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 
