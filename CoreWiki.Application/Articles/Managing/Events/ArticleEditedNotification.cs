@@ -1,8 +1,7 @@
-﻿using System;
-using CoreWiki.Core.Domain;
+﻿using CoreWiki.Core.Domain;
 using MediatR;
 
-namespace CoreWiki.Application.Articles.Notifications
+namespace CoreWiki.Application.Articles.Managing.Events
 {
 	public class ArticleEditedNotification: INotification
 	{

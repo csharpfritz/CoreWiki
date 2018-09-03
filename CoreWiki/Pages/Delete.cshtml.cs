@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 using MediatR;
 using AutoMapper;
 using CoreWiki.Application.Articles.Managing.Commands;
+using CoreWiki.Application.Articles.Managing.Events;
 using CoreWiki.Application.Articles.Managing.Queries;
-using CoreWiki.Application.Articles.Notifications;
 using CoreWiki.Application.Helpers;
 
 namespace CoreWiki.Pages

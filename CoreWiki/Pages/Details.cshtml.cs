@@ -10,9 +10,9 @@ using System.Threading.Tasks;
 using CoreWiki.Core.Notifications;
 using MediatR;
 using AutoMapper;
-using CoreWiki.Application.Articles.Notifications;
 using System.Threading;
 using CoreWiki.Application.Articles.Reading.Commands;
+using CoreWiki.Application.Articles.Reading.Events;
 using CoreWiki.Application.Articles.Reading.Queries;
 using CoreWiki.Application.Helpers;
 

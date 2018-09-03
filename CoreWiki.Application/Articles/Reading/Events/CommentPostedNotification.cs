@@ -1,9 +1,7 @@
-﻿using System.Threading;
-using System.Threading.Tasks;
-using CoreWiki.Core.Domain;
+﻿using CoreWiki.Core.Domain;
 using MediatR;
 
-namespace CoreWiki.Application.Articles.Notifications
+namespace CoreWiki.Application.Articles.Reading.Events
 {
 	public class CommentPostedNotification : INotification
 	{
