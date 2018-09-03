@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using AutoMapper;
+﻿using AutoMapper;
 using CoreWiki.Configuration.Startup;
 using Xunit;
 
-namespace CoreWiki.Test.Helpers
+namespace CoreWiki.Test.Website
 {
 	public class CoreWikiWebsiteProfileTests
 	{

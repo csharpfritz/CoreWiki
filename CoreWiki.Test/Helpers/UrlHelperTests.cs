@@ -1,10 +1,7 @@
-using System;
 using CoreWiki.Application.Helpers;
-using CoreWiki.Helpers;
-using CoreWiki.Pages;
 using Xunit;
 
-namespace CoreWiki.Test
+namespace CoreWiki.Test.Helpers
 {
 	public class UrlHelperTests
 	{

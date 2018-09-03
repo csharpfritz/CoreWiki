@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Runtime.Serialization;
-using System.Text;
 
-namespace CoreWiki.Application.Articles.Exceptions
+namespace CoreWiki.Application.Articles.Managing.Exceptions
 {
 	[Serializable]
 	public class InvalidTopicException : Exception

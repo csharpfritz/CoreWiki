@@ -2,9 +2,9 @@
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
-using CoreWiki.Application.Articles.Commands;
-using CoreWiki.Application.Articles.Exceptions;
 using CoreWiki.Application.Articles.Reading.Dto;
+using CoreWiki.Application.Articles.Reading.Exceptions;
+using CoreWiki.Application.Common;
 using MediatR;
 
 namespace CoreWiki.Application.Articles.Reading.Commands

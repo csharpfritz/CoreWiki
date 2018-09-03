@@ -1,15 +1,15 @@
-﻿using CoreWiki.Pages;
+﻿using System.Threading;
+using System.Threading.Tasks;
+using CoreWiki.Application.Articles.Managing.Dto;
+using CoreWiki.Application.Articles.Managing.Queries;
+using CoreWiki.Pages;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging.Abstractions;
 using Moq;
-using System.Threading;
-using System.Threading.Tasks;
-using CoreWiki.Application.Articles.Managing.Dto;
-using CoreWiki.Application.Articles.Managing.Queries;
 using Xunit;
 
-namespace CoreWiki.Test.Pages.Create
+namespace CoreWiki.Test.Website.Pages.Create
 {
 	public class OnGet : BaseFixture
 	{

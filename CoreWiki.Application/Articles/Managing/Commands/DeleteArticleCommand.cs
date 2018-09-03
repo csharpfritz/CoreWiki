@@ -1,4 +1,4 @@
-﻿using CoreWiki.Application.Articles.Commands;
+﻿using CoreWiki.Application.Common;
 using MediatR;
 
 namespace CoreWiki.Application.Articles.Managing.Commands

@@ -1,17 +1,17 @@
-﻿using AutoMapper;
+﻿using System;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using AutoMapper;
+using CoreWiki.Application.Articles.Reading.Dto;
+using CoreWiki.Application.Articles.Reading.Queries;
 using CoreWiki.Configuration.Startup;
 using CoreWiki.Pages;
 using MediatR;
 using Moq;
-using System;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using CoreWiki.Application.Articles.Reading.Dto;
-using CoreWiki.Application.Articles.Reading.Queries;
 using Xunit;
 
-namespace CoreWiki.Test.Pages.Details
+namespace CoreWiki.Test.Website.Pages.Details
 {
 	public class OnGet
 	{

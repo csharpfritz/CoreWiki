@@ -14,9 +14,9 @@ namespace CoreWiki.Notifications
 		private readonly EmailNotifications _configuration;
 		private readonly ILogger _logger;
 
-		public EmailNotifier(IOptionsSnapshot<AppSettings> appSettings, ILoggerFactory loggerFactory)
+		public EmailNotifier(IOptionsSnapshot<EmailNotifications> appSettings, ILoggerFactory loggerFactory)
 		{
-			_configuration = appSettings.Value.EmailNotifications;
+			_configuration = appSettings.Value;
 			_logger = loggerFactory.CreateLogger<EmailNotifier>();
 		}
 

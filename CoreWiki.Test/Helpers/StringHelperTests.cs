@@ -1,9 +1,7 @@
-using System;
 using CoreWiki.Application.Helpers;
-using CoreWiki.Helpers;
 using Xunit;
 
-namespace CoreWiki.Test
+namespace CoreWiki.Test.Helpers
 {
     public class StringHelperTests
     {

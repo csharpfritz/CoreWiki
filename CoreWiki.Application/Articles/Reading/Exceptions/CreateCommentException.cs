@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace CoreWiki.Application.Articles.Exceptions
+namespace CoreWiki.Application.Articles.Reading.Exceptions
 {
 	[Serializable]
 	internal class CreateCommentException : Exception

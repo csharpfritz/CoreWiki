@@ -1,17 +1,17 @@
 ﻿using AutoMapper;
-using CoreWiki.Application.Articles.Reading;
+using CoreWiki.Application.Articles.Managing;
 using Xunit;
 
-namespace CoreWiki.Test.Helpers
+namespace CoreWiki.Test.Application.Managing
 {
-	public class ArticleReadingProfileTests
+	public class ArticleManagingProfileTests
 	{
 		private readonly IMapper _mapper;
 		private readonly MapperConfiguration _mapperConfiguration;
 
-		public ArticleReadingProfileTests()
+		public ArticleManagingProfileTests()
 		{
-			_mapperConfiguration = new MapperConfiguration(cfg => cfg.AddProfile<ArticleReadingProfile>());
+			_mapperConfiguration = new MapperConfiguration(cfg => cfg.AddProfile<ArticleManagingProfile>());
 			_mapper = _mapperConfiguration.CreateMapper();
 		}
 

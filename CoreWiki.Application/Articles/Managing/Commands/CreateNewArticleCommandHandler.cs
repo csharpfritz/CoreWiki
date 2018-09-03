@@ -2,8 +2,8 @@
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
-using CoreWiki.Application.Articles.Commands;
-using CoreWiki.Application.Articles.Exceptions;
+using CoreWiki.Application.Articles.Managing.Exceptions;
+using CoreWiki.Application.Common;
 using CoreWiki.Core.Domain;
 using MediatR;
 

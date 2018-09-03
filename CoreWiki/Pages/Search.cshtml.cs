@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Linq;
 using System.Threading.Tasks;
 using CoreWiki.Application.Articles.Reading.Queries;
+using CoreWiki.Application.Articles.Search.Queries;
 using MediatR;
 
 namespace CoreWiki.Pages
@@ -34,7 +35,7 @@ namespace CoreWiki.Pages
 			var result = await _mediator.Send(qry);
 
 			//todo: use automapper
-			SearchResult = new SearchResult<ArticleSummary>()
+			SearchResult = new SearchResult<ArticleSummary>
 			{
 				Query = result.Query,
 				TotalResults = result.TotalResults,

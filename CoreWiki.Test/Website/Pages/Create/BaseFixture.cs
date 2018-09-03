@@ -1,14 +1,9 @@
-﻿using CoreWiki.Core.Domain;
+﻿using System;
 using CoreWiki.Pages;
 using MediatR;
-using Microsoft.Extensions.Logging.Abstractions;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace CoreWiki.Test.Pages.Create
+namespace CoreWiki.Test.Website.Pages.Create
 {
 	public abstract class BaseFixture
 	{

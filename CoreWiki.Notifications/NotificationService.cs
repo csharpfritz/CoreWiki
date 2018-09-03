@@ -13,13 +13,13 @@ namespace CoreWiki.Notifications
 	{
 		private readonly IEmailMessageFormatter _emailMessageFormatter;
 		private readonly IEmailNotifier _emailNotifier;
-		private readonly AppSettings _appSettings;
+		private readonly EmailNotifications _appSettings;
 		private readonly ILogger<NotificationService> _logger;
 
 		public NotificationService(
 			IEmailMessageFormatter emailMessageFormatter,
 			IEmailNotifier emailNotifier,
-			IOptionsSnapshot<AppSettings> appSettings,
+			IOptionsSnapshot<EmailNotifications> appSettings,
 			ILoggerFactory loggerFactory)
 		{
 			_emailMessageFormatter = emailMessageFormatter;

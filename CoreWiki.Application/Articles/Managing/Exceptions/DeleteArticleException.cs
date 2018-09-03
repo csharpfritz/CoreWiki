@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace CoreWiki.Application.Articles.Exceptions
+namespace CoreWiki.Application.Articles.Managing.Exceptions
 {
 	[Serializable]
 	internal class DeleteArticleException : Exception

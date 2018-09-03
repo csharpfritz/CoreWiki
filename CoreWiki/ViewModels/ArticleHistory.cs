@@ -9,13 +9,6 @@ namespace CoreWiki.ViewModels
 		public int Version { get; set; }
 		public string AuthorName { get; set; }
 		public Instant Published { get; set; }
-		public IReadOnlyCollection<ArticleHistoryDetailDTO> History { get; set; }
-	}
-
-	public class ArticleHistoryDetailDTO
-	{
-		public int Version { get; set; }
-		public string AuthorName { get; set; }
-		public Instant Published { get; set; }
+		public IReadOnlyCollection<ArticleHistoryDetail> History { get; set; }
 	}
 }

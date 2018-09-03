@@ -15,7 +15,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CoreWiki.Core\CoreWiki.Core.csproj" />
     <ProjectReference Include="..\CoreWiki.Notifications.Abstractions\CoreWiki.Notifications.Abstractions.csproj" />
   </ItemGroup>
 

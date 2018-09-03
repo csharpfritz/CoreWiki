@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.Serialization;
 
-namespace CoreWiki.Application.Articles.Exceptions
+namespace CoreWiki.Application.Articles.Managing.Exceptions
 {
 	[Serializable]
 	public class NoContentChangedException : Exception

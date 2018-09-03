@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace CoreWiki.Application.Articles.Commands
+namespace CoreWiki.Application.Common
 {
 	public class CommandResult
 	{

@@ -47,7 +47,7 @@ namespace CoreWiki.Pages
 			//todo: use automapper
 			var histories = (
 				from history in article.History
-				select new ArticleHistoryDetailDTO
+				select new ArticleHistoryDetail
 				{
 					AuthorName = history.AuthorName,
 					Version = history.Version,
@@ -78,7 +78,7 @@ namespace CoreWiki.Pages
 				.OrderBy(h => h.Version)
 				.ToArray();
 
-			this.DiffModel = new SideBySideDiffBuilder(new DiffPlex.Differ())
+			DiffModel = new SideBySideDiffBuilder(new DiffPlex.Differ())
 				.BuildDiffModel(histories[0].Content ?? "", histories[1].Content ?? "");
 
 			Article = new ArticleHistory

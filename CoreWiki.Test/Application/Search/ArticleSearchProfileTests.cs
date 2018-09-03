@@ -1,17 +1,17 @@
 ﻿using AutoMapper;
-using CoreWiki.Application.Articles.Managing;
+using CoreWiki.Application.Articles.Search;
 using Xunit;
 
-namespace CoreWiki.Test.Helpers
+namespace CoreWiki.Test.Application.Search
 {
-	public class ArticleManagingProfileTests
+	public class ArticleSearchProfileTests
 	{
 		private readonly IMapper _mapper;
 		private readonly MapperConfiguration _mapperConfiguration;
 
-		public ArticleManagingProfileTests()
+		public ArticleSearchProfileTests()
 		{
-			_mapperConfiguration = new MapperConfiguration(cfg => cfg.AddProfile<ArticleManagingProfile>());
+			_mapperConfiguration = new MapperConfiguration(cfg => cfg.AddProfile<SearchArticleProfile>());
 			_mapper = _mapperConfiguration.CreateMapper();
 		}
 

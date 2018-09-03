@@ -1,6 +1,5 @@
-using System.Threading.Tasks;
+using CoreWiki.Configuration.Settings;
 using CoreWiki.Configuration.Startup;
-using CoreWiki.Core.Configuration;
 using CoreWiki.Data.EntityFramework.Security;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -13,7 +12,8 @@ namespace CoreWiki
 {
 	public class Startup
 	{
-		public Startup(IConfiguration configuration, IHostingEnvironment hostingEnvironment)
+
+		public Startup(IConfiguration configuration)
 		{
 			Configuration = configuration;
 		}

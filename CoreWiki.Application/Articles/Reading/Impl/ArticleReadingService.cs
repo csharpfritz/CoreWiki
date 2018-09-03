@@ -1,6 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using AutoMapper;
 using CoreWiki.Application.Articles.Reading.Dto;
@@ -14,8 +12,6 @@ namespace CoreWiki.Application.Articles.Reading.Impl
 {
 	public class ArticleReadingService: IArticleReadingService
 	{
-		private static readonly string articleLinksPattern = @"(\[[\w\s.\-_:;\!\?]*[\]][\(])((?!(http|https))[\w\s\-_]*)([\)])";
-
 		private readonly IArticleRepository _repository;
 		private readonly ISlugHistoryRepository _slugHistoryRepository;
 		private readonly ICommentRepository _commentRepository;
@@ -53,38 +49,6 @@ namespace CoreWiki.Application.Articles.Reading.Impl
 			return _mapper.Map<SlugHistoryDto>(await _slugHistoryRepository.GetSlugHistoryWithArticle(slug));
 		}
 
-		public async Task<IList<string>> GetArticlesToCreate(string slug)
-		{
-			var articlesToCreate = new List<string>();
-			var thisArticle = await GetArticleBySlug(slug);
-
-			if (string.IsNullOrWhiteSpace(thisArticle.Content))
-			{
-				return articlesToCreate.Distinct().ToList();
-			}
-
-			foreach (var link in FindWikiArticleLinks(thisArticle.Content))
-			{
-				// Normalise the potential new wiki link into our slug format
-				var newSlug = link;
-
-				// Does the slug already exist in the database?
-				if (!await IsTopicAvailable(slug, thisArticle.Id))
-				{
-					articlesToCreate.Add(slug);
-				}
-			}
-
-			return articlesToCreate.Distinct().ToList();
-
-			IEnumerable<string> FindWikiArticleLinks(string content)
-			{
-				return Regex.Matches(content, articleLinksPattern)
-					.Select(match => match.Groups[2].Value)
-					.ToArray();
-			}
-		}
-
 		public async Task CreateComment(CreateCommentDto commentDto)
 		{
 			var comment = _mapper.Map<Comment>(commentDto);
@@ -107,6 +71,11 @@ namespace CoreWiki.Application.Articles.Reading.Impl
 		public async Task<List<ArticleReadingDto>> GetLatestArticles(int numOfArticlesToGet)
 		{
 			return _mapper.Map<List<ArticleReadingDto>>(await _repository.GetLatestArticles(numOfArticlesToGet));
+		}
+
+		public Task IncrementViewCount(string slug)
+		{
+			return _repository.IncrementViewCount(slug);
 		}
 	}
 }

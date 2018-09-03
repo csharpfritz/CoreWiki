@@ -2,8 +2,6 @@
 using System.Threading;
 using System.Threading.Tasks;
 using CoreWiki.Application.Articles.Reading.Dto;
-using CoreWiki.Application.Articles.Search;
-using CoreWiki.Core.Domain;
 using MediatR;
 
 namespace CoreWiki.Application.Articles.Reading.Queries
@@ -14,17 +12,14 @@ namespace CoreWiki.Application.Articles.Reading.Queries
 			IRequestHandler<GetIsTopicAvailableQuery, bool>,
 			IRequestHandler<GetSlugHistoryQuery, SlugHistoryDto>,
 			IRequestHandler<GetArticleWithHistoriesBySlugQuery, ArticleReadingDto>,
-			IRequestHandler<GetLatestArticlesQuery, List<ArticleReadingDto>>,
-			IRequestHandler<SearchArticlesQuery, SearchResult<ArticleReadingDto>>
+			IRequestHandler<GetLatestArticlesQuery, List<ArticleReadingDto>>
 	{
 
 		private readonly IArticleReadingService _articleReadingService;
-		private readonly IArticlesSearchEngine _articlesSearchEngine;
 
-		public GetArticleHandler(IArticleReadingService articleReadingService, IArticlesSearchEngine articlesSearchEngine)
+		public GetArticleHandler(IArticleReadingService articleReadingService)
 		{
 			_articleReadingService = articleReadingService;
-			_articlesSearchEngine = articlesSearchEngine;
 		}
 
 		public Task<ArticleReadingDto> Handle(GetArticleQuery request, CancellationToken cancellationToken)
@@ -55,11 +50,6 @@ namespace CoreWiki.Application.Articles.Reading.Queries
 		public Task<List<ArticleReadingDto>> Handle(GetLatestArticlesQuery request, CancellationToken cancellationToken)
 		{
 			return _articleReadingService.GetLatestArticles(request.NumOfArticlesToGet);
-		}
-
-		public Task<SearchResult<ArticleReadingDto>> Handle(SearchArticlesQuery request, CancellationToken cancellationToken)
-		{
-			return _articlesSearchEngine.SearchAsync(request.Query, request.PageNumber, request.ResultsPerPage);
 		}
 	}
 }

@@ -1,7 +1,6 @@
 ﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using CoreWiki.Application.Articles.Reading;
 using MediatR;
 
 namespace CoreWiki.Application.Articles.Managing.Queries
@@ -9,9 +8,9 @@ namespace CoreWiki.Application.Articles.Managing.Queries
 
 	public class GetArticlesToCreateFromArticleHandler : IRequestHandler<GetArticlesToCreateFromArticleQuery, string[]>
 	{
-		private readonly IArticleReadingService _articleReadingService;
+		private readonly IArticleManagementService _articleReadingService;
 
-		public GetArticlesToCreateFromArticleHandler(IArticleReadingService articleReadingService)
+		public GetArticlesToCreateFromArticleHandler(IArticleManagementService articleReadingService)
 		{
 			_articleReadingService = articleReadingService;
 		}

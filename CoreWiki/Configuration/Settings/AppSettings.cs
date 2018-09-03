@@ -1,6 +1,7 @@
 ﻿using System;
+using CoreWiki.Core.Configuration;
 
-namespace CoreWiki.Core.Configuration
+namespace CoreWiki.Configuration.Settings
 {
 	public class AppSettings
 	{

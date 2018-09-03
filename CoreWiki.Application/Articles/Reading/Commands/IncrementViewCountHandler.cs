@@ -1,25 +1,22 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using CoreWiki.Data.Abstractions.Interfaces;
 using MediatR;
-
-//TODO gio pass repo
 
 namespace CoreWiki.Application.Articles.Reading.Commands
 {
 	public class IncrementViewCountHandler : IRequestHandler<IncrementViewCountCommand>
 	{
-		private readonly IArticleRepository _repository;
+		private readonly IArticleReadingService _service;
 
-		public IncrementViewCountHandler(IArticleRepository repository)
+		public IncrementViewCountHandler(IArticleReadingService service)
 		{
-			_repository = repository;
+			_service = service;
 		}
 
 		public async Task<Unit> Handle(IncrementViewCountCommand request, CancellationToken cancellationToken)
 		{
 
-			await _repository.IncrementViewCount(request.Slug);
+			await _service.IncrementViewCount(request.Slug);
 			return Unit.Value;
 
 		}

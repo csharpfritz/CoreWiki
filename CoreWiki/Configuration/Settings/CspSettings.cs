@@ -1,4 +1,4 @@
-﻿namespace CoreWiki.Core.Configuration
+﻿namespace CoreWiki.Configuration.Settings
 {
 	public class CspSettings
 	{

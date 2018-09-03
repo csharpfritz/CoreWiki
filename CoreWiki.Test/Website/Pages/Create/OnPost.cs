@@ -1,17 +1,16 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using CoreWiki.Application.Articles.Commands;
 using CoreWiki.Application.Articles.Managing.Commands;
 using CoreWiki.Application.Articles.Managing.Queries;
-//using CoreWiki.Application.Articles.Reading.Queries;
-using CoreWiki.ViewModels;
+using CoreWiki.Application.Common;
 using CoreWiki.Pages;
+using CoreWiki.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging.Abstractions;
 using Moq;
 using Xunit;
 
-namespace CoreWiki.Test.Pages.Create
+namespace CoreWiki.Test.Website.Pages.Create
 {
 	public class OnPost : BaseFixture
 	{
