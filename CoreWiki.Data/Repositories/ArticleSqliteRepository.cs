@@ -19,31 +19,12 @@ namespace CoreWiki.Data.EntityFramework.Repositories
 		public ApplicationDbContext Context { get; }
 
 
-		public async Task<IEnumerable<Article>> GetAllArticlesPaged(int pageSize, int pageNumber)
-		{
-			var articles = await Context.Articles
-				.AsNoTracking()
-				.OrderBy(a => a.Topic)
-				.Skip((pageNumber - 1) * pageSize)
-				.Take(pageSize)
-				.ToArrayAsync();
-
-				return articles.Select(a => a.ToDomain());
-		}
-
-
 		public async Task<List<Article>> GetLatestArticles(int numOfArticlesToGet)
 		{
 			var articles = await Context.Articles
 				.AsNoTracking()
 				.OrderByDescending(a => a.Published).Take(numOfArticlesToGet).ToListAsync();
 			return articles.Select(a => a.ToDomain()).ToList();
-		}
-
-
-		public async Task<int> GetTotalPagesOfArticles(int pageSize)
-		{
-			return (int)Math.Ceiling(await Context.Articles.CountAsync() / (double)pageSize);
 		}
 
 
@@ -55,17 +36,6 @@ namespace CoreWiki.Data.EntityFramework.Repositories
 				.SingleOrDefaultAsync(m => m.Slug == articleSlug.ToLower());
 			return article?.ToDomain();
 		}
-
-
-		public async Task<Article> GetArticleWithCommentsById(int articleId)
-		{
-			var article = await Context.Articles
-				.AsNoTracking()
-				.Include(a => a.Comments)
-				.SingleOrDefaultAsync(a => a.Id == articleId);
-			return article.ToDomain();
-		}
-
 
 		public async Task<Article> GetArticleWithHistoriesBySlug(string articleSlug)
 		{

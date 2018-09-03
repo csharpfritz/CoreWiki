@@ -10,17 +10,11 @@ namespace CoreWiki.Data.Abstractions.Interfaces
 
 		Task<Article> GetArticleBySlug(string articleSlug);
 
-		Task<Article> GetArticleWithCommentsById(int articleId);
-
 		Task<Article> GetArticleWithHistoriesBySlug(string articleSlug);
 
 		Task<Article> GetArticleById(int articleId);
 
-		Task<IEnumerable<Article>> GetAllArticlesPaged(int pageSize, int pageNumber);
-
 		Task<List<Article>> GetLatestArticles(int numOfArticlesToGet);
-
-		Task<int> GetTotalPagesOfArticles(int pageSize);
 
 		Task<Article> CreateArticleAndHistory(Article article);
 
