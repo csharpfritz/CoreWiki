@@ -57,16 +57,6 @@ namespace CoreWiki.Core.Domain
 
 		private static readonly Regex reSlugCharacters = new Regex(@"([\s,.//\\-_=])+");
 
-		public static string SlugToTopic(string slug)
-		{
-			if (string.IsNullOrEmpty(slug))
-			{
-				return "";
-			}
-
-			return RemoveHyphens(ToTitleCase(slug));
-		}
-
 		public static string URLFriendly(string title)
 		{
 
@@ -106,28 +96,6 @@ namespace CoreWiki.Core.Domain
 			}
 
 			return stringBuilder.ToString().Normalize(NormalizationForm.FormC);
-		}
-
-		/// <summary>
-		/// Returns the string supplied in title case
-		/// </summary>
-		/// <param name="content">The string we wish to change to title case.</param>
-		/// <param name="culture">The current user's culture, defaulting to en-US.</param>
-		/// <returns>A string in title case according to the supplied culture.</returns>
-		public static string ToTitleCase(string content, string culture = "en-US")
-		{
-			var textInfo = new CultureInfo(culture, false).TextInfo;
-			return textInfo.ToTitleCase(content);
-		}
-		/// <summary>
-		/// Returns the string supplied in title case
-		/// </summary>
-		/// <param name="content">The string we wish to change to title case.</param>
-		/// <param name="culture">The current user's culture, defaulting to en-US.</param>
-		/// <returns>A string in title case according to the supplied culture.</returns>
-		public static string RemoveHyphens(string content)
-		{
-			return content.Replace("-", " ");
 		}
 
 	}

@@ -3,7 +3,7 @@ using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace CoreWiki.Application.Helpers
+namespace CoreWiki.Application.Common
 {
 	public class UrlHelpers
 	{

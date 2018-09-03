@@ -1,3 +1,4 @@
+using CoreWiki.Application.Common;
 using CoreWiki.Application.Helpers;
 using Xunit;
 
@@ -15,7 +16,7 @@ namespace CoreWiki.Test.Helpers
 		[InlineData("él-sofá", "Él Sofá")]
 		public void SlugShouldBeATopic(string slug, string expected_topic)
 		{
-			var actual_topic = Core.Domain.Article.SlugToTopic(slug);
+			var actual_topic = UrlHelpers.SlugToTopic(slug);
 			Assert.Equal(expected_topic, actual_topic);
 		}
 

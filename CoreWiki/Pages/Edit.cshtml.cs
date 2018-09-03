@@ -12,6 +12,7 @@ using AutoMapper;
 using CoreWiki.Application.Articles.Managing.Commands;
 using CoreWiki.Application.Articles.Managing.Exceptions;
 using CoreWiki.Application.Articles.Managing.Queries;
+using CoreWiki.Application.Common;
 using Microsoft.AspNetCore.Authorization;
 using CoreWiki.Areas.Identity;
 

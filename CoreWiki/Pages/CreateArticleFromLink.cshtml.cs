@@ -12,6 +12,7 @@ using System;
 using System.Security.Claims;
 using CoreWiki.Application.Articles.Managing.Commands;
 using CoreWiki.Application.Articles.Managing.Queries;
+using CoreWiki.Application.Common;
 
 namespace CoreWiki.Pages
 {
