@@ -12,10 +12,13 @@ using AutoMapper;
 using CoreWiki.Application.Articles.Exceptions;
 using CoreWiki.Application.Articles.Managing.Commands;
 using CoreWiki.Application.Articles.Managing.Queries;
+using Microsoft.AspNetCore.Authorization;
+using CoreWiki.Areas.Identity;
 
 namespace CoreWiki.Pages
 {
 
+	[Authorize(Policy = PolicyConstants.CanEditArticles)]
 	public class EditModel : PageModel
 	{
 
