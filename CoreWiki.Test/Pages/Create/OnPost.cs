@@ -1,27 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Security.Claims;
-using System.Security.Principal;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using CoreWiki.Application.Articles.Commands;
 using CoreWiki.Application.Articles.Queries;
-using CoreWiki.Core.Domain;
-using CoreWiki.Core.Interfaces;
 using CoreWiki.ViewModels;
 using CoreWiki.Pages;
-using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.ViewFeatures;
-using Microsoft.AspNetCore.Routing;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using Moq;
-using NodaTime;
 using Xunit;
 
 namespace CoreWiki.Test.Pages.Create
@@ -43,12 +28,13 @@ namespace CoreWiki.Test.Pages.Create
 				content: _content,
 				authorName: username);
 
-			_articleRepo.Setup(repo => repo.IsTopicAvailable(_expectedSlug, It.IsAny<int>()))
-				.Returns(() => Task.FromResult(false));
 			_mediator.Setup(mediator => mediator.Send(It.IsAny<CreateNewArticleCommand>(), It.IsAny<CancellationToken>()))
 				.Returns(() => Task.FromResult(new CommandResult {Successful=true }));
 
-			_sut = new CreateModel(_mediator.Object, _articleRepo.Object, new NullLoggerFactory())
+			_mediator.Setup(mediator => mediator.Send(It.IsAny<GetIsTopicAvailableQuery>(), It.IsAny<CancellationToken>()))
+				.Returns(() => Task.FromResult(false));
+
+			_sut = new CreateModel(_mediator.Object, new NullLoggerFactory())
 			{
 				Article = new ArticleCreate
 				{
@@ -63,7 +49,12 @@ namespace CoreWiki.Test.Pages.Create
 
 			Assert.IsType<RedirectResult>(result);
 			Assert.Equal($"/wiki/{_expectedSlug}", ((RedirectResult)result).Url);
-			_articleRepo.Verify(repository => repository.IsTopicAvailable(It.Is<string>(slug => slug.Equals(_expectedSlug)), It.IsAny<int>()), Times.Once);
+			_mediator.Verify(m => m.Send(
+				It.Is<GetIsTopicAvailableQuery>(request =>
+					request.ArticleId.Equals(0) &&
+					request.Slug.Equals(_expectedSlug)),
+				It.Is<CancellationToken>(token => token.Equals(CancellationToken.None))), Times.Once
+				);
 			_mediator.Verify(m => m.Send(
 				It.Is<CreateNewArticleCommand>(request =>
 					request.Slug.Equals(expectedCommand.Slug) &&

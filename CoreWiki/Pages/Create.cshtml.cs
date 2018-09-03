@@ -1,20 +1,15 @@
 using CoreWiki.Areas.Identity;
-using CoreWiki.Core.Interfaces;
 using CoreWiki.ViewModels;
-using CoreWiki.Application;
 using CoreWiki.Application.Articles.Commands;
-using CoreWiki.Helpers;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
-using NodaTime;
 using System;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using CoreWiki.Core.Domain;
 using System.Globalization;
 using CoreWiki.Application.Articles.Queries;
 using CoreWiki.Application.Helpers;
@@ -26,36 +21,33 @@ namespace CoreWiki.Pages
 	public class CreateModel : PageModel
 	{
 		private readonly IMediator _mediator;
-		private readonly IArticleRepository _articleRepo;
-		public ILogger Logger { get; private set; }
+		private readonly ILogger _logger;
 
-		public CreateModel(IMediator mediator, IArticleRepository articleRepo, ILoggerFactory loggerFactory)
+		public CreateModel(IMediator mediator, ILoggerFactory loggerFactory)
 		{
 			_mediator = mediator;
-			_articleRepo = articleRepo;
-			this.Logger = loggerFactory.CreateLogger("CreatePage");
+			_logger = loggerFactory.CreateLogger("CreatePage");
 		}
 
 		public async Task<IActionResult> OnGetAsync(string slug = "")
 		{
-
-			if (!string.IsNullOrEmpty(slug))
+			if (string.IsNullOrEmpty(slug))
 			{
+				return Page();
+			}
 
-				var request = new GetArticle(slug);
-				var result = await _mediator.Send(request);
-				if (result == null)
+			var request = new GetArticleQuery(slug);
+			var result = await _mediator.Send(request);
+			if (result == null)
+			{
+				Article = new ArticleCreate
 				{
-					Article = new ArticleCreate
-					{
-						Topic = SlugToTopic(slug)
-					};
-				}
-				else
-				{
-					return Redirect($"/{slug}/Edit");
-				}
-
+					Topic = UrlHelpers.SlugToTopic(slug)
+				};
+			}
+			else
+			{
+				return Redirect($"/{slug}/Edit");
 			}
 
 			return Page();
@@ -75,9 +67,10 @@ namespace CoreWiki.Pages
 
 			if (!ModelState.IsValid) { return Page(); }
 
-			Logger.LogWarning($"Creating page with slug: {slug}");
+			_logger.LogWarning($"Creating page with slug: {slug}");
 
-			if (await _articleRepo.IsTopicAvailable(slug, 0))
+			var isTopicAvailable = new GetIsTopicAvailableQuery {Slug = slug, ArticleId = 0};
+			if (await _mediator.Send(isTopicAvailable))
 			{
 				ModelState.AddModelError("Article.Topic", "This Title already exists.");
 				return Page();
@@ -104,20 +97,6 @@ namespace CoreWiki.Pages
 			}
 
 			return Redirect($"/wiki/{slug}");
-
-		}
-
-		public static string SlugToTopic(string slug)
-		{
-			if (string.IsNullOrEmpty(slug))
-			{
-				return "";
-			}
-
-			var textInfo = new CultureInfo("en-US", false).TextInfo;
-			var outValue = textInfo.ToTitleCase(slug);
-
-			return outValue.Replace("-", " ");
 
 		}
 	}

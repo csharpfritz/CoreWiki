@@ -1,17 +1,16 @@
-﻿using CoreWiki.Core.Domain;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
+using CoreWiki.Core.Domain;
 
-namespace CoreWiki.Core.Interfaces
+namespace CoreWiki.Data.Abstractions.Interfaces
 {
 	public interface IArticleRepository : IDisposable
 	{
 
 		Task<Article> GetArticleBySlug(string articleSlug);
 
-		Task<Article> GetArticleByComment(Comment comment);
+		Task<Article> GetArticleWithCommentsById(int articleId);
 
 		Task<Article> GetArticleWithHistoriesBySlug(string articleSlug);
 
@@ -25,7 +24,7 @@ namespace CoreWiki.Core.Interfaces
 
 		Task<Article> CreateArticleAndHistory(Article article);
 
-		IQueryable<Article> GetArticlesForSearchQuery(string filteredQuery);
+		(IEnumerable<Article>, int) GetArticlesForSearchQuery(string filteredQuery, int offset, int resultsPerPage);
 
 		Task<bool> IsTopicAvailable(string articleSlug, int articleId);
 

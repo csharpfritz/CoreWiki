@@ -1,19 +1,13 @@
-using CoreWiki.Core.Interfaces;
 using CoreWiki.ViewModels;
 using CoreWiki.Data.EntityFramework.Security;
 using CoreWiki.Helpers;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Extensions.Configuration;
-using NodaTime;
 using System;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using CoreWiki.Core.Notifications;
-using System.Linq;
-using System.Security.Claims;
-using CoreWiki.Core.Domain;
 using MediatR;
 using CoreWiki.Application.Articles.Queries;
 using CoreWiki.Application.Articles.Commands;
@@ -28,8 +22,6 @@ namespace CoreWiki.Pages
 	{
 		private readonly IMediator _mediator;
 		private readonly IMapper _mapper;
-
-		public IEmailSender Notifier { get; }
 
 		public DetailsModel(IMediator mediator, IMapper mapper)
 		{
@@ -46,7 +38,7 @@ namespace CoreWiki.Pages
 		{
 
 			slug = slug ?? UrlHelpers.HomePageSlug;
-			var article = await _mediator.Send(new GetArticle(slug));
+			var article = await _mediator.Send(new GetArticleQuery(slug));
 
 			if (article == null)
 			{
@@ -57,10 +49,7 @@ namespace CoreWiki.Pages
 				{
 					return new RedirectResult($"~/wiki/{historical.Article.Slug}");
 				}
-				else
-				{
-					return new ArticleNotFoundResult(slug);
-				}
+				return new ArticleNotFoundResult(slug);
 			}
 
 			Article = _mapper.Map<ArticleDetails>(article); 
@@ -73,36 +62,38 @@ namespace CoreWiki.Pages
 		private void ManageViewCount(string slug)
 		{
 			var incrementViewCount = (Request.Cookies[slug] == null);
-			if (incrementViewCount)
+			if (!incrementViewCount)
 			{
-				Article.ViewCount++;
-				Response.Cookies.Append(slug, "foo", new Microsoft.AspNetCore.Http.CookieOptions
-				{
-					Expires = DateTime.UtcNow.AddMinutes(5)
-				});
-				_mediator.Send(new IncrementViewCount(slug));
+				return;
 			}
+
+			Article.ViewCount++;
+			Response.Cookies.Append(slug, "foo", new Microsoft.AspNetCore.Http.CookieOptions
+			{
+				Expires = DateTime.UtcNow.AddMinutes(5)
+			});
+			_mediator.Send(new IncrementViewCount(slug));
 		}
 
-		public async Task<IActionResult> OnPostAsync(ViewModels.Comment dto)
+		public async Task<IActionResult> OnPostAsync(Comment model)
 		{
 
-			TryValidateModel(dto);
+			TryValidateModel(model);
 
 			if (!ModelState.IsValid)
 				return Page();
 
-			var article = await _mediator.Send(new GetArticleById(dto.ArticleId));
+			var article = await _mediator.Send(new GetArticleByIdQuery(model.ArticleId));
 
 			if (article == null)
 			{
 				return new ArticleNotFoundResult();
 			}
 
-			var comment = _mapper.Map<Core.Domain.Comment>(dto);
-			comment.AuthorId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+			var commentCmd = _mapper.Map<CreateNewCommentCommand>(model);
+			commentCmd.AuthorId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)); //todo: use automapper resolver
 
-			var result = await _mediator.Send(new CreateNewCommentCommand(article, comment));
+			await _mediator.Send(commentCmd);
 
 			return Redirect($"/wiki/{article.Slug}");
 		}
@@ -123,7 +114,10 @@ namespace CoreWiki.Pages
 		public async Task Handle(CommentPostedNotification notification, CancellationToken cancellationToken)
 		{
 			var author = await _userManager.FindByIdAsync(notification.Article.AuthorId.ToString());
-			await _notificationService.SendNewCommentEmail(author.Email, author.UserName, notification.Comment.DisplayName, notification.Article.Topic, notification.Article.Slug, () => author.CanNotify);
+			if (author != null)
+			{
+				await _notificationService.SendNewCommentEmail(author.Email, author.UserName, notification.Comment.DisplayName, notification.Article.Topic, notification.Article.Slug, () => author.CanNotify);
+			}
 		}
 	}
 }

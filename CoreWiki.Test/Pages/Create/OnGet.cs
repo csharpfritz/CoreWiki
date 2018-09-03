@@ -1,17 +1,13 @@
 ﻿using CoreWiki.Application.Articles.Queries;
 using CoreWiki.Core.Domain;
-using CoreWiki.Core.Interfaces;
 using CoreWiki.Pages;
-using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging.Abstractions;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using CoreWiki.Application.Articles.Services.Dto;
 using Xunit;
 
 namespace CoreWiki.Test.Pages.Create
@@ -23,12 +19,10 @@ namespace CoreWiki.Test.Pages.Create
 
 		public OnGet() : base()
 		{
-
-			_articleRepo.Setup(o => o.GetArticleBySlug(_existingArticleSlug)).Returns(Task.FromResult(GetExistingArticle()));
-			_sut = new CreateModel(_mediator.Object, _articleRepo.Object, new NullLoggerFactory());
+			_sut = new CreateModel(_mediator.Object, new NullLoggerFactory());
 
 		}
-		protected Article GetExistingArticle() => new Article { Slug = _existingArticleSlug };
+		protected ArticleReadingDto GetExistingArticle() => new ArticleReadingDto { Slug = _existingArticleSlug };
 
 		[Fact]
 		public async Task WithEmptyOrNullSlug_ShouldReturnPageResultWithNullArticle()
@@ -45,7 +39,7 @@ namespace CoreWiki.Test.Pages.Create
 		public async Task WithExistingSlug_ShouldRedirectToArticleEditPage()
 		{
 
-			_mediator.Setup(o => o.Send(It.IsAny<GetArticle>(), default(CancellationToken))).ReturnsAsync(GetExistingArticle());
+			_mediator.Setup(o => o.Send(It.IsAny<GetArticleQuery>(), default(CancellationToken))).ReturnsAsync(GetExistingArticle());
 
 			var result = await _sut.OnGetAsync(_existingArticleSlug);
 			Assert.IsType<RedirectResult>(result);

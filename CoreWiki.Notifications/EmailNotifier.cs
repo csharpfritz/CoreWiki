@@ -4,7 +4,6 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using SendGrid;
 using SendGrid.Helpers.Mail;
-using System;
 using System.Net;
 using System.Threading.Tasks;
 
@@ -28,7 +27,7 @@ namespace CoreWiki.Notifications
 
 		public async Task<bool> SendEmailAsync(string recipientEmail, string recipientName, string subject, string body)
 		{
-            _logger.LogInformation("Sending email message");
+			_logger.LogInformation("Sending email message");
 
 			if (string.IsNullOrWhiteSpace(_configuration.SendGridApiKey))
 			{
@@ -46,19 +45,19 @@ namespace CoreWiki.Notifications
 
 			if (string.IsNullOrWhiteSpace(recipientEmail))
 			{
-			    _logger.LogWarning("Missing recipient email, email message not sent");
+				_logger.LogWarning("Missing recipient email, email message not sent");
 
-			    return false;
-            }
+				return false;
+			}
 
-		    //if (string.IsNullOrWhiteSpace(recipientName))
-		    //{
-		    //    _logger.LogWarning("Missing recipient name, email message not sent");
+			//if (string.IsNullOrWhiteSpace(recipientName))
+			//{
+			//    _logger.LogWarning("Missing recipient name, email message not sent");
 
-		    //    return false;
-		    //}
+			//    return false;
+			//}
 
-            var message = new SendGridMessage();
+			var message = new SendGridMessage();
 			var from = new EmailAddress(_configuration.FromEmailAddress, _configuration.FromName);
 			var to = new EmailAddress(recipientEmail, recipientName);
 

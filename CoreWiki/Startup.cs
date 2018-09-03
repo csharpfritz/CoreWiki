@@ -33,6 +33,7 @@ namespace CoreWiki
 			services.ConfigureScopedServices();
 			services.ConfigureRouting();
 			services.ConfigureLocalisation();
+			services.ConfigureApplicationServices();
 			services.AddMediator();
 		}
 

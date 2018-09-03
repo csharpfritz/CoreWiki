@@ -6,11 +6,10 @@ using CoreWiki.Pages;
 using MediatR;
 using Moq;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using CoreWiki.Application.Articles.Services.Dto;
 using Xunit;
 
 namespace CoreWiki.Test.Pages.Details
@@ -35,7 +34,7 @@ namespace CoreWiki.Test.Pages.Details
 
 			// arrange
 			var rdm = new Random();
-			var expectedComment = new Comment
+			var expectedComment = new CommentDto
 			{
 				AuthorId = Guid.NewGuid(),
 				Content = "This is a comment... NARF",
@@ -43,15 +42,15 @@ namespace CoreWiki.Test.Pages.Details
 				Email = "comments@corewiki.com",
 				Id = rdm.Next(1000, 1000000)
 			};
-			var article = new Article
+			var article = new ArticleReadingDto
 				{
 				Slug = slug,
 				Topic = title,
 				Version = rdm.Next(1,10000),
 				ViewCount = rdm.Next(1,10000),
-				Comments = new Comment[] { expectedComment }
+				Comments = new[] { expectedComment }
 			};
-			_Mediator.Setup(m => m.Send(It.IsAny<GetArticle>(), default(CancellationToken))).ReturnsAsync(article);
+			_Mediator.Setup(m => m.Send(It.IsAny<GetArticleQuery>(), default(CancellationToken))).ReturnsAsync(article);
 
 			// act
 			var sut = new DetailsModel(_Mediator.Object, _Mapper);
@@ -63,7 +62,7 @@ namespace CoreWiki.Test.Pages.Details
 			Assert.Equal(article.Topic, sut.Article.Topic);
 			Assert.Equal(article.ViewCount+1, sut.Article.ViewCount);
 			Assert.Equal(article.Version, sut.Article.Version);
-			Assert.Equal(article.Comments.Count, sut.Article.Comments.Count);
+			Assert.Equal(article.Comments.Length, sut.Article.Comments.Count);
 
 			var actualComment = sut.Article.Comments.FirstOrDefault();
 			Assert.NotNull(actualComment);

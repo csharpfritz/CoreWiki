@@ -1,10 +1,9 @@
 ﻿using MediatR;
-using System.Collections.Generic;
-using System.Text;
+using CoreWiki.Application.Articles.Services.Dto;
 
 namespace CoreWiki.Application.Articles.Queries
 {
-	public class GetSlugHistory : IRequest<Core.Domain.SlugHistory>
+	public class GetSlugHistory : IRequest<SlugHistoryDto>
 	{
 
 		public GetSlugHistory(string historicalSlug)

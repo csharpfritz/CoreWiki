@@ -1,12 +1,8 @@
-﻿using CoreWiki.Core.Interfaces;
-using CoreWiki.Data.EntityFramework.Repositories;
-using CoreWiki.Data.EntityFramework;
+﻿using CoreWiki.Data.EntityFramework.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using CoreWiki.Data.Abstractions.Interfaces;
 
 namespace CoreWiki.Data.EntityFramework
 {
@@ -25,14 +21,13 @@ namespace CoreWiki.Data.EntityFramework
 			services.AddEntityFrameworkSqlite()
 			.AddDbContextPool<ApplicationDbContext>(options =>
 				options.UseSqlite(config.GetConnectionString("CoreWikiData"))
-					.EnableSensitiveDataLogging(true)
+					.EnableSensitiveDataLogging()
 			);
 
 			// db repos
 			services.AddTransient<IArticleRepository, ArticleSqliteRepository>();
 			services.AddTransient<ICommentRepository, CommentSqliteRepository>();
 			services.AddTransient<ISlugHistoryRepository, SlugHistorySqliteRepository>();
-
 			return services;
 
 		}

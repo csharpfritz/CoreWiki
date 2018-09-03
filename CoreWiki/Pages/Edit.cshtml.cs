@@ -1,15 +1,11 @@
-﻿using CoreWiki.Data;
-using CoreWiki.Core.Interfaces;
-using CoreWiki.ViewModels;
+﻿using CoreWiki.ViewModels;
 using CoreWiki.Helpers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using NodaTime;
 using System;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using CoreWiki.Data.EntityFramework;
 using CoreWiki.Application.Helpers;
 using MediatR;
 using AutoMapper;
@@ -23,17 +19,13 @@ namespace CoreWiki.Pages
 	public class EditModel : PageModel
 	{
 
-		private readonly IMediator _Mediator;
-		private readonly IMapper _Mapper;
-
-		private readonly IArticleRepository _Repo;
-		private readonly ISlugHistoryRepository _SlugRepo;
-		private readonly IClock _clock;
+		private readonly IMediator _mediator;
+		private readonly IMapper _mapper;
 
 		public EditModel(IMediator mediator, IMapper mapper)
 		{
-			_Mediator = mediator;
-			_Mapper = mapper;
+			_mediator = mediator;
+			_mapper = mapper;
 		}
 
 		[BindProperty]
@@ -46,14 +38,14 @@ namespace CoreWiki.Pages
 				return NotFound();
 			}
 
-			var article = await _Mediator.Send(new GetArticle(slug));
+			var article = await _mediator.Send(new GetArticleQuery(slug));
 
 			if (article == null)
 			{
 				return new ArticleNotFoundResult();
 			}
 
-			Article = _Mapper.Map<ArticleEdit>(article);
+			Article = _mapper.Map<ArticleEdit>(article);
 
 			return Page();
 
@@ -67,7 +59,7 @@ namespace CoreWiki.Pages
 			}
 
 			var cmd = new EditArticleCommand(Article.Id, Article.Topic, Article.Content, Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)), User.Identity.Name);
-			var result = await _Mediator.Send(cmd);
+			var result = await _mediator.Send(cmd);
 
 			if (result.Exception is InvalidTopicException)
 			{
@@ -78,16 +70,15 @@ namespace CoreWiki.Pages
 				return new ArticleNotFoundResult();
 			}
 
-			var slug = UrlHelpers.URLFriendly(Article.Topic);
-			var query = new GetArticlesToCreateFromArticle(slug);
-			var listOfSlugs = await _Mediator.Send(query);
+			var query = new GetArticlesToCreateFromArticle(UrlHelpers.URLFriendly(Article.Topic));
+			var listOfSlugs = await _mediator.Send(query);
 
 			if (listOfSlugs.Any())
 			{
-				return RedirectToPage("CreateArticleFromLink", new { id = slug });
+				return RedirectToPage("CreateArticleFromLink", new { id = UrlHelpers.URLFriendly(Article.Topic) });
 			}
 
-			return Redirect($"/wiki/{(slug == UrlHelpers.HomePageSlug ? "" : slug)}");
+			return Redirect($"/wiki/{(UrlHelpers.URLFriendly(Article.Topic) == UrlHelpers.HomePageSlug ? "" : UrlHelpers.URLFriendly(Article.Topic))}");
 
 		}
 

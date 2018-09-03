@@ -1,5 +1,4 @@
 ﻿using CoreWiki.Core.Domain;
-using CoreWiki.Core.Interfaces;
 using CoreWiki.Pages;
 using MediatR;
 using Microsoft.Extensions.Logging.Abstractions;
@@ -18,16 +17,12 @@ namespace CoreWiki.Test.Pages.Create
 		protected const string _newArticleTopic = "New Page";
 		protected const string username = "John Doe";
 		protected Guid userId = Guid.NewGuid();
-		protected readonly Mock<IArticleRepository> _articleRepo;
 		protected Mock<IMediator> _mediator;
 		protected CreateModel _sut;
 
 		public BaseFixture()
 		{
-
 			_mediator = new Mock<IMediator>();
-			_articleRepo = new Mock<IArticleRepository>();
-
 		}
 
 	}

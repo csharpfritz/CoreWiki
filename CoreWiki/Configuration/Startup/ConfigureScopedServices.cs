@@ -1,7 +1,6 @@
-﻿using CoreWiki.Core.Interfaces;
-using CoreWiki.Core.Notifications;
+﻿using CoreWiki.Application.Articles.Services;
+using CoreWiki.Application.Articles.Services.Impl;
 using CoreWiki.Notifications;
-using CoreWiki.SearchEngines;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using NodaTime;

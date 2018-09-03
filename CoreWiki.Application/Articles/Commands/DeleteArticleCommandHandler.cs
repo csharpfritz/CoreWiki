@@ -2,21 +2,18 @@
 using System.Threading;
 using System.Threading.Tasks;
 using CoreWiki.Application.Articles.Exceptions;
-using CoreWiki.Application.Articles.Notifications;
-using CoreWiki.Core.Interfaces;
+using CoreWiki.Application.Articles.Services;
 using MediatR;
 
 namespace CoreWiki.Application.Articles.Commands
 {
 	public class DeleteArticleCommandHandler : IRequestHandler<DeleteArticleCommand, CommandResult>
 	{
-		private readonly IArticleRepository _articleRepo;
-		private readonly IMediator _mediator;
+		private readonly IArticleManagementService _articleManagementService;
 
-		public DeleteArticleCommandHandler(IArticleRepository articleRepo, IMediator mediator)
+		public DeleteArticleCommandHandler(IArticleManagementService articleManagementService)
 		{
-			_articleRepo = articleRepo;
-			_mediator = mediator;
+			_articleManagementService = articleManagementService;
 		}
 
 		public async Task<CommandResult> Handle(DeleteArticleCommand request, CancellationToken cancellationToken)
@@ -25,12 +22,7 @@ namespace CoreWiki.Application.Articles.Commands
 
 			try
 			{
-				var article = await _articleRepo.Delete(request.Slug);
-
-				if (article != null)
-				{
-					_mediator.Publish(new ArticleDeletedNotification(article));
-				}
+				await _articleManagementService.Delete(request.Slug);
 			}
 			catch (Exception ex)
 			{
