@@ -1,6 +1,5 @@
 using CoreWiki.Areas.Identity;
 using CoreWiki.ViewModels;
-using CoreWiki.Application.Articles.Commands;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -10,8 +9,8 @@ using System;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using System.Globalization;
-using CoreWiki.Application.Articles.Queries;
+using CoreWiki.Application.Articles.Managing.Commands;
+using CoreWiki.Application.Articles.Managing.Queries;
 using CoreWiki.Application.Helpers;
 
 namespace CoreWiki.Pages
@@ -88,7 +87,7 @@ namespace CoreWiki.Pages
 
 			// TODO: Inspect result to ensure it ran properly
 
-			var query = new GetArticlesToCreateFromArticle(slug);
+			var query = new GetArticlesToCreateFromArticleQuery(slug);
 			var listOfSlugs = await _mediator.Send(query);
 
 			if (listOfSlugs.Any())

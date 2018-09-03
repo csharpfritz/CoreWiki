@@ -1,7 +1,5 @@
 ﻿using AutoMapper;
-using CoreWiki.Application.Articles.Queries;
 using CoreWiki.Configuration.Startup;
-using CoreWiki.Core.Domain;
 using CoreWiki.Pages;
 using MediatR;
 using Moq;
@@ -9,7 +7,8 @@ using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using CoreWiki.Application.Articles.Services.Dto;
+using CoreWiki.Application.Articles.Reading.Dto;
+using CoreWiki.Application.Articles.Reading.Queries;
 using Xunit;
 
 namespace CoreWiki.Test.Pages.Details

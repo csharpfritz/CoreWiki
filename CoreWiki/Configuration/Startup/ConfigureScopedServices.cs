@@ -1,5 +1,5 @@
-﻿using CoreWiki.Application.Articles.Services;
-using CoreWiki.Application.Articles.Services.Impl;
+﻿using CoreWiki.Application.Articles.Search;
+using CoreWiki.Application.Articles.Search.Impl;
 using CoreWiki.Notifications;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;

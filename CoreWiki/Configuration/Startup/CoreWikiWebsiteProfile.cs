@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using CoreWiki.Application.Articles.Commands;
-using CoreWiki.Application.Articles.Services.Dto;
+using CoreWiki.Application.Articles.Reading.Commands;
+using CoreWiki.Application.Articles.Reading.Dto;
 using CoreWiki.ViewModels;
 
 namespace CoreWiki.Configuration.Startup

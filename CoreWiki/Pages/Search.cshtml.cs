@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Linq;
 using System.Threading.Tasks;
-using CoreWiki.Application.Articles.Queries;
+using CoreWiki.Application.Articles.Reading.Queries;
 using MediatR;
 
 namespace CoreWiki.Pages
@@ -28,7 +28,7 @@ namespace CoreWiki.Pages
 			{
 				return Page();
 			}
-			var qry = new SearchArticles(query,
+			var qry = new SearchArticlesQuery(query,
 				pageNumber,
 				ResultsPerPage);
 			var result = await _mediator.Send(qry);
@@ -56,7 +56,7 @@ namespace CoreWiki.Pages
 
 		public async Task<IActionResult> OnGetLatestChangesAsync()
 		{
-			var qry = new GetLatestArticles(10);
+			var qry = new GetLatestArticlesQuery(10);
 			var results = await _mediator.Send(qry);
 
 			SearchResult = new SearchResult<ArticleSummary>

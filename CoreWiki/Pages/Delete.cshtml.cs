@@ -4,9 +4,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Threading.Tasks;
 using MediatR;
-using CoreWiki.Application.Articles.Commands;
-using CoreWiki.Application.Articles.Queries;
 using AutoMapper;
+using CoreWiki.Application.Articles.Managing.Commands;
+using CoreWiki.Application.Articles.Managing.Queries;
 using CoreWiki.Application.Articles.Notifications;
 using CoreWiki.Application.Helpers;
 

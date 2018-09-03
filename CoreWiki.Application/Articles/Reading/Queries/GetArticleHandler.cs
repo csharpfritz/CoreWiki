@@ -1,0 +1,65 @@
+﻿using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
+using CoreWiki.Application.Articles.Reading.Dto;
+using CoreWiki.Application.Articles.Search;
+using CoreWiki.Core.Domain;
+using MediatR;
+
+namespace CoreWiki.Application.Articles.Reading.Queries
+{
+	public class GetArticleHandler
+		: IRequestHandler<GetArticleQuery, ArticleReadingDto>,
+			IRequestHandler<GetArticleByIdQuery, ArticleReadingDto>,
+			IRequestHandler<GetIsTopicAvailableQuery, bool>,
+			IRequestHandler<GetSlugHistoryQuery, SlugHistoryDto>,
+			IRequestHandler<GetArticleWithHistoriesBySlugQuery, ArticleReadingDto>,
+			IRequestHandler<GetLatestArticlesQuery, List<ArticleReadingDto>>,
+			IRequestHandler<SearchArticlesQuery, SearchResult<ArticleReadingDto>>
+	{
+
+		private readonly IArticleReadingService _articleReadingService;
+		private readonly IArticlesSearchEngine _articlesSearchEngine;
+
+		public GetArticleHandler(IArticleReadingService articleReadingService, IArticlesSearchEngine articlesSearchEngine)
+		{
+			_articleReadingService = articleReadingService;
+			_articlesSearchEngine = articlesSearchEngine;
+		}
+
+		public Task<ArticleReadingDto> Handle(GetArticleQuery request, CancellationToken cancellationToken)
+		{
+			return _articleReadingService.GetArticleBySlug(request.Slug);
+		}
+
+		public Task<ArticleReadingDto> Handle(GetArticleByIdQuery request, CancellationToken cancellationToken)
+		{
+			return _articleReadingService.GetArticleById(request.Id);
+		}
+
+		public Task<bool> Handle(GetIsTopicAvailableQuery request, CancellationToken cancellationToken)
+		{
+			return _articleReadingService.IsTopicAvailable(request.Slug, request.ArticleId);
+		}
+
+		public Task<SlugHistoryDto> Handle(GetSlugHistoryQuery request, CancellationToken cancellationToken)
+		{
+			return _articleReadingService.GetSlugHistoryWithArticle(request.HistoricalSlug);
+		}
+
+		public Task<ArticleReadingDto> Handle(GetArticleWithHistoriesBySlugQuery request, CancellationToken cancellationToken)
+		{
+			return _articleReadingService.GetArticleWithHistoriesBySlug(request.Slug);
+		}
+
+		public Task<List<ArticleReadingDto>> Handle(GetLatestArticlesQuery request, CancellationToken cancellationToken)
+		{
+			return _articleReadingService.GetLatestArticles(request.NumOfArticlesToGet);
+		}
+
+		public Task<SearchResult<ArticleReadingDto>> Handle(SearchArticlesQuery request, CancellationToken cancellationToken)
+		{
+			return _articlesSearchEngine.SearchAsync(request.Query, request.PageNumber, request.ResultsPerPage);
+		}
+	}
+}

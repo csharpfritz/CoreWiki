@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Linq;
 using System.Threading.Tasks;
-using CoreWiki.Application.Articles.Queries;
+using CoreWiki.Application.Articles.Reading.Queries;
 using MediatR;
 
 namespace CoreWiki.Pages
@@ -35,7 +35,7 @@ namespace CoreWiki.Pages
 				return NotFound();
 			}
 
-			var qry = new GetArticleWithHistoriesBySlug(slug);
+			var qry = new GetArticleWithHistoriesBySlugQuery(slug);
 
 			var article = await _mediator.Send(qry);
 
@@ -69,7 +69,7 @@ namespace CoreWiki.Pages
 
 		public async Task<IActionResult> OnPost(string slug)
 		{
-			var qry = new GetArticleWithHistoriesBySlug(slug);
+			var qry = new GetArticleWithHistoriesBySlugQuery(slug);
 
 			var article = await _mediator.Send(qry);
 

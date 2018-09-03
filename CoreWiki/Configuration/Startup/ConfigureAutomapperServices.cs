@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
-using CoreWiki.Application.Common.MappingProfiles;
+using CoreWiki.Application.Articles.Managing;
+using CoreWiki.Application.Articles.Reading;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace CoreWiki.Configuration.Startup

@@ -9,11 +9,11 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using CoreWiki.Core.Notifications;
 using MediatR;
-using CoreWiki.Application.Articles.Queries;
-using CoreWiki.Application.Articles.Commands;
 using AutoMapper;
 using CoreWiki.Application.Articles.Notifications;
 using System.Threading;
+using CoreWiki.Application.Articles.Reading.Commands;
+using CoreWiki.Application.Articles.Reading.Queries;
 using CoreWiki.Application.Helpers;
 
 namespace CoreWiki.Pages
@@ -43,7 +43,7 @@ namespace CoreWiki.Pages
 			if (article == null)
 			{
 
-				var historical = await _mediator.Send(new GetSlugHistory(slug));
+				var historical = await _mediator.Send(new GetSlugHistoryQuery(slug));
 
 				if (historical != null)
 				{
@@ -72,7 +72,7 @@ namespace CoreWiki.Pages
 			{
 				Expires = DateTime.UtcNow.AddMinutes(5)
 			});
-			_mediator.Send(new IncrementViewCount(slug));
+			_mediator.Send(new IncrementViewCountCommand(slug));
 		}
 
 		public async Task<IActionResult> OnPostAsync(Comment model)

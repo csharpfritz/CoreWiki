@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 using CoreWiki.Application.Helpers;
 using MediatR;
 using AutoMapper;
-using CoreWiki.Application.Articles.Queries;
-using CoreWiki.Application.Articles.Commands;
 using CoreWiki.Application.Articles.Exceptions;
+using CoreWiki.Application.Articles.Managing.Commands;
+using CoreWiki.Application.Articles.Managing.Queries;
 
 namespace CoreWiki.Pages
 {
@@ -70,7 +70,7 @@ namespace CoreWiki.Pages
 				return new ArticleNotFoundResult();
 			}
 
-			var query = new GetArticlesToCreateFromArticle(UrlHelpers.URLFriendly(Article.Topic));
+			var query = new GetArticlesToCreateFromArticleQuery(UrlHelpers.URLFriendly(Article.Topic));
 			var listOfSlugs = await _mediator.Send(query);
 
 			if (listOfSlugs.Any())

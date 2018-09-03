@@ -1,13 +1,12 @@
-﻿using CoreWiki.Application.Articles.Queries;
-using CoreWiki.Core.Domain;
-using CoreWiki.Pages;
+﻿using CoreWiki.Pages;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging.Abstractions;
 using Moq;
 using System.Threading;
 using System.Threading.Tasks;
-using CoreWiki.Application.Articles.Services.Dto;
+using CoreWiki.Application.Articles.Managing.Dto;
+using CoreWiki.Application.Articles.Managing.Queries;
 using Xunit;
 
 namespace CoreWiki.Test.Pages.Create
@@ -22,7 +21,7 @@ namespace CoreWiki.Test.Pages.Create
 			_sut = new CreateModel(_mediator.Object, new NullLoggerFactory());
 
 		}
-		protected ArticleReadingDto GetExistingArticle() => new ArticleReadingDto { Slug = _existingArticleSlug };
+		protected ArticleManageDto GetExistingArticle() => new ArticleManageDto { Slug = _existingArticleSlug };
 
 		[Fact]
 		public async Task WithEmptyOrNullSlug_ShouldReturnPageResultWithNullArticle()

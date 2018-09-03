@@ -1,7 +1,9 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using CoreWiki.Application.Articles.Commands;
-using CoreWiki.Application.Articles.Queries;
+using CoreWiki.Application.Articles.Managing.Commands;
+using CoreWiki.Application.Articles.Managing.Queries;
+//using CoreWiki.Application.Articles.Reading.Queries;
 using CoreWiki.ViewModels;
 using CoreWiki.Pages;
 using Microsoft.AspNetCore.Mvc;

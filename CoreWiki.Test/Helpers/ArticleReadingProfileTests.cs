@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using CoreWiki.Application.Common.MappingProfiles;
+using CoreWiki.Application.Articles.Reading;
 using Xunit;
 
 namespace CoreWiki.Test.Helpers

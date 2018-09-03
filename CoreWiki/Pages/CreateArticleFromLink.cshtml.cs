@@ -8,10 +8,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using CoreWiki.Application.Helpers;
 using MediatR;
-using CoreWiki.Application.Articles.Queries;
-using CoreWiki.Application.Articles.Commands;
 using System;
 using System.Security.Claims;
+using CoreWiki.Application.Articles.Managing.Commands;
+using CoreWiki.Application.Articles.Managing.Queries;
 
 namespace CoreWiki.Pages
 {
@@ -43,7 +43,7 @@ namespace CoreWiki.Pages
 				return new ArticleNotFoundResult();
 			}
 
-			LinksToCreate = (await _mediator.Send(new GetArticlesToCreateFromArticle(id))).ToList();
+			LinksToCreate = (await _mediator.Send(new GetArticlesToCreateFromArticleQuery(id))).ToList();
 			if (LinksToCreate.Count == 0)
 			{
 				return Redirect($"/wiki/{(theArticle.Slug == UrlHelpers.HomePageSlug ? "" : theArticle.Slug)}");
