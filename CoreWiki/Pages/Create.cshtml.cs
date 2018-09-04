@@ -9,9 +9,11 @@ using System;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using AutoMapper;
 using CoreWiki.Application.Articles.Managing.Commands;
 using CoreWiki.Application.Articles.Managing.Queries;
 using CoreWiki.Application.Common;
+using CoreWiki.Helpers;
 
 namespace CoreWiki.Pages
 {
@@ -20,11 +22,13 @@ namespace CoreWiki.Pages
 	public class CreateModel : PageModel
 	{
 		private readonly IMediator _mediator;
+		private readonly IMapper _mapper;
 		private readonly ILogger _logger;
 
-		public CreateModel(IMediator mediator, ILoggerFactory loggerFactory)
+		public CreateModel(IMediator mediator, IMapper mapper, ILoggerFactory loggerFactory)
 		{
 			_mediator = mediator;
+			_mapper = mapper;
 			_logger = loggerFactory.CreateLogger("CreatePage");
 		}
 
@@ -75,13 +79,8 @@ namespace CoreWiki.Pages
 				return Page();
 			}
 
-			var cmd = new CreateNewArticleCommand(
-				authorId: Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)),
-				authorName: User.Identity.Name,
-				content: Article.Content,
-				slug: slug,
-				topic: Article.Topic
-			);
+			var cmd = _mapper.Map<CreateNewArticleCommand>(Article);
+			cmd = _mapper.Map(User, cmd);
 
 			var cmdResult = await _mediator.Send(cmd);
 

@@ -86,7 +86,7 @@ namespace CoreWiki.Pages
 			}
 
 			var commentCmd = _mapper.Map<CreateNewCommentCommand>(model);
-			commentCmd.AuthorId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)); //todo: use automapper resolver
+				commentCmd = _mapper.Map(User, commentCmd);
 
 			await _mediator.Send(commentCmd);
 

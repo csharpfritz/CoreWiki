@@ -1,4 +1,6 @@
 ﻿using System;
+using AutoMapper;
+using CoreWiki.Configuration.Startup;
 using CoreWiki.Pages;
 using MediatR;
 using Moq;
@@ -14,10 +16,14 @@ namespace CoreWiki.Test.Website.Pages.Create
 		protected Guid userId = Guid.NewGuid();
 		protected Mock<IMediator> _mediator;
 		protected CreateModel _sut;
+		protected MapperConfiguration _mapperConfiguration;
+		protected IMapper _mapper;
 
-		public BaseFixture()
+		protected BaseFixture()
 		{
 			_mediator = new Mock<IMediator>();
+			_mapperConfiguration = new MapperConfiguration(cfg => cfg.AddProfile<CoreWikiWebsiteProfile>());
+			_mapper = _mapperConfiguration.CreateMapper();
 		}
 
 	}

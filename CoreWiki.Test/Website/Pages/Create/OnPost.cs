@@ -22,12 +22,14 @@ namespace CoreWiki.Test.Website.Pages.Create
 		[Fact]
 		public async Task ShouldCreateNewNonExistingArticleAndRedirect_GivenUserIsAuthenticated()
 		{
-			var expectedCommand = new CreateNewArticleCommand(
-				topic: _topic,
-				slug: _expectedSlug,
-				authorId: userId,
-				content: _content,
-				authorName: username);
+			var expectedCommand = new CreateNewArticleCommand
+			{
+				Topic = _topic,
+				Slug =  _expectedSlug,
+				AuthorId = userId,
+				Content = _content,
+				AuthorName = username
+			};
 
 			_mediator.Setup(mediator => mediator.Send(It.IsAny<CreateNewArticleCommand>(), It.IsAny<CancellationToken>()))
 				.Returns(() => Task.FromResult(new CommandResult {Successful=true }));
@@ -35,7 +37,7 @@ namespace CoreWiki.Test.Website.Pages.Create
 			_mediator.Setup(mediator => mediator.Send(It.IsAny<GetIsTopicAvailableQuery>(), It.IsAny<CancellationToken>()))
 				.Returns(() => Task.FromResult(false));
 
-			_sut = new CreateModel(_mediator.Object, new NullLoggerFactory())
+			_sut = new CreateModel(_mediator.Object, _mapper, new NullLoggerFactory())
 			{
 				Article = new ArticleCreate
 				{

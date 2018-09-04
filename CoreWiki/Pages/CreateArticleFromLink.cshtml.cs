@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using MediatR;
 using System;
 using System.Security.Claims;
+using AutoMapper;
 using CoreWiki.Application.Articles.Managing.Commands;
 using CoreWiki.Application.Articles.Managing.Queries;
 using CoreWiki.Application.Common;
@@ -24,10 +25,12 @@ namespace CoreWiki.Pages
 		public List<string> LinksToCreate { get; set; } = new List<string>();
 
 		private readonly IMediator _mediator;
+		private readonly IMapper _mapper;
 
-		public CreateArticleFromLinkModel(IMediator mediator)
+		public CreateArticleFromLinkModel(IMediator mediator, IMapper mapper)
 		{
 			_mediator = mediator;
+			_mapper = mapper;
 		}
 
 		public async Task<IActionResult> OnGetAsync(string id)
@@ -59,21 +62,13 @@ namespace CoreWiki.Pages
 
 		public async Task<IActionResult> OnPostCreateLinksAsync(string slug)
 		{
-
 			var taskList = new List<Task>();
 
 			Parallel.ForEach(LinksToCreate, link =>
 			{
-
-				var createCmd = new CreateNewArticleCommand(
-					topic: link.ToTitleCase().RemoveHyphens(),
-					slug: link,
-					content: string.Empty,
-					authorId: Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)),
-					authorName: User.Identity.Name
-				);
+				var createCmd = _mapper.Map<CreateNewArticleCommand>(link);
+				createCmd= _mapper.Map(User, createCmd);
 				taskList.Add(_mediator.Send(createCmd));
-
 			});
 
 			Task.WaitAll(taskList.ToArray());

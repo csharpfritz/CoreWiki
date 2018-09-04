@@ -61,7 +61,9 @@ namespace CoreWiki.Pages
 				return Page();
 			}
 
-			var cmd = new EditArticleCommand(Article.Id, Article.Topic, Article.Content, Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)), User.Identity.Name);
+			var cmd = _mapper.Map<EditArticleCommand>(Article);
+			cmd =_mapper.Map(User, cmd);
+
 			var result = await _mediator.Send(cmd);
 
 			if (result.Exception is InvalidTopicException)

@@ -18,7 +18,7 @@ namespace CoreWiki.Test.Website.Pages.Create
 
 		public OnGet() : base()
 		{
-			_sut = new CreateModel(_mediator.Object, new NullLoggerFactory());
+			_sut = new CreateModel(_mediator.Object,_mapper, new NullLoggerFactory());
 
 		}
 		protected ArticleManageDto GetExistingArticle() => new ArticleManageDto { Slug = _existingArticleSlug };
