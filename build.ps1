@@ -63,35 +63,34 @@ if($FoundDotNetCliVersion -ne $DotNetVersion) {
     $env:PATH = "$InstallPath;$env:PATH"
 }
 
+$env:DOTNET_SKIP_FIRST_TIME_EXPERIENCE=1
+$env:DOTNET_CLI_TELEMETRY_OPTOUT=1
+
+
 ###########################################################################
 # INSTALL CAKE
 ###########################################################################
 
-Add-Type -AssemblyName System.IO.Compression.FileSystem
-Function Unzip
-{
-    param([string]$zipfile, [string]$outpath)
-
-    [System.IO.Compression.ZipFile]::ExtractToDirectory($zipfile, $outpath)
-}
-
 # Make sure Cake has been installed.
-$CakePath = Join-Path $ToolPath "Cake.CoreCLR.$CakeVersion"
-$CakeDllPath = Join-Path $CakePath "Cake.dll"
-$CakeZipPath = Join-Path $ToolPath "Cake.zip"
-if (!(Test-Path $CakeDllPath)) {
-    Write-Host "Installing Cake $CakeVersion..."
-     (New-Object System.Net.WebClient).DownloadFile("https://www.nuget.org/api/v2/package/Cake.CoreCLR/$CakeVersion", $CakeZipPath)
-     Unzip $CakeZipPath $CakePath
-     Remove-Item $CakeZipPath
+$CakePath = Join-Path $ToolPath ".store\cake.tool\$CakeVersion"
+$CakeExePath = (Get-ChildItem -Path $ToolPath -Filter "dotnet-cake*" -File| ForEach-Object FullName | Select-Object -First 1)
+
+if ((!(Test-Path -Path $CakePath -PathType Container)) -or (!(Test-Path $CakeExePath -PathType Leaf))) {
+    & dotnet tool install --tool-path $ToolPath --version $CakeVersion Cake.Tool
+    if ($LASTEXITCODE -ne 0)
+    {
+        'Failed to install cake'
+        exit 1
+    }
+    $CakeExePath = (Get-ChildItem -Path $ToolPath -Filter "dotnet-cake*" -File| ForEach-Object FullName | Select-Object -First 1)
 }
 
 ###########################################################################
 # RUN BUILD SCRIPT
 ###########################################################################
-& dotnet "$CakeDllPath" ./build.cake --bootstrap
+& "$CakeExePath" ./build.cake --bootstrap
 if ($LASTEXITCODE -eq 0)
 {
-    & dotnet "$CakeDllPath" ./build.cake $args
+    & "$CakeExePath" ./build.cake $args
 }
 exit $LASTEXITCODE
