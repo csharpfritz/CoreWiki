@@ -1,5 +1,4 @@
-﻿using CoreWiki.Core.Notifications;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Abstractions;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
@@ -10,6 +9,7 @@ using Microsoft.AspNetCore.Routing;
 using System;
 using System.IO;
 using System.Threading.Tasks;
+using CoreWiki.Notifications.Abstractions.Notifications;
 
 namespace CoreWiki.Notifications
 {

@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using System;
 
-namespace CoreWiki.Migrations
+namespace CoreWiki.Data.EntityFramework.Migrations
 {
 	[DbContext(typeof(ApplicationDbContext))]
 	partial class ApplicationDbContextModelSnapshot : ModelSnapshot

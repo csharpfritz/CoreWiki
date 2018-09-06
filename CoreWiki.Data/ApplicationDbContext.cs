@@ -1,11 +1,11 @@
-﻿using CoreWiki.Data.Models;
+﻿using CoreWiki.Data.EntityFramework.Models;
 using Microsoft.EntityFrameworkCore;
 using NodaTime;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace CoreWiki.Data
+namespace CoreWiki.Data.EntityFramework
 {
 
 	public class ApplicationDbContext : DbContext
@@ -18,7 +18,7 @@ namespace CoreWiki.Data
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
-			var homePage = new Article
+			var homePage = new ArticleDAO
 			{
 				Id = 1,
 				Topic = "Home Page",
@@ -28,32 +28,32 @@ namespace CoreWiki.Data
 				AuthorId = Guid.Empty
 			};
 
-			var homePageHistory = ArticleHistory.FromArticle(homePage);
+			var homePageHistory = ArticleHistoryDAO.FromArticle(homePage);
 			homePageHistory.Id = 1;
 			homePageHistory.Article = null;
 
-			modelBuilder.Entity<Article>(entity =>
+			modelBuilder.Entity<ArticleDAO>(entity =>
 			{
 				entity.HasIndex(a => a.Slug).IsUnique();
 				entity.HasData(homePage);
 			});
 
-			modelBuilder.Entity<ArticleHistory>(entity =>
+			modelBuilder.Entity<ArticleHistoryDAO>(entity =>
 			{
 				entity.HasData(homePageHistory);
 			});
 
-			modelBuilder.Entity<SlugHistory>(entity =>
+			modelBuilder.Entity<SlugHistoryDAO>(entity =>
 			{
 				entity.HasIndex(a => new { a.OldSlug, a.AddedDateTime });
 			});
 		}
 
-		public DbSet<Article> Articles { get; set; }
-		public DbSet<Comment> Comments { get; set; }
-		public DbSet<SlugHistory> SlugHistories { get; set; }
+		public DbSet<ArticleDAO> Articles { get; set; }
+		public DbSet<CommentDAO> Comments { get; set; }
+		public DbSet<SlugHistoryDAO> SlugHistories { get; set; }
 
-		public DbSet<ArticleHistory> ArticleHistories { get; set; }
+		public DbSet<ArticleHistoryDAO> ArticleHistories { get; set; }
 
 
 		public override Task<int> SaveChangesAsync(

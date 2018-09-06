@@ -1,7 +1,6 @@
-using System.Threading.Tasks;
+using CoreWiki.Configuration.Settings;
 using CoreWiki.Configuration.Startup;
-using CoreWiki.Core.Configuration;
-using CoreWiki.Data.Security;
+using CoreWiki.Data.EntityFramework.Security;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -13,7 +12,8 @@ namespace CoreWiki
 {
 	public class Startup
 	{
-		public Startup(IConfiguration configuration, IHostingEnvironment hostingEnvironment)
+
+		public Startup(IConfiguration configuration)
 		{
 			Configuration = configuration;
 		}
@@ -23,6 +23,9 @@ namespace CoreWiki
 		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services)
 		{
+
+			services.ConfigureAutomapper();
+
 			services.ConfigureRSSFeed();
 			services.Configure<AppSettings>(Configuration);
 			services.ConfigureSecurityAndAuthentication();
@@ -30,7 +33,8 @@ namespace CoreWiki
 			services.ConfigureScopedServices();
 			services.ConfigureRouting();
 			services.ConfigureLocalisation();
-
+			services.ConfigureApplicationServices();
+			services.AddMediator();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

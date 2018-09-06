@@ -1,9 +1,6 @@
-﻿using CoreWiki.Data;
-using CoreWiki.Data.Data.Interfaces;
-using CoreWiki.Data.Data.Repositories;
-using CoreWiki.Data.Security;
+﻿using CoreWiki.Data.EntityFramework;
+using CoreWiki.Data.EntityFramework.Security;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -13,14 +10,7 @@ namespace CoreWiki.Configuration.Startup
 	{
 		public static IServiceCollection ConfigureDatabase(this IServiceCollection services, IConfiguration config)
 		{
-			services.AddEntityFrameworkSqlite()
-				.AddDbContextPool<ApplicationDbContext>(options => options.UseSqlite(config.GetConnectionString("CoreWikiData")));
-
-			// db repos
-			services.AddTransient<IArticleRepository, ArticleSqliteRepository>();
-			services.AddTransient<ICommentRepository, CommentSqliteRepository>();
-			services.AddTransient<ISlugHistoryRepository, SlugHistorySqliteRepository>();
-
+			services.AddSqliteRepositories(config);
 			return services;
 		}
 

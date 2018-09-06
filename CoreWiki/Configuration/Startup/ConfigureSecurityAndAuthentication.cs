@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using CoreWiki.Data.Security;
+using CoreWiki.Data.EntityFramework.Security;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;

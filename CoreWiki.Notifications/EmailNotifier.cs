@@ -1,12 +1,11 @@
-﻿using CoreWiki.Core.Configuration;
-using CoreWiki.Core.Notifications;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using SendGrid;
 using SendGrid.Helpers.Mail;
-using System;
 using System.Net;
 using System.Threading.Tasks;
+using CoreWiki.Notifications.Abstractions.Configuration;
+using CoreWiki.Notifications.Abstractions.Notifications;
 
 namespace CoreWiki.Notifications
 {
@@ -15,9 +14,9 @@ namespace CoreWiki.Notifications
 		private readonly EmailNotifications _configuration;
 		private readonly ILogger _logger;
 
-		public EmailNotifier(IOptionsSnapshot<AppSettings> appSettings, ILoggerFactory loggerFactory)
+		public EmailNotifier(IOptionsSnapshot<EmailNotifications> appSettings, ILoggerFactory loggerFactory)
 		{
-			_configuration = appSettings.Value.EmailNotifications;
+			_configuration = appSettings.Value;
 			_logger = loggerFactory.CreateLogger<EmailNotifier>();
 		}
 
@@ -28,7 +27,7 @@ namespace CoreWiki.Notifications
 
 		public async Task<bool> SendEmailAsync(string recipientEmail, string recipientName, string subject, string body)
 		{
-            _logger.LogInformation("Sending email message");
+			_logger.LogInformation("Sending email message");
 
 			if (string.IsNullOrWhiteSpace(_configuration.SendGridApiKey))
 			{
@@ -46,19 +45,19 @@ namespace CoreWiki.Notifications
 
 			if (string.IsNullOrWhiteSpace(recipientEmail))
 			{
-			    _logger.LogWarning("Missing recipient email, email message not sent");
+				_logger.LogWarning("Missing recipient email, email message not sent");
 
-			    return false;
-            }
+				return false;
+			}
 
-		    //if (string.IsNullOrWhiteSpace(recipientName))
-		    //{
-		    //    _logger.LogWarning("Missing recipient name, email message not sent");
+			//if (string.IsNullOrWhiteSpace(recipientName))
+			//{
+			//    _logger.LogWarning("Missing recipient name, email message not sent");
 
-		    //    return false;
-		    //}
+			//    return false;
+			//}
 
-            var message = new SendGridMessage();
+			var message = new SendGridMessage();
 			var from = new EmailAddress(_configuration.FromEmailAddress, _configuration.FromName);
 			var to = new EmailAddress(recipientEmail, recipientName);
 

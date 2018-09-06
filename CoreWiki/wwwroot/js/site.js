@@ -22,7 +22,7 @@
 
 $("form").submit(function (e) {
 	if ($(this).valid()) {
-		if ($(this).attr('attempted') == 'true') {
+		if ($(this).attr('attempted') === 'true') {
 			e.preventDefault();
 		}
 		else {

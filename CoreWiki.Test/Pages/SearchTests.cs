@@ -1,9 +1,13 @@
-﻿using CoreWiki.Data.Data.Interfaces;
-using CoreWiki.Data.Models;
+﻿using CoreWiki.Application.Articles.Search;
+using CoreWiki.Application.Articles.Search.Dto;
+using CoreWiki.Application.Articles.Search.Queries;
+using CoreWiki.Core.Domain;
+using CoreWiki.Data.Abstractions.Interfaces;
 using CoreWiki.Pages;
-using CoreWiki.SearchEngines;
+using MediatR;
 using Moq;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -14,21 +18,22 @@ namespace CoreWiki.Test.Pages
 		[Fact]
 		public async Task OnGetAsync_WithPageNumberEqualsTo2And12Posts_ShouldReturnCurrentPageEqualsTo2()
 		{
-			var articleRepo = new Mock<IArticleRepository>();
-			var articleSearchEngine = new Mock<IArticlesSearchEngine>();
 
-			articleSearchEngine.Setup(o => o.SearchAsync("test", 2, 10)).Returns(
-				Task.FromResult(new SearchResult<Article>
+			var mediator = new Mock<IMediator>();
+
+			mediator.Setup(o => o.Send(It.IsAny<SearchArticlesQuery>(), default(CancellationToken))).Returns(
+				Task.FromResult(new SearchResult<ArticleSearchDto>
 				{
 					CurrentPage = 2,
-					Results = new List<Article>
+					Results = new List<ArticleSearchDto>
 					{
-						new Article { Slug = "test11" },
-						new Article { Slug = "test12" }
+						new ArticleSearchDto { Slug = "test11" },
+						new ArticleSearchDto { Slug = "test12" }
 					}
 				}));
 
-			var searchModel = new SearchModel(articleSearchEngine.Object, articleRepo.Object);
+			// Act
+			var searchModel = new SearchModel(mediator.Object);
 
 			var result = await searchModel.OnGetAsync(query: "test", pageNumber: 2);
 
