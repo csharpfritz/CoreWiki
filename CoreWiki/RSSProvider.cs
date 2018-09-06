@@ -6,25 +6,26 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using CoreWiki.Core.Configuration;
-using CoreWiki.Data.EntityFramework;
+using CoreWiki.Application.Articles.Reading.Queries;
+using CoreWiki.Configuration.Settings;
+using MediatR;
 
 namespace CoreWiki
 {
 	public class RSSProvider : IRSSProvider
 	{
-		private readonly ApplicationDbContext _context;
+		private readonly IMediator _mediator;
 		private readonly Uri baseURL;
 
-		public RSSProvider(ApplicationDbContext context, IOptionsSnapshot<AppSettings> settings)
+		public RSSProvider(IMediator mediator, IOptionsSnapshot<AppSettings> settings)
 		{
-			_context = context;
+			_mediator = mediator;
 			baseURL = settings.Value.Url;
 		}
 
 		public async Task<IList<RSSItem>> RetrieveSyndicationItems()
 		{
-			var articles = await _context.Articles.OrderByDescending(a => a.Published).Take(10).ToListAsync();
+			var articles = await _mediator.Send(new GetLatestArticlesQuery(10));
 			return articles.Select(rssItem =>
 			{
 				var absoluteURL = new Uri(baseURL, $"/{rssItem.Slug}");

@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 
 namespace CoreWiki.Configuration.Startup
 {
-    public static class ConfigureMediator
-    {
+	public static class ConfigureMediator
+	{
 		public static IServiceCollection AddMediator(this IServiceCollection services)
 		{
 			services.AddMediatR();

@@ -1,8 +1,9 @@
-﻿using System.Globalization;
+﻿using System;
+using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace CoreWiki.Application.Helpers
+namespace CoreWiki.Application.Common
 {
 	public class UrlHelpers
 	{
@@ -18,7 +19,7 @@ namespace CoreWiki.Application.Helpers
 		public static string URLFriendly(string title)
 		{
 
-			if (string.IsNullOrEmpty(title)) return "";
+			if (String.IsNullOrEmpty(title)) return "";
 
 
 			var newTitle = RemoveDiacritics(title);
@@ -56,5 +57,18 @@ namespace CoreWiki.Application.Helpers
 			return stringBuilder.ToString().Normalize(NormalizationForm.FormC);
 		}
 
+		public static string SlugToTopic(string slug)
+		{
+			if (String.IsNullOrEmpty(slug))
+			{
+				return "";
+			}
+
+			var textInfo = new CultureInfo("en-US", false).TextInfo;
+			var outValue = textInfo.ToTitleCase(slug);
+
+			return outValue.Replace("-", " ");
+
+		}
 	}
 }

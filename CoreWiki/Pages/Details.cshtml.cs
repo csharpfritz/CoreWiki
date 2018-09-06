@@ -1,26 +1,15 @@
-using CoreWiki.Core.Interfaces;
 using CoreWiki.ViewModels;
-using CoreWiki.Data.EntityFramework.Security;
 using CoreWiki.Helpers;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Extensions.Configuration;
-using NodaTime;
 using System;
-using System.Threading.Tasks;
-using CoreWiki.Core.Notifications;
-using System.Linq;
 using System.Security.Claims;
-using CoreWiki.Core.Domain;
+using System.Threading.Tasks;
 using MediatR;
-using CoreWiki.Application.Articles.Queries;
-using CoreWiki.Application.Articles.Commands;
 using AutoMapper;
-using CoreWiki.Application.Articles.Notifications;
-using System.Threading;
-using CoreWiki.Application.Helpers;
+using CoreWiki.Application.Articles.Reading.Commands;
+using CoreWiki.Application.Articles.Reading.Queries;
+using CoreWiki.Application.Common;
 
 namespace CoreWiki.Pages
 {
@@ -28,8 +17,6 @@ namespace CoreWiki.Pages
 	{
 		private readonly IMediator _mediator;
 		private readonly IMapper _mapper;
-
-		public IEmailSender Notifier { get; }
 
 		public DetailsModel(IMediator mediator, IMapper mapper)
 		{
@@ -46,21 +33,18 @@ namespace CoreWiki.Pages
 		{
 
 			slug = slug ?? UrlHelpers.HomePageSlug;
-			var article = await _mediator.Send(new GetArticle(slug));
+			var article = await _mediator.Send(new GetArticleQuery(slug));
 
 			if (article == null)
 			{
 
-				var historical = await _mediator.Send(new GetSlugHistory(slug));
+				var historical = await _mediator.Send(new GetSlugHistoryQuery(slug));
 
 				if (historical != null)
 				{
 					return new RedirectResult($"~/wiki/{historical.Article.Slug}");
 				}
-				else
-				{
-					return new ArticleNotFoundResult(slug);
-				}
+				return new ArticleNotFoundResult(slug);
 			}
 
 			Article = _mapper.Map<ArticleDetails>(article); 
@@ -73,57 +57,40 @@ namespace CoreWiki.Pages
 		private void ManageViewCount(string slug)
 		{
 			var incrementViewCount = (Request.Cookies[slug] == null);
-			if (incrementViewCount)
+			if (!incrementViewCount)
 			{
-				Article.ViewCount++;
-				Response.Cookies.Append(slug, "foo", new Microsoft.AspNetCore.Http.CookieOptions
-				{
-					Expires = DateTime.UtcNow.AddMinutes(5)
-				});
-				_mediator.Send(new IncrementViewCount(slug));
+				return;
 			}
+
+			Article.ViewCount++;
+			Response.Cookies.Append(slug, "foo", new Microsoft.AspNetCore.Http.CookieOptions
+			{
+				Expires = DateTime.UtcNow.AddMinutes(5)
+			});
+			_mediator.Send(new IncrementViewCountCommand(slug));
 		}
 
-		public async Task<IActionResult> OnPostAsync(ViewModels.Comment dto)
+		public async Task<IActionResult> OnPostAsync(Comment model)
 		{
 
-			TryValidateModel(dto);
+			TryValidateModel(model);
 
 			if (!ModelState.IsValid)
 				return Page();
 
-			var article = await _mediator.Send(new GetArticleById(dto.ArticleId));
+			var article = await _mediator.Send(new GetArticleByIdQuery(model.ArticleId));
 
 			if (article == null)
 			{
 				return new ArticleNotFoundResult();
 			}
 
-			var comment = _mapper.Map<Core.Domain.Comment>(dto);
-			comment.AuthorId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+			var commentCmd = _mapper.Map<CreateNewCommentCommand>(model);
+				commentCmd = _mapper.Map(User, commentCmd);
 
-			var result = await _mediator.Send(new CreateNewCommentCommand(article, comment));
+			await _mediator.Send(commentCmd);
 
 			return Redirect($"/wiki/{article.Slug}");
-		}
-	}
-
-	// TODO: Move this to a more suitable location in the project
-	public class NewCommentNotificationHandler : INotificationHandler<CommentPostedNotification>
-	{
-		private readonly UserManager<CoreWikiUser> _userManager;
-		private readonly INotificationService _notificationService;
-
-		public NewCommentNotificationHandler(UserManager<CoreWikiUser> userManager, INotificationService notificationService)
-		{
-			_userManager = userManager;
-			_notificationService = notificationService;
-		}
-
-		public async Task Handle(CommentPostedNotification notification, CancellationToken cancellationToken)
-		{
-			var author = await _userManager.FindByIdAsync(notification.Article.AuthorId.ToString());
-			await _notificationService.SendNewCommentEmail(author.Email, author.UserName, notification.Comment.DisplayName, notification.Article.Topic, notification.Article.Slug, () => author.CanNotify);
 		}
 	}
 }

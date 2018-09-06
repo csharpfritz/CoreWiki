@@ -10,11 +10,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CoreWiki.Data\CoreWiki.Data.EntityFramework.csproj" />
+    <PackageReference Include="MediatR" Version="5.1.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="2.1.1" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Articles\Models\" />
+    <ProjectReference Include="..\CoreWiki.Data.Abstractions\CoreWiki.Data.Abstractions.csproj" />
   </ItemGroup>
 
 </Project>

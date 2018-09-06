@@ -1,17 +1,14 @@
-﻿using CoreWiki.Data.EntityFramework;
-using CoreWiki.ViewModels;
-using CoreWiki.Helpers;
+﻿using CoreWiki.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using MediatR;
-using CoreWiki.Application.Articles.Commands;
-using CoreWiki.Application.Articles.Queries;
 using AutoMapper;
-using CoreWiki.Application.Articles.Notifications;
-using CoreWiki.Application.Helpers;
+using CoreWiki.Application.Articles.Managing.Commands;
+using CoreWiki.Application.Articles.Managing.Events;
+using CoreWiki.Application.Articles.Managing.Queries;
+using CoreWiki.Application.Common;
 
 namespace CoreWiki.Pages
 {
@@ -40,7 +37,7 @@ namespace CoreWiki.Pages
 				return NotFound();
 			}
 
-			var article = await _mediator.Send(new GetArticle(slug));
+			var article = await _mediator.Send(new GetArticleQuery(slug));
 
 			if (article == null)
 			{
@@ -49,7 +46,7 @@ namespace CoreWiki.Pages
 
 			if (article.Slug == UrlHelpers.HomePageSlug)
 			{
-				_mediator.Publish(new DeleteHomePageAttemptNotification());
+				await _mediator.Publish(new DeleteHomePageAttemptNotification());
 				return Forbid();
 			}
 

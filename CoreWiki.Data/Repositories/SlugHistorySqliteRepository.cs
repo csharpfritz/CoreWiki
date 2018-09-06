@@ -1,9 +1,9 @@
-﻿using CoreWiki.Core.Interfaces;
-using CoreWiki.Data.EntityFramework.Models;
+﻿using CoreWiki.Data.EntityFramework.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using CoreWiki.Data.Abstractions.Interfaces;
 
 namespace CoreWiki.Data.EntityFramework.Repositories
 {
@@ -45,6 +45,12 @@ namespace CoreWiki.Data.EntityFramework.Repositories
 			Context.SlugHistories.Add(newSlug);
 			return Context.SaveChangesAsync();
 
+		}
+
+		public async Task DeleteAllHistoryOfArticle(int articleId)
+		{
+			Context.SlugHistories.RemoveRange(Context.SlugHistories.Where(sh => sh.Article.Id == articleId));
+			await Context.SaveChangesAsync();
 		}
 	}
 }

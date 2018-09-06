@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Globalization;
 
-namespace CoreWiki.Application.Helpers
+namespace CoreWiki.Application.Common
 {
 	public static class StringHelpers
 	{

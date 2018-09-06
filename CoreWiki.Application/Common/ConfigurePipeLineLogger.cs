@@ -1,15 +1,12 @@
 ﻿using MediatR.Pipeline;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace CoreWiki.Application.Common
 {
-    public static class ConfigurePipeLineLogger
-    {
+	public static class ConfigurePipeLineLogger
+	{
 		public class RequestLogger<TRequest> : IRequestPreProcessor<TRequest>
 		{
 			private readonly ILogger _logger;

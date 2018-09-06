@@ -1,11 +1,11 @@
 ﻿using CoreWiki.Core.Domain;
-using CoreWiki.Core.Interfaces;
 using CoreWiki.Data.EntityFramework.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CoreWiki.Data.Abstractions.Interfaces;
 
 namespace CoreWiki.Data.EntityFramework.Repositories
 {
@@ -19,19 +19,6 @@ namespace CoreWiki.Data.EntityFramework.Repositories
 		public ApplicationDbContext Context { get; }
 
 
-		public async Task<IEnumerable<Article>> GetAllArticlesPaged(int pageSize, int pageNumber)
-		{
-			var articles = await Context.Articles
-				.AsNoTracking()
-				.OrderBy(a => a.Topic)
-				.Skip((pageNumber - 1) * pageSize)
-				.Take(pageSize)
-				.ToArrayAsync();
-
-				return articles.Select(a => a.ToDomain());
-		}
-
-
 		public async Task<List<Article>> GetLatestArticles(int numOfArticlesToGet)
 		{
 			var articles = await Context.Articles
@@ -41,31 +28,14 @@ namespace CoreWiki.Data.EntityFramework.Repositories
 		}
 
 
-		public async Task<int> GetTotalPagesOfArticles(int pageSize)
-		{
-			return (int)Math.Ceiling(await Context.Articles.CountAsync() / (double)pageSize);
-		}
-
-
 		public async Task<Article> GetArticleBySlug(string articleSlug)
 		{
 			var article = await Context.Articles
 				.AsNoTracking()
 				.Include(a => a.Comments)
 				.SingleOrDefaultAsync(m => m.Slug == articleSlug.ToLower());
-			return article == null ? null : article.ToDomain();
+			return article?.ToDomain();
 		}
-
-
-		public async Task<Article> GetArticleByComment(Comment comment)
-		{
-			var article = await Context.Articles
-				.AsNoTracking()
-				.Include(a => a.Comments)
-				.SingleOrDefaultAsync(a => a.Id == comment.ArticleId);
-			return article.ToDomain();
-		}
-
 
 		public async Task<Article> GetArticleWithHistoriesBySlug(string articleSlug)
 		{
@@ -79,8 +49,7 @@ namespace CoreWiki.Data.EntityFramework.Repositories
 		public async Task<Article> GetArticleById(int articleId)
 		{
 			var article = await Context.Articles.AsNoTracking().FirstOrDefaultAsync(a => a.Id == articleId);
-			if (article == null) return null;
-			return article.ToDomain();
+			return article?.ToDomain();
 		}
 
 
@@ -104,17 +73,21 @@ namespace CoreWiki.Data.EntityFramework.Repositories
 		}
 
 
-		public IQueryable<Article> GetArticlesForSearchQuery(string filteredQuery)
+		public (IEnumerable<Article>, int) GetArticlesForSearchQuery(string filteredQuery, int offset, int resultsPerPage)
 		{
 
 			// WARNING:  This may need to be further refactored to allow for database optimized search queries
 
-			return Context.Articles
+			var articles = Context.Articles
 				.AsNoTracking()
 				.Where(a =>
 					a.Topic.ToUpper().Contains(filteredQuery.ToUpper()) ||
 					a.Content.ToUpper().Contains(filteredQuery.ToUpper())
 				).Select(a => a.ToDomain());
+			var articleCount = articles.Count();
+			var list = articles.Skip(offset).Take(resultsPerPage).OrderByDescending(a => a.ViewCount).ToList();
+
+			return (list, articleCount);
 		}
 
 
@@ -179,7 +152,7 @@ namespace CoreWiki.Data.EntityFramework.Repositories
 				await Context.SaveChangesAsync();
 			}
 
-			return article.ToDomain();
+			return article?.ToDomain();
 		}
 	}
 }
