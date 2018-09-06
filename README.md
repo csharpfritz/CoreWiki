@@ -1,5 +1,7 @@
 # CoreWiki
 
+<a href="https://azuredeploy.net/" target="_blank"><img src="http://azuredeploy.net/deploybutton.png"/></a>
+
 A simple ASP.NET Core wiki that we are working on during live coding streams. It runs on Windows, Mac, Linux and Container. Core Wiki is an allusion to the Core App. This name was suggested by Shayne Boyer in the stream of the [27th/March](https://www.twitch.tv/videos/243463398). Initially this project is very basic and anyone who is learning ASP.NET Core 2.0 (Razor Pages) can use it to learn..
 
 Jeff Fritz writes code live on video streams, and wants to give you a central place to ask questions, find samples, and links to projects and other materials referenced during the show.
@@ -11,7 +13,7 @@ Jeff currently presents on the following services.  Choose the one that works fo
 * [Twitch](https://twitch.tv/csharpfritz)
 * [Mixer](https://mixer.com/csharpfritz) - `[Not in use]`
 
-You can find his current schedule on both services, and if you follow or subscribe to the channel you will be notified when the stream begins. 
+You can find his current schedule on both services, and if you follow or subscribe to the channel you will be notified when the stream begins.
 
 ## Get the Music!
 
@@ -19,7 +21,7 @@ Our friend Carl Franklin from [.NET Rocks](https://dotnetrocks.com) has gracious
 
 ## Ask Questions
 
-If you want to know more about something or want to see a demo of something specific, you can ask Jeff by [opening an issue](https://github.com/csharpfritz/CoreWiki/issues/new) and adding the 'Question' label. 
+If you want to know more about something or want to see a demo of something specific, you can ask Jeff by [opening an issue](https://github.com/csharpfritz/CoreWiki/issues/new) and adding the 'Question' label.
 
 The list of [currently outstanding questions](https://github.com/csharpfritz/CoreWiki/issues?q=is%3Aissue+is%3Aopen+label%3Aquestion+sort%3Acreated-asc) is available.  When questions are answered, they are closed and links are added to the wrap-up blog post for the stream they were answered in.
 
@@ -29,10 +31,10 @@ I enjoy having guests join me for some pair-programming, because we're always go
 
 ## Jeff's Setup
 
-Jeff has written about how he has the hardware configured as well as the software to produce stream [on his blog](http://jeffreyfritz.com/2017/12/live-streaming-101-my-setup/).  
-*  Jeff uses [Posh-Git](https://github.com/dahlbyk/posh-git) to make the Powershell prompt easier to navigate while working with Git repositories 
+Jeff has written about how he has the hardware configured as well as the software to produce stream [on his blog](http://jeffreyfritz.com/2017/12/live-streaming-101-my-setup/).
+*  Jeff uses [Posh-Git](https://github.com/dahlbyk/posh-git) to make the Powershell prompt easier to navigate while working with Git repositories
 *  When coding with a guest, Jeff and the guest use [Visual Studio Live Share](https://github.com/MicrosoftDocs/live-share/blob/master/README.md) to work on code on screen at the same time.
-*  Jeff uses a bunch of great Visual Studio extensions, and you can find that list on the [WebTools repository](https://github.com/csharpfritz/Ignite2017-WebTools). 
+*  Jeff uses a bunch of great Visual Studio extensions, and you can find that list on the [WebTools repository](https://github.com/csharpfritz/Ignite2017-WebTools).
 
 ## Watch recordings
 
@@ -79,7 +81,7 @@ July 7, 2018 | [Refactoring and Pull requests \| C# \| ASP.NET Core](https://you
  - [X] Allows the users navigate to All articles feature. `[All]`
 
 ## Details
- - [X] Allows the users see details of article. 
+ - [X] Allows the users see details of article.
  - [X] Allows the users navigate to Edit feature. `[Edit]`
  - [X] Allows the users navigate to the Default Article (HomePage). `[Back to Home]`
  - [X] Allows the users see comments list
@@ -122,7 +124,7 @@ search engine friendly URL's
 
 NotFound
 -----------------------------
-* Occurs, always which an page is not found. 
+* Occurs, always which an page is not found.
 
 Error
 -----------------------------
@@ -158,7 +160,7 @@ Lessons - Git Cli
 
 Lessons - Nuget
 --------
-- [X] Install Packages 
+- [X] Install Packages
 
 Lessons - DOTNET Cli
 --------
@@ -177,9 +179,9 @@ Lessons - ASP.NET Core
 - [X] Tag Helpers
   - [X] Install and Use External
   - [X] Create
-- [X] Validation Error UI 
+- [X] Validation Error UI
 - [X] Server-Side Validation
-- [X] Client-Side Validation 
+- [X] Client-Side Validation
 - [X] Configure Minification
 - [X] Configure Bundling
 - [X] Data Model
@@ -195,7 +197,7 @@ Lessons - ASP.NET Core
 
 Lessons - Entity Framework Core
 --------
-- [X] Code First Database 
+- [X] Code First Database
 - [X] Migrations
   - [X] Add-Migration
   - [X] Update-Database
@@ -214,4 +216,4 @@ Lessons - Continuous Integration
 -----------------------------
 - [X] AppVeyor
 - [X] Docker file
-- [X] TravisCI 
+- [X] TravisCI
