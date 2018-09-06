@@ -6314,6 +6314,10 @@ body {
 .pageNumber {
   margin: 0px 4px; }
 
+button.accept-policy {
+  font-size: 1rem;
+  line-height: inherit; }
+
 .navbar .navbar-brand {
   color: #0d24e5 !important;
   font-size: x-large;

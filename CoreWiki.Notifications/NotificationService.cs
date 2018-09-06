@@ -135,67 +135,68 @@ namespace CoreWiki.Notifications
 
 		public async Task<bool> SendNewCommentEmail(string authorEmail, string authorName, string commenterName, string articleTopic, string articleSlug, Func<bool> canNotifyUser)
 		{
-			_logger.LogInformation("Sending new comment email");
+		    _logger.LogInformation("Sending new comment email");
 
-			if (!canNotifyUser())
-			{
-				_logger.LogInformation("User has not consented to receiving emails, email not sent");
-			}
-
-			if (string.IsNullOrWhiteSpace(authorEmail))
-			{
-				_logger.LogWarning("Missing parameter {Parameter}, new comment email not sent", nameof(authorEmail));
+		    if (!canNotifyUser())
+		    {
+		        _logger.LogInformation("User has not consented to receiving emails, email not sent");
 				return false;
-			}
+		    }
 
-			if (string.IsNullOrWhiteSpace(authorName))
-			{
-				_logger.LogWarning("Missing parameter {Parameter}, new comment email not sent", nameof(authorName));
-				return false;
-			}
+            if (string.IsNullOrWhiteSpace(authorEmail))
+		    {
+		        _logger.LogWarning("Missing parameter {Parameter}, new comment email not sent", nameof(authorEmail));
+                return false;
+		    }
 
-			if (string.IsNullOrWhiteSpace(commenterName))
-			{
-				_logger.LogWarning("Missing parameter {Parameter}, new comment email not sent", nameof(commenterName));
-				return false;
-			}
+		    if (string.IsNullOrWhiteSpace(authorName))
+		    {
+		        _logger.LogWarning("Missing parameter {Parameter}, new comment email not sent", nameof(authorName));
+                return false;
+		    }
 
-			if (string.IsNullOrWhiteSpace(articleTopic))
-			{
-				_logger.LogWarning("Missing parameter {Parameter}, new comment email not sent", nameof(articleTopic));
-				return false;
-			}
+		    if (string.IsNullOrWhiteSpace(commenterName))
+		    {
+		        _logger.LogWarning("Missing parameter {Parameter}, new comment email not sent", nameof(commenterName));
+                return false;
+		    }
 
-			if (string.IsNullOrWhiteSpace(articleSlug))
-			{
-				_logger.LogWarning("Missing parameter {Parameter}, new comment email not sent", nameof(articleSlug));
-				return false;
-			}
+		    if (string.IsNullOrWhiteSpace(articleTopic))
+		    {
+		        _logger.LogWarning("Missing parameter {Parameter}, new comment email not sent", nameof(articleTopic));
+                return false;
+		    }
 
-			try
-			{
-				var model = new NewCommentEmailModel()
-				{
-					BaseUrl = _appSettings.Url.ToString(),
-					Title = "CoreWiki Notification",
-					AuthorName = authorName,
-					CommenterDisplayName = commenterName,
-					ArticleTopic = articleTopic,
-					ArticleUrl = $"{_appSettings.Url}{articleSlug}"
-				};
+		    if (string.IsNullOrWhiteSpace(articleSlug))
+		    {
+		        _logger.LogWarning("Missing parameter {Parameter}, new comment email not sent", nameof(articleSlug));
+                return false;
+		    }
 
-				var messageBody = await _emailMessageFormatter.FormatEmailMessage(
-					TemplateProvider.NewCommentEmailTemplate,
-					model);
+		    try
+		    {
+		        var model = new NewCommentEmailModel()
+		        {
+		            BaseUrl = _appSettings.Url.ToString(),
+		            Title = "CoreWiki Notification",
+		            AuthorName = authorName,
+		            CommenterDisplayName = commenterName,
+		            ArticleTopic = articleTopic,
+		            ArticleUrl = $"{_appSettings.Url}{articleSlug}"
+		        };
 
-				return await _emailNotifier.SendEmailAsync(
-					authorEmail,
-					"Someone said something about your article",
-					messageBody);
-			}
-			catch (Exception ex)
-			{
-				_logger.LogError(ex, ex.Message);
+                var messageBody = await _emailMessageFormatter.FormatEmailMessage(
+				    TemplateProvider.NewCommentEmailTemplate,
+				    model);
+
+			    return await _emailNotifier.SendEmailAsync(
+				    authorEmail,
+				    "Someone said something about your article",
+				    messageBody);
+		    }
+		    catch (Exception ex)
+		    {
+		        _logger.LogError(ex, ex.Message);
 #if DEBUG
 				throw;
 #else

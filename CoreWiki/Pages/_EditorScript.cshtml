@@ -1,19 +1,45 @@
-﻿<script src="~/lib/simplemde/dist/simplemde.min.js"></script>
+﻿<script src="~/lib/easymde/dist/easymde.min.js"></script>
 <script>
-		var simplemde = new SimpleMDE();
+	var easymde = new EasyMDE(
+		{
+			autoDownloadFontAwesome: false,
+			toolbar: [
+				"bold",
+				"italic",
+				"strikethrough",
+				"heading",
+				"|",
+				"quote",
+				"unordered-list",
+				"ordered-list",
+				"|",
+				"link",
+				"image",
+				"|",
+				"code",
+				"table",
+				"horizontal-rule",
+				"|",
+				"preview",
+				"side-by-side",
+				"fullscreen",
+				"|",
+				"guide"
+			]
+		}
+	);
 
-		var openFile = function(event)  {
-			const input = event.target;
+	var openFile = function (event) {
+		const input = event.target;
 
-			const reader = new FileReader();
-			reader.onload = function () {
-				let text = simplemde.value();
-				
-				text += `\n${reader.result}`;
-				simplemde.value(text);
-			};
-			reader.readAsText(input.files[0]);
+		const reader = new FileReader();
+		reader.onload = function () {
+			let text = easymde.value();
+
+			text += `\n${reader.result}`;
+			easymde.value(text);
 		};
+		reader.readAsText(input.files[0]);
+	};
 </script>
-
-	@{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+<partial name="_ValidationScriptsPartial" />
