@@ -45,5 +45,11 @@ namespace CoreWiki.Data.EntityFramework.Security
 			context.Database.Migrate();
 
 		}
+
+		public override void Dispose()
+		{
+			base.Dispose();
+		}
+
 	}
 }

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
+using System.Threading.Tasks;
 
 namespace CoreWiki
 {
@@ -38,14 +39,15 @@ namespace CoreWiki
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-		public async void Configure(IApplicationBuilder app, IHostingEnvironment env, IOptionsSnapshot<AppSettings> settings, UserManager<CoreWikiUser> userManager, RoleManager<IdentityRole> roleManager)
+		public void Configure(IApplicationBuilder app, IHostingEnvironment env, IOptionsSnapshot<AppSettings> settings, UserManager<CoreWikiUser> userManager, RoleManager<IdentityRole> roleManager)
 		{
 			app.ConfigureTelemetry();
 			app.ConfigureExceptions(env);
 			app.ConfigureSecurityHeaders();
 			app.ConfigureRouting();
 			app.ConfigureDatabase();
-			await app.ConfigureAuthentication(userManager, roleManager);
+			var theTask = app.ConfigureAuthentication(userManager, roleManager);
+			theTask.GetAwaiter().GetResult();
 			app.ConfigureRSSFeed(settings);
 			app.ConfigureLocalisation();
 

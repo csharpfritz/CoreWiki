@@ -10,7 +10,7 @@ namespace CoreWiki.Configuration.Startup
 	{
 		public static IServiceCollection ConfigureDatabase(this IServiceCollection services, IConfiguration config)
 		{
-			services.AddSqliteRepositories(config);
+			services.AddRepositories(config);
 			return services;
 		}
 

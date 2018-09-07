@@ -9,9 +9,9 @@ using CoreWiki.Data.Abstractions.Interfaces;
 
 namespace CoreWiki.Data.EntityFramework.Repositories
 {
-	public class ArticleSqliteRepository : IArticleRepository
+	public class ArticleRepository : IArticleRepository
 	{
-		public ArticleSqliteRepository(ApplicationDbContext context)
+		public ArticleRepository(ApplicationDbContext context)
 		{
 			Context = context;
 		}

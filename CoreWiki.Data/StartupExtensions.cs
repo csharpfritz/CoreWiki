@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using CoreWiki.Data.Abstractions.Interfaces;
+using System;
 
 namespace CoreWiki.Data.EntityFramework
 {
@@ -16,18 +17,32 @@ namespace CoreWiki.Data.EntityFramework
 		/// <param name="services"></param>
 		/// <param name="config"></param>
 		/// <returns></returns>
-		public static IServiceCollection AddSqliteRepositories(this IServiceCollection services, IConfiguration config) {
+		public static IServiceCollection AddRepositories(this IServiceCollection services, IConfiguration config) {
 
-			services.AddEntityFrameworkSqlite()
-			.AddDbContextPool<ApplicationDbContext>(options =>
-				options.UseSqlite(config.GetConnectionString("CoreWikiData"))
-					.EnableSensitiveDataLogging()
-			);
+			Action<DbContextOptionsBuilder> optionsBuilder;
+			var connectionString = config.GetConnectionString("CoreWikiData");
+
+			switch (config["DataProvider"].ToLowerInvariant()) {
+				case "postgres":
+					services.AddEntityFrameworkNpgsql();
+					optionsBuilder = options => options.UseNpgsql(connectionString);
+					break;
+				default:
+					services.AddEntityFrameworkSqlite();
+					connectionString = !string.IsNullOrEmpty(connectionString) ? connectionString : "DataSource=./App_Data/wikiContent.db";
+					optionsBuilder = options => options.UseSqlite(connectionString);
+					break;
+			}
+
+			services.AddDbContextPool<ApplicationDbContext>(options => {
+				optionsBuilder(options);
+				options.EnableSensitiveDataLogging();
+			});
 
 			// db repos
-			services.AddTransient<IArticleRepository, ArticleSqliteRepository>();
-			services.AddTransient<ICommentRepository, CommentSqliteRepository>();
-			services.AddTransient<ISlugHistoryRepository, SlugHistorySqliteRepository>();
+			services.AddTransient<IArticleRepository, ArticleRepository>();
+			services.AddTransient<ICommentRepository, CommentRepository>();
+			services.AddTransient<ISlugHistoryRepository, SlugHistoryRepository>();
 			return services;
 
 		}

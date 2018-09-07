@@ -6,10 +6,10 @@ using CoreWiki.Data.Abstractions.Interfaces;
 
 namespace CoreWiki.Data.EntityFramework.Repositories
 {
-	public class CommentSqliteRepository : ICommentRepository
+	public class CommentRepository : ICommentRepository
 	{
 
-		public CommentSqliteRepository(ApplicationDbContext context)
+		public CommentRepository(ApplicationDbContext context)
 		{
 			Context = context;
 		}

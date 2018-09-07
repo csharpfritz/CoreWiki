@@ -9,7 +9,9 @@
 		<PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.1.2" />
 		<PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="2.1.2" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="2.1.1" />
-    <PackageReference Include="NodaTime" Version="2.3.0" />
+    <PackageReference Include="NodaTime" Version="2.4.0" />
+    <PackageReference Include="Npgsql" Version="4.0.2" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="2.1.1.1" />
   </ItemGroup>
 
   <ItemGroup>

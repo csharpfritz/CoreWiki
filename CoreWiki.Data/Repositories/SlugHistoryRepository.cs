@@ -7,9 +7,9 @@ using CoreWiki.Data.Abstractions.Interfaces;
 
 namespace CoreWiki.Data.EntityFramework.Repositories
 {
-	public class SlugHistorySqliteRepository : ISlugHistoryRepository
+	public class SlugHistoryRepository : ISlugHistoryRepository
 	{
-		public SlugHistorySqliteRepository(ApplicationDbContext context)
+		public SlugHistoryRepository(ApplicationDbContext context)
 		{
 			Context = context;
 		}

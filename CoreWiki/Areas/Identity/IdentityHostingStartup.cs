@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System;
 
 [assembly: HostingStartup(typeof(CoreWiki.Areas.Identity.IdentityHostingStartup))]
 namespace CoreWiki.Areas.Identity
@@ -17,9 +18,7 @@ namespace CoreWiki.Areas.Identity
 				bool.TryParse(context.Configuration["Authentication:RequireConfirmedEmail"],
 					out var requireConfirmedEmail);
 
-				services.AddDbContext<CoreWikiIdentityContext>(options =>
-					options.UseSqlite(
-						context.Configuration.GetConnectionString("CoreWikiIdentityContextConnection")));
+				ConfigureDb(context, services);
 
 				services.AddIdentity<CoreWikiUser, IdentityRole>(options =>
 						options.SignIn.RequireConfirmedEmail = requireConfirmedEmail)
@@ -51,6 +50,27 @@ namespace CoreWiki.Areas.Identity
 
 				services.AddAuthorization(AuthPolicy.Execute);
 			});
+		}
+
+		private static void ConfigureDb(WebHostBuilderContext context, IServiceCollection services)
+		{
+
+			Action<DbContextOptionsBuilder> optionsBuilder;
+			var connectionString = context.Configuration.GetConnectionString("CoreWikiIdentityContextConnection");
+
+			switch (context.Configuration["DataProvider"].ToLowerInvariant())
+			{
+				case "postgres":
+					optionsBuilder = options => options.UseNpgsql(connectionString);
+					break;
+				default:
+					connectionString = !string.IsNullOrEmpty(connectionString) ? connectionString : "DataSource =./App_Data/wikiIdentity.db";
+					optionsBuilder = options => options.UseSqlite(connectionString);
+					break;
+			}
+
+			services.AddDbContext<CoreWikiIdentityContext>(optionsBuilder);
+
 		}
 	}
 }
