@@ -31,7 +31,7 @@ namespace CoreWiki
 			services.Configure<AppSettings>(Configuration);
 			services.ConfigureSecurityAndAuthentication();
 			services.ConfigureDatabase(Configuration);
-			services.ConfigureScopedServices();
+			services.ConfigureScopedServices(Configuration);
 			services.ConfigureRouting();
 			services.ConfigureLocalisation();
 			services.ConfigureApplicationServices();

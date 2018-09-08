@@ -13,6 +13,7 @@ namespace CoreWiki.Notifications
 	{
 		private readonly IEmailMessageFormatter _emailMessageFormatter;
 		private readonly IEmailNotifier _emailNotifier;
+		private readonly string _url;
 		private readonly EmailNotifications _appSettings;
 		private readonly ILogger<NotificationService> _logger;
 
@@ -20,10 +21,12 @@ namespace CoreWiki.Notifications
 			IEmailMessageFormatter emailMessageFormatter,
 			IEmailNotifier emailNotifier,
 			IOptionsSnapshot<EmailNotifications> appSettings,
-			ILoggerFactory loggerFactory)
+			ILoggerFactory loggerFactory,
+			String Url)
 		{
 			_emailMessageFormatter = emailMessageFormatter;
 			_emailNotifier = emailNotifier;
+			_url = Url;
 			_appSettings = appSettings.Value;
 			_logger = loggerFactory.CreateLogger<NotificationService>();
 		}
@@ -56,9 +59,9 @@ namespace CoreWiki.Notifications
 				var encodedConfirmCode = UrlEncoder.Default.Encode(confirmCode);
 				var model = new ConfirmationEmailModel()
 				{
-					BaseUrl = _appSettings.Url.ToString(),
+					BaseUrl = _url,
 					Title = "CoreWiki Email Confirmation",
-					ReturnUrl = $"{_appSettings.Url}Identity/Account/ConfirmEmail?userId={userId}&code={encodedConfirmCode}",
+					ReturnUrl = $"{_url}Identity/Account/ConfirmEmail?userId={userId}&code={encodedConfirmCode}",
 					ConfirmEmail = confirmEmail
 				};
 
@@ -107,9 +110,9 @@ namespace CoreWiki.Notifications
 			{
 				var model = new ForgotPasswordEmailModel()
 				{
-					BaseUrl = _appSettings.Url.ToString(),
+					BaseUrl = _url,
 					Title = "CoreWiki Password Reset",
-					ReturnUrl = $"{_appSettings.Url}Identity/Account/ResetPassword?code={resetToken}",
+					ReturnUrl = $"{_url}Identity/Account/ResetPassword?code={resetToken}",
 					AccountEmail = accountEmail
 				};
 
@@ -135,68 +138,68 @@ namespace CoreWiki.Notifications
 
 		public async Task<bool> SendNewCommentEmail(string authorEmail, string authorName, string commenterName, string articleTopic, string articleSlug, Func<bool> canNotifyUser)
 		{
-		    _logger.LogInformation("Sending new comment email");
+			_logger.LogInformation("Sending new comment email");
 
-		    if (!canNotifyUser())
-		    {
-		        _logger.LogInformation("User has not consented to receiving emails, email not sent");
+			if (!canNotifyUser())
+			{
+				_logger.LogInformation("User has not consented to receiving emails, email not sent");
 				return false;
-		    }
+			}
 
-            if (string.IsNullOrWhiteSpace(authorEmail))
-		    {
-		        _logger.LogWarning("Missing parameter {Parameter}, new comment email not sent", nameof(authorEmail));
-                return false;
-		    }
+			if (string.IsNullOrWhiteSpace(authorEmail))
+			{
+				_logger.LogWarning("Missing parameter {Parameter}, new comment email not sent", nameof(authorEmail));
+				return false;
+			}
 
-		    if (string.IsNullOrWhiteSpace(authorName))
-		    {
-		        _logger.LogWarning("Missing parameter {Parameter}, new comment email not sent", nameof(authorName));
-                return false;
-		    }
+			if (string.IsNullOrWhiteSpace(authorName))
+			{
+				_logger.LogWarning("Missing parameter {Parameter}, new comment email not sent", nameof(authorName));
+				return false;
+			}
 
-		    if (string.IsNullOrWhiteSpace(commenterName))
-		    {
-		        _logger.LogWarning("Missing parameter {Parameter}, new comment email not sent", nameof(commenterName));
-                return false;
-		    }
+			if (string.IsNullOrWhiteSpace(commenterName))
+			{
+				_logger.LogWarning("Missing parameter {Parameter}, new comment email not sent", nameof(commenterName));
+				return false;
+			}
 
-		    if (string.IsNullOrWhiteSpace(articleTopic))
-		    {
-		        _logger.LogWarning("Missing parameter {Parameter}, new comment email not sent", nameof(articleTopic));
-                return false;
-		    }
+			if (string.IsNullOrWhiteSpace(articleTopic))
+			{
+				_logger.LogWarning("Missing parameter {Parameter}, new comment email not sent", nameof(articleTopic));
+				return false;
+			}
 
-		    if (string.IsNullOrWhiteSpace(articleSlug))
-		    {
-		        _logger.LogWarning("Missing parameter {Parameter}, new comment email not sent", nameof(articleSlug));
-                return false;
-		    }
+			if (string.IsNullOrWhiteSpace(articleSlug))
+			{
+				_logger.LogWarning("Missing parameter {Parameter}, new comment email not sent", nameof(articleSlug));
+				return false;
+			}
 
-		    try
-		    {
-		        var model = new NewCommentEmailModel()
-		        {
-		            BaseUrl = _appSettings.Url.ToString(),
-		            Title = "CoreWiki Notification",
-		            AuthorName = authorName,
-		            CommenterDisplayName = commenterName,
-		            ArticleTopic = articleTopic,
-		            ArticleUrl = $"{_appSettings.Url}{articleSlug}"
-		        };
+			try
+			{
+				var model = new NewCommentEmailModel()
+				{
+					BaseUrl = _url,
+					Title = "CoreWiki Notification",
+					AuthorName = authorName,
+					CommenterDisplayName = commenterName,
+					ArticleTopic = articleTopic,
+					ArticleUrl = $"{_url}{articleSlug}"
+				};
 
-                var messageBody = await _emailMessageFormatter.FormatEmailMessage(
-				    TemplateProvider.NewCommentEmailTemplate,
-				    model);
+				var messageBody = await _emailMessageFormatter.FormatEmailMessage(
+					TemplateProvider.NewCommentEmailTemplate,
+					model);
 
-			    return await _emailNotifier.SendEmailAsync(
-				    authorEmail,
-				    "Someone said something about your article",
-				    messageBody);
-		    }
-		    catch (Exception ex)
-		    {
-		        _logger.LogError(ex, ex.Message);
+				return await _emailNotifier.SendEmailAsync(
+					authorEmail,
+					"Someone said something about your article",
+					messageBody);
+			}
+			catch (Exception ex)
+			{
+				_logger.LogError(ex, ex.Message);
 #if DEBUG
 				throw;
 #else
