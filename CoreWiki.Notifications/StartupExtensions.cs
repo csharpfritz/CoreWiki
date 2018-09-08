@@ -7,8 +7,6 @@ using Microsoft.Extensions.FileProviders;
 using System.Reflection;
 using CoreWiki.Notifications.Abstractions.Notifications;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Options;
-using CoreWiki.Notifications.Abstractions.Configuration;
 using Microsoft.Extensions.Logging;
 
 namespace CoreWiki.Notifications
@@ -20,7 +18,6 @@ namespace CoreWiki.Notifications
 		{
 			services.AddHttpContextAccessor();
 
-			services.AddScoped<INotificationService, NotificationService>();
 			services.AddScoped<IUrlHelper>(x =>
 			{
 				var actionContext = x.GetService<IActionContextAccessor>().ActionContext;
@@ -35,11 +32,9 @@ namespace CoreWiki.Notifications
 				{
 					var emailMessageFormatter = sp.GetService<IEmailMessageFormatter>();
 					var emailNotifier = sp.GetService<IEmailNotifier>();
-					var settings = sp.GetService<IOptionsSnapshot<EmailNotifications>>();
 					var loggerFactory = sp.GetService<ILoggerFactory>();
 					return new NotificationService(emailMessageFormatter,
 						emailNotifier,
-						settings,
 						loggerFactory,
 						configuration.GetSection("url").Value );
 				}
@@ -53,7 +48,5 @@ namespace CoreWiki.Notifications
 			return services;
 
 		}
-
-
 	}
 }

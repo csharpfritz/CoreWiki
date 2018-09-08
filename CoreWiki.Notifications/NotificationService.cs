@@ -1,10 +1,8 @@
 ﻿using System;
 using CoreWiki.Notifications.Models;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
-using CoreWiki.Notifications.Abstractions.Configuration;
 using CoreWiki.Notifications.Abstractions.Notifications;
 
 namespace CoreWiki.Notifications
@@ -14,20 +12,17 @@ namespace CoreWiki.Notifications
 		private readonly IEmailMessageFormatter _emailMessageFormatter;
 		private readonly IEmailNotifier _emailNotifier;
 		private readonly string _url;
-		private readonly EmailNotifications _appSettings;
 		private readonly ILogger<NotificationService> _logger;
 
 		public NotificationService(
 			IEmailMessageFormatter emailMessageFormatter,
 			IEmailNotifier emailNotifier,
-			IOptionsSnapshot<EmailNotifications> appSettings,
 			ILoggerFactory loggerFactory,
-			String Url)
+			string url)
 		{
 			_emailMessageFormatter = emailMessageFormatter;
 			_emailNotifier = emailNotifier;
-			_url = Url;
-			_appSettings = appSettings.Value;
+			_url = url;
 			_logger = loggerFactory.CreateLogger<NotificationService>();
 		}
 
