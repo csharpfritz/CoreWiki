@@ -94,12 +94,12 @@ Task("Publish")
     .IsDependentOn("Test")
     .IsDependentOn("Clean-Publish")
     .Does( () => {
-        DotNetCorePublish(solution,
-           new DotNetCorePublishSettings {
+    DotNetCorePublish(solution,
+        new DotNetCorePublishSettings {
 
-               NoRestore = true,
-               Configuration = configuration,
-               OutputDirectory = publishPath
+            NoRestore = true,
+            Configuration = configuration,
+            OutputDirectory = publishPath
         });
 });
 
