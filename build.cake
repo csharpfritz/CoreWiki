@@ -124,9 +124,14 @@ Task("Publish")
                Configuration = configuration,
                OutputDirectory = publishPath
         });
+});
+
+Task("Kudu-Sync")
+    .IsDependentOn("Publish")
+    .Does( () => {
         Information("Deploying web from {0} to {1}", publishPath, deploymentPath);
         Kudu.Sync(publishPath);
-});
+});	
 
 Task("Default")
     .IsDependentOn("Test");
