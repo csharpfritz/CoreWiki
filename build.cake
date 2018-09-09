@@ -43,20 +43,20 @@ Action<FilePath, DirectoryPath, ProcessArgumentBuilder> Cmd => (path, workingPat
 // GLOBAL VARIABLES
 ///////////////////////////////////////////////////////////////////////////////
 
-if (!Kudu.IsRunningOnKudu)
-{
-    throw new Exception("Not running on Kudu");
-}
+var deploymentPath = publishPath; // just temp value;
 
-var deploymentPath = Kudu.Deployment.Target;
-if (!DirectoryExists(deploymentPath))
+if (Kudu.IsRunningOnKudu)
 {
-    throw new DirectoryNotFoundException(
-        string.Format(
-            "Deployment target directory not found {0}",
-            deploymentPath
-            )
-        );
+	deploymentPath = Kudu.Deployment.Target;
+	if (!DirectoryExists(deploymentPath))
+	{
+	    throw new DirectoryNotFoundException(
+		string.Format(
+		    "Deployment target directory not found {0}",
+		    deploymentPath
+		    )
+		);
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////
