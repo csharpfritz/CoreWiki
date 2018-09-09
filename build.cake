@@ -1,6 +1,3 @@
-#tool nuget:?package=KuduSync.NET&version=1.4.0
-#addin nuget:?package=Cake.Kudu&version=0.8.0
-	
 ///////////////////////////////////////////////////////////////////////////////
 // ARGUMENTS
 ///////////////////////////////////////////////////////////////////////////////
@@ -38,12 +35,6 @@ Action<FilePath, DirectoryPath, ProcessArgumentBuilder> Cmd => (path, workingPat
         throw new Exception($"Failed to execute tool {path.GetFilename()} ({result})");
     }
 };
-
-//////////////////////////////////////////////////////////////////////
-// GLOBAL VARIABLES
-//////////////////////////////////////////////////////////////////////
-
-DirectoryPath  deploymentPath;
 
 ///////////////////////////////////////////////////////////////////////////////
 // TASKS
@@ -111,27 +102,6 @@ Task("Publish")
                OutputDirectory = publishPath
         });
 });
-
-Task("Kudu-Sync")
-    .IsDependentOn("Publish")
-    .Does( () => {
-	    
-	if (Kudu.IsRunningOnKudu)
-	{
-		deploymentPath = Kudu.Deployment.Target;
-		if (!DirectoryExists(deploymentPath))
-		{
-		    throw new DirectoryNotFoundException(
-			string.Format(
-			    "Deployment target directory not found {0}",
-			    deploymentPath
-			    )
-			);
-		}
-	}	    
-        Information("Deploying web from {0} to {1}", publishPath, deploymentPath);
-        Kudu.Sync(publishPath);
-});	
 
 Task("Default")
     .IsDependentOn("Test");
