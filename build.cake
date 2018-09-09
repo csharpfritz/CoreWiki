@@ -1,3 +1,6 @@
+#tool "KuduSync.NET"
+#addin "Cake.Kudu"
+	
 ///////////////////////////////////////////////////////////////////////////////
 // ARGUMENTS
 ///////////////////////////////////////////////////////////////////////////////
@@ -35,6 +38,26 @@ Action<FilePath, DirectoryPath, ProcessArgumentBuilder> Cmd => (path, workingPat
         throw new Exception($"Failed to execute tool {path.GetFilename()} ({result})");
     }
 };
+
+///////////////////////////////////////////////////////////////////////////////
+// GLOBAL VARIABLES
+///////////////////////////////////////////////////////////////////////////////
+
+if (!Kudu.IsRunningOnKudu)
+{
+    throw new Exception("Not running on Kudu");
+}
+
+var deploymentPath = Kudu.Deployment.Target;
+if (!DirectoryExists(deploymentPath))
+{
+    throw new DirectoryNotFoundException(
+        string.Format(
+            "Deployment target directory not found {0}",
+            deploymentPath
+            )
+        );
+}
 
 ///////////////////////////////////////////////////////////////////////////////
 // TASKS
@@ -94,13 +117,15 @@ Task("Publish")
     .IsDependentOn("Test")
     .IsDependentOn("Clean-Publish")
     .Does( () => {
-    DotNetCorePublish(solution,
-        new DotNetCorePublishSettings {
+        DotNetCorePublish(solution,
+           new DotNetCorePublishSettings {
 
-            NoRestore = true,
-            Configuration = configuration,
-            OutputDirectory = publishPath
+               NoRestore = true,
+               Configuration = configuration,
+               OutputDirectory = publishPath
         });
+        Information("Deploying web from {0} to {1}", publishPath, deploymentPath);
+        Kudu.Sync(publishPath);
 });
 
 Task("Default")
