@@ -3,7 +3,6 @@
 	"defaultProvider": "cdnjs",
 	"libraries": [
 		{
-			"provider": "cdnjs",
 			"library": "twitter-bootstrap@4.1.3",
 			"destination": "wwwroot/lib/bootstrap/dist/",
 			"files": [
@@ -18,7 +17,6 @@
 			]
 		},
 		{
-			"provider": "cdnjs",
 			"library": "popper.js@1.14.3",
 			"destination": "wwwroot/lib/popper.js/dist",
 			"files": [
@@ -33,7 +31,6 @@
 			]
 		},
 		{
-			"provider": "cdnjs",
 			"library": "jquery@3.3.1",
 			"destination": "wwwroot/lib/jquery/dist",
 			"files": [
@@ -44,7 +41,6 @@
 			]
 		},
 		{
-			"provider": "cdnjs",
 			"library": "jquery-validate@1.17.0",
 			"destination": "wwwroot/lib/jquery-validation/dist",
 			"files": [
@@ -55,7 +51,6 @@
 			]
 		},
 		{
-			"provider": "cdnjs",
 			"library": "jquery-validation-unobtrusive@3.2.10",
 			"destination": "wwwroot/lib/jquery-validation-unobtrusive/dist",
 			"files": [
@@ -64,7 +59,6 @@
 			]
 		},
 		{
-			"provider": "cdnjs",
 			"library": "moment.js@2.22.2",
 			"destination": "wwwroot/lib/moment/min",
 			"files": [
