@@ -5,7 +5,23 @@
 	<UseRazorBuildServer>false</UseRazorBuildServer>
 	<TieredCompilation>true</TieredCompilation>
   </PropertyGroup>
-  <ItemGroup>
+
+	<PropertyGroup>
+		<CodeAnalysisRuleSet>$(SolutionDir)StyleCopRules.ruleset</CodeAnalysisRuleSet>
+	</PropertyGroup>
+
+
+	<ItemGroup>
+		<AdditionalFiles Include="$(SolutionDir)stylecop.json" Link="stylecop.json" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Update="StyleCopRules.ruleset">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
+
+	<ItemGroup>
     <PackageReference Include="AutoMapper" Version="7.0.1" />
     <PackageReference Include="BuildBundlerMinifier" Version="2.8.391" />
     <PackageReference Include="DiffPlex" Version="1.4.1" />
@@ -22,6 +38,10 @@
     <PackageReference Include="NWebsec.AspNetCore.Middleware" Version="2.0.0" />
     <PackageReference Include="NWebsec.AspNetCore.Mvc.TagHelpers" Version="2.0.0" />
     <PackageReference Include="Snickler.RSSCore" Version="1.0.3" />
+    <PackageReference Include="StyleCoP.Analyzers" Version="1.0.2">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="WebEssentials.AspNetCore.PWA" Version="1.0.42" />
     <PackageReference Include="Westwind.AspNetCore.Markdown" Version="3.0.29" />
   </ItemGroup>
