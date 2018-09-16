@@ -1,10 +1,10 @@
-using CoreWiki.Core.Domain;
 using CoreWiki.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Linq;
 using System.Threading.Tasks;
 using CoreWiki.Application.Articles.Reading.Queries;
+using CoreWiki.Application.Articles.Search.Dto;
 using CoreWiki.Application.Articles.Search.Queries;
 using MediatR;
 
@@ -13,7 +13,7 @@ namespace CoreWiki.Pages
 	public class SearchModel : PageModel
 	{
 		private readonly IMediator _mediator;
-		public SearchResult<ArticleSummary> SearchResult;
+		public SearchResultDto<ArticleSummary> SearchResult;
 		private const int ResultsPerPage = 10;
 
 		public SearchModel(IMediator mediator)
@@ -35,7 +35,7 @@ namespace CoreWiki.Pages
 			var result = await _mediator.Send(qry);
 
 			//todo: use automapper
-			SearchResult = new SearchResult<ArticleSummary>
+			SearchResult = new SearchResultDto<ArticleSummary>
 			{
 				Query = result.Query,
 				TotalResults = result.TotalResults,
@@ -60,7 +60,7 @@ namespace CoreWiki.Pages
 			var qry = new GetLatestArticlesQuery(10);
 			var results = await _mediator.Send(qry);
 
-			SearchResult = new SearchResult<ArticleSummary>
+			SearchResult = new SearchResultDto<ArticleSummary>
 			{
 				Results = (from article in results
 									 select new ArticleSummary
