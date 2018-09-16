@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace CoreWiki.Application.Articles.Search.Dto
 {
@@ -16,6 +14,6 @@ namespace CoreWiki.Application.Articles.Search.Dto
 
 		public int CurrentPage { get; set; }
 
-		public int TotalPages => (int)Math.Ceiling((decimal)TotalResults / ResultsPerPage);
+		public int TotalPages { get; set; }
 	}
 }
