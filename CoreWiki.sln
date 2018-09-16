@@ -23,17 +23,20 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoreWiki.Application", "Cor
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build Items", "Build Items", "{5D6BD646-6065-4216-BFBA-897BCDFD025D}"
 	ProjectSection(SolutionItems) = preProject
+		.deployment = .deployment
 		.travis.yml = .travis.yml
 		appveyor.yml = appveyor.yml
 		build.cake = build.cake
 		build.ps1 = build.ps1
 		build.sh = build.sh
+		deployToAzure.cake = deployToAzure.cake
+		deployToAzure.cmd = deployToAzure.cmd
 		Dockerfile = Dockerfile
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoreWiki.Data.Abstractions", "CoreWiki.Data.Abstractions\CoreWiki.Data.Abstractions.csproj", "{5EA4C7BD-694C-4005-A4F1-256BFA5E9D6E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoreWiki.Data.Abstractions", "CoreWiki.Data.Abstractions\CoreWiki.Data.Abstractions.csproj", "{5EA4C7BD-694C-4005-A4F1-256BFA5E9D6E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoreWiki.Notifications.Abstractions", "CoreWiki.Notifications.Abstractions\CoreWiki.Notifications.Abstractions.csproj", "{192CBE23-68A7-4437-A2E1-B88FC3DE152B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoreWiki.Notifications.Abstractions", "CoreWiki.Notifications.Abstractions\CoreWiki.Notifications.Abstractions.csproj", "{192CBE23-68A7-4437-A2E1-B88FC3DE152B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
