@@ -86,7 +86,9 @@ Task("Test")
         new DotNetCoreTestSettings {
             NoBuild = true,
             NoRestore = true,
-            Configuration = configuration
+            Configuration = configuration,
+						ResultsDirectory = "./testresults",
+						ArgumentCustomization = args => args.Append("--logger \"trx;LogFileName=TestResults.xml\"")
         });
 });
 
