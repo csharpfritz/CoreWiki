@@ -17,6 +17,16 @@ jobs:
   - bash: ./build.sh
     displayName: 'Execute Cake Boostrapper'
 
+	- task: PublishTestResults@2
+		displayName: 'Publish Test Results'
+		inputs:
+			testRunner: XUnit
+
+			testResultsFiles: '**/TestResults.xml'
+
+			mergeTestResults: true
+
+
 
 - job: Windows
   displayName: Build on Windows
@@ -34,6 +44,15 @@ jobs:
   - powershell: ./build.ps1
     displayName: 'Execute Cake PowerShell Boostrapper'
 
+	- task: PublishTestResults@2
+		displayName: 'Publish Test Results'
+		inputs:
+			testRunner: XUnit
+
+			testResultsFiles: '**/TestResults.xml'
+
+			mergeTestResults: true
+
 
 - job: Linux
   displayName: Build on Linux
@@ -50,6 +69,15 @@ jobs:
 
   - bash: ./build.sh
     displayName: 'Execute Cake Bash Boostrapper'
+
+	- task: PublishTestResults@2
+		displayName: 'Publish Test Results'
+		inputs:
+			testRunner: XUnit
+
+			testResultsFiles: '**/TestResults.xml'
+
+			mergeTestResults: true
 
 
 - job: Docker
