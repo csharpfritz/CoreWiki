@@ -1,0 +1,63 @@
+variables:
+  DOTNET_SDK_VERSION: '2.1.401'
+
+jobs:
+- job: MacOS
+  displayName: Build on MacOs
+
+  pool:
+    vmImage: 'macOS 10.13'
+
+  steps:
+  - task: DotNetCoreInstaller@0
+    displayName: 'Use .NET Core SDK $(DOTNET_SDK_VERSION)'
+    inputs:
+      version: '$(DOTNET_SDK_VERSION)'
+
+  - bash: ./build.sh
+    displayName: 'Execute Cake Boostrapper'
+
+
+- job: Windows
+  displayName: Build on Windows
+
+  pool:
+    vmImage: 'VS2017-Win2016'
+
+  steps:
+  - task: DotNetCoreInstaller@0
+    displayName: 'Use .NET Core SDK $(DOTNET_SDK_VERSION)'
+    inputs:
+      version: '$(DOTNET_SDK_VERSION)'
+
+
+  - powershell: ./build.ps1
+    displayName: 'Execute Cake PowerShell Boostrapper'
+
+
+- job: Linux
+  displayName: Build on Linux
+
+  pool:
+    vmImage: 'Ubuntu 16.04'
+
+  steps:
+  - task: DotNetCoreInstaller@0
+    displayName: 'Use .NET Core SDK $(DOTNET_SDK_VERSION)'
+    inputs:
+      version: '$(DOTNET_SDK_VERSION)'
+
+
+  - bash: ./build.sh
+    displayName: 'Execute Cake Bash Boostrapper'
+
+
+- job: Docker
+  displayName: Build Docker Image
+
+  pool:
+    vmImage: 'Ubuntu 16.04'
+
+  steps:
+  - task: Docker@1
+    displayName: 'Build image'
