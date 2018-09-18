@@ -21,9 +21,7 @@ jobs:
 		displayName: 'Publish Test Results'
 		inputs:
 			testRunner: XUnit
-
 			testResultsFiles: '**/TestResults.xml'
-
 			mergeTestResults: true
 
 
@@ -48,9 +46,7 @@ jobs:
 		displayName: 'Publish Test Results'
 		inputs:
 			testRunner: XUnit
-
 			testResultsFiles: '**/TestResults.xml'
-
 			mergeTestResults: true
 
 
@@ -74,9 +70,7 @@ jobs:
 		displayName: 'Publish Test Results'
 		inputs:
 			testRunner: XUnit
-
 			testResultsFiles: '**/TestResults.xml'
-
 			mergeTestResults: true
 
 
