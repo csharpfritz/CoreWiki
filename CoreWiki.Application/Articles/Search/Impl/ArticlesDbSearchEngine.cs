@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using CoreWiki.Application.Articles.Search.Dto;
@@ -19,7 +20,7 @@ namespace CoreWiki.Application.Articles.Search.Impl
 			_mapper = mapper;
 		}
 
-		public async Task<SearchResult<ArticleSearchDto>> SearchAsync(string query, int pageNumber, int resultsPerPage)
+		public async Task<SearchResultDto<ArticleSearchDto>> SearchAsync(string query, int pageNumber, int resultsPerPage)
 		{
 			var filteredQuery = query.Trim();
 			var offset = (pageNumber - 1) * resultsPerPage;
@@ -28,14 +29,16 @@ namespace CoreWiki.Application.Articles.Search.Impl
 				_articleRepo.GetArticlesForSearchQuery(filteredQuery, offset, resultsPerPage);
 			var articles = searchQueryResult.articles;
 
-			return new SearchResult<ArticleSearchDto>
+			var result = new SearchResult<Article>
 			{
 				Query = filteredQuery,
-				Results = _mapper.Map<List<ArticleSearchDto>>(articles),
+				Results = articles.ToList(),
 				CurrentPage = pageNumber,
 				ResultsPerPage = resultsPerPage,
 				TotalResults = searchQueryResult.totalFound
 			};
+
+			return _mapper.Map<SearchResultDto<ArticleSearchDto>>(result);
 		}
 	}
 }

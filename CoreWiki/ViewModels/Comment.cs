@@ -1,6 +1,4 @@
-﻿using CoreWiki.Core.Domain;
-using NodaTime;
-using System;
+﻿using NodaTime;
 
 namespace CoreWiki.ViewModels
 {

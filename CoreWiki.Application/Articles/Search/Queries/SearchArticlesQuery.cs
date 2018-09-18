@@ -1,10 +1,9 @@
 ﻿using CoreWiki.Application.Articles.Search.Dto;
-using CoreWiki.Core.Domain;
 using MediatR;
 
 namespace CoreWiki.Application.Articles.Search.Queries
 {
-	public class SearchArticlesQuery: IRequest<SearchResult<ArticleSearchDto>>
+	public class SearchArticlesQuery: IRequest<SearchResultDto<ArticleSearchDto>>
 	{
 		public string Query { get; }
 		public int PageNumber { get; }

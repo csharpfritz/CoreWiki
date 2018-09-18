@@ -6,6 +6,6 @@ namespace CoreWiki.Application.Articles.Search
 {
 	public interface IArticlesSearchEngine
 	{
-		Task<SearchResult<ArticleSearchDto>> SearchAsync(string query, int pageNumber, int resultsPerPage);
+		Task<SearchResultDto<ArticleSearchDto>> SearchAsync(string query, int pageNumber, int resultsPerPage);
 	}
 }
