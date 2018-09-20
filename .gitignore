@@ -276,3 +276,6 @@ CoreWiki/wwwroot/lib/
 
 # Minified and generated files
 *.min.js
+
+# Ignore test results
+test_result.xml
