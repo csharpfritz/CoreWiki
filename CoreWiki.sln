@@ -38,6 +38,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoreWiki.Data.Abstractions"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoreWiki.Notifications.Abstractions", "CoreWiki.Notifications.Abstractions\CoreWiki.Notifications.Abstractions.csproj", "{192CBE23-68A7-4437-A2E1-B88FC3DE152B}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "pipelines", "pipelines", "{B7B8479A-7320-40F4-AEE5-D77C04C2A1D3}"
+	ProjectSection(SolutionItems) = preProject
+		pipelines\azure-pipelines-cake.yml = pipelines\azure-pipelines-cake.yml
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -79,6 +84,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{B7B8479A-7320-40F4-AEE5-D77C04C2A1D3} = {5D6BD646-6065-4216-BFBA-897BCDFD025D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2CA9CB16-B897-4414-AC22-E0AA4706EF90}
