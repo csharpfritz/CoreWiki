@@ -1,16 +1,14 @@
-@using Data.Models
+@using CoreWiki.Application.Common
 @using Microsoft.AspNetCore.Authorization
 @inject IAuthorizationService AuthorizationService
-@model Data.Models.Article
+@model ArticleSummary
 
 
-
-
-<div class="cwiki-flex-item">
-	<div class="card border border-primary mb-3">
+<div class="col-12 col-md-6 col-lg-4">
+	<div class="card border border-primary rounded mb-3">
 		<div class="card-header">
 			<h3 class="card-title">
-				<a href="@($"/{(Model.Slug == "home-page" ? "" : Model.Slug)}")">@Model.Topic</a>
+				<a href="@($"/wiki/{(Model.Slug == UrlHelpers.HomePageSlug ? "" : Model.Slug)}")">@Model.Topic</a>
 			</h3>
 		</div>
 		<div class="card-body">
@@ -18,9 +16,9 @@
 			<h6 class="card-subtitle mb-2 text-muted">@Localizer["ViewCount"]: <span> @Model.ViewCount</span></h6>
 
 			<a class="card-link btn btn-outline-info btn-sm" asp-page="/Edit" asp-route-slug="@Model.Slug">@Localizer["Edit"]</a>
-			@if (Model.Slug != "home-page")
+			@if (Model.Slug != UrlHelpers.HomePageSlug)
 			{
-			<a class="card-link btn btn-outline-danger btn-sm" asp-policy="CanDeleteArticles" asp-policy-message="You do not have permission to delete this article." asp-page="/Delete" asp-route-slug="@Model.Slug">@Localizer["Delete"]</a>
+				<a class="card-link btn btn-outline-danger btn-sm" asp-policy="CanDeleteArticles" asp-policy-message="You do not have permission to delete this article." asp-page="/Delete" asp-route-slug="@Model.Slug">@Localizer["Delete"]</a>
 			}
 		</div>
 	</div>

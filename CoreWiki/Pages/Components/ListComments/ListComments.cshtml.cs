@@ -1,4 +1,4 @@
-﻿using CoreWiki.Data.Models;
+﻿using CoreWiki.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 

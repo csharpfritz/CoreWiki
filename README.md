@@ -1,5 +1,9 @@
 # CoreWiki
 
+[![Build Status](https://dev.azure.com/FritzAndFriends/CoreWiki/_apis/build/status/CoreWiki-CI)](https://dev.azure.com/FritzAndFriends/CoreWiki/_build/latest?definitionId=4)
+
+[![Deploy to Azure](https://azuredeploy.net/deploybutton.png)](https://azuredeploy.net/) 
+
 A simple ASP.NET Core wiki that we are working on during live coding streams. It runs on Windows, Mac, Linux and Container. Core Wiki is an allusion to the Core App. This name was suggested by Shayne Boyer in the stream of the [27th/March](https://www.twitch.tv/videos/243463398). Initially this project is very basic and anyone who is learning ASP.NET Core 2.0 (Razor Pages) can use it to learn..
 
 Jeff Fritz writes code live on video streams, and wants to give you a central place to ask questions, find samples, and links to projects and other materials referenced during the show.
@@ -36,7 +40,7 @@ Jeff has written about how he has the hardware configured as well as the softwar
 
 ## Watch recordings
 
-Archive of all shows from the stream can be found on [Jeff's YouTube Fritz and Friends](https://www.youtube.com/playlist?list=PLVMqA0_8O85zHkvIMHgG74eskQTO5nfWy)  playlist.
+Archive of all shows from the stream can be found on [Jeff's YouTube 'Building the CoreWiki'](https://www.youtube.com/playlist?list=PLVMqA0_8O85yC78I4Xj7z48ES48IQBa7p)  playlist.
 
 Date | Topic
 ----|---

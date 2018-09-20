@@ -1,7 +1,12 @@
 ﻿@using System.IO
+@using System.Security.Claims
+@using CoreWiki.Areas.Identity
+@using CoreWiki.Configuration.Settings
+@using Microsoft.AspNetCore.Identity
 
 @inject Microsoft.AspNetCore.Hosting.IHostingEnvironment env
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor context
+@inject UserManager<CoreWikiUser> UserManager
 @inject IOptionsSnapshot<AppSettings> settings
 
 <!DOCTYPE html>
@@ -57,8 +62,16 @@
 		</button>
 		<div class="navbar-collapse collapse justify-content-between" id="navbarToggler">
 			<ul class="navbar-nav">
-				<li class="nav-item"><a class="nav-link" asp-page="/LatestChanges">@Localizer["menu_LatestChanges"]</a></li>
-				<li class="nav-item"><a class="nav-link" asp-page="/All">@Localizer["menu_AllArticles"]</a></li>
+				<li class="nav-item"><a class="nav-link" href="/Search/LatestChanges">@Localizer["menu_LatestChanges"]</a></li>
+				@if (User.Identity.IsAuthenticated)
+				{
+					if (User.IsInRole("Administrators"))
+					{
+						<li class="nav-item">
+							<a class="nav-link" href="/identity/UserAdmin">User Admin</a>
+						</li>
+					}
+				}
 				<li>
 					<form class="form-inline mx-0 mx-lg-2 my-2 my-lg-0" action="/search" method="get">
 						<div class="input-group">
@@ -71,7 +84,7 @@
 				</li>
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
-				<li class="nav-item"><a class="nav-link" href="/Create">@Localizer["menu_NewArticle"]</a></li>
+				<li class="nav-item"><a class="nav-link" href="/Create" asp-policy="@PolicyConstants.CanWriteArticles" asp-policy-hidden="true">@Localizer["menu_NewArticle"]</a></li>
 				<partial name="_LoginPartial" />
 			</ul>
 		</div>
@@ -79,28 +92,34 @@
 
 	<partial name="_CookieConsentPartial" />
 
-	<div class="container body-content">
-		@RenderBody()
-		<hr />
-		<footer>
-			<div class="row justify-content-between">
-				<div class="col-sm-12 col-md-8">
-					&copy; @DateTime.UtcNow.Year - <a target="_blank" href="https://github.com/csharpfritz/CoreWiki">@Localizer["CopyrightLinkText"]</a>
-				</div>
-				<div class="col-sm-12 col-md-auto">
-					<partial name="_ThemePartial" />
-				</div>
+<div class="container body-content">
+	@if (await UserManager.FindByEmailAsync("admin@corewiki.com") != null)
+	{
+		<div class="alert alert-danger" role="alert">
+			You still have the default administrator account enabled. Please create a new user with admin role and delete this account.
+		</div>
+	}
+	@RenderBody()
+	<hr/>
+	<footer>
+		<div class="row justify-content-between">
+			<div class="col-sm-12 col-md-8">
+				&copy; @DateTime.UtcNow.Year - <a target="_blank" href="https://github.com/csharpfritz/CoreWiki">@Localizer["CopyrightLinkText"]</a>
 			</div>
+			<div class="col-sm-12 col-md-auto">
+				<partial name="_ThemePartial"/>
+			</div>
+		</div>
 
-		</footer>
-	</div>
+	</footer>
+</div>
 
 	<script src="~/lib/moment/min/moment.min.js"></script>
 	<environment include="Development">
 		<script src="~/lib/jquery/dist/jquery.js"></script>
 		<script src="~/lib/popper.js/dist/umd/popper.js"></script>
 		<script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
-		<script defer src="https://use.fontawesome.com/releases/v5.0.9/js/all.js" integrity="sha384-8iPTk2s/jMVj81dnzb/iFR2sdA7u06vHJyyLlAd4snFpCl/SnyUjRrbdJsw1pGIl" crossorigin="anonymous"></script>
+		<script defer src="~/lib/fontawesome/js/all.js"></script>
 		<script src="~/js/site.js" asp-append-version="true"></script>
 	</environment>
 	<environment exclude="Development">
@@ -115,14 +134,20 @@
 				asp-fallback-test="Popper"
 				crossorigin="anonymous">
 		</script>
-		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js"
+		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
 				asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
 				asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
-				integrity="sha384-o+RDsa0aLu++PJvFqy8fFScvbHFLtbvScb8AjopnFD+iEQ7wo/CG0xlczd+2O/em"
+				integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
 				crossorigin="anonymous">
 		</script>
+		<script defer src="https://use.fontawesome.com/releases/v5.2.0/js/all.js"
+				asp-fallback-src="~/lib/fontawesome/js/all.min.js"
+				integrity="sha384-4oV5EgaV02iISL2ban6c/RmotsABqE4yZxZLcYMAdG7FAPsyHYAPpywE9PJo+Khy"
+				crossorigin="anonymous"></script>
 		<script src="~/js/site.min.js" asp-append-version="true"></script>
 	</environment>
+
+	<script defer src="https://use.fontawesome.com/releases/v5.2.0/js/all.js" integrity="sha384-4oV5EgaV02iISL2ban6c/RmotsABqE4yZxZLcYMAdG7FAPsyHYAPpywE9PJo+Khy" crossorigin="anonymous"></script>
 
 	@RenderSection("Scripts", required: false)
 </body>

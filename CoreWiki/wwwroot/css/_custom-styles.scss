@@ -1,22 +1,11 @@
-﻿// Add additional styles here. For example, overwrite certain styles or add new components.
-// Tip: You can use bootstrap's powerful mixins here!
+﻿// This file is included in each of the Themes
+
+// Add additional styles here.
+// For example, overwrite certain styles or add new components.
+// Tip: You can use bootstrap's mixins here!
 
 
-//.alert-myalert {
-//  @include alert-variant(#60667d, #1d1d1d, #f4fdff);
-//}
-
-//@each $color, $value in $theme-colors {
-//  .alert-#{$color} {
-//    box-shadow: 3px 3px theme-color-level($color, -3);
-//  }
-//}
-
-
-
-
-
-// Contents from site.css
+// Contents normally written in site.css
 body {
     padding-top: 50px;
     padding-bottom: 20px;
@@ -30,26 +19,11 @@ body {
     padding-left: 15px;
 }
 
-/* Carousel */
-.carousel-caption p {
-    font-size: 20px;
-    line-height: 1.4;
+.pageNumber {
+	margin: 0px 4px;
 }
 
-/* Make .svg files in the carousel display properly in older browsers */
-.carousel-inner .item img[src$=".svg"] {
-    width: 100%;
-}
-
-/* QR code generator */
-#qrCode {
-    margin: 15px;
-}
-
-/* Hide/rearrange for smaller screens */
-@media screen and (max-width: 767px) {
-    /* Hide captions */
-    .carousel-caption {
-        display: none;
-    }
+button.accept-policy {
+	font-size: 1rem;
+	line-height: inherit;
 }

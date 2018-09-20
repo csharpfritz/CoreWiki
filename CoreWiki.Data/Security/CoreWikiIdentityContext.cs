@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace CoreWiki.Data.Security
+namespace CoreWiki.Data.EntityFramework.Security
 {
 	public class CoreWikiIdentityContext : IdentityDbContext<CoreWikiUser>
 	{
@@ -19,32 +19,37 @@ namespace CoreWiki.Data.Security
 		{
 			base.OnModelCreating(builder);
 
-			builder.Entity<IdentityRole>().HasData(new[] {
-
+			builder.Entity<IdentityRole>().HasData(new[]
+			{
 				new IdentityRole
-					{
-						Name = "Authors",
-						NormalizedName = "Authors"
-					},
-					new IdentityRole
+				{
+					Name = "Authors",
+					NormalizedName = "Authors".ToUpper()
+				},
+				new IdentityRole
 				{
 					Name = "Editors",
-					NormalizedName = "Editors"
+					NormalizedName = "Editors".ToUpper()
 				},
 				new IdentityRole
 				{
 					Name = "Administrators",
-					NormalizedName = "Administrators"
+					NormalizedName = "Administrators".ToUpper()
 				}
-
 			});
-
 		}
+
 		public static void SeedData(CoreWikiIdentityContext context)
 		{
 
 			context.Database.Migrate();
 
 		}
+
+		public override void Dispose()
+		{
+			base.Dispose();
+		}
+
 	}
 }

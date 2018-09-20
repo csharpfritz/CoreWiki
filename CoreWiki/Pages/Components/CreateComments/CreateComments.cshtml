@@ -1,11 +1,10 @@
-﻿@using Data.Models
-@model Data.Models.Comment
+﻿@model ViewModels.Comment
 <br />
 <br />
 <div class="card card-header">
 	<h5>@Localizer["NewComment"]</h5>
 	<form method="post" autocomplete="off">
-		<input type="hidden" asp-for="@Model.IdArticle" />
+		<input type="hidden" asp-for="@Model.ArticleId" />
 		<div class="container-fluid">
 			<div class="row">
 				<div class="col-sm">

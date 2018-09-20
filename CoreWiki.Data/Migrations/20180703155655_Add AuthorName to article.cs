@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace CoreWiki.Migrations
+namespace CoreWiki.Data.EntityFramework.Migrations
 {
     public partial class AddAuthorNametoarticle : Migration
     {
@@ -38,7 +38,7 @@ namespace CoreWiki.Migrations
             migrationBuilder.InsertData(
                 table: "ArticleHistories",
                 columns: new[] { "Id", "ArticleId", "AuthorId", "AuthorName", "Content", "Published", "Slug", "Topic", "Version" },
-                values: new object[] { 1, 1, new Guid("00000000-0000-0000-0000-000000000000"), "Unknown", "This is the default home page.  Please change me!", new DateTime(2018, 6, 19, 14, 31, 2, 265, DateTimeKind.Utc), "home-page", "HomePage", 1 });
+                values: new object[] { 1, 1, new Guid("00000000-0000-0000-0000-000000000000"), "Unknown", "This is the default home page.  Please change me!", new DateTime(2018, 6, 19, 14, 31, 2, 265, DateTimeKind.Utc), "home-page", "Home Page", 1 });
 
             migrationBuilder.UpdateData(
                 table: "Articles",

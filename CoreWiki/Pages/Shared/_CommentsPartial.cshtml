@@ -1,18 +1,20 @@
-﻿@using Data.Models
+﻿@using CoreWiki.Configuration.Settings
+@using Microsoft.AspNetCore.Authorization
 @model DetailsModel
 @inject IOptionsSnapshot<AppSettings> settings
+@inject IAuthorizationService AuthorizationService
 
-@if (User.Identity.IsAuthenticated)
+@if (settings.Value.Comments.IsEngineLocal)
 {
 
-	if (settings.Value.Comments.IsEngineLocal)
-	{
-		@await Component.InvokeAsync("CreateComments", new Comment { IdArticle = Model.Article.Id })
-		@await Component.InvokeAsync("ListComments", @Model.Article.Comments)
-	}
-	else
-	{
-		<partial name="_DisqusComments" model="settings.Value.Comments.Disqus.ShortName" />
+	if ((await AuthorizationService.AuthorizeAsync(User, null, PolicyConstants.CanCreateComments)).Succeeded) {
+		@await Component.InvokeAsync("CreateComments", new Comment { ArticleId = Model.Article.Id })
 	}
 
+	@await Component.InvokeAsync("ListComments", @Model.Article.Comments)
+
+}
+else
+{
+	<partial name="_DisqusComments" model="settings.Value.Comments.Disqus.ShortName" />
 }

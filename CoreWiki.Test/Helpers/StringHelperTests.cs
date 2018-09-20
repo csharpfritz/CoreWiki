@@ -1,8 +1,7 @@
-using System;
-using CoreWiki.Helpers;
+using CoreWiki.Application.Common;
 using Xunit;
 
-namespace CoreWiki.Test
+namespace CoreWiki.Test.Helpers
 {
     public class StringHelperTests
     {
@@ -20,7 +19,7 @@ namespace CoreWiki.Test
         [InlineData("test content fair dinkum 12345", 5)]
         public void WordCountShouldBeAccurate(string sentence, int expected_word_count)
         {
-            int actual_word_count = sentence.WordCount();
+            var actual_word_count = sentence.WordCount();
             Assert.Equal(expected_word_count, actual_word_count);
         }
     }

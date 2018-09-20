@@ -1,5 +1,4 @@
-﻿using CoreWiki.Data.Data.Interfaces;
-using CoreWiki.Data.Models;
+﻿using CoreWiki.ViewModels;
 using CoreWiki.Helpers;
 using DiffPlex.DiffBuilder;
 using DiffPlex.DiffBuilder.Model;
@@ -7,21 +6,21 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Linq;
 using System.Threading.Tasks;
+using CoreWiki.Application.Articles.Reading.Queries;
+using MediatR;
 
 namespace CoreWiki.Pages
 {
 	public class HistoryModel : PageModel
 	{
+		private readonly IMediator _mediator;
 
-		private readonly IArticleRepository _articleRepo;
-
-		public HistoryModel(IArticleRepository articleRepo)
+		public HistoryModel(IMediator mediator)
 		{
-			_articleRepo = articleRepo;
+			_mediator = mediator;
 		}
 
-
-		public Article Article { get; private set; }
+		public ArticleHistory Article { get; private set; }
 
 		[BindProperty()]
 		public string[] Compare { get; set; }
@@ -36,30 +35,59 @@ namespace CoreWiki.Pages
 				return NotFound();
 			}
 
-			Article = await _articleRepo.GetArticleWithHistoriesBySlug(slug);
+			var qry = new GetArticleWithHistoriesBySlugQuery(slug);
 
-			if (Article == null)
+			var article = await _mediator.Send(qry);
+
+			if (article == null)
 			{
 				return new ArticleNotFoundResult();
 			}
 
-			return Page();
+			//todo: use automapper
+			var histories = (
+				from history in article.History
+				select new ArticleHistoryDetail
+				{
+					AuthorName = history.AuthorName,
+					Version = history.Version,
+					Published = history.Published,
+				}
+			).ToList();
 
+			Article = new ArticleHistory
+			{
+				Topic = article.Topic,
+				Version = article.Version,
+				AuthorName = article.AuthorName,
+				Published = article.Published,
+				History = histories
+			};
+
+			return Page();
 		}
 
 		public async Task<IActionResult> OnPost(string slug)
 		{
+			var qry = new GetArticleWithHistoriesBySlugQuery(slug);
 
-			Article = await _articleRepo.GetArticleWithHistoriesBySlug(slug);
+			var article = await _mediator.Send(qry);
 
-			var histories = Article.History
+			var histories = article.History
 				.Where(h => Compare.Any(c => c == h.Version.ToString()))
 				.OrderBy(h => h.Version)
 				.ToArray();
 
+			DiffModel = new SideBySideDiffBuilder(new DiffPlex.Differ())
+				.BuildDiffModel(histories[0].Content ?? "", histories[1].Content ?? "");
 
-			this.DiffModel = new SideBySideDiffBuilder(new DiffPlex.Differ())
-				.BuildDiffModel(histories[0].Content, histories[1].Content);
+			Article = new ArticleHistory
+			{
+				Topic = article.Topic,
+				Version = article.Version,
+				AuthorName = article.AuthorName,
+				Published = article.Published
+			};
 
 			return Page();
 

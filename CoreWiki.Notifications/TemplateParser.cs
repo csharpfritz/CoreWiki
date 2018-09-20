@@ -1,38 +1,78 @@
-﻿using CoreWiki.Core.Notifications;
-using System.Collections.Generic;
-using System.Reflection;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Abstractions;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Mvc.ViewEngines;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using Microsoft.AspNetCore.Routing;
+using System;
+using System.IO;
+using System.Threading.Tasks;
+using CoreWiki.Notifications.Abstractions.Notifications;
 
 namespace CoreWiki.Notifications
 {
-	public class TemplateParser : ITemplateParser
+    public class TemplateParser : ITemplateParser
 	{
-		public TemplateParser()
-		{
-		}
+	    private readonly IServiceProvider _serviceProvider;
+	    private readonly ITempDataProvider _tempDataProvider;
 
-		public string Format<T>(string template, T model) where T : class
-		{
-			var propertyValueDict = GetPropertyValueDictionary<T>(model);
+	    public TemplateParser(IServiceProvider serviceProvider, ITempDataProvider tempDataProvider)
+	    {
+	        _serviceProvider = serviceProvider;
+	        _tempDataProvider = tempDataProvider;
+	    }
 
-			foreach (var propertyValue in propertyValueDict)
-			{
-				var placeholder = $"{{{{{propertyValue.Key}}}}}";
-				template = template.Replace(placeholder, propertyValue.Value.ToString());
-			}
+	    public async Task<string> Parse<TModel>(IView view, TModel model) where TModel : class
+	    {
+	        using (var output = new StringWriter())
+	        {
+	            var actionContext = GetActionContext();
+	            var tempDataDictionary = GetTempDataDictionary(actionContext);
+	            var viewDataDictionary = GetViewDictionary(model);
 
-			return template;
-		}
+	            var viewContext = new ViewContext(
+	                actionContext,
+	                view,
+	                viewDataDictionary,
+	                tempDataDictionary,
+	                output,
+	                new HtmlHelperOptions());
 
-		private IDictionary<string, object> GetPropertyValueDictionary<T>(T model) where T: class
-		{
-			var result = new Dictionary<string, object>();
+	            await view.RenderAsync(viewContext);
 
-			foreach (var property in model.GetType().GetProperties())
-			{
-				result.Add(property.Name, property.GetValue(model, null));
-			}
+	            return output.ToString();
+	        }
+	    }
 
-			return result;
-		}
-	}
+	    private TempDataDictionary GetTempDataDictionary(ActionContext actionContext)
+	    {
+	        return new TempDataDictionary(
+	            actionContext.HttpContext,
+	            _tempDataProvider);
+	    }
+
+	    private ViewDataDictionary GetViewDictionary<TModel>(TModel model) where TModel : class
+	    {
+	        return new ViewDataDictionary(
+	            new EmptyModelMetadataProvider(),
+	            new ModelStateDictionary())
+	        {
+	            Model = model
+	        };
+	    }
+
+	    private ActionContext GetActionContext()
+	    {
+	        var httpContext = new DefaultHttpContext
+	        {
+	            RequestServices = _serviceProvider
+	        };
+	        return new ActionContext(
+	            httpContext,
+	            new RouteData(),
+	            new ActionDescriptor());
+	    }
+    }
 }

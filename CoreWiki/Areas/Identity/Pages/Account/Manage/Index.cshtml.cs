@@ -4,7 +4,8 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
-using CoreWiki.Data.Security;
+using CoreWiki.Data.EntityFramework.Security;
+using CoreWiki.Notifications.Abstractions.Notifications;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -17,15 +18,18 @@ namespace CoreWiki.Areas.Identity.Pages.Account.Manage
         private readonly UserManager<CoreWikiUser> _userManager;
         private readonly SignInManager<CoreWikiUser> _signInManager;
         private readonly IEmailSender _emailSender;
+	    private readonly INotificationService _notificationService;
 
-        public IndexModel(
+	    public IndexModel(
             UserManager<CoreWikiUser> userManager,
             SignInManager<CoreWikiUser> signInManager,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            INotificationService notificationService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
+	        _notificationService = notificationService;
         }
 
         public string Username { get; set; }
@@ -69,7 +73,8 @@ namespace CoreWiki.Areas.Identity.Pages.Account.Manage
             Input = new InputModel
             {
                 Email = email,
-                PhoneNumber = phoneNumber
+                PhoneNumber = phoneNumber,
+				CanNotify = user.CanNotify
             };
 
             IsEmailConfirmed = await _userManager.IsEmailConfirmedAsync(user);
@@ -145,15 +150,7 @@ namespace CoreWiki.Areas.Identity.Pages.Account.Manage
             var userId = await _userManager.GetUserIdAsync(user);
             var email = await _userManager.GetEmailAsync(user);
             var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-            var callbackUrl = Url.Page(
-                "/Account/ConfirmEmail",
-                pageHandler: null,
-                values: new { userId = userId, code = code },
-                protocol: Request.Scheme);
-            await _emailSender.SendEmailAsync(
-                email,
-                "Confirm your email",
-                $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+	        await _notificationService.SendConfirmationEmail(email, userId, code);
 
             StatusMessage = "Verification email sent. Please check your email.";
             return RedirectToPage();

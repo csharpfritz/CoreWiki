@@ -1,59 +1,66 @@
-﻿using CoreWiki.Data;
-using CoreWiki.Data.Data.Interfaces;
-using CoreWiki.Data.Models;
-using CoreWiki.Helpers;
+using CoreWiki.Areas.Identity;
+using CoreWiki.ViewModels;
+using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
-using NodaTime;
 using System;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using AutoMapper;
+using CoreWiki.Application.Articles.Managing.Commands;
+using CoreWiki.Application.Articles.Managing.Queries;
+using CoreWiki.Application.Common;
+using CoreWiki.Helpers;
 
 namespace CoreWiki.Pages
 {
+
+	[Authorize(Policy = PolicyConstants.CanWriteArticles)]
 	public class CreateModel : PageModel
 	{
+		private readonly IMediator _mediator;
+		private readonly IMapper _mapper;
+		private readonly ILogger _logger;
 
-		private readonly IArticleRepository _articleRepo;
-		private readonly IClock _clock;
-
-		public ILogger Logger { get; private set; }
-
-		public CreateModel(IArticleRepository articleRepo, IClock clock, ILoggerFactory loggerFactory)
+		public CreateModel(IMediator mediator, IMapper mapper, ILoggerFactory loggerFactory)
 		{
-			_articleRepo = articleRepo;
-			_clock = clock;
-			this.Logger = loggerFactory.CreateLogger("CreatePage");
+			_mediator = mediator;
+			_mapper = mapper;
+			_logger = loggerFactory.CreateLogger("CreatePage");
 		}
 
-		public async Task<IActionResult> OnGetAsync(string slug)
+		public async Task<IActionResult> OnGetAsync(string slug = "")
 		{
 			if (string.IsNullOrEmpty(slug))
 			{
 				return Page();
 			}
 
-			if (await _articleRepo.GetArticleBySlug(slug) != null)
+			var request = new GetArticleQuery(slug);
+			var result = await _mediator.Send(request);
+			if (result == null)
+			{
+				Article = new ArticleCreate
+				{
+					Topic = UrlHelpers.SlugToTopic(slug)
+				};
+			}
+			else
 			{
 				return Redirect($"/{slug}/Edit");
 			}
-
-			Article = new Article()
-			{
-				Topic = UrlHelpers.SlugToTopic(slug)
-			};
 
 			return Page();
 		}
 
 		[BindProperty]
-		public Article Article { get; set; }
+		public ArticleCreate Article { get; set; }   
 
 		public async Task<IActionResult> OnPostAsync()
 		{
-
 			var slug = UrlHelpers.URLFriendly(Article.Topic);
 			if (string.IsNullOrWhiteSpace(slug))
 			{
@@ -61,38 +68,34 @@ namespace CoreWiki.Pages
 				return Page();
 			}
 
-			Article.Slug = slug;
-			Article.AuthorId = Guid.Parse(this.User.FindFirstValue(ClaimTypes.NameIdentifier));
+			if (!ModelState.IsValid) { return Page(); }
 
-			if (!ModelState.IsValid)
-			{
-				return Page();
-			}
+			_logger.LogWarning($"Creating page with slug: {slug}");
 
-			//check if the slug already exists in the database.
-			Logger.LogWarning($"Creating page with slug: {slug}");
-
-			if (await _articleRepo.IsTopicAvailable(slug, 0))
+			var isTopicAvailable = new GetIsTopicAvailableQuery {Slug = slug, ArticleId = 0};
+			if (await _mediator.Send(isTopicAvailable))
 			{
 				ModelState.AddModelError("Article.Topic", "This Title already exists.");
 				return Page();
 			}
 
-			Article.Published = _clock.GetCurrentInstant();
-			// Article.Slug = slug;
+			var cmd = _mapper.Map<CreateNewArticleCommand>(Article);
+			cmd = _mapper.Map(User, cmd);
 
-			Article = await _articleRepo.CreateArticleAndHistory(Article);
+			var cmdResult = await _mediator.Send(cmd);
 
+			// TODO: Inspect result to ensure it ran properly
 
-			var articlesToCreateFromLinks = (await ArticleHelpers.GetArticlesToCreate(_articleRepo, Article, createSlug: true))
-				.ToList();
+			var query = new GetArticlesToCreateFromArticleQuery(slug);
+			var listOfSlugs = await _mediator.Send(query);
 
-			if (articlesToCreateFromLinks.Count > 0)
+			if (listOfSlugs.Any())
 			{
 				return RedirectToPage("CreateArticleFromLink", new { id = slug });
 			}
 
-			return Redirect($"/{Article.Slug}");
+			return Redirect($"/wiki/{slug}");
+
 		}
 	}
 }
