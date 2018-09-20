@@ -1,6 +1,8 @@
 # CoreWiki
 
-[![Deploy to Azure](https://azuredeploy.net/deploybutton.png)](https://azuredeploy.net/) (Deploy button is not working JUST yet...  in progress)
+[![Build Status](https://dev.azure.com/FritzAndFriends/CoreWiki/_apis/build/status/CoreWiki-CI)](https://dev.azure.com/FritzAndFriends/CoreWiki/_build/latest?definitionId=4)
+
+[![Deploy to Azure](https://azuredeploy.net/deploybutton.png)](https://azuredeploy.net/) 
 
 A simple ASP.NET Core wiki that we are working on during live coding streams. It runs on Windows, Mac, Linux and Container. Core Wiki is an allusion to the Core App. This name was suggested by Shayne Boyer in the stream of the [27th/March](https://www.twitch.tv/videos/243463398). Initially this project is very basic and anyone who is learning ASP.NET Core 2.0 (Razor Pages) can use it to learn..
 
