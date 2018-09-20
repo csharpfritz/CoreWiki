@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using CoreWiki.Data.EntityFramework.Security;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
@@ -20,9 +21,12 @@ namespace CoreWiki.Configuration.Startup
 			return services;
 		}
 
-		public static IApplicationBuilder ConfigureSecurityHeaders(this IApplicationBuilder app)
+		public static IApplicationBuilder ConfigureSecurityHeaders(this IApplicationBuilder app, IHostingEnvironment env)
 		{
-			app.UseHsts(options => options.MaxAge(days: 365).IncludeSubdomains());
+			if (!env.IsDevelopment())
+			{
+				app.UseHsts(options => options.MaxAge(days: 365).IncludeSubdomains());
+			}
 			app.UseXContentTypeOptions();
 			app.UseReferrerPolicy(options => options.NoReferrer());
 			app.UseXXssProtection(options => options.EnabledWithBlockMode());

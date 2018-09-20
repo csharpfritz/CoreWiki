@@ -43,7 +43,7 @@ namespace CoreWiki
 		{
 			app.ConfigureTelemetry();
 			app.ConfigureExceptions(env);
-			app.ConfigureSecurityHeaders();
+			app.ConfigureSecurityHeaders(env);
 			app.ConfigureRouting();
 			app.ConfigureDatabase();
 			var theTask = app.ConfigureAuthentication(userManager, roleManager);
