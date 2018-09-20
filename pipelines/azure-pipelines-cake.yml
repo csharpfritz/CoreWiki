@@ -3,7 +3,7 @@ variables:
 
 jobs:
 - job: MacOS
-  displayName: Build on MacOs
+  displayName: Build on MacOS
 
   pool:
     vmImage: 'macOS 10.13'
@@ -15,13 +15,13 @@ jobs:
       version: '$(DOTNET_SDK_VERSION)'
 
   - bash: ./build.sh
-    displayName: 'Execute Cake Boostrapper'
+    displayName: 'Execute Cake Bootstrapper'
 
   - task: PublishTestResults@2
     displayName: 'Publish Test Results'   
     inputs:
-      testRunner: XUnit
-      testResultsFiles: '**/TestResults.xml'
+      testRunner: xUnit
+      testResultsFiles: '**/test_result.xml'
       mergeTestResults: true
 
 
@@ -40,7 +40,7 @@ jobs:
 
 
   - powershell: ./build.ps1
-    displayName: 'Execute Cake PowerShell Boostrapper'
+    displayName: 'Execute Cake PowerShell Bootstrapper'
 
   - task: PublishTestResults@2
     displayName: 'Publish Test Results'
@@ -64,7 +64,7 @@ jobs:
 
 
   - bash: ./build.sh
-    displayName: 'Execute Cake Bash Boostrapper'
+    displayName: 'Execute Cake Bash Bootstrapper'
 
   - task: PublishTestResults@2
     displayName: 'Publish Test Results'

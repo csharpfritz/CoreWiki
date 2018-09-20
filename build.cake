@@ -88,7 +88,7 @@ Task("Test")
             NoRestore = true,
             Configuration = configuration,
 						ResultsDirectory = "./testresults",
-						ArgumentCustomization = args => args.Append("--logger \"trx;LogFileName=TestResults.xml\"")
+						ArgumentCustomization = args => args.Append("--logger:xunit;LogFilePath=test_result.xml")
         });
 });
 
