@@ -16,6 +16,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		contributing.md = contributing.md
 		nuget.config = nuget.config
 		README.md = README.md
+		CoreWiki\updateDb.cmd = CoreWiki\updateDb.cmd
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoreWiki.Core", "CoreWiki.Core\CoreWiki.Core.csproj", "{569AB7F3-2183-4481-97E6-B37E4C48EEB0}"
