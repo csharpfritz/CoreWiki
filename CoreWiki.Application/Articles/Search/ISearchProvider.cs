@@ -7,6 +7,6 @@ namespace CoreWiki.Application.Articles.Search
 	{
 		Task<(IEnumerable<T> results, long total)> SearchAsync(string Query, int pageNumber, int resultsPerPage);
 
-		Task<int> IndexElementsAsync(bool clearIndex = false, params T[] items);
+		Task<int> IndexElementsAsync(params T[] items);
 	}
 }

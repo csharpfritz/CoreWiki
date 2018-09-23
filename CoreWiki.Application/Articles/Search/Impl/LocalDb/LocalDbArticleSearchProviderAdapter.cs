@@ -22,10 +22,10 @@ namespace CoreWiki.Application.Articles.Search.Impl
 			_articleRepo = articleRepo;
 		}
 
-		public async Task<int> IndexElementsAsync(bool clearIndex = false, params T[] items)
+		public Task<int> IndexElementsAsync(params T[] items)
 		{
 			// For LocalDB DB itself is responsible for "Indexing"
-			return await Task.Run(() => 0);
+			return Task.Run(() => items.Length);
 		}
 
 		public async Task<(IEnumerable<T> results, long total)> SearchAsync(string Query, int pageNumber, int resultsPerPage)

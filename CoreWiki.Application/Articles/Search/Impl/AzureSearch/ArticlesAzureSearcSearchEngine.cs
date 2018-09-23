@@ -24,19 +24,15 @@ namespace CoreWiki.Application.Articles.Search.AzureSearch
 			_myclient = _searchClient.GetSearchClient<T>();
 		}
 
-		public async Task<int> IndexElementsAsync(bool clearIndex = false, params T[] items)
+		public async Task<int> IndexElementsAsync(params T[] items)
 		{
-			if (clearIndex)
-			{
-				DeleteCurrentItems();
-			}
-
 			var action = items.Select(IndexAction.MergeOrUpload);
 			var job = new IndexBatch<T>(action);
 
 			try
 			{
-				var res = await _searchClient.CreateServiceClient<T>().Documents.IndexAsync<T>(job).ConfigureAwait(false);
+				var myclient = _searchClient.CreateServiceClient<T>();
+				var res = await _myclient.Documents.IndexAsync<T>(job).ConfigureAwait(false);
 				return res.Results.Count;
 			}
 			catch (IndexBatchException e)
@@ -49,11 +45,6 @@ namespace CoreWiki.Application.Articles.Search.AzureSearch
 				_logger.LogError(e, "Failed to index some of the documents", failedElements);
 				return items.Length - failedElements.Count();
 			}
-		}
-
-		private void DeleteCurrentItems()
-		{
-			// TODO
 		}
 
 		public async Task<(IEnumerable<T> results, long total)> SearchAsync(string Query, int pageNumber, int resultsPerPage)
