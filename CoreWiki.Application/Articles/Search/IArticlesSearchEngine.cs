@@ -1,6 +1,5 @@
-﻿using System.Threading.Tasks;
-using CoreWiki.Application.Articles.Search.Dto;
-using CoreWiki.Core.Domain;
+﻿using CoreWiki.Application.Articles.Search.Dto;
+using System.Threading.Tasks;
 
 namespace CoreWiki.Application.Articles.Search
 {
