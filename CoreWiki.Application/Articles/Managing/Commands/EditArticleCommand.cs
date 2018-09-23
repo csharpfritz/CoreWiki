@@ -7,11 +7,11 @@ namespace CoreWiki.Application.Articles.Managing.Commands
 	public class EditArticleCommand : IRequest<CommandResult>
 	{
 
-		public int Id { get; private set; }
-		public string Topic { get; private set; }
-		public string Content { get; private set; }
-		public Guid AuthorId { get; private set; }
-		public string AuthorName { get; private set; }
+		public int Id { get; set; }
+		public string Topic { get; set; }
+		public string Content { get; set; }
+		public Guid AuthorId { get; set; }
+		public string AuthorName { get; set; }
 
 		//public EditArticleCommand()
 		//{
