@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CoreWiki.Core.Domain;
@@ -16,10 +17,10 @@ namespace CoreWiki.Application.Articles.Search.Impl
 		private readonly ILogger _logger;
 		private readonly IArticleRepository _articleRepo;
 
-		public LocalDbArticleSearchProviderAdapter(ILogger<LocalDbArticleSearchProviderAdapter<T>> logger, IArticleRepository articleRepo)
+		public LocalDbArticleSearchProviderAdapter(ILogger<LocalDbArticleSearchProviderAdapter<T>> logger, Func<int, IArticleRepository> articleRepo)
 		{
 			_logger = logger;
-			_articleRepo = articleRepo;
+			_articleRepo = articleRepo(1);
 		}
 
 		public Task<int> IndexElementsAsync(params T[] items)

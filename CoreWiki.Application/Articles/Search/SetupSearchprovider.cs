@@ -1,6 +1,5 @@
 ﻿using CoreWiki.Application.Articles.Search.AzureSearch;
 using CoreWiki.Application.Articles.Search.Impl;
-using CoreWiki.Core.Domain;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -17,11 +16,9 @@ namespace CoreWiki.Application.Articles.Search
 					services.AddTransient<IAzureSearchClient, AzureSearchClient>();
 					break;
 				default:
-					services.AddTransient<ISearchProvider<Article>, LocalDbArticleSearchProviderAdapter<Article>>();
+					services.AddTransient(typeof(ISearchProvider<>), typeof(LocalDbArticleSearchProviderAdapter<>));
 					break;
 			}
-
-			// db repos
 			return services;
 		}
 	}
