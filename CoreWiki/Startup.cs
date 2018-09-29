@@ -1,6 +1,7 @@
 using CoreWiki.Configuration.Settings;
 using CoreWiki.Configuration.Startup;
 using CoreWiki.Data.EntityFramework.Security;
+using CoreWiki.FirstStart;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -46,12 +47,17 @@ namespace CoreWiki
 			app.ConfigureSecurityHeaders(env);
 			app.ConfigureRouting();
 			app.ConfigureDatabase();
+
+			app.UseFirstStartConfiguration(Configuration);
+
 			var theTask = app.ConfigureAuthentication(userManager, roleManager);
 			theTask.GetAwaiter().GetResult();
 			app.ConfigureRSSFeed(settings);
 			app.ConfigureLocalisation();
 
 			app.UseStatusCodePagesWithReExecute("/HttpErrors/{0}");
+
+
 			app.UseMvc();
 		}
 

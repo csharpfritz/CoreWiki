@@ -10,6 +10,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CoreWiki.Core\CoreWiki.Core.csproj" />
-    <ProjectReference Include="..\CoreWiki.Data\CoreWiki.Data.csproj" />
+    <ProjectReference Include="..\CoreWiki.Data.Abstractions\CoreWiki.Data.Abstractions.csproj" />
   </ItemGroup>
 </Project>
