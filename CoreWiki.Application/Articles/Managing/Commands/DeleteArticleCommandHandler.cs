@@ -18,19 +18,15 @@ namespace CoreWiki.Application.Articles.Managing.Commands
 
 		public async Task<CommandResult> Handle(DeleteArticleCommand request, CancellationToken cancellationToken)
 		{
-			var result = new CommandResult() { Successful = true };
-
 			try
 			{
 				await _articleManagementService.Delete(request.Slug);
+				return CommandResult.Success();
 			}
 			catch (Exception ex)
 			{
-				result.Successful = false;
-				result.Exception = new DeleteArticleException("There was an error deleting the article", ex);
+				return CommandResult.Error(new DeleteArticleException("There was an error deleting the article", ex));
 			}
-
-			return result;
 		}
 	}
 }
