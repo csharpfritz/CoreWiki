@@ -1,11 +1,10 @@
 ﻿using CoreWiki.Core.Domain;
+using CoreWiki.Data.Abstractions.Interfaces;
 using CoreWiki.Data.EntityFramework.Models;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using CoreWiki.Data.Abstractions.Interfaces;
 
 namespace CoreWiki.Data.EntityFramework.Repositories
 {
@@ -72,24 +71,21 @@ namespace CoreWiki.Data.EntityFramework.Repositories
 				.AnyAsync(a => a.Slug == articleSlug && a.Id != articleId);
 		}
 
-
-		public (IEnumerable<Article>, int) GetArticlesForSearchQuery(string filteredQuery, int offset, int resultsPerPage)
+		public (IEnumerable<Article> articles, int totalFound) GetArticlesForSearchQuery(string filteredQuery, int offset, int resultsPerPage)
 		{
-
 			// WARNING:  This may need to be further refactored to allow for database optimized search queries
 
 			var articles = Context.Articles
 				.AsNoTracking()
 				.Where(a =>
-					a.Topic.ToUpper().Contains(filteredQuery.ToUpper()) ||
-					a.Content.ToUpper().Contains(filteredQuery.ToUpper())
+					a.Topic.ToUpper().Contains(filteredQuery.ToUpper())
+					|| a.Content.ToUpper().Contains(filteredQuery.ToUpper())
 				).Select(a => a.ToDomain());
 			var articleCount = articles.Count();
 			var list = articles.Skip(offset).Take(resultsPerPage).OrderByDescending(a => a.ViewCount).ToList();
 
 			return (list, articleCount);
 		}
-
 
 		public void Dispose()
 		{

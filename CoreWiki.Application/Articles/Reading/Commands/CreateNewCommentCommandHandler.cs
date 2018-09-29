@@ -22,21 +22,17 @@ namespace CoreWiki.Application.Articles.Reading.Commands
 
 		public async Task<CommandResult> Handle(CreateNewCommentCommand request, CancellationToken cancellationToken)
 		{
-			var result = new CommandResult() { Successful = true };
-
 			try
 			{
 				var comment = _mapper.Map<CreateCommentDto>(request);
 				await _articleReadingService.CreateComment(comment);
+
+				return CommandResult.Success();
 			}
 			catch (Exception ex)
 			{
-				result.Successful = false;
-				result.Exception = new CreateCommentException("There was an error creating the comment", ex);
+				return CommandResult.Error(new CreateCommentException("There was an error creating the comment", ex));
 			}
-
-			return result;
-
 		}
 	}
 }
