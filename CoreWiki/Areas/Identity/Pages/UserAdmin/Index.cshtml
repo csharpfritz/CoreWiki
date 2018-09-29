@@ -57,9 +57,11 @@
 							<input type="hidden" asp-for="@Model.UsernameToAddRoleTo" value="@user.UserName" />
 							@foreach (var roleName in Model.RoleNames)
 							{
+								var checkboxId = $"checkbox_{user.Id}_{roleName}";
+
 								<div class="custom-control custom-checkbox mb-2">
-									<input class="custom-control-input" type="checkbox" name="updatedRoles" value="@roleName" id="checkbox_@roleName" checked="@currentUsersRoles.Contains(roleName)">
-									<label class="custom-control-label w-100" for="checkbox_@roleName">
+									<input class="custom-control-input" type="checkbox" name="updatedRoles" value="@roleName" id="@checkboxId" checked="@currentUsersRoles.Contains(roleName)">
+									<label class="custom-control-label w-100" for="@checkboxId">
 										@roleName
 									</label>
 								</div>
