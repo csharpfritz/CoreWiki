@@ -31,7 +31,7 @@ namespace CoreWiki.FirstStart.MyFeature.Pages
 			TestWritingFileToDisk();
 
 		}
-
+		// Test RG 29-09-2018 22:18
 		private void TestWritingFileToDisk()
 		{
 
