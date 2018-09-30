@@ -2,12 +2,26 @@
 
 <html>
 <head>
-    <meta name="viewport" content="width=device-width" />
-    <title>@ViewBag.Title</title>
+	<meta name="viewport" content="width=device-width" />
+	<title>@ViewBag.Title</title>
+
+	@* This is a hack to allow Bootstrap to work, more thought required
+	   Do we care about theme support at this stage ?
+	*@
+	<environment include="Development">
+		<link rel="stylesheet" href="~/css/siteTheme.css" />
+	</environment>
+	<environment exclude="Development">
+		<link rel="stylesheet" href="~/css/siteTheme.min.css" asp-append-version="true" />
+	</environment>
+	@RenderSection("Styles", false)
 </head>
+
 <body>
-    <div>
-        @RenderBody()
-    </div>
+	<div class="container">
+		@RenderBody()
+	</div>
+	@RenderSection("Scripts", required: false)
 </body>
 </html>
+
