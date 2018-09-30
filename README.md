@@ -43,7 +43,7 @@ Jeff has written about how he has the hardware configured as well as the softwar
 Archive of all shows from the stream can be found on [Jeff's YouTube 'Building the CoreWiki'](https://www.youtube.com/playlist?list=PLVMqA0_8O85yC78I4Xj7z48ES48IQBa7p)  playlist.
 
 Date | Topic
-----|---
+:---|:---
 March 27, 2018 | [From DevIntersection in Orlando, ASP.NET Core with guest Shayne Boyer](https://youtu.be/aXkeJmlPDI4)
 March 29, 2018 |  [Back in Philly working on our new Wiki project](https://youtu.be/GrwhbK5KaGM?t=3170) - _Start 00:52:50_
 April 5, 2018 | [Building a Wiki with ASP.NET Core - Updating to Bootstrap 4](https://youtu.be/-20TcnVo0Bc?t=1720) - _Start 00:28:40_
@@ -71,6 +71,45 @@ June 30, 2018 | [Reviewing Pull Requests and Discussing Dependency Injection](ht
 July 3, 2018 | [Building a user-interface to compare wiki article versions](https://youtu.be/BB3v70xFKtU)
 July 5, 2018 | [Day after Independence Day, building web pages with ASP.NET Core](https://youtu.be/Xx9UwxzicjE?t=2475) - _Start 00:41:15_
 July 7, 2018 | [Refactoring and Pull requests \| C# \| ASP.NET Core](https://youtu.be/ae2N10F6PgA?t=1785) - _Start 00:29:45 for about 15 minutes_
+July 10, 2018 | [Refactoring and the Repository Pattern \| C# \| ASP.NET Core](https://www.youtube.com/watch?v=rpOvcRj64c0&t=0s)
+July 12, 2018    | [Refactoring to support better unit tests \| C# \| ASP.NET Core](https://www.youtube.com/watch?v=k-y6hCm-isI&t=0s)
+July 14, 2018    | [Entity Framework Migrations \| C# \| Entity Framework \| ASP.NET Core](https://www.youtube.com/watch?v=RAkh7Rh6NPU&t=0s)
+July 19, 2018    | [Authorization Policies and Security Enforcements \| C# \| ASP.NET Core](https://www.youtube.com/watch?v=TnG8X5RZ-Ps&t=0s)
+July 21, 2018    | [Architecture Review and Refactoring \| C# \| ASP.NET Core](https://www.youtube.com/watch?v=ot1yfy8B1WY&t=0s)
+July 21, 2018    | [Architecture Review and Refactoring \| C# \| ASP.NET Core](https://www.youtube.com/watch?v=ot1yfy8B1WY&t=0s)	           
+July 26, 2018    | [Application Extensibility \| C# \| ASP.NET Core](https://www.youtube.com/watch?v=91YYDaVz1b4&t=0s)
+July 27, 2018    | [More Architecture Review and Updates for CoreWiki \| C# \| ASP.NET Core](https://www.youtube.com/watch?v=3pfEsEzLvqo&t=0s)
+July 28, 2018    | [Simplifying Search Pages \| C# \| ASP.NET Core](https://www.youtube.com/watch?v=CSyGYfQearM&t=0s)
+August 3, 2018   | [ Pull Request Reviews and more Twitter Integration \| JavaScript \| C# \| ASP.NET](https://www.youtube.com/watch?v=1Cer4mZYLGc&t=0s)
+August 4, 2018   | [ Writing code, Refactoring DTOs from Entity Framework \| C# \| ASP.NET](https://www.youtube.com/watch?v=zMjNkcs1Iy8&t=0s)
+August 7, 2018   | [ Introducing Models to an Application \| C# \| ASP.NET](https://www.youtube.com/watch?v=sN4LM8qIF8w&t=0s)
+August 9, 2018   | [ Refactoring to Domain Models in an Application \| C# \| ASP.NET](https://www.youtube.com/watch?v=Qm-fAiJdkj8&t=0s)
+August 11, 2018  | [Introducing the CQRS Architecture Pattern with MediatR \| C# \| ASP.NET](https://www.youtube.com/watch?v=53SlSlBaQTM&t=0s)
+August 14, 2018  | [More work with the CQRS Architecture Pattern and MediatR \| C# \| ASP.NET](https://www.youtube.com/watch?v=-WGCD1885s4&t=0s)
+August 16, 2018  | [Unit Testing the CQRS Architecture Pattern \| C# \| ASP.NET Core](https://www.youtube.com/watch?v=GNNSdL5AGmc&t=0s)
+August 17, 2018  | [Building The CoreWiki - New Commands and Queries \| C# \| ASP.NET Core](https://www.youtube.com/watch?v=ZeZxIi8fkPo&t=0s)
+August 18, 2018  | [Introducing Automapper to CoreWiki \| C# \| ASP.NET Core](https://www.youtube.com/watch?v=ERjmNxP4TtQ&t=0s)
+August 25, 2018  | [Jeff is BACK! Talking about Twitch APIs and software architecture in CoreWiki \| C#](https://www.youtube.com/watch?v=MXt-KMujzWk&t=0s)
+August 31, 2018  | [Fixing ASP.NET Core in a Container and YOUR Pull Requests \| C# \| ASP.NET Core](https://www.youtube.com/watch?v=zTCr8E1nIUUt=0s)
+September 1, 2018     | [Refactoring and Deploying our CoreWiki Application to Azure \| C# \| ASP.NET Core](https://www.youtube.com/watch?v=tFuwM5e3pAA&t=0s)
+September 6, 2018     | [Refactoring and Adding a 'Deploy to Azure' button to CoreWiki](https://www.youtube.com/watch?v=rmE3GTlQDDg&t=0s)
+September 7, 2018 | [Adding Postgres to Corewiki and running Wordpress on .NET with PeachPie](https://www.youtube.com/watch?v=XhrG0kUHM_c&t=0s)
+September 11, 2018    | [Talking about Real World ASP.NET Core with Javier Lozano \| C# \| ASP.NET Core](https://www.youtube.com/watch?v=p4WpCw-uJWs&t=0s)
+September 13, 2018    | [The Legacy of Code with Kathleen Dollard \| C# \| ASP.NET Core](https://www.youtube.com/watch?v=7mS08szgpJM&t=0s)
+September 20, 2018	| 	[CoreWiki Meets Azure DevOps \| Azure DevOps \| ASP.NET Core](https://www.youtube.com/watch?v=3OmiwUyWhk4&t=0s)
+September 20, 2018	| [CoreWiki Continuous Integration \| Azure DevOps \| ASP.NET Core](https://www.youtube.com/watch?v=KMdw_YnIuFI&t=0s)
+
+#
+
+Series | Topic
+----|---
+Architecture Workshop 1 of 7 | [Steve Smith shows us Clean Architecture](https://www.youtube.com/watch?v=k8cZUW4MS3I&list=PLVMqA0_8O85x-aurj1KphxUeWTeTlYkGM&t=0s)
+Architecture Workshop 2 of 7 | [Julie Lerman introduces Domain Driven Design](https://www.youtube.com/watch?v=teuaPd8WwB8&list=PLVMqA0_8O85x-aurj1KphxUeWTeTlYkGM&t=0s)
+Architecture Workshop 3 of 7 | [Jimmy Bogard, MediatR and the CQRS pattern](https://www.youtube.com/watch?v=w6_dCa2-Qrg&list=PLVMqA0_8O85x-aurj1KphxUeWTeTlYkGM&t=0s)
+Architecture Workshop 4 of 7 | [Mark Miller talks about the Science of Great User Interfaces](https://www.youtube.com/watch?v=qNDlnYKTuCk&list=PLVMqA0_8O85x-aurj1KphxUeWTeTlYkGM&t=0s)
+Architecture Workshop 5 of 7 | [Miguel Castro Makes our Application More Extensible](https://www.youtube.com/watch?v=jy-ZV7uEm7g&list=PLVMqA0_8O85x-aurj1KphxUeWTeTlYkGM&t=0s)
+Architecture Workshop 6 of 7 | [Cecil Phillip Shows Azure Functions and Serverless Concepts](https://www.youtube.com/watch?v=DG12aX5gDs4&list=PLVMqA0_8O85x-aurj1KphxUeWTeTlYkGM&t=0s)
+Architecture Workshop 7 of 7 | [Steve Lasker Shows Us the How and Why of Containers and Azure](https://www.youtube.com/watch?v=PcLpIW5s0AU&list=PLVMqA0_8O85x-aurj1KphxUeWTeTlYkGM&t=0s)
 
 #  1) Functionality that have already been implemented
 

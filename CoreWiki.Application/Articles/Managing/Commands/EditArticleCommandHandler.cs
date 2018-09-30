@@ -8,7 +8,6 @@ namespace CoreWiki.Application.Articles.Managing.Commands
 {
 	public class EditArticleCommandHandler : IRequestHandler<EditArticleCommand, CommandResult>
 	{
-
 		private readonly IArticleManagementService _articleManagementService;
 
 		public EditArticleCommandHandler(IArticleManagementService articleManagementService)
@@ -18,17 +17,15 @@ namespace CoreWiki.Application.Articles.Managing.Commands
 
 		public async Task<CommandResult> Handle(EditArticleCommand request, CancellationToken cancellationToken)
 		{
-			var result = new CommandResult { Successful = false };
 			try
 			{
 				await _articleManagementService.Update(request.Id, request.Topic, request.Content, request.AuthorId, request.AuthorName);
-				result.Successful = true;
-				return result;
+				
+				return CommandResult.Success();
 			}
 			catch (Exception ex)
 			{
-				result.Exception = ex;
-				return result;
+				return CommandResult.Error(ex);
 			}
 		}
 	}

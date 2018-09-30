@@ -22,20 +22,17 @@ namespace CoreWiki.Application.Articles.Managing.Commands
 
 		public async Task<CommandResult> Handle(CreateNewArticleCommand request, CancellationToken cancellationToken)
 		{
-			var result = new CommandResult() { Successful = true };
-
 			try
 			{
 				var article = _mapper.Map<Article>(request);
 				await _articleManagementService.CreateArticleAndHistory(article);
+
+				return CommandResult.Success();
 			}
 			catch (Exception ex)
 			{
-				result.Successful = false;
-				result.Exception = new CreateArticleException("There was an error creating the article", ex);
+				return CommandResult.Error(new CreateArticleException("There was an error creating the article", ex));
 			}
-			return result;
-
 		}
 
 	}
