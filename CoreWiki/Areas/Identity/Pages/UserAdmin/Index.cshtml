@@ -4,13 +4,16 @@
 @model IndexModel
 
 <h2>Current Roles:</h2>
-<table class="table table-striped table-hover table-condensed table-bordered">
-	<tr>
-		<th class="d-none d-sm-table-cell">Role Id</th>
-		<th class="d-none d-md-table-cell">Role Name (Normalized)</th>
-		<th>Role Name</th>
-		<th>Actions</th>
-	</tr>
+<table class="table table-striped table-hover table-bordered">
+	<thead>
+		<tr>
+			<th class="d-none d-sm-table-cell">Role Id</th>
+			<th class="d-none d-md-table-cell">Role Name (Normalized)</th>
+			<th>Role Name</th>
+			<th>Actions</th>
+		</tr>
+	</thead>
+	<tbody>
 	@foreach (var role in Model.RolesList)
 	{
 		<tr>
@@ -28,21 +31,27 @@
 			</td>
 		</tr>
 	}
-	<tr>
-		<td colspan="4" class="text-center">
-			<a asp-page="./Roles" class="btn btn-sm btn-success">
-				<i class="fa fa-plus"></i> Create role
-			</a>
-		</td>
-	</tr>
+	</tbody>
+	<tfoot>
+		<tr>
+			<td colspan="4" class="text-center">
+				<a asp-page="./Roles" class="btn btn-sm btn-success">
+					<i class="fa fa-plus"></i> Create role
+				</a>
+			</td>
+		</tr>
+	</tfoot>
 </table>
 
 <h2>Current Users:</h2>
-<table class="table table-striped table-hover table-condensed table-bordered">
-	<tr>
-		<th>User Name</th>
-		<th>Manage Roles</th>
-	</tr>
+<table class="table table-striped table-hover table-bordered">
+	<thead>
+		<tr>
+			<th>User Name</th>
+			<th>Manage Roles</th>
+		</tr>
+	</thead>
+	<tbody>
 	@foreach (var user in Model.UsersList)
 	{
 		<tr>
@@ -76,13 +85,14 @@
 			}
 		</tr>
 	}
-	<tr>
-		<td colspan="2" class="text-center">
-			<a asp-page="./User" class="disabled btn btn-sm btn-success">
-				<i class="fa fa-plus"></i> Create new user
-			</a>
-		</td>
-	</tr>
+	</tbody>
+	<tfoot>
+		<tr>
+			<td colspan="2" class="text-center">
+				<a asp-page="./User" class="disabled btn btn-sm btn-success"><i class="fa fa-plus"></i> Create user</a>
+			</td>
+		</tr>
+	</tfoot>
 </table>
 
 @section Styles {
