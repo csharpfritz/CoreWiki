@@ -14,15 +14,17 @@
 	@foreach (var role in Model.RolesList)
 	{
 		<tr>
-			<td> @role.Id </td>
-			<td> @role.NormalizedName </td>
-			<td> @role.Name </td>
+			<td>@role.Id</td>
+			<td>@role.NormalizedName</td>
+			<td>@role.Name</td>
 			<td>
-				<form method="post">
-					<input type="hidden" asp-for="@Model.RoleToRemove" value="@role.NormalizedName" />
-					<input type="submit" class="btn btn-danger mb-1" value="Delete Role" asp-page-handler="DeleteRole" />
-				</form>
-				<a class="btn btn-warning disabled">Amend Role</a>
+				<div class="d-lg-flex justify-content-lg-around">
+					<form method="post">
+						<input type="hidden" asp-for="@Model.RoleToRemove" value="@role.NormalizedName" />
+						<input type="submit" class="btn btn-danger w-100 mb-1 m-lg-0" value="Delete" asp-page-handler="DeleteRole" />
+					</form>
+					<a class="btn btn-warning disabled">Amend</a>
+				</div>
 			</td>
 		</tr>
 	}
@@ -65,9 +67,7 @@
 
 							<div class="custom-control custom-checkbox mb-2">
 								<input class="custom-control-input" type="checkbox" name="updatedRoles" value="@roleName" id="@checkboxId" checked="@currentUsersRoles.Contains(roleName)">
-								<label class="custom-control-label w-100" for="@checkboxId">
-									@roleName
-								</label>
+								<label class="custom-control-label w-100" for="@checkboxId">@roleName</label>
 							</div>
 						}
 						<input type="submit" asp-page-handler="UpdateUserRoles" class="btn btn-sm btn-success" value="Update Roles" />
