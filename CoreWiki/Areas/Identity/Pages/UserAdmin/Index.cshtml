@@ -67,7 +67,7 @@
 
 							<div class="custom-control custom-checkbox mb-2">
 								<input class="custom-control-input" type="checkbox" name="updatedRoles" value="@roleName" id="@checkboxId" checked="@currentUsersRoles.Contains(roleName)">
-								<label class="custom-control-label w-100" for="@checkboxId">@roleName</label>
+								<label class="custom-control-label" for="@checkboxId">@roleName</label>
 							</div>
 						}
 						<input type="submit" asp-page-handler="UpdateUserRoles" class="btn btn-sm btn-success" value="Update Roles" />
