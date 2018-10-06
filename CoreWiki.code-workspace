@@ -1,0 +1,21 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+        "files.exclude": {
+            "**/.cr/": true,
+            "**/.vs/": true,
+            "**/obj/": true,
+            "**/bin/": true,
+            "**/packages/": true,
+            "**/node_modules/": true,
+            "**/*.csproj.user": true,
+            "**/*.js.map": true,
+            "**/*.js": {"when": "$(basename).ts"},
+            "**/TestResults/": true
+        },
+    }
+}
