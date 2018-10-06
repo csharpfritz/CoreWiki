@@ -1,26 +1,63 @@
 ﻿@page
 @model CoreWiki.FirstStart.MyFeature.Pages.IndexModel
-
-
 <!-- Need to collect the first Admin user's information -->
-
-GIVE ME YOUR ADMIN!
-
-
 @*
+		// MUST
 
-	// MUST
+		* Set database provider
+		* Set database configuration
+		* Add initial admin user
+		* Set admin user's password
 
-	* Set database provider
-	* Set database configuration
-	* Add initial admin user
-	* Set admin user's password
-
-	// MAYBE
-	* Set name of the Wiki
-	* Choose the default theme
-	* Choose coment system
-	* Email configuration (Sendgrid?)
-	* Anything else in Corewiki/AppSettings.json
-
+		// MAYBE
+		* Set name of the Wiki
+		* Choose the default theme
+		* Choose coment system
+		* Email configuration (Sendgrid?)
+		* Anything else in Corewiki/AppSettings.json
 *@
+
+<div>
+	<div class="text-center">
+		<h1>CoreWiki</h1>
+		<h6 class="font-italic">The .NET Core Wiki Platform.</h6>
+	</div>
+	<p>Thanks for installing CoreWiki, Let's complete the install: </p>
+
+	<div class="card">
+		<div class="card-body">
+			<form>
+				<div class="form-group">
+					<label for="inputWikiName">Name your Wiki</label>
+					<input type="text" class="form-control" id="WikiName" aria-describedby="help" placeholder="Choose a name for your wiki">
+					<small id="nameHelp" class="form-text text-muted">Something more creative than myWiki or CoreWiki :-)</small>
+				</div>
+				<div class="form-group">
+					<label for="inputAdminUsername">Administrator Username</label>
+					<input type="text" class="form-control" id="AdminUsername" aria-describedby="help" placeholder="Enter admin username">
+					<small id="usernameHelp" class="form-text text-muted">Let's make it unique. </small>
+				</div>
+				<div class="form-group">
+					<label for="inputAdminPassword">Password</label>
+					<input type="password" class="form-control" id="AdminPassword" placeholder="Password">
+					<small id="passwordHelp" class="form-text text-muted">Long and random.</small>
+				</div>
+				<div class="form-group">
+					<label for="inputDatabase">Database</label>
+					<select id="inputDatabase" class="form-control">
+						<option selected>Choose...</option>
+						<option>Postgres</option>
+						<option>SQL Server</option>
+						<option>Sqlite</option>
+					</select>
+				</div>
+				<div class="form-group">
+					<label for="InputConnectionString">ConnectionString</label>
+					<input type="text" class="form-control" id="ConnectionString" placeholder="ConnectionString">
+					<small id="databaseHelp" class="form-text text-muted">Enter your connection string here.</small>
+				</div>
+				<button type="submit" class="btn btn-primary">Submit</button>
+			</form>
+		</div>
+	</div>
+</div>

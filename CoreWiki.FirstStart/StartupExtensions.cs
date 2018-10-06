@@ -36,8 +36,11 @@ namespace CoreWiki.FirstStart
 
 		private static bool IsFirstStartIncomplete(HttpContext context)
 		{
+			// NOTE: Forcing this to true while building the functionality
+			// in the project_firstStart branch
 			return true;
 		}
+
 	}
 
 }
