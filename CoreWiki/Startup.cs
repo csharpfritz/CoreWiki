@@ -37,6 +37,9 @@ namespace CoreWiki
 			services.ConfigureLocalisation();
 			services.ConfigureApplicationServices();
 			services.AddMediator();
+
+			services.AddFirstStartConfiguration();
+
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

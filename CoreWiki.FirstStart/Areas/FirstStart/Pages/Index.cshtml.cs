@@ -16,16 +16,20 @@ namespace CoreWiki.FirstStart.MyFeature.Pages
 	public class IndexModel : PageModel
 	{
 
-		public IndexModel(IHostingEnvironment env, IConfiguration config)
+		public IndexModel(IHostingEnvironment env, IConfiguration config, FirstStartConfiguration firstStartConfig)
 		{
 			this.Environment = env;
 			this.Configuration = config;
+			this.FirstStartConfig = firstStartConfig;
 		}
 
 		public IHostingEnvironment Environment { get; }
 		public IConfiguration Configuration { get; }
 
-		public void OnGet()
+		[BindProperty]
+        public FirstStartConfiguration FirstStartConfig { get; }
+
+        public void OnGet()
 		{
 
 			TestWritingFileToDisk();

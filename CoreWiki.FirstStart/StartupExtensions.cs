@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -11,6 +12,14 @@ namespace CoreWiki.FirstStart
 
 	public static class StartupExtensions
 	{
+
+		public static IServiceCollection UseFirstStartConfiguration(this IServiceCollection services) {
+
+			services.AddSingleton<FirstStartConfiguration>(new FirstStartConfiguration());
+
+			return services;
+
+		}
 
 		public static IApplicationBuilder UseFirstStartConfiguration(this IApplicationBuilder app, IConfiguration configuration) {
 
