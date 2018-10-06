@@ -3,7 +3,7 @@ using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace CoreWiki.Application.Common
+namespace CoreWiki.Core.Common
 {
 	public class UrlHelpers
 	{
@@ -39,7 +39,7 @@ namespace CoreWiki.Application.Common
 			return newTitle;
 
 		}
-
+		
 		static string RemoveDiacritics(string text)
 		{
 			var normalizedString = text.Normalize(NormalizationForm.FormD);

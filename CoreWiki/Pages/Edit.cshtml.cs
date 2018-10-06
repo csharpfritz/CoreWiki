@@ -14,6 +14,7 @@ using CoreWiki.Application.Articles.Managing.Queries;
 using CoreWiki.Application.Common;
 using Microsoft.AspNetCore.Authorization;
 using CoreWiki.Areas.Identity;
+using CoreWiki.Core.Common;
 
 namespace CoreWiki.Pages
 {

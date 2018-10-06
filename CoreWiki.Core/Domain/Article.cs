@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
+using CoreWiki.Core.Common;
 
 namespace CoreWiki.Core.Domain
 {
@@ -17,7 +18,7 @@ namespace CoreWiki.Core.Domain
 				return _Topic;
 			}
 			set {
-				Slug = URLFriendly(value);
+				Slug = UrlHelpers.URLFriendly(value);
 				_Topic = value;
 			}
 		}
@@ -56,30 +57,6 @@ namespace CoreWiki.Core.Domain
 		private static readonly Regex reSlugDashes = new Regex(@"([\-])+");
 
 		private static readonly Regex reSlugCharacters = new Regex(@"([\s,.//\\-_=])+");
-
-		public static string URLFriendly(string title)
-		{
-
-			if (string.IsNullOrEmpty(title)) return "";
-
-
-			var newTitle = RemoveDiacritics(title);
-
-			newTitle = Regex.Replace(newTitle, "(?<!^)([A-Z][a-z]|(?<=[a-z])[A-Z])", @"-$1");
-
-			newTitle = reSlugCharactersToBeDashes.Replace(newTitle, "-");
-
-			newTitle = newTitle.ToLowerInvariant();
-
-			newTitle = reSlugCharactersToRemove.Replace(newTitle, "");
-
-			newTitle = reSlugDashes.Replace(newTitle, "-");
-
-			newTitle = newTitle.Trim('-');
-
-			return newTitle;
-
-		}
 
 		static string RemoveDiacritics(string text)
 		{

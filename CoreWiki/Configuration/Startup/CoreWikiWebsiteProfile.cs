@@ -5,6 +5,7 @@ using CoreWiki.Application.Articles.Managing.Commands;
 using CoreWiki.Application.Articles.Reading.Commands;
 using CoreWiki.Application.Articles.Reading.Dto;
 using CoreWiki.Application.Common;
+using CoreWiki.Core.Common;
 using CoreWiki.ViewModels;
 
 namespace CoreWiki.Configuration.Startup

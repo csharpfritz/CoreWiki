@@ -13,6 +13,7 @@ using AutoMapper;
 using CoreWiki.Application.Articles.Managing.Commands;
 using CoreWiki.Application.Articles.Managing.Queries;
 using CoreWiki.Application.Common;
+using CoreWiki.Core.Common;
 using CoreWiki.Helpers;
 
 namespace CoreWiki.Pages

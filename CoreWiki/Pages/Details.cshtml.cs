@@ -10,6 +10,7 @@ using AutoMapper;
 using CoreWiki.Application.Articles.Reading.Commands;
 using CoreWiki.Application.Articles.Reading.Queries;
 using CoreWiki.Application.Common;
+using CoreWiki.Core.Common;
 
 namespace CoreWiki.Pages
 {
