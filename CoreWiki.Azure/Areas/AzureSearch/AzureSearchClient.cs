@@ -1,11 +1,12 @@
-﻿using Microsoft.Azure.Search;
+﻿using CoreWiki.Application.Articles.Search;
+using Microsoft.Azure.Search;
 using Microsoft.Azure.Search.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 
-namespace CoreWiki.Application.Articles.Search.AzureSearch
+namespace CoreWiki.Azure.Areas.AzureSearch
 {
-	internal class AzureSearchClient : IAzureSearchClient
+	public class AzureSearchClient : IAzureSearchClient
 	{
 		private readonly IOptionsSnapshot<SearchProviderSettings> _config;
 		private readonly IConfiguration _configuration;
@@ -13,6 +14,7 @@ namespace CoreWiki.Application.Articles.Search.AzureSearch
 		private string SearchServiceName => _config.Value.Az_ApiGateway;
 		private string AdminApiKey => _config.Value.Az_WriteApiKey;
 		private string QueryApiKey => _config.Value.Az_ReadApiKey;
+
 		private string GetIndexName<T>()
 		{
 			return typeof(T).Name.ToLowerInvariant();
@@ -40,7 +42,6 @@ namespace CoreWiki.Application.Articles.Search.AzureSearch
 				return serviceClient.Indexes.GetClient(index);
 			}
 
-
 			try
 			{
 				var definition = new Index()
@@ -64,7 +65,5 @@ namespace CoreWiki.Application.Articles.Search.AzureSearch
 			var indexClient = new SearchIndexClient(SearchServiceName, GetIndexName<T>(), new SearchCredentials(QueryApiKey));
 			return indexClient;
 		}
-
-
 	}
 }

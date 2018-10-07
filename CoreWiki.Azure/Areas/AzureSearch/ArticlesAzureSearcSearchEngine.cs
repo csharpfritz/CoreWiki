@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CoreWiki.Application.Articles.Search;
 using Microsoft.Azure.Search;
 using Microsoft.Azure.Search.Models;
 using Microsoft.Extensions.Logging;
 
-namespace CoreWiki.Application.Articles.Search.AzureSearch
+namespace CoreWiki.Azure.Areas.AzureSearch
 {
 	/// <summary>
 	/// Tutorial here: https://github.com/Azure-Samples/search-dotnet-getting-started/blob/master/DotNetHowTo/DotNetHowTo/Program.cs

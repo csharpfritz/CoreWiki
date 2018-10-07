@@ -1,6 +1,6 @@
 ﻿using Microsoft.Azure.Search;
 
-namespace CoreWiki.Application.Articles.Search.AzureSearch
+namespace CoreWiki.Azure.Areas.AzureSearch
 {
 	public interface IAzureSearchClient
 	{
