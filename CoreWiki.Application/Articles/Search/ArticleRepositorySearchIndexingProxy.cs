@@ -6,6 +6,11 @@ using CoreWiki.Data.Abstractions.Interfaces;
 
 namespace CoreWiki.Application.Articles.Search
 {
+	/// <summary>
+	/// Proxy pattern: Using a middleman to extend functionality of original class but not changing it.
+	/// Ex caching, when you dont want/need to muddle the original class with logic for another resposibility,
+	/// Or here when we want to extend our app with a searchengine, wich needs indexing. The repository dont need to know we do indexing somewere else
+	/// </summary>
 	public class ArticleRepositorySearchIndexingProxy : IArticleRepository
 	{
 		private readonly ISearchProvider<Article> _searchProvider;

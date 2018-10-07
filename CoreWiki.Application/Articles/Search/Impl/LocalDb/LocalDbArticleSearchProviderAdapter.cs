@@ -9,7 +9,7 @@ using Microsoft.Extensions.Logging;
 namespace CoreWiki.Application.Articles.Search.Impl
 {
 	/// <summary>
-	/// When using local DB convert Generic search to Concrete Articlesearch
+	/// Adapter pattern: When using local DB, convert Concrete Articlesearch to Generic ISearchProvider<T>
 	/// </summary>
 	/// <typeparam name="T"></typeparam>
 	public class LocalDbArticleSearchProviderAdapter<T> : ISearchProvider<T> where T : Article
