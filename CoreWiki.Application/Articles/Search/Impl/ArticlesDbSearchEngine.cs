@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using CoreWiki.Application.Articles.Search.Dto;
 using CoreWiki.Core.Domain;
-using CoreWiki.Data.Abstractions.Interfaces;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -9,33 +9,50 @@ namespace CoreWiki.Application.Articles.Search.Impl
 {
 	public class ArticlesDbSearchEngine : IArticlesSearchEngine
 	{
-
-		private readonly IArticleRepository _articleRepo;
+		private readonly ISearchProvider<Article> _searchProvider;
 		private readonly IMapper _mapper;
 
-		public ArticlesDbSearchEngine(IArticleRepository articleRepo, IMapper mapper)
+		public ArticlesDbSearchEngine(ISearchProvider<Article> searchProvider, IMapper mapper)
 		{
-			_articleRepo = articleRepo;
+			_searchProvider = searchProvider;
 			_mapper = mapper;
 		}
 
 		public async Task<SearchResultDto<ArticleSearchDto>> SearchAsync(string query, int pageNumber, int resultsPerPage)
 		{
 			var filteredQuery = query.Trim();
-			var offset = (pageNumber - 1) * resultsPerPage;
+			var (articles, totalFound) = await _searchProvider.SearchAsync(filteredQuery, pageNumber, resultsPerPage).ConfigureAwait(false);
 
-			var (articles, totalFound) = _articleRepo.GetArticlesForSearchQuery(filteredQuery, offset, resultsPerPage);
+			// TODO maybe make this searchproviders problem
+			var total = int.TryParse(totalFound.ToString(), out var inttotal);
+			if (!total)
+			{
+				inttotal = int.MaxValue;
+			}
 
+			return _mapper.CreateArticleResultDTO(filteredQuery, articles, pageNumber, resultsPerPage, inttotal);
+		}
+	}
+
+	internal static class SearchResultFactory
+	{
+		internal static SearchResultDto<ArticleSearchDto> CreateArticleResultDTO(this IMapper mapper, string query, IEnumerable<Article> articles, int currenPage, int resultsPerPage, int totalResults)
+		{
+			var results = new List<Article>();
+			if (articles?.Any() == true)
+			{
+				results = articles.ToList();
+			}
 			var result = new SearchResult<Article>
 			{
-				Query = filteredQuery,
-				Results = articles.ToList(),
-				CurrentPage = pageNumber,
+				Query = query,
+				Results = results,
+				CurrentPage = currenPage,
 				ResultsPerPage = resultsPerPage,
-				TotalResults = totalFound
+				TotalResults = totalResults
 			};
 
-			return _mapper.Map<SearchResultDto<ArticleSearchDto>>(result);
+			return mapper.Map<SearchResultDto<ArticleSearchDto>>(result);
 		}
 	}
 }

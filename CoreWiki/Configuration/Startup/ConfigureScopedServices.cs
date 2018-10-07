@@ -1,6 +1,4 @@
-﻿using CoreWiki.Application.Articles.Search;
-using CoreWiki.Application.Articles.Search.Impl;
-using CoreWiki.Notifications;
+﻿using CoreWiki.Notifications;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -19,10 +17,8 @@ namespace CoreWiki.Configuration.Startup
 			services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
 			services.AddEmailNotifications(configuration);
-			services.AddScoped<IArticlesSearchEngine, ArticlesDbSearchEngine>();
 
 			services.AddProgressiveWebApp(new PwaOptions { EnableCspNonce = true });
-
 			return services;
 		}
 	}

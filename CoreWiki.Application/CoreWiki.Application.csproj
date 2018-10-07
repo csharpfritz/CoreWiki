@@ -11,11 +11,13 @@
 
   <ItemGroup>
     <PackageReference Include="MediatR" Version="5.1.0" />
+    <PackageReference Include="Microsoft.Azure.Search" Version="5.0.2" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="2.1.1" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\CoreWiki.Data.Abstractions\CoreWiki.Data.Abstractions.csproj" />
+    <ProjectReference Include="..\CoreWiki.Data\CoreWiki.Data.EntityFramework.csproj" />
   </ItemGroup>
 
 </Project>

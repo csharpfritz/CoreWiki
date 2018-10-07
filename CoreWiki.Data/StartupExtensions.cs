@@ -1,9 +1,9 @@
-﻿using CoreWiki.Data.EntityFramework.Repositories;
+﻿using System;
+using CoreWiki.Data.Abstractions.Interfaces;
+using CoreWiki.Data.EntityFramework.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using CoreWiki.Data.Abstractions.Interfaces;
-using System;
 
 namespace CoreWiki.Data.EntityFramework
 {
@@ -17,12 +17,14 @@ namespace CoreWiki.Data.EntityFramework
 		/// <param name="services"></param>
 		/// <param name="config"></param>
 		/// <returns></returns>
-		public static IServiceCollection AddRepositories(this IServiceCollection services, IConfiguration config) {
+		public static IServiceCollection AddRepositories(this IServiceCollection services, IConfiguration config)
+		{
 
 			Action<DbContextOptionsBuilder> optionsBuilder;
 			var connectionString = config.GetConnectionString("CoreWikiData");
 
-			switch (config["DataProvider"].ToLowerInvariant()) {
+			switch (config["DataProvider"].ToLowerInvariant())
+			{
 				case "postgres":
 					services.AddEntityFrameworkNpgsql();
 					optionsBuilder = options => options.UseNpgsql(connectionString);
@@ -34,20 +36,22 @@ namespace CoreWiki.Data.EntityFramework
 					break;
 			}
 
-			services.AddDbContextPool<ApplicationDbContext>(options => {
+			services.AddDbContextPool<ApplicationDbContext>(options =>
+			{
 				optionsBuilder(options);
 				options.EnableSensitiveDataLogging();
 			});
 
 			// db repos
-			services.AddTransient<IArticleRepository, ArticleRepository>();
+			//services.AddTransient<IArticleRepository, ArticleRepository>();
 			services.AddTransient<ICommentRepository, CommentRepository>();
 			services.AddTransient<ISlugHistoryRepository, SlugHistoryRepository>();
 			return services;
 
 		}
 
-		public static IServiceScope SeedData(this IServiceScope serviceScope) {
+		public static IServiceScope SeedData(this IServiceScope serviceScope)
+		{
 
 			var context = serviceScope.ServiceProvider.GetService<ApplicationDbContext>();
 
