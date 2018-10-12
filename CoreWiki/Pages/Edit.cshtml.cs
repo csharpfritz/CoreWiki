@@ -75,19 +75,19 @@ namespace CoreWiki.Pages
 				return new ArticleNotFoundResult();
 			}
 
-			var query = new GetArticlesToCreateFromArticleQuery(UrlHelpers.URLFriendly(Article.Topic));
+			var query = new GetArticlesToCreateFromArticleQuery(Article.Slug);
 			var listOfSlugs = await _mediator.Send(query);
 
 			if (listOfSlugs.Any())
 			{
-				return RedirectToPage("CreateArticleFromLink", new { id = UrlHelpers.URLFriendly(Article.Topic) });
+				return RedirectToPage("CreateArticleFromLink", new { id = Article.Slug });
 			}
 
-			return Redirect($"/wiki/{(UrlHelpers.URLFriendly(Article.Topic) == UrlHelpers.HomePageSlug ? "" : UrlHelpers.URLFriendly(Article.Topic))}");
+			return Redirect($"/wiki/{(Article.Slug == Constants.HomePageSlug ? "" : Article.Slug)}");
 
 		}
 
-		
+
 	}
 
 }

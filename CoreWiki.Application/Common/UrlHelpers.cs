@@ -5,10 +5,8 @@ using System.Text.RegularExpressions;
 
 namespace CoreWiki.Application.Common
 {
-	public class UrlHelpers
+	internal class UrlHelpers
 	{
-
-		public static string HomePageSlug = "home-page";
 
 		private static readonly Regex reSlugCharactersToBeDashes = new Regex(@"([\s,.//\\-_=])+");
 		private static readonly Regex reSlugCharactersToRemove = new Regex(@"([^0-9a-z\-])+");
