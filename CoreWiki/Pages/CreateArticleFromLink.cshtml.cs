@@ -47,7 +47,7 @@ namespace CoreWiki.Pages
 			LinksToCreate = (await _mediator.Send(new GetArticlesToCreateFromArticleQuery(id))).ToList();
 			if (LinksToCreate.Count == 0)
 			{
-				return Redirect(theArticle.GetUrlOrHome());
+				return Redirect(ArticleUrlHelpers.GetUrlOrHome(theArticle.Slug));
 			}
 
 			Article = new ArticleCreateFromLink

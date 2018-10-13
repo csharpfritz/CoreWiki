@@ -39,7 +39,7 @@ namespace CoreWiki.Pages
 
 				if (historical != null)
 				{
-					return new RedirectResult(historical.Article.GetUrl());
+					return new RedirectResult(ArticleUrlHelpers.GetUrl(historical.Article.Slug));
 				}
 				return new ArticleNotFoundResult(slug);
 			}
@@ -86,7 +86,7 @@ namespace CoreWiki.Pages
 
 			await _mediator.Send(commentCmd);
 
-			return Redirect(article.GetUrl());
+			return Redirect(ArticleUrlHelpers.GetUrl(article.Slug));
 		}
 	}
 }

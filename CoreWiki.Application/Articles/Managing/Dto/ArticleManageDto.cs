@@ -1,11 +1,14 @@
 ﻿using System;
-using CoreWiki.Core.Domain;
 using NodaTime;
 
 namespace CoreWiki.Application.Articles.Managing.Dto
 {
-	public class ArticleManageDto : BaseArticle
+	public class ArticleManageDto
 	{
+		public string Content { get; set; }
+		public int Id { get; set; }
+		public string Slug { get; set; }
+		public string Topic { get; set; }
 		public int Version { get; set; }
 		public int ViewCount { get; set; }
 		public CommentDto[] Comments { get; set; }

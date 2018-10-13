@@ -78,7 +78,7 @@ namespace CoreWiki.Pages
 				return RedirectToPage("CreateArticleFromLink", new { id = Article.Slug });
 			}
 
-			return Redirect(Article.GetUrlOrHome());
+			return Redirect(ArticleUrlHelpers.GetUrlOrHome(Article.Slug));
 		}
 	}
 }

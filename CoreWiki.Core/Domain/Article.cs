@@ -7,9 +7,11 @@ using NodaTime;
 
 namespace CoreWiki.Core.Domain
 {
-	public class Article : BaseArticle
+	public class Article
 	{
-		public new string Topic
+		public int Id { get; set; }
+
+		public string Topic
 		{
 			get => _Topic;
 			set {
@@ -20,6 +22,8 @@ namespace CoreWiki.Core.Domain
 
 		private string _Topic;
 
+		public string Slug { get; set; }
+
 		public int Version { get; set; } = 1;
 
 		public Instant Published { get; set; }
@@ -27,6 +31,8 @@ namespace CoreWiki.Core.Domain
 		public Guid AuthorId { get; set; }
 
 		public string AuthorName { get; set; } = "Unknown";
+
+		public string Content { get; set; }
 
 		public virtual ICollection<Comment> Comments { get; set; }
 
@@ -50,9 +56,7 @@ namespace CoreWiki.Core.Domain
 
 		public string URLFriendly(string title)
 		{
-
 			if (string.IsNullOrEmpty(title)) return "";
-
 
 			var newTitle = RemoveDiacritics(title);
 
@@ -69,7 +73,6 @@ namespace CoreWiki.Core.Domain
 			newTitle = newTitle.Trim('-');
 
 			return newTitle;
-
 		}
 
 		private static string RemoveDiacritics(string text)
@@ -100,9 +103,6 @@ namespace CoreWiki.Core.Domain
 			var outValue = textInfo.ToTitleCase(slug);
 
 			return outValue.Replace("-", " ");
-
 		}
-
 	}
-
 }
