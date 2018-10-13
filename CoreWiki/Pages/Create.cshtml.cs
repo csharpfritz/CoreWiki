@@ -1,23 +1,19 @@
+using System.Linq;
+using System.Threading.Tasks;
+using AutoMapper;
+using CoreWiki.Application.Articles.Managing.Commands;
+using CoreWiki.Application.Articles.Managing.Queries;
 using CoreWiki.Areas.Identity;
+using CoreWiki.Helpers;
 using CoreWiki.ViewModels;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using AutoMapper;
-using CoreWiki.Application.Articles.Managing.Commands;
-using CoreWiki.Application.Articles.Managing.Queries;
-using CoreWiki.Application.Common;
-using CoreWiki.Helpers;
 
 namespace CoreWiki.Pages
 {
-
 	[Authorize(Policy = PolicyConstants.CanWriteArticles)]
 	public class CreateModel : PageModel
 	{
@@ -57,7 +53,7 @@ namespace CoreWiki.Pages
 		}
 
 		[BindProperty]
-		public ArticleCreate Article { get; set; }   
+		public ArticleCreate Article { get; set; }
 
 		public async Task<IActionResult> OnPostAsync()
 		{
@@ -72,7 +68,7 @@ namespace CoreWiki.Pages
 
 			_logger.LogWarning($"Creating page with slug: {slug}");
 
-			var isTopicAvailable = new GetIsTopicAvailableQuery {Slug = slug, ArticleId = 0};
+			var isTopicAvailable = new GetIsTopicAvailableQuery { Slug = slug, ArticleId = 0 };
 			if (await _mediator.Send(isTopicAvailable))
 			{
 				ModelState.AddModelError("Article.Topic", "This Title already exists.");
@@ -94,8 +90,7 @@ namespace CoreWiki.Pages
 				return RedirectToPage("CreateArticleFromLink", new { id = slug });
 			}
 
-			return Redirect($"/wiki/{slug}");
-
+			return Redirect(ArticleUrlHelpers.GetUrl(slug));
 		}
 	}
 }

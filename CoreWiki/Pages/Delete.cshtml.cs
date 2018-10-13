@@ -1,28 +1,32 @@
-﻿using CoreWiki.ViewModels;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
+﻿using System;
 using System.Threading.Tasks;
-using MediatR;
 using AutoMapper;
 using CoreWiki.Application.Articles.Managing.Commands;
 using CoreWiki.Application.Articles.Managing.Events;
 using CoreWiki.Application.Articles.Managing.Queries;
 using CoreWiki.Application.Common;
+using CoreWiki.Areas.Identity;
+using CoreWiki.ViewModels;
+using MediatR;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Extensions.Logging;
 
 namespace CoreWiki.Pages
 {
-	[Authorize("CanDeleteArticles")]
-
+	[Authorize(PolicyConstants.CanDeleteArticles)]
 	public class DeleteModel : PageModel
 	{
 		private readonly IMediator _mediator;
 		private readonly IMapper _mapper;
+		private readonly ILogger _logger;
 
-		public DeleteModel(IMediator mediator, IMapper mapper)
+		public DeleteModel(IMediator mediator, IMapper mapper, ILogger logger)
 		{
 			_mediator = mediator;
 			_mapper = mapper;
+			_logger = logger;
 		}
 
 		[BindProperty]
@@ -36,18 +40,18 @@ namespace CoreWiki.Pages
 			{
 				return NotFound();
 			}
+			if (slug.Equals(Constants.HomePageSlug, StringComparison.InvariantCultureIgnoreCase))
+			{
+				_logger.LogError("User tried to delete Homepage");
+				await _mediator.Publish(new DeleteHomePageAttemptNotification());
+				return Forbid();
+			}
 
 			var article = await _mediator.Send(new GetArticleQuery(slug));
 
 			if (article == null)
 			{
 				return NotFound();
-			}
-
-			if (article.Slug == UrlHelpers.HomePageSlug)
-			{
-				await _mediator.Publish(new DeleteHomePageAttemptNotification());
-				return Forbid();
 			}
 
 			Article = _mapper.Map<ArticleDelete>(article);
@@ -63,7 +67,7 @@ namespace CoreWiki.Pages
 			}
 
 			var result = await _mediator.Send(new DeleteArticleCommand(slug));
-			return LocalRedirect($"/wiki/{UrlHelpers.HomePageSlug}");
+			return LocalRedirect(Constants.HomePageUrl);
 		}
 	}
 }

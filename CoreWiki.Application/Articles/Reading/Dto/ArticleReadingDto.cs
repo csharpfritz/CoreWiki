@@ -1,14 +1,11 @@
 ﻿using System;
+using CoreWiki.Core.Domain;
 using NodaTime;
 
 namespace CoreWiki.Application.Articles.Reading.Dto
 {
-	public class ArticleReadingDto
+	public class ArticleReadingDto : BaseArticle
 	{
-		public string Content { get; set; }
-		public int Id { get; set; }
-		public string Slug { get; set; }
-		public string Topic { get; set; }
 		public int Version { get; set; }
 		public int ViewCount { get; set; }
 		public CommentDto[] Comments { get; set; }
