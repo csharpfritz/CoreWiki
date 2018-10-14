@@ -7,9 +7,6 @@ namespace CoreWiki.Core.Common
 {
 	public class UrlHelpers
 	{
-
-		public static string HomePageSlug = "home-page";
-
 		private static readonly Regex reSlugCharactersToBeDashes = new Regex(@"([\s,.//\\-_=])+");
 		private static readonly Regex reSlugCharactersToRemove = new Regex(@"([^0-9a-z\-])+");
 		private static readonly Regex reSlugDashes = new Regex(@"([\-])+");
