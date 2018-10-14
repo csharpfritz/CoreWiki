@@ -10,7 +10,6 @@ using AutoMapper;
 using CoreWiki.Application.Articles.Reading.Commands;
 using CoreWiki.Application.Articles.Reading.Queries;
 using CoreWiki.Application.Common;
-using CoreWiki.Core.Common;
 
 namespace CoreWiki.Pages
 {
@@ -33,7 +32,7 @@ namespace CoreWiki.Pages
 		public async Task<IActionResult> OnGetAsync(string slug)
 		{
 
-			slug = slug ?? UrlHelpers.HomePageSlug;
+			slug = slug ?? Constants.HomePageSlug;
 			var article = await _mediator.Send(new GetArticleQuery(slug));
 
 			if (article == null)

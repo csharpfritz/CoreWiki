@@ -9,7 +9,6 @@ using CoreWiki.Application.Articles.Managing.Commands;
 using CoreWiki.Application.Articles.Managing.Events;
 using CoreWiki.Application.Articles.Managing.Queries;
 using CoreWiki.Application.Common;
-using CoreWiki.Core.Common;
 
 namespace CoreWiki.Pages
 {
@@ -45,7 +44,7 @@ namespace CoreWiki.Pages
 				return NotFound();
 			}
 
-			if (article.Slug == UrlHelpers.HomePageSlug)
+			if (article.Slug == Constants.HomePageSlug)
 			{
 				await _mediator.Publish(new DeleteHomePageAttemptNotification());
 				return Forbid();
@@ -64,7 +63,7 @@ namespace CoreWiki.Pages
 			}
 
 			var result = await _mediator.Send(new DeleteArticleCommand(slug));
-			return LocalRedirect($"/wiki/{UrlHelpers.HomePageSlug}");
+			return LocalRedirect($"/wiki/{Constants.HomePageSlug}");
 		}
 	}
 }

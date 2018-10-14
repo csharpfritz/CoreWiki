@@ -13,7 +13,6 @@ using AutoMapper;
 using CoreWiki.Application.Articles.Managing.Commands;
 using CoreWiki.Application.Articles.Managing.Queries;
 using CoreWiki.Application.Common;
-using CoreWiki.Core.Common;
 
 namespace CoreWiki.Pages
 {
@@ -50,7 +49,7 @@ namespace CoreWiki.Pages
 			LinksToCreate = (await _mediator.Send(new GetArticlesToCreateFromArticleQuery(id))).ToList();
 			if (LinksToCreate.Count == 0)
 			{
-				return Redirect($"/wiki/{(theArticle.Slug == UrlHelpers.HomePageSlug ? "" : theArticle.Slug)}");
+				return Redirect($"/wiki/{(theArticle.Slug == Constants.HomePageSlug ? "" : theArticle.Slug)}");
 			}
 
 			Article = new ArticleCreateFromLink
@@ -74,12 +73,12 @@ namespace CoreWiki.Pages
 
 			Task.WaitAll(taskList.ToArray());
 
-			return Redirect($"/wiki/{(slug == UrlHelpers.HomePageSlug ? "" : slug)}");
+			return Redirect($"/wiki/{(slug == Constants.HomePageSlug ? "" : slug)}");
 		}
 
 		public IActionResult OnPostCancel(string slug)
 		{
-			return Redirect($"/wiki/{(slug == UrlHelpers.HomePageSlug ? "" : slug)}");
+			return Redirect($"/wiki/{(slug == Constants.HomePageSlug ? "" : slug)}");
 		}
 	}
 }

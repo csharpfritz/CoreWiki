@@ -2,19 +2,15 @@
 using CoreWiki.Helpers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using System;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 using MediatR;
 using AutoMapper;
 using CoreWiki.Application.Articles.Managing.Commands;
 using CoreWiki.Application.Articles.Managing.Exceptions;
 using CoreWiki.Application.Articles.Managing.Queries;
-using CoreWiki.Application.Common;
 using Microsoft.AspNetCore.Authorization;
 using CoreWiki.Areas.Identity;
-using CoreWiki.Core.Common;
 
 namespace CoreWiki.Pages
 {
@@ -76,19 +72,16 @@ namespace CoreWiki.Pages
 				return new ArticleNotFoundResult();
 			}
 
-			var query = new GetArticlesToCreateFromArticleQuery(UrlHelpers.URLFriendly(Article.Topic));
+			var query = new GetArticlesToCreateFromArticleQuery(Article.Topic);
 			var listOfSlugs = await _mediator.Send(query);
 
 			if (listOfSlugs.Any())
 			{
-				return RedirectToPage("CreateArticleFromLink", new { id = UrlHelpers.URLFriendly(Article.Topic) });
+				return RedirectToPage("CreateArticleFromLink", new { id = query.Slug });
 			}
 
-			return Redirect($"/wiki/{(UrlHelpers.URLFriendly(Article.Topic) == UrlHelpers.HomePageSlug ? "" : UrlHelpers.URLFriendly(Article.Topic))}");
+			return Redirect($"/wiki/{(query.Slug == Constants.HomePageSlug ? "" : query.Slug)}");
 
 		}
-
-		
 	}
-
 }
