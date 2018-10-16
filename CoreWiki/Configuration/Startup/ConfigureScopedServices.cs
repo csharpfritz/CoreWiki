@@ -21,7 +21,10 @@ namespace CoreWiki.Configuration.Startup
 			services.AddEmailNotifications(configuration);
 			services.AddScoped<IArticlesSearchEngine, ArticlesDbSearchEngine>();
 
-			services.AddProgressiveWebApp(new PwaOptions { EnableCspNonce = true });
+			services.AddProgressiveWebApp(new PwaOptions {
+				EnableCspNonce = true,
+				RegisterServiceWorker = false
+			});
 
 			return services;
 		}
