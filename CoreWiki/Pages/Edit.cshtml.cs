@@ -1,27 +1,22 @@
-﻿using CoreWiki.ViewModels;
-using CoreWiki.Helpers;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using System;
-using System.Linq;
-using System.Security.Claims;
+﻿using System.Linq;
 using System.Threading.Tasks;
-using MediatR;
 using AutoMapper;
 using CoreWiki.Application.Articles.Managing.Commands;
 using CoreWiki.Application.Articles.Managing.Exceptions;
 using CoreWiki.Application.Articles.Managing.Queries;
-using CoreWiki.Application.Common;
-using Microsoft.AspNetCore.Authorization;
 using CoreWiki.Areas.Identity;
+using CoreWiki.Helpers;
+using CoreWiki.ViewModels;
+using MediatR;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace CoreWiki.Pages
 {
-
 	[Authorize(Policy = PolicyConstants.CanEditArticles)]
 	public class EditModel : PageModel
 	{
-
 		private readonly IMediator _mediator;
 		private readonly IMapper _mapper;
 
@@ -51,7 +46,6 @@ namespace CoreWiki.Pages
 			Article = _mapper.Map<ArticleEdit>(article);
 
 			return Page();
-
 		}
 
 		public async Task<IActionResult> OnPostAsync()
@@ -62,7 +56,7 @@ namespace CoreWiki.Pages
 			}
 
 			var cmd = _mapper.Map<EditArticleCommand>(Article);
-			cmd =_mapper.Map(User, cmd);
+			cmd = _mapper.Map(User, cmd);
 
 			var result = await _mediator.Send(cmd);
 
@@ -70,7 +64,8 @@ namespace CoreWiki.Pages
 			{
 				ModelState.AddModelError("Article.Topic", result.Exception.Message);
 				return Page();
-			} else if (result.Exception is ArticleNotFoundException)
+			}
+			else if (result.Exception is ArticleNotFoundException)
 			{
 				return new ArticleNotFoundResult();
 			}
@@ -83,11 +78,7 @@ namespace CoreWiki.Pages
 				return RedirectToPage("CreateArticleFromLink", new { id = Article.Slug });
 			}
 
-			return Redirect($"/wiki/{(Article.Slug == Constants.HomePageSlug ? "" : Article.Slug)}");
-
+			return Redirect(ArticleUrlHelpers.GetUrlOrHome(Article.Slug));
 		}
-
-
 	}
-
 }

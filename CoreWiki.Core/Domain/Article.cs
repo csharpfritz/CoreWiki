@@ -1,21 +1,19 @@
-﻿using NodaTime;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
+using NodaTime;
 
 namespace CoreWiki.Core.Domain
 {
 	public class Article
 	{
-
 		public int Id { get; set; }
 
-		public string Topic { get
-			{
-				return _Topic;
-			}
+		public string Topic
+		{
+			get => _Topic;
 			set {
 				Slug = URLFriendly(value);
 				_Topic = value;
@@ -25,7 +23,6 @@ namespace CoreWiki.Core.Domain
 		private string _Topic;
 
 		public string Slug { get; set; }
-
 
 		public int Version { get; set; } = 1;
 
@@ -43,8 +40,8 @@ namespace CoreWiki.Core.Domain
 
 		public Article()
 		{
-			this.Comments = new HashSet<Comment>();
-			this.History = new HashSet<ArticleHistory>();
+			Comments = new HashSet<Comment>();
+			History = new HashSet<ArticleHistory>();
 		}
 
 		public int ViewCount { get; set; } = 0;
@@ -59,9 +56,7 @@ namespace CoreWiki.Core.Domain
 
 		public string URLFriendly(string title)
 		{
-
 			if (string.IsNullOrEmpty(title)) return "";
-
 
 			var newTitle = RemoveDiacritics(title);
 
@@ -78,10 +73,9 @@ namespace CoreWiki.Core.Domain
 			newTitle = newTitle.Trim('-');
 
 			return newTitle;
-
 		}
 
-		static string RemoveDiacritics(string text)
+		private static string RemoveDiacritics(string text)
 		{
 			var normalizedString = text.Normalize(NormalizationForm.FormD);
 			var stringBuilder = new StringBuilder();
@@ -100,7 +94,7 @@ namespace CoreWiki.Core.Domain
 
 		public static string SlugToTopic(string slug)
 		{
-			if (String.IsNullOrEmpty(slug))
+			if (string.IsNullOrEmpty(slug))
 			{
 				return "";
 			}
@@ -109,9 +103,6 @@ namespace CoreWiki.Core.Domain
 			var outValue = textInfo.ToTitleCase(slug);
 
 			return outValue.Replace("-", " ");
-
 		}
-
 	}
-
 }

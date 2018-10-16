@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using CoreWiki.Application.Common;
 using NodaTime;
 
 namespace CoreWiki.ViewModels
@@ -17,5 +18,6 @@ namespace CoreWiki.ViewModels
 
 		public IReadOnlyCollection<Comment> Comments { get; set; }
 
+		public bool IsNotHomePage => Slug != Constants.HomePageSlug;
 	}
 }

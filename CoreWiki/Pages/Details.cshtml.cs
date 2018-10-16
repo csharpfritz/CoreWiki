@@ -1,15 +1,14 @@
-using CoreWiki.ViewModels;
-using CoreWiki.Helpers;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using System;
-using System.Security.Claims;
 using System.Threading.Tasks;
-using MediatR;
 using AutoMapper;
 using CoreWiki.Application.Articles.Reading.Commands;
 using CoreWiki.Application.Articles.Reading.Queries;
 using CoreWiki.Application.Common;
+using CoreWiki.Helpers;
+using CoreWiki.ViewModels;
+using MediatR;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace CoreWiki.Pages
 {
@@ -31,23 +30,21 @@ namespace CoreWiki.Pages
 
 		public async Task<IActionResult> OnGetAsync(string slug)
 		{
-
-			slug = slug ?? UrlHelpers.HomePageSlug;
+			slug = slug ?? Constants.HomePageSlug;
 			var article = await _mediator.Send(new GetArticleQuery(slug));
 
 			if (article == null)
 			{
-
 				var historical = await _mediator.Send(new GetSlugHistoryQuery(slug));
 
 				if (historical != null)
 				{
-					return new RedirectResult($"~/wiki/{historical.Article.Slug}");
+					return new RedirectResult(ArticleUrlHelpers.GetUrl(historical.Article.Slug));
 				}
 				return new ArticleNotFoundResult(slug);
 			}
 
-			Article = _mapper.Map<ArticleDetails>(article); 
+			Article = _mapper.Map<ArticleDetails>(article);
 
 			ManageViewCount(slug);
 
@@ -72,7 +69,6 @@ namespace CoreWiki.Pages
 
 		public async Task<IActionResult> OnPostAsync(Comment model)
 		{
-
 			TryValidateModel(model);
 
 			if (!ModelState.IsValid)
@@ -86,11 +82,11 @@ namespace CoreWiki.Pages
 			}
 
 			var commentCmd = _mapper.Map<CreateNewCommentCommand>(model);
-				commentCmd = _mapper.Map(User, commentCmd);
+			commentCmd = _mapper.Map(User, commentCmd);
 
 			await _mediator.Send(commentCmd);
 
-			return Redirect($"/wiki/{article.Slug}");
+			return Redirect(ArticleUrlHelpers.GetUrl(article.Slug));
 		}
 	}
 }

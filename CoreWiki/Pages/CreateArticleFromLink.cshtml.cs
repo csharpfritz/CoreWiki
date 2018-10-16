@@ -1,18 +1,15 @@
-﻿using CoreWiki.ViewModels;
-using CoreWiki.Helpers;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using MediatR;
-using System;
-using System.Security.Claims;
 using AutoMapper;
 using CoreWiki.Application.Articles.Managing.Commands;
 using CoreWiki.Application.Articles.Managing.Queries;
-using CoreWiki.Application.Common;
+using CoreWiki.Helpers;
+using CoreWiki.ViewModels;
+using MediatR;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace CoreWiki.Pages
 {
@@ -21,6 +18,7 @@ namespace CoreWiki.Pages
 	{
 		[BindProperty]
 		public ArticleCreateFromLink Article { get; set; }
+
 		[BindProperty]
 		public List<string> LinksToCreate { get; set; } = new List<string>();
 
@@ -49,7 +47,7 @@ namespace CoreWiki.Pages
 			LinksToCreate = (await _mediator.Send(new GetArticlesToCreateFromArticleQuery(id))).ToList();
 			if (LinksToCreate.Count == 0)
 			{
-				return Redirect($"/wiki/{(theArticle.Slug == Constants.HomePageSlug ? "" : theArticle.Slug)}");
+				return Redirect(ArticleUrlHelpers.GetUrlOrHome(theArticle.Slug));
 			}
 
 			Article = new ArticleCreateFromLink
@@ -74,12 +72,12 @@ namespace CoreWiki.Pages
 
 			Task.WaitAll(taskList.ToArray());
 
-			return Redirect($"/wiki/{(slug == Constants.HomePageSlug ? "" : slug)}");
+			return Redirect(ArticleUrlHelpers.GetUrlOrHome(slug));
 		}
 
 		public IActionResult OnPostCancel(string slug)
 		{
-			return Redirect($"/wiki/{(slug == Constants.HomePageSlug ? "" : slug)}");
+			return Redirect(ArticleUrlHelpers.GetUrlOrHome(slug));
 		}
 	}
 }

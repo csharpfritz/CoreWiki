@@ -1,4 +1,6 @@
-﻿using NodaTime;
+﻿using CoreWiki.Application.Common;
+using CoreWiki.Helpers;
+using NodaTime;
 
 namespace CoreWiki.ViewModels
 {
@@ -8,5 +10,8 @@ namespace CoreWiki.ViewModels
 		public string Topic { get; set; }
 		public Instant Published { get; set; }
 		public int ViewCount { get; set; }
+
+		public string Url => ArticleUrlHelpers.GetUrlOrHome(Slug);
+		public bool IsNotHomePage => Slug != Constants.HomePageSlug;
 	}
 }
