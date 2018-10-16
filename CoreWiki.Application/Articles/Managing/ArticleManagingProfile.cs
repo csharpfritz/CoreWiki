@@ -17,6 +17,17 @@ namespace CoreWiki.Application.Articles.Managing
 				.ForMember(d => d.History, m => m.Ignore())
 				.ForMember(d => d.ViewCount, m => m.UseValue(0))
 				;
+
+			CreateMap<CreateSkeletonArticleCommand, Article>()
+				.ForMember(d => d.Id, m=> m.Ignore())
+				.ForMember(d => d.Version, m => m.UseValue(1))
+				.ForMember(d => d.Published, m => m.Ignore())
+				.ForMember(d => d.Comments, m => m.Ignore())
+				.ForMember(d => d.History, m => m.Ignore())
+				.ForMember(d => d.ViewCount, m => m.UseValue(0))
+				.ForMember(d => d.Topic, m => m.MapFrom(s => Article.SlugToTopic(s.Slug)))
+				;
+
 			CreateMap<Article, ArticleManageDto>();
 		}
 	}

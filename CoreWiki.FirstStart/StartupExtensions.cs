@@ -50,6 +50,12 @@ namespace CoreWiki.FirstStart
 			return true;
 		}
 
+		public static IServiceCollection AddFirstStartConfiguration(this IServiceCollection services) {
+
+			return services;
+
+		}
+
 	}
 
 }
