@@ -1,9 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Razor.TagHelpers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace CoreWiki.TagHelpers
@@ -11,6 +8,7 @@ namespace CoreWiki.TagHelpers
 	[HtmlTargetElement("a", Attributes = "asp-policy")]
 	[HtmlTargetElement("a", Attributes = "asp-policy, asp-policy-hidden")]
 	[HtmlTargetElement("a", Attributes = "asp-policy, asp-policy-message")]
+	[HtmlTargetElement("li", Attributes = "asp-policy, asp-policy-hidden")]
 	[HtmlTargetElement("button", Attributes = "asp-policy")]
 	[HtmlTargetElement("button", Attributes = "asp-policy, asp-policy-hidden")]
 	[HtmlTargetElement("button", Attributes = "asp-policy, asp-policy-message")]
@@ -18,22 +16,22 @@ namespace CoreWiki.TagHelpers
 	[HtmlTargetElement("input", Attributes = "asp-policy, asp-policy-hidden")]
 	[HtmlTargetElement("input", Attributes = "asp-policy, asp-policy-message")]
 	public class AuthorizationTagHelper : TagHelper, IAuthorizeData
-    {
+	{
 		private readonly HttpContext _httpContext;
 		private readonly IAuthorizationService _authorizationService;
 		private readonly IAuthorizationPolicyProvider _policyProvider;
 
 		public AuthorizationTagHelper(IHttpContextAccessor httpContextAccessor, IAuthorizationService authorizationService, IAuthorizationPolicyProvider policyProvider)
 		{
-			this._httpContext = httpContextAccessor.HttpContext;
-			this._authorizationService = authorizationService;
-			this._policyProvider = policyProvider;
+			_httpContext = httpContextAccessor.HttpContext;
+			_authorizationService = authorizationService;
+			_policyProvider = policyProvider;
 		}
 
 		/// <summary>
 		/// Gets or sets the policies that determines access to the HTML element.
 		/// </summary>
-		[HtmlAttributeName("asp-policy")]		
+		[HtmlAttributeName("asp-policy")]
 		public string Policy { get; set; }
 
 		/// <summary>
