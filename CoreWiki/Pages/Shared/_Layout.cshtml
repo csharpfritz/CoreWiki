@@ -114,7 +114,7 @@
 	</footer>
 </div>
 
-	<script src="~/lib/moment/min/moment.min.js"></script>
+	<script src="~/lib/moment/min/moment-with-locales.min.js"></script>
 	<environment include="Development">
 		<script src="~/lib/jquery/dist/jquery.js"></script>
 		<script src="~/lib/popper.js/dist/umd/popper.js"></script>
@@ -147,7 +147,7 @@
 				crossorigin="anonymous"></script>
 		<script src="~/js/site.min.js" asp-append-version="true"></script>
 	</environment>
-	
+
 	@RenderSection("Scripts", required: false)
 </body>
 </html>
