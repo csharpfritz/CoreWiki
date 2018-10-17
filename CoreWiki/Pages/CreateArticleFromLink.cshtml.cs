@@ -46,10 +46,10 @@ namespace CoreWiki.Pages
 				return new ArticleNotFoundResult();
 			}
 
-			LinksToCreate = (await _mediator.Send(new GetArticlesToCreateFromArticleQuery(id))).ToList();
+			LinksToCreate = (await _mediator.Send(new GetArticlesToCreateFromArticleQuery(theArticle.Id))).Item2.ToList();
 			if (LinksToCreate.Count == 0)
 			{
-				return Redirect($"/wiki/{(theArticle.Slug == Constants.HomePageSlug ? "" : theArticle.Slug)}");
+				return RedirectToPage("Details", new { slug = $"/wiki/{(theArticle.Slug == Constants.HomePageSlug ? "" : theArticle.Slug)}" });
 			}
 
 			Article = new ArticleCreateFromLink

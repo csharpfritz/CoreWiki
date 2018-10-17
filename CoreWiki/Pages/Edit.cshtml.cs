@@ -75,15 +75,15 @@ namespace CoreWiki.Pages
 				return new ArticleNotFoundResult();
 			}
 
-			var query = new GetArticlesToCreateFromArticleQuery(Article.Slug);
+			var query = new GetArticlesToCreateFromArticleQuery(Article.Id);
 			var listOfSlugs = await _mediator.Send(query);
 
-			if (listOfSlugs.Any())
+			if (listOfSlugs.Item2.Any())
 			{
 				return RedirectToPage("CreateArticleFromLink", new { id = Article.Slug });
 			}
 
-			return Redirect($"/wiki/{(Article.Slug == Constants.HomePageSlug ? "" : Article.Slug)}");
+			return RedirectToPage("Details", new {slug= (Article.Slug == Constants.HomePageSlug ? "" : Article.Slug)});
 
 		}
 

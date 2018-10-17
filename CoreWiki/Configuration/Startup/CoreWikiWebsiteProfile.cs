@@ -32,7 +32,8 @@ namespace CoreWiki.Configuration.Startup
 				.ForMember(d => d.AuthorName, m => m.MapFrom(s => s.Identity.Name));
 
 
-			CreateMap<ArticleEdit, EditArticleCommand>(MemberList.Source);
+			CreateMap<ArticleEdit, EditArticleCommand>(MemberList.Source)
+				.ForSourceMember(d => d.Slug, m => m.Ignore());
 			CreateMap<ClaimsPrincipal, EditArticleCommand>(MemberList.None)
 				.ForMember(d => d.AuthorId, m => m.MapFrom(s => Guid.Parse(s.FindFirstValue(ClaimTypes.NameIdentifier))))
 				.ForMember(d => d.AuthorName, m => m.MapFrom(s => s.Identity.Name));

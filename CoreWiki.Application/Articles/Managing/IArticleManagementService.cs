@@ -15,5 +15,6 @@ namespace CoreWiki.Application.Articles.Managing
 		Task<ArticleManageDto> GetArticleBySlug(string articleSlug);
 
 		Task<IList<string>> GetArticlesToCreate(string slug);
+		Task<(string,IList<string>)> GetArticlesToCreate(int articleId);
 	}
 }

@@ -21,11 +21,15 @@ namespace CoreWiki.Test.Application.Managing.Commands
 		public CreateNewArticleCommandHandlerTests()
 		{
 			_mapper = Mock.Of<IMapper>();
-			_articleManagementService = Mock.Of<IArticleManagementService>();
-			_createNewArticleCommandHandler = new CreateNewArticleCommandHandler(_articleManagementService, _mapper);
+			_article = new Article() { Id = 1 };
 
+			var mockService = new Mock<IArticleManagementService>();
+			mockService.Setup(s => s.CreateArticleAndHistory(It.IsAny<Article>())).Returns(Task.FromResult(_article)).Verifiable();
+			_articleManagementService = mockService.Object;
+			
+			_createNewArticleCommandHandler = new CreateNewArticleCommandHandler(_articleManagementService, _mapper);
+			 
 			_createNewArticleCommand = new CreateNewArticleCommand();
-			_article = new Article();
 
 			Mock.Get(_mapper).Setup(m => m.Map<Article>(_createNewArticleCommand)).Returns(_article);
 		}
@@ -36,7 +40,7 @@ namespace CoreWiki.Test.Application.Managing.Commands
 			var result = await _createNewArticleCommandHandler.Handle(_createNewArticleCommand, CancellationToken.None);
 
 			Mock.Get(_articleManagementService).Verify(s => s.CreateArticleAndHistory(_article));
-			Assert.True(result.Successful);
+			Assert.True(result.Successful, result.Exception?.Message);
 		}
 
 		[Fact]

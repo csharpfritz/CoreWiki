@@ -44,7 +44,7 @@ namespace CoreWiki.Pages
 				return NotFound();
 			}
 
-			if (article.Slug == UrlHelpers.HomePageSlug)
+			if (article.Slug == Constants.HomePageSlug)
 			{
 				await _mediator.Publish(new DeleteHomePageAttemptNotification());
 				return Forbid();
@@ -63,7 +63,7 @@ namespace CoreWiki.Pages
 			}
 
 			var result = await _mediator.Send(new DeleteArticleCommand(slug));
-			return LocalRedirect($"/wiki/{UrlHelpers.HomePageSlug}");
+			return RedirectToPage("Details", new {slug=Constants.HomePageSlug });
 		}
 	}
 }

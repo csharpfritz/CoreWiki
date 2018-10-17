@@ -32,7 +32,7 @@ namespace CoreWiki.Pages
 		public async Task<IActionResult> OnGetAsync(string slug)
 		{
 
-			slug = slug ?? UrlHelpers.HomePageSlug;
+			slug = slug ?? Constants.HomePageSlug;
 			var article = await _mediator.Send(new GetArticleQuery(slug));
 
 			if (article == null)

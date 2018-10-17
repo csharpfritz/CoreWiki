@@ -134,6 +134,38 @@ namespace CoreWiki.Application.Articles.Managing.Impl
 			}
 		}
 
+		public async Task<(string,IList<string>)> GetArticlesToCreate(int articleId)
+		{
+			var articlesToCreate = new List<string>();
+			var thisArticle = await _repository.GetArticleById(articleId);
+
+			if (string.IsNullOrWhiteSpace(thisArticle.Content))
+			{
+				return (thisArticle.Slug,articlesToCreate.Distinct().ToList());
+			}
+
+			foreach (var link in FindWikiArticleLinks(thisArticle.Content))
+			{
+				// Normalise the potential new wiki link into our slug format
+				var newSlug = link;
+
+				// Does the slug already exist in the database?
+				if (!await IsTopicAvailable(newSlug, thisArticle.Id))
+				{
+					articlesToCreate.Add(newSlug);
+				}
+			}
+
+			return (thisArticle.Slug,articlesToCreate.Distinct().ToList());
+
+			IEnumerable<string> FindWikiArticleLinks(string content)
+			{
+				return Regex.Matches(content, articleLinksPattern)
+					.Select(match => match.Groups[2].Value)
+					.ToArray();
+			}
+		}
+
 		private bool Changed(string v1, string v2)
 			=> !string.Equals(v1, v2, StringComparison.InvariantCulture);
 	}

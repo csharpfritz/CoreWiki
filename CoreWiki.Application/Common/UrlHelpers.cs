@@ -5,7 +5,7 @@ using System.Text.RegularExpressions;
 
 namespace CoreWiki.Application.Common
 {
-	internal class UrlHelpers
+	public class UrlHelpers
 	{
 
 		private static readonly Regex reSlugCharactersToBeDashes = new Regex(@"([\s,.//\\-_=])+");
@@ -14,7 +14,7 @@ namespace CoreWiki.Application.Common
 
 		private static readonly Regex reSlugCharacters = new Regex(@"([\s,.//\\-_=])+");
 
-		public static string URLFriendly(string title)
+		internal static string URLFriendly(string title)
 		{
 
 			if (String.IsNullOrEmpty(title)) return "";
