@@ -18,7 +18,7 @@
 				{
 					foreach (var link in Model.LinksToCreate)
 					{
-						<input asp-for="@link]" type="hidden" />
+						<input asp-for="@link" type="hidden" />
 						<span>* <strong>@link.ToTitleCase().RemoveHyphens()</strong> (@link)</span>
 						<br />
 					}

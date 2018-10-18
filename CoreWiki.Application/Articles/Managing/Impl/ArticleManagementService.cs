@@ -44,7 +44,7 @@ namespace CoreWiki.Application.Articles.Managing.Impl
 			return createdArticle;
 		}
 
-		public async Task Update(int id, string topic, string content, Guid authorId, string authorName)
+		public async Task<Article> Update(int id, string topic, string content, Guid authorId, string authorName)
 		{
 			var slug = UrlHelpers.URLFriendly(topic);
 			if (string.IsNullOrWhiteSpace(slug))
@@ -80,6 +80,9 @@ namespace CoreWiki.Application.Articles.Managing.Impl
 				await _slugHistoryRepository.AddToHistory(oldSlug, existingArticle);
 			}
 			await _mediator.Publish(new ArticleEditedNotification(existingArticle));
+
+			return existingArticle;
+
 		}
 
 		public async Task<Article> Delete(string slug)

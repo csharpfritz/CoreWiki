@@ -58,7 +58,7 @@ namespace CoreWiki.Pages
 		}
 
 		[BindProperty]
-		public ArticleCreate Article { get; set; }   
+		public ArticleCreate Article { get; set; }
 
 		public async Task<IActionResult> OnPostAsync()
 		{
@@ -87,15 +87,15 @@ namespace CoreWiki.Pages
 
 			// TODO: Inspect result to ensure it ran properly
 
-			var query = new GetArticlesToCreateFromArticleQuery(cmdResult.ObjectId);
-			var listOfSlugs = await _mediator.Send(query);
+			// var query = new GetArticlesToCreateFromArticleQuery(cmdResult.ObjectId);
+			// var listOfSlugs = await _mediator.Send(query);
 
-			if (listOfSlugs.Item2.Any())
-			{
-				return RedirectToPage("CreateArticleFromLink", new { id = listOfSlugs.Item1 });
-			}
+			// if (listOfSlugs.Item2.Any())
+			// {
+			// 	return RedirectToPage("CreateArticleFromLink", new { id = listOfSlugs.Item1 });
+			// }
 
-			return RedirectToPage("Details", new {slug=listOfSlugs.Item1});
+			return RedirectToPage("Details", new {slug=cmdResult.ObjectId.ToString()});
 
 		}
 	}

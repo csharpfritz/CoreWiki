@@ -39,7 +39,7 @@ namespace CoreWiki.Application.Articles.Managing.Commands
 				var article = _mapper.Map<Article>(request);
 				var newArticle = await _articleManagementService.CreateArticleAndHistory(article);
 
-				return CommandResult.Success(newArticle.Id);
+				return CommandResult.Success(newArticle.Slug);
 			}
 			catch (Exception ex)
 			{

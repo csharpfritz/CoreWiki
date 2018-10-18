@@ -47,7 +47,7 @@ namespace CoreWiki.FirstStart
 		{
 			// NOTE: Forcing this to true while building the functionality
 			// in the project_firstStart branch
-			return true;
+			return false;
 		}
 
 		public static IServiceCollection AddFirstStartConfiguration(this IServiceCollection services) {

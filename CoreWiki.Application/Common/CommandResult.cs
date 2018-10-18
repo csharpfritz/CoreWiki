@@ -13,12 +13,12 @@ namespace CoreWiki.Application.Common
 			return new CommandResult { Successful = true };
 		}
 
-		public static CommandResult Success(int objectId)
+		public static CommandResult Success(dynamic objectId)
 		{
 			return new CommandResult { Successful = true, ObjectId=objectId };
 		}
 
-		public int ObjectId { get; set; }
+		public dynamic ObjectId { get; set; }
 
 		public static CommandResult Error(Exception exception)
 		{
