@@ -70,7 +70,8 @@ namespace CoreWiki.Pages
 			{
 				ModelState.AddModelError("Article.Topic", result.Exception.Message);
 				return Page();
-			} else if (result.Exception is ArticleNotFoundException)
+			} 
+			else if (result.Exception is ArticleNotFoundException)
 			{
 				return new ArticleNotFoundResult();
 			}
