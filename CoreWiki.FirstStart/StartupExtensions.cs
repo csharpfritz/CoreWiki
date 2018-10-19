@@ -13,7 +13,7 @@ namespace CoreWiki.FirstStart
 	public static class StartupExtensions
 	{
 
-		public static IServiceCollection UseFirstStartConfiguration(this IServiceCollection services) {
+		public static IServiceCollection AddFirstStartConfiguration(this IServiceCollection services) {
 
 			services.AddSingleton<FirstStartConfiguration>(new FirstStartConfiguration());
 
@@ -47,13 +47,7 @@ namespace CoreWiki.FirstStart
 		{
 			// NOTE: Forcing this to true while building the functionality
 			// in the project_firstStart branch
-			return false;
-		}
-
-		public static IServiceCollection AddFirstStartConfiguration(this IServiceCollection services) {
-
-			return services;
-
+			return true;
 		}
 
 	}
