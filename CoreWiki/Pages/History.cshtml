@@ -1,7 +1,7 @@
 ﻿@page
 @model CoreWiki.Pages.HistoryModel
 @{
-    ViewData["Title"] = $"History of {Model.Article.Topic}";
+	ViewData["Title"] = $"History of {Model.Article.Topic}";
 }
 
 <h2>History of @Model.Article.Topic</h2>
@@ -23,82 +23,81 @@
 
 @if (Model.DiffModel == null)
 {
-<h3>Version History</h3>
+	<h3>Version History</h3>
 
-<form method="post" id="compareForm">
-
-	<table class="table table-striped">
-		<thead>
-			<tr>
-				<th>Author</th>
-				<th>Version</th>
-				<th>Change Date</th>
-				<th>Compare</th>
-			</tr>
-		</thead>
-		<tbody>
-			@foreach (var history in Model.Article.History.OrderByDescending(a => a.Version))
-			{
+	<form method="post" id="compareForm">
+		<table class="table table-striped">
+			<thead>
 				<tr>
-					<td>@history.AuthorName</td>		<!-- NEED Author -->
-					<td>@history.Version</td>
-					<td><span data-value="@history.Published" class="timeStampValue"> @history.Published</span></td>
-					<td><input type="checkbox" name="compare" value="@history.Version" class="form-check-input" /></td>
+					<th>Author</th>
+					<th>Version</th>
+					<th>Change Date</th>
+					<th>Compare</th>
 				</tr>
-			}
-		</tbody>
-	</table>
+			</thead>
+			<tbody>
+				@foreach (var history in Model.Article.History.OrderByDescending(a => a.Version))
+				{
+					<tr>
+						<td>@history.AuthorName</td>		<!-- NEED Author -->
+						<td>@history.Version</td>
+						<td><span data-value="@history.Published" class="timeStampValue"> @history.Published</span></td>
+						<td><input type="checkbox" name="compare" value="@history.Version" class="form-check-input" /></td>
+					</tr>
+				}
+			</tbody>
+		</table>
 
-	<input type="submit" value="Compare Versions" />
+		<input type="submit" class="btn btn-outline-info" value="Compare Versions" />
 
-</form>
+		<div class="compare-alert alert alert-danger alert-dismissible fade show mt-2" role="alert" hidden>
+			You can only compare two versions of this article
+		</div>
 
-@section scripts {
+	</form>
 
-<script type="text/javascript">
+	@section scripts {
 
-	(function() {
+		<script type="text/javascript">
 
-		OnLoad();
+			(function () {
 
-		function OnLoad() {
+				OnLoad();
+				function OnLoad() {
+					document.getElementById("compareForm").addEventListener("submit", OnSubmit);
+				}
 
-			document.getElementById("compareForm").addEventListener("submit", OnSubmit);
+				function OnSubmit(e) {
+					var checkedBoxes = document.querySelectorAll("input.form-check-input:checked");
 
-		}
+					if (checkedBoxes.length !== 2) {
+						e.preventDefault();
+						document.querySelector('.compare-alert').hidden = false;
+					}
+				}
+			})();
 
-		function OnSubmit(e) {
+		</script>
 
-			var checkedBoxes = document.querySelectorAll("input.form-check-input:checked");
-
-			if (checkedBoxes.length !== 2) {
-				alert("You can compare only two versions of this article");
-				e.preventDefault();
-			}
-
-		}
-
-	})();
-
-</script>
-
+	}
 }
-} else {
+else
+{
 
-<link rel="stylesheet" href="~/css/diff.css" />
+	<link rel="stylesheet" href="~/css/diff.css" />
 
-<div id="diffBox">
-	<div id="leftPane">
-		<div class="diffHeader">Old Text</div>
+	<div id="diffBox">
+		<div id="leftPane">
+			<div class="diffHeader">Old Text</div>
 
-		@await Html.PartialAsync("_DiffPane", Model.DiffModel.OldText)
+			@await Html.PartialAsync("_DiffPane", Model.DiffModel.OldText)
+		</div>
+		<div id="rightPane">
+			<div class="diffHeader">New Text</div>
+			@await Html.PartialAsync("_DiffPane", Model.DiffModel.NewText)
+		</div>
+		<div class="clear">
+		</div>
 	</div>
-	<div id="rightPane">
-		<div class="diffHeader">New Text</div>
-		@await Html.PartialAsync("_DiffPane", Model.DiffModel.NewText)
-	</div>
-	<div class="clear">
-	</div>
-</div>
 
 }

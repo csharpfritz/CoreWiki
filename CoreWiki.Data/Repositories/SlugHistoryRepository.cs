@@ -1,9 +1,9 @@
-﻿using CoreWiki.Data.EntityFramework.Models;
+﻿using CoreWiki.Data.Abstractions.Interfaces;
+using CoreWiki.Data.EntityFramework.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using CoreWiki.Data.Abstractions.Interfaces;
 
 namespace CoreWiki.Data.EntityFramework.Repositories
 {
@@ -14,18 +14,16 @@ namespace CoreWiki.Data.EntityFramework.Repositories
 			Context = context;
 		}
 
-
 		public ApplicationDbContext Context { get; }
-
 
 		public async Task<Core.Domain.SlugHistory> GetSlugHistoryWithArticle(string slug)
 		{
-			return (await Context.SlugHistories.Include(h => h.Article)
+			var res = await Context.SlugHistories.Include(h => h.Article)
 				.OrderByDescending(h => h.Added)
-				.FirstOrDefaultAsync(h => h.OldSlug == slug.ToLowerInvariant()))
-				.ToDomain();
+				.FirstOrDefaultAsync(h => h.OldSlug == slug.ToLowerInvariant())
+				.ConfigureAwait(false);
+			return res?.ToDomain();
 		}
-
 
 		public void Dispose()
 		{
@@ -34,7 +32,6 @@ namespace CoreWiki.Data.EntityFramework.Repositories
 
 		public Task AddToHistory(string oldSlug, Core.Domain.Article article)
 		{
-
 			var newSlug = new SlugHistoryDAO()
 			{
 				OldSlug = oldSlug,
@@ -44,7 +41,6 @@ namespace CoreWiki.Data.EntityFramework.Repositories
 
 			Context.SlugHistories.Add(newSlug);
 			return Context.SaveChangesAsync();
-
 		}
 
 		public async Task DeleteAllHistoryOfArticle(int articleId)
