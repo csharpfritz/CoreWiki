@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using CoreWiki.Application.Articles.Managing.Dto;
 using CoreWiki.Application.Common;
+using CoreWiki.Core.Domain;
 using MediatR;
 
 namespace CoreWiki.Application.Articles.Managing.Queries
@@ -18,8 +19,8 @@ namespace CoreWiki.Application.Articles.Managing.Queries
 
 		public Task<bool> Handle(GetIsTopicAvailableQuery request, CancellationToken cancellationToken)
 		{
-			var slug = UrlHelpers.URLFriendly(request.Topic);
-			return _service.IsTopicAvailable(slug, request.ArticleId);
+			var article = new Article { Topic = request.Topic };
+			return _service.IsTopicAvailable(article.Slug, request.ArticleId);
 		}
 
 		public Task<ArticleManageDto> Handle(GetArticleQuery request, CancellationToken cancellationToken)
