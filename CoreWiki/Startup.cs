@@ -51,7 +51,7 @@ namespace CoreWiki
 			app.ConfigureRouting();
 			app.ConfigureDatabase();
 
-			app.UseFirstStartConfiguration(Configuration);
+			app.UseFirstStartConfiguration(env, Configuration);
 
 			var theTask = app.ConfigureAuthentication(userManager, roleManager);
 			theTask.GetAwaiter().GetResult();

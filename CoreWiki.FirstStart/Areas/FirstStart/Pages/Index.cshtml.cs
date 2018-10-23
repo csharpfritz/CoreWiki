@@ -4,7 +4,9 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CoreWiki.Data.EntityFramework.Security;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Configuration;
@@ -16,11 +18,18 @@ namespace CoreWiki.FirstStart.MyFeature.Pages
 	public class IndexModel : PageModel
 	{
 
-		public IndexModel(IHostingEnvironment env, IConfiguration config, FirstStartConfiguration firstStartConfig)
+		public IndexModel(IHostingEnvironment env,
+			IConfiguration config,
+			UserManager<CoreWikiUser> userManager,
+			RoleManager<IdentityRole> roleManager)
 		{
 			this.Environment = env;
 			this.Configuration = config;
-			this.FirstStartConfig = firstStartConfig;
+			this.FirstStartConfig = new FirstStartConfiguration();
+
+			this.UserManager = userManager;
+			this.RoleManager = roleManager;
+
 		}
 
 		public IHostingEnvironment Environment { get; }
@@ -28,15 +37,42 @@ namespace CoreWiki.FirstStart.MyFeature.Pages
 
 		[BindProperty]
         public FirstStartConfiguration FirstStartConfig { get; }
+        public UserManager<CoreWikiUser> UserManager { get; }
+        public RoleManager<IdentityRole> RoleManager { get; }
 
         public void OnGet()
 		{
 
-			TestWritingFileToDisk();
+		}
+
+		public async Task<IActionResult> OnPostAsync() {
+
+			if (!ModelState.IsValid)
+			{
+				return Page();
+			}
+
+			var newAdminUser = new CoreWikiUser
+			{
+				UserName = this.FirstStartConfig.AdminUserName,
+				Email = this.FirstStartConfig.AdminEmail
+			};
+
+			var userResult = await UserManager.CreateAsync(newAdminUser, this.FirstStartConfig.AdminPassword);
+
+			if (userResult.Succeeded)
+			{
+				var result = await UserManager.AddToRoleAsync(newAdminUser, "Administrators");
+			}
+
+			WriteConfigFileToDisk(this.FirstStartConfig.Database, this.FirstStartConfig.ConnectionString);
+
+			return RedirectToPage("/Details", new {slug="home-page"});
 
 		}
-		// Test RG 29-09-2018 22:18
-		private void TestWritingFileToDisk()
+
+
+		private void WriteConfigFileToDisk(string provider, string connectionString)
 		{
 
 			var settingsFileLocation = Path.Combine(Environment.ContentRootPath, "appsettings.app.json");
@@ -54,7 +90,8 @@ namespace CoreWiki.FirstStart.MyFeature.Pages
 
 			//jsonFile.Root.AddAfterSelf(JObject.Parse(@"{""foo"": ""bar""}").First);
 			//jsonFile["foo"] = @"{v1: 1, v2: ""2"", v3: true}";
-			jsonFile["foo"] = "bar";
+			jsonFile["DatabaseProvider"] = provider;
+			jsonFile["ConnectionString"] = connectionString;
 
 
 			System.IO.File.WriteAllText(settingsFileLocation, JsonConvert.SerializeObject(jsonFile, Formatting.Indented));

@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace CoreWiki.FirstStart
 {
     public class FirstStartConfiguration
@@ -5,7 +7,21 @@ namespace CoreWiki.FirstStart
 
 		public string WikiName { get; set; }
 
+		[Required]
 		public string AdminUserName { get; set; }
+
+		[Required, EmailAddress]
+		public string AdminEmail { get; set; }
+
+		[Required]
+		[MinLength(6)]
+		public string AdminPassword {get;set;}
+
+		[Required]
+		public string Database {get;set;}
+
+		[Required]
+		public string ConnectionString { get; set; }
 
     }
 }

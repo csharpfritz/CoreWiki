@@ -10,10 +10,10 @@ using Microsoft.Extensions.Logging;
 
 namespace CoreWiki
 {
-    public class Program 
+    public class Program
     {
         public static void Main(string[] args)
-        { 
+        {
             BuildWebHost(args).Run();
         }
 
@@ -21,7 +21,7 @@ namespace CoreWiki
             WebHost.CreateDefaultBuilder(args)
                 .UseApplicationInsights()
 								.ConfigureAppConfiguration(config => {
-									config.AddJsonFile("appsettings.app.json");
+									config.AddJsonFile("appsettings.app.json", true);
 								})
                 .UseStartup<Startup>()
                 .UseKestrel(options =>
