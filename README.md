@@ -83,7 +83,7 @@ Architecture Workshop 5 of 7 | [Miguel Castro Makes our Application More Extensi
 Architecture Workshop 6 of 7 | [Cecil Phillip Shows Azure Functions and Serverless Concepts](https://www.youtube.com/watch?v=DG12aX5gDs4&list=PLVMqA0_8O85x-aurj1KphxUeWTeTlYkGM&t=0s)
 Architecture Workshop 7 of 7 | [Steve Lasker Shows Us the How and Why of Containers and Azure](https://www.youtube.com/watch?v=PcLpIW5s0AU&list=PLVMqA0_8O85x-aurj1KphxUeWTeTlYkGM&t=0s)
 
-#  1) Functionality that have already been implemented
+# Functionality
 
 **HomePage** - _It's not a page or a feature. This is a default article that is presented as if it were the Home. When the user navigate to /Details, if topicName is not specified, the application redirect to default Article (HomePage)_
 
@@ -142,91 +142,3 @@ NotFound
 Error
 -----------------------------
 * When an exception occur, o user is redirected to error page. `[Not Simulated]`.
-
-#  2) Topics covered in previous streams
-
-Lessons - Visual Studio Live Sharing Extension
---------
-- [X] Visual Studio Community x Visual Studio Code
-- [X] Visual Studio Community x Visual Studio Community
-
-Lessons - GitHub
---------
-- [X] Create New Repository
-- [X] Create Branch (Master, Dev, project_VersionsAndRatings)
-- [X] Create New Project
-- [X] Add Issues to Project
-- [X] Create/Merge/Close Pull Request
-- [X] Create/Close Issues
-- [X] Add tags to Issues
-- [X] Merge Branchs
-
-Lessons - Git Cli
---------
-- [X] Commit
-- [X] Push
-- [X] Clone
-- [X] Status
-- [X] Checkout
-- [X] Merge
-- `[Others ...]`
-
-Lessons - Nuget
---------
-- [X] Install Packages 
-
-Lessons - DOTNET Cli
---------
-- [X] Dotnet new globaljson --sdk-version 2.0.2
-
-Lessons - ASP.NET Core
---------
-- [X] Navigation
-- [X] Razor Pages
-  - [X] BindProperty
-  - [X] RedirectPage
-- [X] Routing
-  - [X] Customization
-  - [X] Constraint
-- [X] Dependency Injection
-- [X] Tag Helpers
-  - [X] Install and Use External
-  - [X] Create
-- [X] Validation Error UI 
-- [X] Server-Side Validation
-- [X] Client-Side Validation 
-- [X] Configure Minification
-- [X] Configure Bundling
-- [X] Data Model
-  - [X] Add Data Model to a Razor Pages
-  - [X] Add Database connection string
-  - [X] Register the database context
-  - [X] Add database context class
-  - [X] Scaffold the Model
-  - [X] DataType Attributes
-  - [X] ModelState Validation
-- [X] Data Access
-  - [X] Pagination
-
-Lessons - Entity Framework Core
---------
-- [X] Code First Database 
-- [X] Migrations
-  - [X] Add-Migration
-  - [X] Update-Database
-- [X] Seed
-- [X] CRUD (Create, Read, Update e Delete)
-- [X] Update concurrency exception handling
-- [X] Add new unique index
-- [X] Add new column
-
-Lessons - UI
------------------------------
-- [X] Bootstrap 4
-  - [X] Cards
-
-Lessons - Continuous Integration
------------------------------
-- [X] AppVeyor
-- [X] Docker file
-- [X] TravisCI 
