@@ -1,6 +1,6 @@
 # CoreWiki
 
-A simple ASP.NET Core wiki that we are working on during live coding streams. It runs on Windows, Mac, Linux and Container. Core Wiki is an allusion to the Core App. This name was suggested by Shayne Boyer in the stream of the [27th/March](https://www.twitch.tv/videos/243463398). Initially this project is very basic and anyone who is learning ASP.NET Core 2.0 (Razor Pages) can use it to learn.
+A simple ASP.NET Core wiki that we are working on during live coding streams. It runs on Windows, Mac, Linux and Container. Core Wiki is an allusion to the Core App. This name was suggested by Shayne Boyer in the stream of the [27th/March](https://youtu.be/aXkeJmlPDI4). Initially this project is very basic and anyone who is learning ASP.NET Core 2.0 (Razor Pages) can use it to learn.
 
 To learn more about Jeff's stream check his [Live Stream Repository](https://github.com/csharpfritz/Fritz.LiveStream).
 
@@ -23,7 +23,7 @@ Explore a CoreWiki live demo at https://corewiki.info/
 ### <a id="develop">Local Development</a>
 > _Note: You must have [nodejs](https://nodejs.org) with npm, and [.NET Core](https://www.microsoft.com/net/download) installed_
 
-To run the latest version of CoreWiki on your local dev machine, open your favorite terminal on the operating system of your choice, and execute the following:
+To run the latest version of CoreWiki on your local dev machine, open your favorite terminal on an operating system of your choice, and execute the following:
 
 `git clone https://github.com/csharpfritz/CoreWiki.git`
 
