@@ -1,16 +1,106 @@
 # CoreWiki
 
-[![Build Status](https://dev.azure.com/FritzAndFriends/CoreWiki/_apis/build/status/CoreWiki-CI)](https://dev.azure.com/FritzAndFriends/CoreWiki/_build/latest?definitionId=4)
-
-[![Deploy to Azure](https://azuredeploy.net/deploybutton.png)](https://azuredeploy.net/) 
-
 A simple ASP.NET Core wiki that we are working on during live coding streams. It runs on Windows, Mac, Linux and Container. Core Wiki is an allusion to the Core App. This name was suggested by Shayne Boyer in the stream of the [27th/March](https://www.twitch.tv/videos/243463398). Initially this project is very basic and anyone who is learning ASP.NET Core 2.0 (Razor Pages) can use it to learn.
 
 To learn more about Jeff's stream check his [Live Stream Repository](https://github.com/csharpfritz/Fritz.LiveStream).
 
-## CoreWiki Streams Archive
+### Table of contents
+ - [Getting Started](#getting-started)
+   - [Live Demo](#live-demo)
+   - [Local Development](#develop)
+   - [Deploy own instance](#deploy)
+   - [FAQ](#faq)
+     - [How do I get rid of the 'default administrator enabled' warning?](#default-admin-warning)
+ - [Features](#features)
+ - [Continuous Integration with Azure Pipelines](#continuous-integration)
+ - [Streams Archive](#archive)
 
-Archive of all shows from the stream can be found on [Jeff's YouTube 'Building the CoreWiki'](https://www.youtube.com/playlist?list=PLVMqA0_8O85yC78I4Xj7z48ES48IQBa7p)  playlist.
+## <a id="getting-started">Getting Started</a>
+
+### <a id="live-demo">Live Demo</a>
+Explore a CoreWiki live demo at https://corewiki.info/
+
+### <a id="develop">Local Development</a>
+Todo...
+
+### <a id="deploy">Deploy own instance</a>
+Fastest way to deploy your own instance is to try our Deploy to Azure button.
+
+[![Deploy to Azure](https://azuredeploy.net/deploybutton.png)](https://azuredeploy.net/)
+
+### FAQ
+
+#### <a id="default-admin-warning">How do I get rid of the 'default administrator enabled' warning?</a>
+Todo...
+
+## <a id="features">Features</a>
+**HomePage** - _It's not a page or a feature. This is a default article that is presented as if it were the Home. When the user navigate to /Details, if topicName is not specified, the application redirect to default Article (HomePage)_
+
+### Header Menu
+ - [X] Allows the users navigate to the Default article (HomePage). `[Back to Home (CoreWiki)]`
+ - [X] Allows the users navigate to LatestChanges articles feature.`[LatestChanges]`
+ - [X] Allows the users navigate to Create new article feature. `[Create new article]`
+ - [X] Allows the users navigate to All articles feature. `[All]`
+
+### Details
+ - [X] Allows the users see details of article. 
+ - [X] Allows the users navigate to Edit feature. `[Edit]`
+ - [X] Allows the users navigate to the Default Article (HomePage). `[Back to Home]`
+ - [X] Allows the users see comments list
+ - [X] Allows the users add new comment`[New Comment]`
+
+### Create
+- [X] Allows the users create a new article. When success, redirect the user to Details Feature. Otherwise, stay in the page and show error message. `[Create]`
+- [X] Allows the users to navigate to the default article (HomePage).  `[Back to Home]`
+
+### Edit
+- [X] Allows the users change the article (Topic, Published and Content).
+- [X] Allows the users navigate to the default article (HomePage).  `[Back to Home]`
+
+### Delete
+- [X] Allows the users delete the article (Topic, Published and Content).
+- [X] Allows the users navigate to the default article (HomePage).  `[Back to Home]`
+
+### LatestChanges
+-----------------------------
+- [X] Allows the users see the last 10 articles. Ordered by Published Date.
+- [X] Allows the users navigate to Edit feature. `[Edit]`
+- [X] Allows the users navigate to Delete feature. `[Delete]`
+- [X] Allows the users navigate to Details feature. `[Detail]`
+- [X] Allows the users navigate to Create new article feature. `[New article]`
+- [X] Allows the users navigate to the default article (HomePage).`[Back to Home]`
+
+### List All
+-----------------------------
+- [X] Allows the users see ALL articles. Ordered by Topic.
+- [X] Allows the users navigate to Edit feature. `[Edit]`
+- [X] Allows the users navigate to Delete feature. `[Delete]`
+- [X] Allows the users navigate to Details feature. `[Detail]`
+- [X] Allows the users navigate to Create new article feature. `[New article]`
+- [X] Allows the users navigate to the default article (HomePage).`[Back to Home]`
+- [X] Allows the users navigate to Latest Changes feature. `[Latest Changes]`
+
+### Search engine friendly URL's
+-----------------------------
+`[Description]`
+
+### NotFound
+-----------------------------
+* Occurs, always which an page is not found. 
+
+### Error
+-----------------------------
+* When an exception occur, o user is redirected to error page. `[Not Simulated]`.
+
+## <a id="continuous-integration">Continuous Integration with Azure Pipelines</a>
+
+[![Build Status](https://dev.azure.com/FritzAndFriends/CoreWiki/_apis/build/status/CoreWiki-CI)](https://dev.azure.com/FritzAndFriends/CoreWiki/_build/latest?definitionId=4)
+
+CoreWiki is built and tested continuously by Azure Pipelines. Shortly after you submit a pull request you can check the build status notification. All contributions encouraged!
+
+## <a id="archive">Streams Archive</a>
+
+Archive of all shows from the stream can be found on [Jeff's YouTube 'Building the CoreWiki'](https://www.youtube.com/playlist?list=PLVMqA0_8O85yC78I4Xj7z48ES48IQBa7p) playlist.
 
 ### Recordings Index
 
@@ -82,63 +172,3 @@ Architecture Workshop 4 of 7 | [Mark Miller talks about the Science of Great Use
 Architecture Workshop 5 of 7 | [Miguel Castro Makes our Application More Extensible](https://www.youtube.com/watch?v=jy-ZV7uEm7g&list=PLVMqA0_8O85x-aurj1KphxUeWTeTlYkGM&t=0s)
 Architecture Workshop 6 of 7 | [Cecil Phillip Shows Azure Functions and Serverless Concepts](https://www.youtube.com/watch?v=DG12aX5gDs4&list=PLVMqA0_8O85x-aurj1KphxUeWTeTlYkGM&t=0s)
 Architecture Workshop 7 of 7 | [Steve Lasker Shows Us the How and Why of Containers and Azure](https://www.youtube.com/watch?v=PcLpIW5s0AU&list=PLVMqA0_8O85x-aurj1KphxUeWTeTlYkGM&t=0s)
-
-# Functionality
-
-**HomePage** - _It's not a page or a feature. This is a default article that is presented as if it were the Home. When the user navigate to /Details, if topicName is not specified, the application redirect to default Article (HomePage)_
-
-## Header Menu
- - [X] Allows the users navigate to the Default article (HomePage). `[Back to Home (CoreWiki)]`
- - [X] Allows the users navigate to LatestChanges articles feature.`[LatestChanges]`
- - [X] Allows the users navigate to Create new article feature. `[Create new article]`
- - [X] Allows the users navigate to All articles feature. `[All]`
-
-## Details
- - [X] Allows the users see details of article. 
- - [X] Allows the users navigate to Edit feature. `[Edit]`
- - [X] Allows the users navigate to the Default Article (HomePage). `[Back to Home]`
- - [X] Allows the users see comments list
- - [X] Allows the users add new comment`[New Comment]`
-
-## Create
-- [X] Allows the users create a new article. When success, redirect the user to Details Feature. Otherwise, stay in the page and show error message. `[Create]`
-- [X] Allows the users to navigate to the default article (HomePage).  `[Back to Home]`
-
-## Edit
-- [X] Allows the users change the article (Topic, Published and Content).
-- [X] Allows the users navigate to the default article (HomePage).  `[Back to Home]`
-
-## Delete
-- [X] Allows the users delete the article (Topic, Published and Content).
-- [X] Allows the users navigate to the default article (HomePage).  `[Back to Home]`
-
-LatestChanges
------------------------------
-- [X] Allows the users see the last 10 articles. Ordered by Published Date.
-- [X] Allows the users navigate to Edit feature. `[Edit]`
-- [X] Allows the users navigate to Delete feature. `[Delete]`
-- [X] Allows the users navigate to Details feature. `[Detail]`
-- [X] Allows the users navigate to Create new article feature. `[New article]`
-- [X] Allows the users navigate to the default article (HomePage).`[Back to Home]`
-
-List All
------------------------------
-- [X] Allows the users see ALL articles. Ordered by Topic.
-- [X] Allows the users navigate to Edit feature. `[Edit]`
-- [X] Allows the users navigate to Delete feature. `[Delete]`
-- [X] Allows the users navigate to Details feature. `[Detail]`
-- [X] Allows the users navigate to Create new article feature. `[New article]`
-- [X] Allows the users navigate to the default article (HomePage).`[Back to Home]`
-- [X] Allows the users navigate to Latest Changes feature. `[Latest Changes]`
-
-search engine friendly URL's
------------------------------
-`[Description]`
-
-NotFound
------------------------------
-* Occurs, always which an page is not found. 
-
-Error
------------------------------
-* When an exception occur, o user is redirected to error page. `[Not Simulated]`.
