@@ -4,43 +4,15 @@
 
 [![Deploy to Azure](https://azuredeploy.net/deploybutton.png)](https://azuredeploy.net/) 
 
-A simple ASP.NET Core wiki that we are working on during live coding streams. It runs on Windows, Mac, Linux and Container. Core Wiki is an allusion to the Core App. This name was suggested by Shayne Boyer in the stream of the [27th/March](https://www.twitch.tv/videos/243463398). Initially this project is very basic and anyone who is learning ASP.NET Core 2.0 (Razor Pages) can use it to learn..
+A simple ASP.NET Core wiki that we are working on during live coding streams. It runs on Windows, Mac, Linux and Container. Core Wiki is an allusion to the Core App. This name was suggested by Shayne Boyer in the stream of the [27th/March](https://www.twitch.tv/videos/243463398). Initially this project is very basic and anyone who is learning ASP.NET Core 2.0 (Razor Pages) can use it to learn.
 
-Jeff Fritz writes code live on video streams, and wants to give you a central place to ask questions, find samples, and links to projects and other materials referenced during the show.
+To learn more about Jeff's stream check his [Live Stream Repository](https://github.com/csharpfritz/Fritz.LiveStream).
 
-## Watch LIVE
-
-Jeff currently presents on the following services.  Choose the one that works for you:
-
-* [Twitch](https://twitch.tv/csharpfritz)
-* [Mixer](https://mixer.com/csharpfritz) - `[Not in use]`
-
-You can find his current schedule on both services, and if you follow or subscribe to the channel you will be notified when the stream begins. 
-
-## Get the Music!
-
-Our friend Carl Franklin from [.NET Rocks](https://dotnetrocks.com) has graciously allowed us to play some of his [Music to Code By](http://mtcb.pwop.com)  during the stream.  Buy the [music](http://mtcb.pwop.com), or get a subscription with the mobile app at www.musictoflowby.com
-
-## Ask Questions
-
-If you want to know more about something or want to see a demo of something specific, you can ask Jeff by [opening an issue](https://github.com/csharpfritz/CoreWiki/issues/new) and adding the 'Question' label. 
-
-The list of [currently outstanding questions](https://github.com/csharpfritz/CoreWiki/issues?q=is%3Aissue+is%3Aopen+label%3Aquestion+sort%3Acreated-asc) is available.  When questions are answered, they are closed and links are added to the wrap-up blog post for the stream they were answered in.
-
-## Guests
-
-I enjoy having guests join me for some pair-programming, because we're always going to learn something new together.
-
-## Jeff's Setup
-
-Jeff has written about how he has the hardware configured as well as the software to produce stream [on his blog](http://jeffreyfritz.com/2017/12/live-streaming-101-my-setup/).  
-*  Jeff uses [Posh-Git](https://github.com/dahlbyk/posh-git) to make the Powershell prompt easier to navigate while working with Git repositories 
-*  When coding with a guest, Jeff and the guest use [Visual Studio Live Share](https://github.com/MicrosoftDocs/live-share/blob/master/README.md) to work on code on screen at the same time.
-*  Jeff uses a bunch of great Visual Studio extensions, and you can find that list on the [WebTools repository](https://github.com/csharpfritz/Ignite2017-WebTools). 
-
-## Watch recordings
+## CoreWiki Streams Archive
 
 Archive of all shows from the stream can be found on [Jeff's YouTube 'Building the CoreWiki'](https://www.youtube.com/playlist?list=PLVMqA0_8O85yC78I4Xj7z48ES48IQBa7p)  playlist.
+
+### Recordings Index
 
 Date | Topic
 :---|:---
