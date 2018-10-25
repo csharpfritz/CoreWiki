@@ -27,7 +27,8 @@ namespace CoreWiki.Configuration.Startup
 					options.Conventions.AddPageRoute("/Create", "{Slug?}/Create");
 					options.Conventions.AddPageRoute("/History", "{Slug?}/History");
 					options.Conventions.AuthorizeAreaFolder("Identity", "/UserAdmin", PolicyConstants.CanManageRoles);
-				});
+				})
+				.SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
 			return services;
 		}
