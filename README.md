@@ -21,17 +21,32 @@ To learn more about Jeff's stream check his [Live Stream Repository](https://git
 Explore a CoreWiki live demo at https://corewiki.info/
 
 ### <a id="develop">Local Development</a>
-Todo...
+> _Note: You must have [nodejs](https://nodejs.org) with npm, and [.NET Core](https://www.microsoft.com/net/download) installed_
+
+To run the latest version of CoreWiki on your local dev machine, open your favorite terminal on the operating system of your choice, and execute the following:
+
+`git clone https://github.com/csharpfritz/CoreWiki.git`
+
+`cd CoreWiki\CoreWiki`
+
+`npm install`
+
+`dotnet run`
 
 ### <a id="deploy">Deploy own instance</a>
-Fastest way to deploy your own instance is to try our Deploy to Azure button.
+Fastest way to ship your own instance is to try our Deploy to Azure button, but you can deploy to a cloud provider of your choice.
 
 [![Deploy to Azure](https://azuredeploy.net/deploybutton.png)](https://azuredeploy.net/)
 
 ### FAQ
 
 #### <a id="default-admin-warning">How do I get rid of the 'default administrator enabled' warning?</a>
-Todo...
+To create a new administrator and get rid of this warning, you must do the following:
+1. Register a new account (it won't have administrator rights for obvious reasons).
+2. Sign in as the default administrator (username: admin@corewiki.com, password: Admin@123), and go to the User Admin page from the main menu up top.
+3. Scroll down, find the user you just registered, and give them the administrator role.
+4. From the main menu again, click the email address near the Logout button to open the profile manager.
+5. Click on the Personal Data sub-menu, and delete this default admin account.
 
 ## <a id="features">Features</a>
 **HomePage** - _It's not a page or a feature. This is a default article that is presented as if it were the Home. When the user navigate to /Details, if topicName is not specified, the application redirect to default Article (HomePage)_
