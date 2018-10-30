@@ -55,12 +55,12 @@ namespace CoreWiki.Areas.Identity.Services
 
 			// Find hash in result
 			var regex = new Regex($"({hashedpassword.Substring(5)})[:](\\d+)");
-			var matces = regex.Matches(res);
-			if (matces.Count == 0)
+			var matches = regex.Matches(res);
+			if (matches.Count == 0)
 			{
 				return 0;
 			}
-			var t = matces[0].Groups[2].Value;
+			var t = matches[0].Groups[2].Value;
 			if (int.TryParse(t, out var val))
 			{
 				return val;
