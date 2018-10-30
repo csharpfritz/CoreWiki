@@ -44,6 +44,7 @@ namespace CoreWiki.Pages
 				Results = (from article in result.Results
 					select new ArticleSummary
 					{
+						IsHomePage = article.IsHomePage,
 						Slug = article.Slug,
 						Topic = article.Topic,
 						Published = article.Published,
@@ -65,6 +66,7 @@ namespace CoreWiki.Pages
 				Results = (from article in results
 									 select new ArticleSummary
 									 {
+										 IsHomePage = article.IsHomePage,
 										 Slug = article.Slug,
 										 Topic = article.Topic,
 										 Published = article.Published,

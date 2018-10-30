@@ -16,7 +16,7 @@
 			<h6 class="card-subtitle mb-2 text-muted">@Localizer["ViewCount"]: <span> @Model.ViewCount</span></h6>
 
 			<a class="card-link btn btn-outline-info btn-sm" asp-page="/Edit" asp-route-slug="@Model.Slug">@Localizer["Edit"]</a>
-			@if (Model.Slug != UrlHelpers.HomePageSlug)
+			@if (!Model.IsHomePage)
 			{
 				<a class="card-link btn btn-outline-danger btn-sm" asp-policy="CanDeleteArticles" asp-policy-message="You do not have permission to delete this article." asp-page="/Delete" asp-route-slug="@Model.Slug">@Localizer["Delete"]</a>
 			}

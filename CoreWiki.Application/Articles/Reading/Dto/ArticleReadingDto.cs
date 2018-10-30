@@ -5,6 +5,7 @@ namespace CoreWiki.Application.Articles.Reading.Dto
 {
 	public class ArticleReadingDto
 	{
+		public bool IsHomePage { get; set; }
 		public string Content { get; set; }
 		public int Id { get; set; }
 		public string Slug { get; set; }
