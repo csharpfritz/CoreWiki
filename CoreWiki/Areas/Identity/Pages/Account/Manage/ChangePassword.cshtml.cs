@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using CoreWiki.Areas.Identity.Services;
 using CoreWiki.Data.EntityFramework.Security;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -15,16 +16,19 @@ namespace CoreWiki.Areas.Identity.Pages.Account.Manage
         private readonly UserManager<CoreWikiUser> _userManager;
         private readonly SignInManager<CoreWikiUser> _signInManager;
         private readonly ILogger<ChangePasswordModel> _logger;
+		private readonly HIBPClient _HIBPClient;
 
-        public ChangePasswordModel(
+		public ChangePasswordModel(
             UserManager<CoreWikiUser> userManager,
             SignInManager<CoreWikiUser> signInManager,
-            ILogger<ChangePasswordModel> logger)
+            ILogger<ChangePasswordModel> logger,
+			HIBPClient HIBPClient)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
-        }
+			_HIBPClient = HIBPClient;
+		}
 
         [BindProperty]
         public InputModel Input { get; set; }
@@ -81,7 +85,14 @@ namespace CoreWiki.Areas.Identity.Pages.Account.Manage
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
 
-            var changePasswordResult = await _userManager.ChangePasswordAsync(user, Input.OldPassword, Input.NewPassword);
+			var passwordCheck = await _HIBPClient.GetHitsPlainAsync(Input.NewPassword);
+			if (passwordCheck > 0)
+			{
+				ModelState.AddModelError(nameof(Input.NewPassword), "This password is known to hackers, and can lead to your account being compromised, please try another password. For more info goto https://haveibeenpwned.com/passwords");
+				return Page();
+			}
+
+			var changePasswordResult = await _userManager.ChangePasswordAsync(user, Input.OldPassword, Input.NewPassword);
             if (!changePasswordResult.Succeeded)
             {
                 foreach (var error in changePasswordResult.Errors)
