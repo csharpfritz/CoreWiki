@@ -26,7 +26,9 @@ namespace CoreWiki.Pages
 
 		public ArticleDetails Article { get; set; }
 
-		[ViewDataAttribute]
+		public bool IsHomePage => Article.Id == 1;
+
+		[ViewData]
 		public string Slug { get; set; }
 
 		public async Task<IActionResult> OnGetAsync(string slug)

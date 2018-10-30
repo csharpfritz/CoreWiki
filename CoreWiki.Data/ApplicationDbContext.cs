@@ -23,7 +23,7 @@ namespace CoreWiki.Data.EntityFramework
 				Id = 1,
 				Topic = "Home Page",
 				Slug = "home-page",
-				Content = "This is the default home page.  Please change me!",
+				Content = "This is the default home page. Please change me!",
 				Published = Instant.FromDateTimeUtc(new DateTime(2018, 6, 19, 14, 31, 2, 265, DateTimeKind.Utc)),
 				AuthorId = Guid.Empty
 			};
