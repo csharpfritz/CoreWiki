@@ -46,13 +46,13 @@ namespace CoreWiki.Application.Articles.Managing.Impl
 
 		public async Task<Article> Update(int id, string topic, string content, Guid authorId, string authorName)
 		{
-			var slug = UrlHelpers.URLFriendly(topic);
-			if (string.IsNullOrWhiteSpace(slug))
+			var article = new Article { Topic = topic };
+			if (string.IsNullOrWhiteSpace(article.Slug))
 			{
 				throw new InvalidTopicException("The topic must contain at least one alphanumeric character.");
 			}
 
-			var existingArticle = await _repository.GetArticleBySlug(slug);
+			var existingArticle = await _repository.GetArticleBySlug(article.Slug);
 			if (existingArticle != null && existingArticle.Id != id)
 			{
 				throw new InvalidTopicException("The topic conflicts with an existing article.");
@@ -67,7 +67,6 @@ namespace CoreWiki.Application.Articles.Managing.Impl
 
 			var oldSlug = existingArticle.Slug;
 			existingArticle.Topic = topic;
-			existingArticle.Slug = UrlHelpers.URLFriendly(topic);
 			existingArticle.Content = content;
 			existingArticle.AuthorId = authorId;
 			existingArticle.AuthorName = authorName;
