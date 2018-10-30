@@ -39,7 +39,7 @@ namespace CoreWiki.Test.Application.Managing.Commands
 					_editArticleCommand.Content,
 					_editArticleCommand.AuthorId,
 					_editArticleCommand.AuthorName))
-				.ReturnsAsync(new Article { Slug = "some-slug" })
+				.ReturnsAsync(new Article { Topic = "Some topic" })
 				.Verifiable();
 
 			var result = await _articleCommandHandler.Handle(_editArticleCommand, CancellationToken.None);
