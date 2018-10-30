@@ -1,46 +1,123 @@
 # CoreWiki
 
+A simple ASP.NET Core wiki that we are working on during live coding streams. It runs on Windows, Mac, Linux and Container. Core Wiki is an allusion to the Core App. This name was suggested by Shayne Boyer in the stream of the [27th/March](https://youtu.be/aXkeJmlPDI4). Initially this project is very basic and anyone who is learning ASP.NET Core 2.0 (Razor Pages) can use it to learn.
+
+To learn more about Jeff's stream check his [Live Stream Repository](https://github.com/csharpfritz/Fritz.LiveStream).
+
+### Table of contents
+ - [Getting Started](#getting-started)
+   - [Live Demo](#live-demo)
+   - [Local Development](#develop)
+   - [Deploy own instance](#deploy)
+   - [FAQ](#faq)
+     - [How do I get rid of the 'default administrator enabled' warning?](#default-admin-warning)
+ - [Features](#features)
+ - [Continuous Integration with Azure Pipelines](#continuous-integration)
+ - [Streams Archive](#archive)
+
+## <a id="getting-started">Getting Started</a>
+
+### <a id="live-demo">Live Demo</a>
+Explore a CoreWiki live demo at https://corewiki.info/
+
+### <a id="develop">Local Development</a>
+> _Note: You must have [nodejs](https://nodejs.org) with npm, and [.NET Core](https://www.microsoft.com/net/download) installed_
+
+To run the latest version of CoreWiki on your local dev machine, open your favorite terminal on an operating system of your choice, and execute the following:
+
+`git clone https://github.com/csharpfritz/CoreWiki.git`
+
+`cd CoreWiki\CoreWiki`
+
+`npm install`
+
+`dotnet run`
+
+### <a id="deploy">Deploy own instance</a>
+Fastest way to ship your own instance is to try our Deploy to Azure button, but you can deploy to a cloud provider of your choice.
+
+[![Deploy to Azure](https://azuredeploy.net/deploybutton.png)](https://azuredeploy.net/)
+
+### FAQ
+
+#### <a id="default-admin-warning">How do I get rid of the 'default administrator enabled' warning?</a>
+To create a new administrator and get rid of this warning, you must do the following:
+1. Register a new account (it won't have administrator rights for obvious reasons).
+2. Sign in as the default administrator (username: admin@corewiki.com, password: Admin@123), and go to the User Admin page from the main menu up top.
+3. Scroll down, find the user you just registered, and give them the administrator role.
+4. From the main menu again, click the email address near the Logout button to open the profile manager.
+5. Click on the Personal Data sub-menu, and delete this default admin account.
+
+## <a id="features">Features</a>
+**HomePage** - _It's not a page or a feature. This is a default article that is presented as if it were the Home. When the user navigate to /Details, if topicName is not specified, the application redirect to default Article (HomePage)_
+
+### Header Menu
+ - [X] Allows the users navigate to the Default article (HomePage). `[Back to Home (CoreWiki)]`
+ - [X] Allows the users navigate to LatestChanges articles feature.`[LatestChanges]`
+ - [X] Allows the users navigate to Create new article feature. `[Create new article]`
+ - [X] Allows the users navigate to All articles feature. `[All]`
+
+### Details
+ - [X] Allows the users see details of article. 
+ - [X] Allows the users navigate to Edit feature. `[Edit]`
+ - [X] Allows the users navigate to the Default Article (HomePage). `[Back to Home]`
+ - [X] Allows the users see comments list
+ - [X] Allows the users add new comment`[New Comment]`
+
+### Create
+- [X] Allows the users create a new article. When success, redirect the user to Details Feature. Otherwise, stay in the page and show error message. `[Create]`
+- [X] Allows the users to navigate to the default article (HomePage).  `[Back to Home]`
+
+### Edit
+- [X] Allows the users change the article (Topic, Published and Content).
+- [X] Allows the users navigate to the default article (HomePage).  `[Back to Home]`
+
+### Delete
+- [X] Allows the users delete the article (Topic, Published and Content).
+- [X] Allows the users navigate to the default article (HomePage).  `[Back to Home]`
+
+### LatestChanges
+-----------------------------
+- [X] Allows the users see the last 10 articles. Ordered by Published Date.
+- [X] Allows the users navigate to Edit feature. `[Edit]`
+- [X] Allows the users navigate to Delete feature. `[Delete]`
+- [X] Allows the users navigate to Details feature. `[Detail]`
+- [X] Allows the users navigate to Create new article feature. `[New article]`
+- [X] Allows the users navigate to the default article (HomePage).`[Back to Home]`
+
+### List All
+-----------------------------
+- [X] Allows the users see ALL articles. Ordered by Topic.
+- [X] Allows the users navigate to Edit feature. `[Edit]`
+- [X] Allows the users navigate to Delete feature. `[Delete]`
+- [X] Allows the users navigate to Details feature. `[Detail]`
+- [X] Allows the users navigate to Create new article feature. `[New article]`
+- [X] Allows the users navigate to the default article (HomePage).`[Back to Home]`
+- [X] Allows the users navigate to Latest Changes feature. `[Latest Changes]`
+
+### Search engine friendly URL's
+-----------------------------
+`[Description]`
+
+### NotFound
+-----------------------------
+* Occurs, always which an page is not found. 
+
+### Error
+-----------------------------
+* When an exception occur, o user is redirected to error page. `[Not Simulated]`.
+
+## <a id="continuous-integration">Continuous Integration with Azure Pipelines</a>
+
 [![Build Status](https://dev.azure.com/FritzAndFriends/CoreWiki/_apis/build/status/CoreWiki-CI)](https://dev.azure.com/FritzAndFriends/CoreWiki/_build/latest?definitionId=4)
 
-[![Deploy to Azure](https://azuredeploy.net/deploybutton.png)](https://azuredeploy.net/) 
+CoreWiki is built and tested continuously by Azure Pipelines. Shortly after you submit a pull request you can check the build status notification. All contributions encouraged!
 
-A simple ASP.NET Core wiki that we are working on during live coding streams. It runs on Windows, Mac, Linux and Container. Core Wiki is an allusion to the Core App. This name was suggested by Shayne Boyer in the stream of the [27th/March](https://www.twitch.tv/videos/243463398). Initially this project is very basic and anyone who is learning ASP.NET Core 2.0 (Razor Pages) can use it to learn..
+## <a id="archive">Streams Archive</a>
 
-Jeff Fritz writes code live on video streams, and wants to give you a central place to ask questions, find samples, and links to projects and other materials referenced during the show.
+Archive of all shows from the stream can be found on [Jeff's YouTube 'Building the CoreWiki'](https://www.youtube.com/playlist?list=PLVMqA0_8O85yC78I4Xj7z48ES48IQBa7p) playlist.
 
-## Watch LIVE
-
-Jeff currently presents on the following services.  Choose the one that works for you:
-
-* [Twitch](https://twitch.tv/csharpfritz)
-* [Mixer](https://mixer.com/csharpfritz) - `[Not in use]`
-
-You can find his current schedule on both services, and if you follow or subscribe to the channel you will be notified when the stream begins. 
-
-## Get the Music!
-
-Our friend Carl Franklin from [.NET Rocks](https://dotnetrocks.com) has graciously allowed us to play some of his [Music to Code By](http://mtcb.pwop.com)  during the stream.  Buy the [music](http://mtcb.pwop.com), or get a subscription with the mobile app at www.musictoflowby.com
-
-## Ask Questions
-
-If you want to know more about something or want to see a demo of something specific, you can ask Jeff by [opening an issue](https://github.com/csharpfritz/CoreWiki/issues/new) and adding the 'Question' label. 
-
-The list of [currently outstanding questions](https://github.com/csharpfritz/CoreWiki/issues?q=is%3Aissue+is%3Aopen+label%3Aquestion+sort%3Acreated-asc) is available.  When questions are answered, they are closed and links are added to the wrap-up blog post for the stream they were answered in.
-
-## Guests
-
-I enjoy having guests join me for some pair-programming, because we're always going to learn something new together.
-
-## Jeff's Setup
-
-Jeff has written about how he has the hardware configured as well as the software to produce stream [on his blog](http://jeffreyfritz.com/2017/12/live-streaming-101-my-setup/).  
-*  Jeff uses [Posh-Git](https://github.com/dahlbyk/posh-git) to make the Powershell prompt easier to navigate while working with Git repositories 
-*  When coding with a guest, Jeff and the guest use [Visual Studio Live Share](https://github.com/MicrosoftDocs/live-share/blob/master/README.md) to work on code on screen at the same time.
-*  Jeff uses a bunch of great Visual Studio extensions, and you can find that list on the [WebTools repository](https://github.com/csharpfritz/Ignite2017-WebTools). 
-
-## Watch recordings
-
-Archive of all shows from the stream can be found on [Jeff's YouTube 'Building the CoreWiki'](https://www.youtube.com/playlist?list=PLVMqA0_8O85yC78I4Xj7z48ES48IQBa7p)  playlist.
+### Recordings Index
 
 Date | Topic
 :---|:---
@@ -110,151 +187,3 @@ Architecture Workshop 4 of 7 | [Mark Miller talks about the Science of Great Use
 Architecture Workshop 5 of 7 | [Miguel Castro Makes our Application More Extensible](https://www.youtube.com/watch?v=jy-ZV7uEm7g&list=PLVMqA0_8O85x-aurj1KphxUeWTeTlYkGM&t=0s)
 Architecture Workshop 6 of 7 | [Cecil Phillip Shows Azure Functions and Serverless Concepts](https://www.youtube.com/watch?v=DG12aX5gDs4&list=PLVMqA0_8O85x-aurj1KphxUeWTeTlYkGM&t=0s)
 Architecture Workshop 7 of 7 | [Steve Lasker Shows Us the How and Why of Containers and Azure](https://www.youtube.com/watch?v=PcLpIW5s0AU&list=PLVMqA0_8O85x-aurj1KphxUeWTeTlYkGM&t=0s)
-
-#  1) Functionality that have already been implemented
-
-**HomePage** - _It's not a page or a feature. This is a default article that is presented as if it were the Home. When the user navigate to /Details, if topicName is not specified, the application redirect to default Article (HomePage)_
-
-## Header Menu
- - [X] Allows the users navigate to the Default article (HomePage). `[Back to Home (CoreWiki)]`
- - [X] Allows the users navigate to LatestChanges articles feature.`[LatestChanges]`
- - [X] Allows the users navigate to Create new article feature. `[Create new article]`
- - [X] Allows the users navigate to All articles feature. `[All]`
-
-## Details
- - [X] Allows the users see details of article. 
- - [X] Allows the users navigate to Edit feature. `[Edit]`
- - [X] Allows the users navigate to the Default Article (HomePage). `[Back to Home]`
- - [X] Allows the users see comments list
- - [X] Allows the users add new comment`[New Comment]`
-
-## Create
-- [X] Allows the users create a new article. When success, redirect the user to Details Feature. Otherwise, stay in the page and show error message. `[Create]`
-- [X] Allows the users to navigate to the default article (HomePage).  `[Back to Home]`
-
-## Edit
-- [X] Allows the users change the article (Topic, Published and Content).
-- [X] Allows the users navigate to the default article (HomePage).  `[Back to Home]`
-
-## Delete
-- [X] Allows the users delete the article (Topic, Published and Content).
-- [X] Allows the users navigate to the default article (HomePage).  `[Back to Home]`
-
-LatestChanges
------------------------------
-- [X] Allows the users see the last 10 articles. Ordered by Published Date.
-- [X] Allows the users navigate to Edit feature. `[Edit]`
-- [X] Allows the users navigate to Delete feature. `[Delete]`
-- [X] Allows the users navigate to Details feature. `[Detail]`
-- [X] Allows the users navigate to Create new article feature. `[New article]`
-- [X] Allows the users navigate to the default article (HomePage).`[Back to Home]`
-
-List All
------------------------------
-- [X] Allows the users see ALL articles. Ordered by Topic.
-- [X] Allows the users navigate to Edit feature. `[Edit]`
-- [X] Allows the users navigate to Delete feature. `[Delete]`
-- [X] Allows the users navigate to Details feature. `[Detail]`
-- [X] Allows the users navigate to Create new article feature. `[New article]`
-- [X] Allows the users navigate to the default article (HomePage).`[Back to Home]`
-- [X] Allows the users navigate to Latest Changes feature. `[Latest Changes]`
-
-search engine friendly URL's
------------------------------
-`[Description]`
-
-NotFound
------------------------------
-* Occurs, always which an page is not found. 
-
-Error
------------------------------
-* When an exception occur, o user is redirected to error page. `[Not Simulated]`.
-
-#  2) Topics covered in previous streams
-
-Lessons - Visual Studio Live Sharing Extension
---------
-- [X] Visual Studio Community x Visual Studio Code
-- [X] Visual Studio Community x Visual Studio Community
-
-Lessons - GitHub
---------
-- [X] Create New Repository
-- [X] Create Branch (Master, Dev, project_VersionsAndRatings)
-- [X] Create New Project
-- [X] Add Issues to Project
-- [X] Create/Merge/Close Pull Request
-- [X] Create/Close Issues
-- [X] Add tags to Issues
-- [X] Merge Branchs
-
-Lessons - Git Cli
---------
-- [X] Commit
-- [X] Push
-- [X] Clone
-- [X] Status
-- [X] Checkout
-- [X] Merge
-- `[Others ...]`
-
-Lessons - Nuget
---------
-- [X] Install Packages 
-
-Lessons - DOTNET Cli
---------
-- [X] Dotnet new globaljson --sdk-version 2.0.2
-
-Lessons - ASP.NET Core
---------
-- [X] Navigation
-- [X] Razor Pages
-  - [X] BindProperty
-  - [X] RedirectPage
-- [X] Routing
-  - [X] Customization
-  - [X] Constraint
-- [X] Dependency Injection
-- [X] Tag Helpers
-  - [X] Install and Use External
-  - [X] Create
-- [X] Validation Error UI 
-- [X] Server-Side Validation
-- [X] Client-Side Validation 
-- [X] Configure Minification
-- [X] Configure Bundling
-- [X] Data Model
-  - [X] Add Data Model to a Razor Pages
-  - [X] Add Database connection string
-  - [X] Register the database context
-  - [X] Add database context class
-  - [X] Scaffold the Model
-  - [X] DataType Attributes
-  - [X] ModelState Validation
-- [X] Data Access
-  - [X] Pagination
-
-Lessons - Entity Framework Core
---------
-- [X] Code First Database 
-- [X] Migrations
-  - [X] Add-Migration
-  - [X] Update-Database
-- [X] Seed
-- [X] CRUD (Create, Read, Update e Delete)
-- [X] Update concurrency exception handling
-- [X] Add new unique index
-- [X] Add new column
-
-Lessons - UI
------------------------------
-- [X] Bootstrap 4
-  - [X] Cards
-
-Lessons - Continuous Integration
------------------------------
-- [X] AppVeyor
-- [X] Docker file
-- [X] TravisCI 
