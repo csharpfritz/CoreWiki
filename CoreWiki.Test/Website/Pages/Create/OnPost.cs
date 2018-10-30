@@ -31,7 +31,7 @@ namespace CoreWiki.Test.Website.Pages.Create
 			};
 
 			_mediator.Setup(mediator => mediator.Send(It.IsAny<CreateNewArticleCommand>(), It.IsAny<CancellationToken>()))
-				.Returns(() => Task.FromResult(new CommandResult {Successful=true }));
+				.Returns(() => Task.FromResult(new CommandResult { Successful = true, ObjectId = _expectedSlug }));
 
 			_mediator.Setup(mediator => mediator.Send(It.IsAny<GetIsTopicAvailableQuery>(), It.IsAny<CancellationToken>()))
 				.Returns(() => Task.FromResult(false));
@@ -68,7 +68,5 @@ namespace CoreWiki.Test.Website.Pages.Create
 					request.AuthorId.Equals(userId)),
 				It.Is<CancellationToken>(token => token.Equals(CancellationToken.None))), Times.Once);
 		}
-
 	}
-
 }
