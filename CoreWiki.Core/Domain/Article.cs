@@ -9,14 +9,16 @@ namespace CoreWiki.Core.Domain
 {
 	public class Article
 	{
-
 		public int Id { get; set; }
 
-		public string Topic { get
+		public string Topic
+		{
+			get
 			{
 				return _Topic;
 			}
-			set {
+			set
+			{
 				Slug = URLFriendly(value);
 				_Topic = value;
 			}
@@ -24,8 +26,7 @@ namespace CoreWiki.Core.Domain
 
 		private string _Topic;
 
-		public string Slug { get; set; }
-
+		public string Slug { get; private set; }
 
 		public int Version { get; set; } = 1;
 
@@ -57,11 +58,9 @@ namespace CoreWiki.Core.Domain
 
 		private static readonly Regex reSlugCharacters = new Regex(@"([\s,.//\\-_=])+");
 
-		public string URLFriendly(string title)
+		private static string URLFriendly(string title)
 		{
-
 			if (string.IsNullOrEmpty(title)) return "";
-
 
 			var newTitle = RemoveDiacritics(title);
 
@@ -78,7 +77,6 @@ namespace CoreWiki.Core.Domain
 			newTitle = newTitle.Trim('-');
 
 			return newTitle;
-
 		}
 
 		static string RemoveDiacritics(string text)
@@ -100,7 +98,7 @@ namespace CoreWiki.Core.Domain
 
 		public static string SlugToTopic(string slug)
 		{
-			if (String.IsNullOrEmpty(slug))
+			if (string.IsNullOrEmpty(slug))
 			{
 				return "";
 			}
@@ -109,9 +107,6 @@ namespace CoreWiki.Core.Domain
 			var outValue = textInfo.ToTitleCase(slug);
 
 			return outValue.Replace("-", " ");
-
 		}
-
 	}
-
 }

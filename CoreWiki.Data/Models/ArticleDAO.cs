@@ -100,7 +100,6 @@ namespace CoreWiki.Data.EntityFramework.Models
 				History = History.Select(h => h.ToDomain()).ToHashSet(),
 				Id = Id,
 				Published = Published,
-				Slug = Slug,
 				Topic = Topic,
 				Version = Version,
 				ViewCount = ViewCount
