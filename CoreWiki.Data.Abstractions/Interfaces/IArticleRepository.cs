@@ -18,7 +18,7 @@ namespace CoreWiki.Data.Abstractions.Interfaces
 
 		Task<Article> CreateArticleAndHistory(Article article);
 
-		(IEnumerable<Article> articles, int totalFound) GetArticlesForSearchQuery(string filteredQuery, int offset, int resultsPerPage);
+		Task<(IEnumerable<Article> articles, int totalFound)> GetArticlesForSearchQuery(string filteredQuery, int offset, int resultsPerPage);
 
 		Task<bool> IsTopicAvailable(string articleSlug, int articleId);
 
