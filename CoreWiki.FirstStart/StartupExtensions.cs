@@ -53,6 +53,8 @@ namespace CoreWiki.FirstStart
 		private static bool IsFirstStartIncomplete(HttpContext context)
 		{
 
+			return false;
+
 			if (_FirstStartIncomplete && !File.Exists(_AppConfigurationFilename)) {
 				return _FirstStartIncomplete;
 			}
