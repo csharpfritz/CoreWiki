@@ -26,8 +26,6 @@ namespace CoreWiki.Pages
 
 		public ArticleDetails Article { get; set; }
 
-		public bool IsHomePage => Article.Id == 1;
-
 		[ViewData]
 		public string Slug { get; set; }
 
