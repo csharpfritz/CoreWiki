@@ -24,7 +24,7 @@ namespace CoreWiki.Application.Articles.Search.Impl
 			var filteredQuery = query.Trim();
 			var offset = (pageNumber - 1) * resultsPerPage;
 
-			var (articles, totalFound) = _articleRepo.GetArticlesForSearchQuery(filteredQuery, offset, resultsPerPage);
+			var (articles, totalFound) = await _articleRepo.GetArticlesForSearchQuery(filteredQuery, offset, resultsPerPage);
 
 			var result = new SearchResult<Article>
 			{

@@ -71,7 +71,7 @@ namespace CoreWiki.Data.EntityFramework.Repositories
 				.AnyAsync(a => a.Slug == articleSlug && a.Id != articleId);
 		}
 
-		public (IEnumerable<Article> articles, int totalFound) GetArticlesForSearchQuery(string filteredQuery, int offset, int resultsPerPage)
+		public async Task<(IEnumerable<Article> articles, int totalFound)> GetArticlesForSearchQuery(string filteredQuery, int offset, int resultsPerPage)
 		{
 			// WARNING:  This may need to be further refactored to allow for database optimized search queries
 
@@ -82,7 +82,7 @@ namespace CoreWiki.Data.EntityFramework.Repositories
 					|| a.Content.ToUpper().Contains(filteredQuery.ToUpper())
 				).Select(a => a.ToDomain());
 			var articleCount = articles.Count();
-			var list = articles.Skip(offset).Take(resultsPerPage).OrderByDescending(a => a.ViewCount).ToList();
+			var list = await articles.Skip(offset).Take(resultsPerPage).OrderByDescending(a => a.ViewCount).ToListAsync();
 
 			return (list, articleCount);
 		}
