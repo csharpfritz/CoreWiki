@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using System;
 
-namespace CoreWiki.Migrations
+namespace CoreWiki.Data.EntityFramework.Migrations
 {
 	[DbContext(typeof(ApplicationDbContext))]
 	[Migration("20180624223112_AddSlugHistory")]

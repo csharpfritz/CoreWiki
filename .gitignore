@@ -276,3 +276,41 @@ CoreWiki/wwwroot/lib/
 
 # Minified and generated files
 *.min.js
+
+# Ignore test results
+test_result.xml
+
+# mac OS specifc files
+# Based but simplified:  https://github.com/github/gitignore/blob/master/Global/macOS.gitignore
+## General
+.DS_Store
+.AppleDouble
+.LSOverride
+
+## Thumbnails
+._*
+
+## Files that might appear in the root of a volume
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+
+# Linux specific files
+# Based on: https://github.com/github/gitignore/blob/master/Global/Linux.gitignore
+*~
+
+## Temporary files which can be created if a process still has a handle open of a deleted file
+.fuse_hidden*
+
+## KDE directory preferences
+.directory
+
+## Linux trash folder which might appear on any partition or disk
+.Trash-*
+
+## .nfs files are created when an open file is removed but is still being accessed
+.nfs*

@@ -7,17 +7,47 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoreWiki", "CoreWiki\CoreWi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoreWiki.Test", "CoreWiki.Test\CoreWiki.Test.csproj", "{850F57FA-EC30-481B-B8F9-FAE364802864}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoreWiki.Data", "CoreWiki.Data\CoreWiki.Data.csproj", "{E04F69D7-A635-4ECC-8326-E860486FB500}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoreWiki.Data.EntityFramework", "CoreWiki.Data\CoreWiki.Data.EntityFramework.csproj", "{E04F69D7-A635-4ECC-8326-E860486FB500}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F3951583-E144-47C0-917E-6EC0404E956E}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
-		updateDb.cmd = updateDb.cmd
+		.gitignore = .gitignore
+		contributing.md = contributing.md
+		nuget.config = nuget.config
+		README.md = README.md
+		CoreWiki\updateDb.cmd = CoreWiki\updateDb.cmd
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoreWiki.Core", "CoreWiki.Core\CoreWiki.Core.csproj", "{569AB7F3-2183-4481-97E6-B37E4C48EEB0}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoreWiki.Notifications", "CoreWiki.Notifications\CoreWiki.Notifications.csproj", "{45CB32F4-B770-4D10-A2B8-C7E7AD28A180}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoreWiki.FirstStart", "CoreWiki.FirstStart\CoreWiki.FirstStart.csproj", "{E3000FF5-5456-48FC-9131-8E18E686E1D3}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoreWiki.Application", "CoreWiki.Application\CoreWiki.Application.csproj", "{18172D27-2165-4F34-AA93-F9DD58C2A926}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build Items", "Build Items", "{5D6BD646-6065-4216-BFBA-897BCDFD025D}"
+	ProjectSection(SolutionItems) = preProject
+		.deployment = .deployment
+		.travis.yml = .travis.yml
+		appveyor.yml = appveyor.yml
+		build.cake = build.cake
+		build.ps1 = build.ps1
+		build.sh = build.sh
+		deployToAzure.cake = deployToAzure.cake
+		deployToAzure.cmd = deployToAzure.cmd
+		Dockerfile = Dockerfile
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoreWiki.Data.Abstractions", "CoreWiki.Data.Abstractions\CoreWiki.Data.Abstractions.csproj", "{5EA4C7BD-694C-4005-A4F1-256BFA5E9D6E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoreWiki.Notifications.Abstractions", "CoreWiki.Notifications.Abstractions\CoreWiki.Notifications.Abstractions.csproj", "{192CBE23-68A7-4437-A2E1-B88FC3DE152B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "pipelines", "pipelines", "{B7B8479A-7320-40F4-AEE5-D77C04C2A1D3}"
+	ProjectSection(SolutionItems) = preProject
+		pipelines\azure-pipelines-cake.yml = pipelines\azure-pipelines-cake.yml
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,9 +75,28 @@ Global
 		{45CB32F4-B770-4D10-A2B8-C7E7AD28A180}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{45CB32F4-B770-4D10-A2B8-C7E7AD28A180}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{45CB32F4-B770-4D10-A2B8-C7E7AD28A180}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E3000FF5-5456-48FC-9131-8E18E686E1D3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E3000FF5-5456-48FC-9131-8E18E686E1D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E3000FF5-5456-48FC-9131-8E18E686E1D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E3000FF5-5456-48FC-9131-8E18E686E1D3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{18172D27-2165-4F34-AA93-F9DD58C2A926}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{18172D27-2165-4F34-AA93-F9DD58C2A926}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{18172D27-2165-4F34-AA93-F9DD58C2A926}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{18172D27-2165-4F34-AA93-F9DD58C2A926}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5EA4C7BD-694C-4005-A4F1-256BFA5E9D6E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5EA4C7BD-694C-4005-A4F1-256BFA5E9D6E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5EA4C7BD-694C-4005-A4F1-256BFA5E9D6E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5EA4C7BD-694C-4005-A4F1-256BFA5E9D6E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{192CBE23-68A7-4437-A2E1-B88FC3DE152B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{192CBE23-68A7-4437-A2E1-B88FC3DE152B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{192CBE23-68A7-4437-A2E1-B88FC3DE152B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{192CBE23-68A7-4437-A2E1-B88FC3DE152B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{B7B8479A-7320-40F4-AEE5-D77C04C2A1D3} = {5D6BD646-6065-4216-BFBA-897BCDFD025D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2CA9CB16-B897-4414-AC22-E0AA4706EF90}

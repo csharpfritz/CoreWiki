@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 
-namespace CoreWiki.Data.Security
+namespace CoreWiki.Data.EntityFramework.Security
 {
 	//Todo - This is a bit of a hack to ensure that there is a default admin user on first run, can probably remove when the first start wizard is implemented
 	public static class SeedDefaultAdminUserToAdminRole

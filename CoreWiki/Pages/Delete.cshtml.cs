@@ -1,11 +1,14 @@
-﻿using CoreWiki.Data;
-using CoreWiki.Data.Models;
-using CoreWiki.Helpers;
+﻿using CoreWiki.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
+using MediatR;
+using AutoMapper;
+using CoreWiki.Application.Articles.Managing.Commands;
+using CoreWiki.Application.Articles.Managing.Events;
+using CoreWiki.Application.Articles.Managing.Queries;
+using CoreWiki.Application.Common;
 
 namespace CoreWiki.Pages
 {
@@ -13,15 +16,17 @@ namespace CoreWiki.Pages
 
 	public class DeleteModel : PageModel
 	{
-		private readonly ApplicationDbContext _context;
+		private readonly IMediator _mediator;
+		private readonly IMapper _mapper;
 
-		public DeleteModel(ApplicationDbContext context)
+		public DeleteModel(IMediator mediator, IMapper mapper)
 		{
-			_context = context;
+			_mediator = mediator;
+			_mapper = mapper;
 		}
 
 		[BindProperty]
-		public ArticleDeleteDTO Article { get; set; }
+		public ArticleDelete Article { get; set; }
 
 		///  TODO: Make it so you cannot delete the home page (deleting the home page will cause a 404)
 		///  or re-factor to make the home page dynamic or configurable.
@@ -32,19 +37,20 @@ namespace CoreWiki.Pages
 				return NotFound();
 			}
 
-			var article = await _context.Articles.SingleOrDefaultAsync(m => m.Slug == slug);
+			var article = await _mediator.Send(new GetArticleQuery(slug));
 
 			if (article == null)
 			{
 				return NotFound();
 			}
 
-			Article = new ArticleDeleteDTO
+			if (article.Slug == UrlHelpers.HomePageSlug)
 			{
-				Content = article.Content,
-				Published = article.Published,
-				Topic = article.Topic
-			};
+				await _mediator.Publish(new DeleteHomePageAttemptNotification());
+				return Forbid();
+			}
+
+			Article = _mapper.Map<ArticleDelete>(article);
 
 			return Page();
 		}
@@ -56,17 +62,7 @@ namespace CoreWiki.Pages
 				return NotFound();
 			}
 
-			var article = await _context.Articles
-				.Include(o => o.History)
-				.Include(o => o.Comments)
-				.SingleOrDefaultAsync(o => o.Slug == slug);
-
-			if (article != null)
-			{
-				_context.Articles.Remove(article);
-				await _context.SaveChangesAsync();
-			}
-
+			var result = await _mediator.Send(new DeleteArticleCommand(slug));
 			return LocalRedirect($"/wiki/{UrlHelpers.HomePageSlug}");
 		}
 	}
