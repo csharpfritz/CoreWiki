@@ -1,24 +1,26 @@
 using CoreWiki.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using System.Linq;
 using System.Threading.Tasks;
 using CoreWiki.Application.Articles.Reading.Queries;
 using CoreWiki.Application.Articles.Search.Dto;
 using CoreWiki.Application.Articles.Search.Queries;
 using MediatR;
+using AutoMapper;
 
 namespace CoreWiki.Pages
 {
 	public class SearchModel : PageModel
 	{
 		private readonly IMediator _mediator;
+		private readonly IMapper _mapper;
 		public SearchResultDto<ArticleSummary> SearchResult;
 		private const int ResultsPerPage = 10;
 
-		public SearchModel(IMediator mediator)
+		public SearchModel(IMediator mediator, IMapper mapper)
 		{
 			_mediator = mediator;
+			_mapper = mapper;
 		}
 
 		public string RequestedPage => Request.Path.Value.ToLowerInvariant().Substring(1);
@@ -29,29 +31,10 @@ namespace CoreWiki.Pages
 			{
 				return Page();
 			}
-			var qry = new SearchArticlesQuery(query,
-				pageNumber,
-				ResultsPerPage);
+			var qry = new SearchArticlesQuery(query, pageNumber, ResultsPerPage);
 			var result = await _mediator.Send(qry);
 
-			//todo: use automapper
-			SearchResult = new SearchResultDto<ArticleSummary>
-			{
-				Query = result.Query,
-				TotalResults = result.TotalResults,
-				ResultsPerPage = result.ResultsPerPage,
-				CurrentPage = result.CurrentPage,
-				Results = (from article in result.Results
-					select new ArticleSummary
-					{
-						IsHomePage = article.IsHomePage,
-						Slug = article.Slug,
-						Topic = article.Topic,
-						Published = article.Published,
-						ViewCount = article.ViewCount
-					}).ToList()
-			};
-			//SearchResult.CurrentPage = 1;
+			SearchResult = _mapper.Map<SearchResultDto<ArticleSummary>>(result);
 
 			return Page();
 		}
@@ -61,21 +44,10 @@ namespace CoreWiki.Pages
 			var qry = new GetLatestArticlesQuery(10);
 			var results = await _mediator.Send(qry);
 
-			SearchResult = new SearchResultDto<ArticleSummary>
-			{
-				Results = (from article in results
-									 select new ArticleSummary
-									 {
-										 IsHomePage = article.IsHomePage,
-										 Slug = article.Slug,
-										 Topic = article.Topic,
-										 Published = article.Published,
-										 ViewCount = article.ViewCount
-									 }).ToList(),
-				ResultsPerPage = 11,
-				CurrentPage = 1
-			};
-			SearchResult.TotalResults = SearchResult.Results.Count;
+			SearchResult = _mapper.Map<SearchResultDto<ArticleSummary>>(results);
+			SearchResult.ResultsPerPage = 11;
+			SearchResult.CurrentPage = 1;
+
 			return Page();
 		}
 	}
