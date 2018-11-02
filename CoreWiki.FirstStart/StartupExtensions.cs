@@ -16,19 +16,25 @@ namespace CoreWiki.FirstStart
 	{
 
 		private static bool _FirstStartIncomplete = true;
-        private static string _AppConfigurationFilename;
+		private static string _AppConfigurationFilename;
 
+		private static IConfiguration Configuration;
 
-        public static IServiceCollection AddFirstStartConfiguration(this IServiceCollection services) {
+		public static IServiceCollection AddFirstStartConfiguration(this IServiceCollection services, IConfiguration configuration)
+		{
 
 			// services.AddSingleton<FirstStartConfiguration>(new FirstStartConfiguration());
+
+			Configuration = configuration;
+			services.Configure<UserAppConfig>(Configuration);
 
 			return services;
 
 		}
-		public static IApplicationBuilder UseFirstStartConfiguration(this IApplicationBuilder app, IHostingEnvironment hostingEnvironment, IConfiguration configuration) {
+		public static IApplicationBuilder UseFirstStartConfiguration(this IApplicationBuilder app, IHostingEnvironment hostingEnvironment, IConfiguration configuration)
+		{
 
-			_AppConfigurationFilename =	Path.Combine(hostingEnvironment.ContentRootPath, "appsettings.app.json");
+			_AppConfigurationFilename = Path.Combine(hostingEnvironment.ContentRootPath, "appsettings.app.json");
 
 			app.UseWhen(IsFirstStartIncomplete, thisApp =>
 			{
@@ -53,10 +59,10 @@ namespace CoreWiki.FirstStart
 		private static bool IsFirstStartIncomplete(HttpContext context)
 		{
 
-			return false;
-
-			if (_FirstStartIncomplete && !File.Exists(_AppConfigurationFilename)) {
-				return _FirstStartIncomplete;
+			//if (_FirstStartIncomplete && !File.Exists(_AppConfigurationFilename))
+			if (_FirstStartIncomplete && string.IsNullOrEmpty(Configuration["DatabaseProvider"]))
+			{
+					return _FirstStartIncomplete;
 			}
 
 			_FirstStartIncomplete = false;

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -10,6 +11,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -21,7 +23,8 @@ namespace CoreWiki.FirstStart.MyFeature.Pages
 		public IndexModel(IHostingEnvironment env,
 			IConfiguration config,
 			UserManager<CoreWikiUser> userManager,
-			RoleManager<IdentityRole> roleManager)
+			RoleManager<IdentityRole> roleManager,
+			IServiceProvider serviceProvider)
 		{
 			this.Environment = env;
 			this.Configuration = config;
@@ -29,23 +32,27 @@ namespace CoreWiki.FirstStart.MyFeature.Pages
 
 			this.UserManager = userManager;
 			this.RoleManager = roleManager;
+			this.ServiceProvider = serviceProvider;
 
 		}
 
 		public IHostingEnvironment Environment { get; }
 		public IConfiguration Configuration { get; }
 
-		[BindProperty]
-        public FirstStartConfiguration FirstStartConfig { get; }
-        public UserManager<CoreWikiUser> UserManager { get; }
-        public RoleManager<IdentityRole> RoleManager { get; }
+		[BindProperty()]
+		public FirstStartConfiguration FirstStartConfig { get; set; }
+		public UserManager<CoreWikiUser> UserManager { get; }
+		public RoleManager<IdentityRole> RoleManager { get; }
+		public IServiceProvider ServiceProvider { get; }
 
-        public void OnGet()
+		public void OnGet()
 		{
 
 		}
 
-		public async Task<IActionResult> OnPostAsync() {
+		[HttpPost()]
+		public async Task<IActionResult> OnPostAsync()
+		{
 
 			if (!ModelState.IsValid)
 			{
@@ -67,7 +74,7 @@ namespace CoreWiki.FirstStart.MyFeature.Pages
 
 			WriteConfigFileToDisk(this.FirstStartConfig.Database, this.FirstStartConfig.ConnectionString);
 
-			return RedirectToPage("/Details", new {slug="home-page"});
+			return RedirectToPage("/Details", new { slug = "home-page" });
 
 		}
 
@@ -77,7 +84,8 @@ namespace CoreWiki.FirstStart.MyFeature.Pages
 
 			var settingsFileLocation = Path.Combine(Environment.ContentRootPath, "appsettings.app.json");
 
-			if (!System.IO.File.Exists(settingsFileLocation)) {
+			if (!System.IO.File.Exists(settingsFileLocation))
+			{
 				var fileStream = System.IO.File.Create(settingsFileLocation);
 				var bytes = ASCIIEncoding.ASCII.GetBytes("{}");
 				fileStream.Write(bytes, 0, bytes.Length);

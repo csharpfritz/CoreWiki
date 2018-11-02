@@ -21,7 +21,7 @@ namespace CoreWiki
             WebHost.CreateDefaultBuilder(args)
                 .UseApplicationInsights()
 								.ConfigureAppConfiguration(config => {
-									config.AddJsonFile("appsettings.app.json", true);
+									config.AddJsonFile("appsettings.app.json", true, true);
 								})
                 .UseStartup<Startup>()
                 .UseKestrel(options =>

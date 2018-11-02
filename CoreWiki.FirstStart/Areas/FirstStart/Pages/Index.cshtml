@@ -26,29 +26,30 @@
 
 	<div class="card">
 		<div class="card-body">
-			<form>
+			<form method="post">
 				<!-- <div class="form-group">
 					<label for="inputWikiName">Name your Wiki</label>
 					<input type="text" class="form-control" id="WikiName" aria-describedby="help" placeholder="Choose a name for your wiki">
 					<small id="nameHelp" class="form-text text-muted">Something more creative than myWiki or CoreWiki :-)</small>
 				</div> -->
 				<div class="form-group">
-					<label for="AdminUsername">Administrator Username</label>
-					<input type="text" class="form-control" id="AdminUsername" aria-describedby="help" placeholder="Enter admin username">
+					<label asp-for="FirstStartConfig.AdminUserName">Administrator Username</label>
+					<input class="form-control" asp-for="FirstStartConfig.AdminUserName" aria-describedby="help" placeholder="Enter admin username">
 					<small id="usernameHelp" class="form-text text-muted">Let's make it unique. </small>
 				</div>
 				<div class="form-group">
-					<label for="AdminEmail">Administrator Email Address</label>
-					<input type="text" class="form-control" id="AdminEmail" aria-describedby="help" placeholder="Enter admin email address">
+					<label asp-for="FirstStartConfig.AdminEmail">Administrator Email Address</label>
+					<input class="form-control"
+				 asp-for="FirstStartConfig.AdminEmail"	aria-describedby="help" placeholder="Enter admin email address">
 				</div>
 				<div class="form-group">
-					<label for="inputAdminPassword">Password</label>
-					<input type="password" class="form-control" id="AdminPassword" placeholder="Password">
+					<label asp-for="FirstStartConfig.AdminPassword">Password</label>
+					<input class="form-control" asp-for="FirstStartConfig.AdminPassword"  placeholder="Password">
 					<small id="passwordHelp" class="form-text text-muted">Long and random.</small>
 				</div>
 				<div class="form-group">
-					<label for="Database">Database</label>
-					<select id="Database" class="form-control">
+					<label asp-for="FirstStartConfig.Database">Database</label>
+					<select asp-for="FirstStartConfig.Database" class="form-control">
 						<option selected>Choose...</option>
 						<option>Sqlite</option>
 						<option>Postgres</option>
@@ -56,8 +57,8 @@
 					</select>
 				</div>
 				<div class="form-group">
-					<label for="InputConnectionString">ConnectionString</label>
-					<input type="text" class="form-control" id="ConnectionString" placeholder="ConnectionString">
+					<label asp-for="FirstStartConfig.ConnectionString">ConnectionString</label>
+					<input class="form-control" asp-for="FirstStartConfig.ConnectionString"  placeholder="ConnectionString">
 					<small id="databaseHelp" class="form-text text-muted">Enter your connection string here - leave blank for default</small>
 				</div>
 				<button type="submit" class="btn btn-primary">Submit</button>

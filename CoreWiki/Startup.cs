@@ -36,7 +36,7 @@ namespace CoreWiki
 			services.ConfigureApplicationServices();
 			services.AddMediator();
 
-			services.AddFirstStartConfiguration();
+			services.AddFirstStartConfiguration(Configuration);
 
 		}
 
