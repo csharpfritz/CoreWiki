@@ -13,8 +13,8 @@ namespace CoreWiki
 	public class Program
 	{
 
-		internal static IWebHost _Host;
-		internal static bool _Restart = true;
+		private static IWebHost _Host;
+		private static bool _Restart = true;
 
 		public static void Main(string[] args)
 		{
@@ -26,6 +26,13 @@ namespace CoreWiki
 				_Host.Run();
 
 			}
+
+		}
+
+		public static Task Restart() {
+
+			_Restart = true;
+			return _Host.StopAsync();
 
 		}
 

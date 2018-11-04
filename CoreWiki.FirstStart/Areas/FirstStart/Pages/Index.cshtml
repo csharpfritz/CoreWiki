@@ -90,7 +90,7 @@ else
 
 </script>
 
-	Task.Run(() => System.Threading.Thread.Sleep(5000)).ContinueWith(async t =>
+	Task.Run(() => System.Threading.Thread.Sleep(1000)).ContinueWith(async t =>
 		await CoreWiki.FirstStart.StartupExtensions._RestartHost()
 	);
 
