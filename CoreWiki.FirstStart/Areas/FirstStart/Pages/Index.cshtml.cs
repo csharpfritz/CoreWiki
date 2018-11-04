@@ -23,8 +23,7 @@ namespace CoreWiki.FirstStart.MyFeature.Pages
 		public IndexModel(IHostingEnvironment env,
 			IConfiguration config,
 			UserManager<CoreWikiUser> userManager,
-			RoleManager<IdentityRole> roleManager,
-			IServiceProvider serviceProvider)
+			RoleManager<IdentityRole> roleManager)
 		{
 			this.Environment = env;
 			this.Configuration = config;
@@ -32,7 +31,6 @@ namespace CoreWiki.FirstStart.MyFeature.Pages
 
 			this.UserManager = userManager;
 			this.RoleManager = roleManager;
-			this.ServiceProvider = serviceProvider;
 
 		}
 
@@ -43,7 +41,7 @@ namespace CoreWiki.FirstStart.MyFeature.Pages
 		public FirstStartConfiguration FirstStartConfig { get; set; }
 		public UserManager<CoreWikiUser> UserManager { get; }
 		public RoleManager<IdentityRole> RoleManager { get; }
-		public IServiceProvider ServiceProvider { get; }
+		public bool Completed { get; set; } = false;
 
 		public void OnGet()
 		{
@@ -79,7 +77,10 @@ namespace CoreWiki.FirstStart.MyFeature.Pages
 
 			WriteConfigFileToDisk(this.FirstStartConfig.Database, this.FirstStartConfig.ConnectionString);
 
-			return RedirectToPage("/Details", new { slug = "home-page" });
+			Completed = true;
+			return Page();
+
+			//return RedirectToPage("/Details", new { slug = "home-page" });
 
 		}
 

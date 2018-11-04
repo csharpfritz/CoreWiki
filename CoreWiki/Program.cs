@@ -10,21 +10,33 @@ using Microsoft.Extensions.Logging;
 
 namespace CoreWiki
 {
-    public class Program
-    {
-        public static void Main(string[] args)
-        {
-            BuildWebHost(args).Run();
-        }
+	public class Program
+	{
 
-        public static IWebHost BuildWebHost(string[] args) =>
-            WebHost.CreateDefaultBuilder(args)
-                .UseApplicationInsights()
-                .UseStartup<Startup>()
-                .UseKestrel(options =>
-                {
-                    options.AddServerHeader = false;
-                })
-                .Build();
-    }
+		internal static IWebHost _Host;
+		internal static bool _Restart = true;
+
+		public static void Main(string[] args)
+		{
+
+			while (_Restart) {
+
+				_Restart = false;
+				_Host = BuildWebHost(args);
+				_Host.Run();
+
+			}
+
+		}
+
+		public static IWebHost BuildWebHost(string[] args) =>
+				WebHost.CreateDefaultBuilder(args)
+						.UseApplicationInsights()
+						.UseStartup<Startup>()
+						.UseKestrel(options =>
+						{
+							options.AddServerHeader = false;
+						})
+						.Build();
+	}
 }

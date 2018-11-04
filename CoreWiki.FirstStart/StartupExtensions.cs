@@ -17,7 +17,7 @@ namespace CoreWiki.FirstStart
 		private static bool _RunAfterConfiguration = false;
 		private static bool _FirstStartIncomplete = true;
 		private static string _AppConfigurationFilename;
-		private static Action<IServiceProvider, IApplicationBuilder, IConfiguration> _AfterConfiguration;
+		public static Func<Task> _RestartHost;
 		private static IConfiguration Configuration;
 
 		public static IServiceCollection AddFirstStartConfiguration(this IServiceCollection services, IConfiguration configuration)
@@ -30,11 +30,11 @@ namespace CoreWiki.FirstStart
 			return services;
 
 		}
-		public static IApplicationBuilder UseFirstStartConfiguration(this IApplicationBuilder app, IHostingEnvironment hostingEnvironment, IConfiguration configuration, Action<IServiceProvider, IApplicationBuilder, IConfiguration> afterConfiguration)
+		public static IApplicationBuilder UseFirstStartConfiguration(this IApplicationBuilder app, IHostingEnvironment hostingEnvironment, IConfiguration configuration, Func<Task> restartHost)
 		{
 
 			_AppConfigurationFilename = Path.Combine(hostingEnvironment.ContentRootPath, "appsettings.json");
-			_AfterConfiguration = afterConfiguration;
+			_RestartHost = restartHost;
 
 			app.UseWhen(IsFirstStartIncomplete, thisApp =>
 			{
@@ -52,19 +52,6 @@ namespace CoreWiki.FirstStart
 
 			});
 
-			app.UseWhen(_ => {
-				if (_RunAfterConfiguration)
-				{
-					_AfterConfiguration(app.ApplicationServices, app, Configuration);
-					_RunAfterConfiguration = false;
-				}
-
-				return false;
-
-			}, _ =>
-			{
-			});
-
 			return app;
 
 		}
@@ -72,15 +59,7 @@ namespace CoreWiki.FirstStart
 		private static bool IsFirstStartIncomplete(HttpContext context)
 		{
 
-			//if (_FirstStartIncomplete && !File.Exists(_AppConfigurationFilename))
-			if (_FirstStartIncomplete && string.IsNullOrEmpty(Configuration["DataProvider"]))
-			{
-					return _FirstStartIncomplete;
-			}
-
-			_RunAfterConfiguration = true;
-			_FirstStartIncomplete = false;
-			return false;
+			return string.IsNullOrEmpty(Configuration["DataProvider"]);
 
 		}
 

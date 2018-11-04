@@ -17,6 +17,8 @@
 		* Anything else in Corewiki/AppSettings.json
 *@
 
+@if (!Model.Completed)
+{
 <div>
 	<div class="text-center">
 		<h1>CoreWiki</h1>
@@ -66,3 +68,30 @@
 		</div>
 	</div>
 </div>
+}
+else
+{
+<div>
+	<div class="text-center">
+		<h1>CoreWiki</h1>
+		Installation completed.  Now restarting and redirecting to the home page
+	</div>
+</div>
+
+<script type="text/javascript">
+
+	(function () {
+
+		window.setTimeout(function(){
+			window.location.href = "@Url.Page("Details", new {slug="home-page" })";
+		}, 5000);
+
+	})();
+
+</script>
+
+	Task.Run(() => System.Threading.Thread.Sleep(5000)).ContinueWith(async t =>
+		await CoreWiki.FirstStart.StartupExtensions._RestartHost()
+	);
+
+}
