@@ -14,10 +14,10 @@ namespace CoreWiki.FirstStart
 
 	public static class StartupExtensions
 	{
-
+		private static bool _RunAfterConfiguration = false;
 		private static bool _FirstStartIncomplete = true;
 		private static string _AppConfigurationFilename;
-
+		private static Action<IServiceProvider, IApplicationBuilder, IConfiguration> _AfterConfiguration;
 		private static IConfiguration Configuration;
 
 		public static IServiceCollection AddFirstStartConfiguration(this IServiceCollection services, IConfiguration configuration)
@@ -26,15 +26,15 @@ namespace CoreWiki.FirstStart
 			// services.AddSingleton<FirstStartConfiguration>(new FirstStartConfiguration());
 
 			Configuration = configuration;
-			services.Configure<UserAppConfig>(Configuration);
 
 			return services;
 
 		}
-		public static IApplicationBuilder UseFirstStartConfiguration(this IApplicationBuilder app, IHostingEnvironment hostingEnvironment, IConfiguration configuration)
+		public static IApplicationBuilder UseFirstStartConfiguration(this IApplicationBuilder app, IHostingEnvironment hostingEnvironment, IConfiguration configuration, Action<IServiceProvider, IApplicationBuilder, IConfiguration> afterConfiguration)
 		{
 
-			_AppConfigurationFilename = Path.Combine(hostingEnvironment.ContentRootPath, "appsettings.app.json");
+			_AppConfigurationFilename = Path.Combine(hostingEnvironment.ContentRootPath, "appsettings.json");
+			_AfterConfiguration = afterConfiguration;
 
 			app.UseWhen(IsFirstStartIncomplete, thisApp =>
 			{
@@ -52,6 +52,19 @@ namespace CoreWiki.FirstStart
 
 			});
 
+			app.UseWhen(_ => {
+				if (_RunAfterConfiguration)
+				{
+					_AfterConfiguration(app.ApplicationServices, app, Configuration);
+					_RunAfterConfiguration = false;
+				}
+
+				return false;
+
+			}, _ =>
+			{
+			});
+
 			return app;
 
 		}
@@ -60,11 +73,12 @@ namespace CoreWiki.FirstStart
 		{
 
 			//if (_FirstStartIncomplete && !File.Exists(_AppConfigurationFilename))
-			if (_FirstStartIncomplete && string.IsNullOrEmpty(Configuration["DatabaseProvider"]))
+			if (_FirstStartIncomplete && string.IsNullOrEmpty(Configuration["DataProvider"]))
 			{
 					return _FirstStartIncomplete;
 			}
 
+			_RunAfterConfiguration = true;
 			_FirstStartIncomplete = false;
 			return false;
 

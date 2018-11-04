@@ -20,9 +20,6 @@ namespace CoreWiki
         public static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
                 .UseApplicationInsights()
-								.ConfigureAppConfiguration(config => {
-									config.AddJsonFile("appsettings.app.json", true, true);
-								})
                 .UseStartup<Startup>()
                 .UseKestrel(options =>
                 {

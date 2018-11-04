@@ -28,7 +28,7 @@ namespace CoreWiki
 			services.ConfigureRSSFeed();
 			services.Configure<AppSettings>(Configuration);
 			services.ConfigureSecurityAndAuthentication();
-			services.ConfigureDatabase(Configuration);
+			//services.ConfigureDatabase(Configuration);
 			services.ConfigureScopedServices(Configuration);
 			services.ConfigureHttpClients();
 			services.ConfigureRouting();
@@ -47,9 +47,17 @@ namespace CoreWiki
 			app.ConfigureExceptions(env);
 			app.ConfigureSecurityHeaders(env);
 			app.ConfigureRouting();
-			app.ConfigureDatabase();
 
-			app.UseFirstStartConfiguration(env, Configuration);
+			app.UseFirstStartConfiguration(env, Configuration, (services, thisApp, config) => {
+
+				// mozts2005 cheered 500 bits on November 4, 2018
+
+				var scope = services.CreateScope();
+				var serviceCollection = scope.ServiceProvider.GetService<IServiceCollection>();
+				serviceCollection.ConfigureDatabase(config);
+				thisApp.InitializeData(config);
+				scope.Dispose();
+			});
 
 			var theTask = app.ConfigureAuthentication(userManager, roleManager);
 			theTask.GetAwaiter().GetResult();

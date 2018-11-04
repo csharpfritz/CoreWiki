@@ -21,7 +21,6 @@ namespace CoreWiki.FirstStart
 		[Required]
 		public string Database {get;set;}
 
-		[Required]
 		public string ConnectionString { get; set; }
 
     }

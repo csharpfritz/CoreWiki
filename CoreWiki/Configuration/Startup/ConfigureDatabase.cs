@@ -10,12 +10,26 @@ namespace CoreWiki.Configuration.Startup
 	{
 		public static IServiceCollection ConfigureDatabase(this IServiceCollection services, IConfiguration config)
 		{
+
+			// Exit now if we don't have a data configuration
+			if (string.IsNullOrEmpty(config["DataProvider"])) return services;
+
 			services.AddRepositories(config);
 			return services;
 		}
 
-		public static IApplicationBuilder ConfigureDatabase(this IApplicationBuilder app)
+		/// <summary>
+		/// Initialize the database with appropriate schema and content 
+		/// </summary>
+		/// <param name="app"></param>
+		/// <param name="config"></param>
+		/// <returns></returns>
+		public static IApplicationBuilder InitializeData(this IApplicationBuilder app, IConfiguration config)
 		{
+
+			// Exit now if we don't have a data configuration
+			if (string.IsNullOrEmpty(config["DataProvider"])) return app;
+
 			var scope = app.ApplicationServices.CreateScope();
 
 			var identityContext = scope.SeedData()

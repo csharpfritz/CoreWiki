@@ -72,6 +72,11 @@ namespace CoreWiki.FirstStart.MyFeature.Pages
 				var result = await UserManager.AddToRoleAsync(newAdminUser, "Administrators");
 			}
 
+			if (string.IsNullOrEmpty(FirstStartConfig.ConnectionString)) {
+				FirstStartConfig.ConnectionString = "DataSource=./App_Data/wikiContent.db";
+				FirstStartConfig.Database = "SQLite";
+			}
+
 			WriteConfigFileToDisk(this.FirstStartConfig.Database, this.FirstStartConfig.ConnectionString);
 
 			return RedirectToPage("/Details", new { slug = "home-page" });
@@ -82,7 +87,10 @@ namespace CoreWiki.FirstStart.MyFeature.Pages
 		private void WriteConfigFileToDisk(string provider, string connectionString)
 		{
 
-			var settingsFileLocation = Path.Combine(Environment.ContentRootPath, "appsettings.app.json");
+			// ramblinggeek cheered 500 bits on November 4, 2018
+
+
+			var settingsFileLocation = Path.Combine(Environment.ContentRootPath, "appsettings.json");
 
 			if (!System.IO.File.Exists(settingsFileLocation))
 			{
@@ -98,8 +106,8 @@ namespace CoreWiki.FirstStart.MyFeature.Pages
 
 			//jsonFile.Root.AddAfterSelf(JObject.Parse(@"{""foo"": ""bar""}").First);
 			//jsonFile["foo"] = @"{v1: 1, v2: ""2"", v3: true}";
-			jsonFile["DatabaseProvider"] = provider;
-			jsonFile["ConnectionString"] = connectionString;
+			jsonFile["DataProvider"] = provider;
+			jsonFile["ConnectionStrings"]["CoreWikiData"] = connectionString;
 
 
 			System.IO.File.WriteAllText(settingsFileLocation, JsonConvert.SerializeObject(jsonFile, Formatting.Indented));
