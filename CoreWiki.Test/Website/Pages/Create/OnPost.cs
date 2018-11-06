@@ -25,17 +25,19 @@ namespace CoreWiki.Test.Website.Pages.Create
 			var expectedCommand = new CreateNewArticleCommand
 			{
 				Topic = _topic,
-				Slug =  _expectedSlug,
 				AuthorId = userId,
 				Content = _content,
 				AuthorName = username
 			};
 
 			_mediator.Setup(mediator => mediator.Send(It.IsAny<CreateNewArticleCommand>(), It.IsAny<CancellationToken>()))
-				.Returns(() => Task.FromResult(new CommandResult {Successful=true }));
+				.Returns(() => Task.FromResult(new CommandResult { Successful = true, ObjectId = _expectedSlug }));
 
 			_mediator.Setup(mediator => mediator.Send(It.IsAny<GetIsTopicAvailableQuery>(), It.IsAny<CancellationToken>()))
 				.Returns(() => Task.FromResult(false));
+
+			_mediator.Setup(mediator => mediator.Send(It.IsAny<GetArticlesToCreateFromArticleQuery>(), It.IsAny<CancellationToken>()))
+				.Returns(Task.FromResult((_expectedSlug, new string[] { })));
 
 			_sut = new CreateModel(_mediator.Object, _mapper, new NullLoggerFactory())
 			{
@@ -50,24 +52,21 @@ namespace CoreWiki.Test.Website.Pages.Create
 			_sut.AddPageContext(username, userId); 
 			var result = await _sut.OnPostAsync();
 
-			Assert.IsType<RedirectResult>(result);
-			Assert.Equal($"/wiki/{_expectedSlug}", ((RedirectResult)result).Url);
+			Assert.IsType<RedirectToPageResult>(result);
+			Assert.Equal(_expectedSlug, ((RedirectToPageResult)result).RouteValues["slug"]);
 			_mediator.Verify(m => m.Send(
 				It.Is<GetIsTopicAvailableQuery>(request =>
 					request.ArticleId.Equals(0) &&
-					request.Slug.Equals(_expectedSlug)),
+					request.Topic.Equals(_topic)),
 				It.Is<CancellationToken>(token => token.Equals(CancellationToken.None))), Times.Once
 				);
 			_mediator.Verify(m => m.Send(
 				It.Is<CreateNewArticleCommand>(request =>
-					request.Slug.Equals(expectedCommand.Slug) &&
 					request.Topic.Equals(expectedCommand.Topic) &&
 					request.AuthorName.Equals(expectedCommand.AuthorName) &&
 					request.Content.Equals(expectedCommand.Content) &&
 					request.AuthorId.Equals(userId)),
 				It.Is<CancellationToken>(token => token.Equals(CancellationToken.None))), Times.Once);
 		}
-
 	}
-
 }

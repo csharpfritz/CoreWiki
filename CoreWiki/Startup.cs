@@ -35,6 +35,9 @@ namespace CoreWiki
 			services.ConfigureLocalisation();
 			services.ConfigureApplicationServices();
 			services.AddMediator();
+
+			services.AddFirstStartConfiguration(Configuration);
+
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -44,9 +47,9 @@ namespace CoreWiki
 			app.ConfigureExceptions(env);
 			app.ConfigureSecurityHeaders(env);
 			app.ConfigureRouting();
-			app.ConfigureDatabase();
+			app.InitializeData(Configuration);
 
-			app.UseFirstStartConfiguration(Configuration);
+			app.UseFirstStartConfiguration(env, Configuration, () => Program.Restart());
 
 			var theTask = app.ConfigureAuthentication(userManager, roleManager);
 			theTask.GetAwaiter().GetResult();

@@ -1,26 +1,97 @@
 ﻿@page
 @model CoreWiki.FirstStart.MyFeature.Pages.IndexModel
-
-
 <!-- Need to collect the first Admin user's information -->
-
-GIVE ME YOUR ADMIN!
-
-
 @*
+		// MUST
 
-	// MUST
+		* Set database provider
+		* Set database configuration
+		* Add initial admin user
+		* Set admin user's password
 
-	* Set database provider
-	* Set database configuration
-	* Add initial admin user
-	* Set admin user's password
-
-	// MAYBE
-	* Set name of the Wiki
-	* Choose the default theme
-	* Choose coment system
-	* Email configuration (Sendgrid?)
-	* Anything else in Corewiki/AppSettings.json
-
+		// MAYBE
+		* Set name of the Wiki
+		* Choose the default theme
+		* Choose coment system
+		* Email configuration (Sendgrid?)
+		* Anything else in Corewiki/AppSettings.json
 *@
+
+@if (!Model.Completed)
+{
+<div>
+	<div class="text-center">
+		<h1>CoreWiki</h1>
+		<h6 class="font-italic">The .NET Core Wiki Platform.</h6>
+	</div>
+	<p>Thanks for installing CoreWiki, Let's complete the install: </p>
+
+	<div class="card">
+		<div class="card-body">
+			<form method="post">
+				<!-- <div class="form-group">
+					<label for="inputWikiName">Name your Wiki</label>
+					<input type="text" class="form-control" id="WikiName" aria-describedby="help" placeholder="Choose a name for your wiki">
+					<small id="nameHelp" class="form-text text-muted">Something more creative than myWiki or CoreWiki :-)</small>
+				</div> -->
+				<div class="form-group">
+					<label asp-for="FirstStartConfig.AdminUserName">Administrator Username</label>
+					<input class="form-control" asp-for="FirstStartConfig.AdminUserName" aria-describedby="help" placeholder="Enter admin username">
+					<small id="usernameHelp" class="form-text text-muted">Let's make it unique. </small>
+				</div>
+				<div class="form-group">
+					<label asp-for="FirstStartConfig.AdminEmail">Administrator Email Address</label>
+					<input class="form-control"
+				 asp-for="FirstStartConfig.AdminEmail"	aria-describedby="help" placeholder="Enter admin email address">
+				</div>
+				<div class="form-group">
+					<label asp-for="FirstStartConfig.AdminPassword">Password</label>
+					<input class="form-control" asp-for="FirstStartConfig.AdminPassword"  placeholder="Password">
+					<small id="passwordHelp" class="form-text text-muted">Long and random.</small>
+				</div>
+				<div class="form-group">
+					<label asp-for="FirstStartConfig.Database">Database</label>
+					<select asp-for="FirstStartConfig.Database" class="form-control">
+						<option selected>Choose...</option>
+						<option>Sqlite</option>
+						<option>Postgres</option>
+						<option>SQL Server</option>
+					</select>
+				</div>
+				<div class="form-group">
+					<label asp-for="FirstStartConfig.ConnectionString">ConnectionString</label>
+					<input class="form-control" asp-for="FirstStartConfig.ConnectionString"  placeholder="ConnectionString">
+					<small id="databaseHelp" class="form-text text-muted">Enter your connection string here - leave blank for default</small>
+				</div>
+				<button type="submit" class="btn btn-primary">Submit</button>
+			</form>
+		</div>
+	</div>
+</div>
+}
+else
+{
+<div>
+	<div class="text-center">
+		<h1>CoreWiki</h1>
+		Installation completed.  Now restarting and redirecting to the home page
+	</div>
+</div>
+
+<script type="text/javascript">
+
+	(function () {
+
+		window.setTimeout(function(){
+			window.location.href = "@Url.Page("Details", new {slug="home-page" })";
+		}, 5000);
+
+	})();
+
+</script>
+
+	Task.Run(() => System.Threading.Thread.Sleep(1000)).ContinueWith(async t =>
+		await CoreWiki.FirstStart.StartupExtensions._RestartHost()
+	);
+
+}

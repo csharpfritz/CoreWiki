@@ -8,7 +8,7 @@
 	<div class="card border border-primary rounded mb-3">
 		<div class="card-header">
 			<h3 class="card-title">
-				<a href="@($"/wiki/{(Model.Slug == UrlHelpers.HomePageSlug ? "" : Model.Slug)}")">@Model.Topic</a>
+				<a asp-page="Details" asp-route-slug='@(Model.Slug == Constants.HomePageSlug ? "" : Model.Slug)'>@Model.Topic</a>
 			</h3>
 		</div>
 		<div class="card-body">

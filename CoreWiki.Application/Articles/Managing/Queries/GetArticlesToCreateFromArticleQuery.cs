@@ -2,16 +2,16 @@
 
 namespace CoreWiki.Application.Articles.Managing.Queries
 {
-	public class GetArticlesToCreateFromArticleQuery : IRequest<string[]>
+	public class GetArticlesToCreateFromArticleQuery : IRequest<(string,string[])>
 	{
-		public GetArticlesToCreateFromArticleQuery(string slug) 
+		public GetArticlesToCreateFromArticleQuery(int articleId) 
 		{
 
-			this.Slug = slug;
+			this.ArticleId = articleId;
 
 		}
 
-		public string Slug { get; }
+		public int ArticleId { get; }
 	}
 
 }

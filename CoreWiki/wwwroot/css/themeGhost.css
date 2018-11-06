@@ -6359,3 +6359,57 @@ button.accept-policy {
 .DeletedCharacter {
   background-color: #C86464;
   color: #061935; }
+
+/***  GHOST EFFECT   */
+#topicContainer {
+  position: relative; }
+
+#topic {
+  color: white;
+  animation: fade 2s infinite; }
+
+#letters {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  color: white;
+  filter: blur(2px); }
+
+#letters .letter {
+  animation: up 2s infinite linear; }
+
+#letters .letter:nth-child(2) {
+  animation-delay: 0.3s; }
+
+#letters .letter:nth-child(3) {
+  animation-delay: 0.4s; }
+
+#letters .letter:nth-child(4) {
+  animation-delay: 0.2s; }
+
+#letters .letter:nth-child(5) {
+  animation-delay: 0.1s; }
+
+@keyframes up {
+  0% {
+    transform: translate(0, 0) skew(0); }
+  20% {
+    transform: translate(0, -40%) skew(-5deg); }
+  40% {
+    transform: translate(0, -80%) skew(8deg); }
+  60% {
+    transform: translate(0, -120%) skew(-7deg); }
+  80% {
+    transform: translate(0, -160%) skew(4deg); }
+  100% {
+    transform: translate(0, -200%) skew(0);
+    opacity: 0; } }
+
+@keyframes fade {
+  0% {
+    opacity: 1; }
+  70% {
+    opacity: 0; }
+  100% {
+    opacity: 0; } }

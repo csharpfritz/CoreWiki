@@ -26,5 +26,9 @@
   {
     "outputFile": "wwwroot/css/themeRainbowFritz.css",
     "inputFile": "wwwroot/css/themeRainbowFritz.scss"
+  },
+  {
+    "outputFile": "wwwroot/css/themeGhost.css",
+    "inputFile": "wwwroot/css/themeGhost.scss"
   }
 ]

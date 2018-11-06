@@ -22,11 +22,12 @@ namespace CoreWiki.Configuration.Startup
 					options.Conventions.AddPageRoute("/Edit", "/{Slug}/Edit");
 					options.Conventions.AddPageRoute("/Delete", "{Slug}/Delete");
 					options.Conventions.AddPageRoute("/Details", "/");
-					options.Conventions.AddPageRoute("/Details", "/wiki/{Slug?}");
+					// options.Conventions.AddPageRoute("/Details", "/wiki/{Slug?}");
 					options.Conventions.AddPageRoute("/Details", @"Index");
 					options.Conventions.AddPageRoute("/Create", "{Slug?}/Create");
 					options.Conventions.AddPageRoute("/History", "{Slug?}/History");
 					options.Conventions.AuthorizeAreaFolder("Identity", "/UserAdmin", PolicyConstants.CanManageRoles);
+					options.Conventions.AddPageRoute("/Details", "{Slug?}");
 				})
 				.SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 

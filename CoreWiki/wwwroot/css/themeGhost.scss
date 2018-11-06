@@ -1,0 +1,175 @@
+﻿// Changing the theme colors
+$white: #fff !default;
+$gray-100: #f8f9fa !default;
+$gray-200: #e9ecef !default;
+$gray-300: #dee2e6 !default;
+$gray-400: #ced4da !default;
+$gray-500: #adb5bd !default;
+$gray-600: #6c757d !default;
+$gray-700: #495057 !default;
+$gray-800: #343a40 !default;
+$gray-900: #212529 !default;
+$black: #000 !default;
+
+$light: $gray-100 !default;
+$dark: $gray-800 !default;
+
+$navbar-dark-color: rgba($white, .8) !default;
+
+$body-bg: $dark !default;
+$body-color: $light !default;
+$card-bg: $body-bg !default;
+$table-head-bg: $body-bg !default;
+$text-muted: $gray-500 !default;
+$card-border-color: $light !default;
+$list-group-bg: $black !default;
+$hr-border-color: $white !default;
+
+
+@import 'custom-variables';
+
+@import '../../node_modules/bootstrap/scss/bootstrap';
+
+@import 'custom-styles';
+
+.editor-toolbar {
+	background-color: $gray-400;
+}
+
+.editor-statusbar {
+	background-color: $gray-400;
+	color: $dark;
+}
+
+/// Diff colors
+#diffBar {
+	background: $gray-400;
+}
+
+.diffHeader {
+	background-color: $black !important;
+}
+
+.lineNumber {
+	background-color: $black !important;
+}
+
+.InsertedLine {
+	background-color: #FFFF00;
+	color: $dark;
+}
+
+.ModifiedLine {
+	background-color: $gray-400 !important;
+	color: $dark;
+}
+
+.DeletedLine {
+	background-color: #FFC864;
+	color: $dark;
+}
+
+.UnchangedLine {
+	background-color: $black !important;
+}
+
+.ImaginaryLine {
+	background-color: $gray-600 !important;
+}
+
+.InsertedCharacter {
+	background-color: #FFFF96;
+	color: $dark;
+}
+
+.DeletedCharacter {
+	background-color: #C86464;
+	color: $dark;
+}
+
+.UnchangedCharacter {
+}
+
+.ImaginaryCharacter {
+}
+
+
+/***  GHOST EFFECT   */
+#topicContainer {
+	position: relative;
+}
+
+#topic {
+	color: white;
+	animation: fade 2s infinite;
+}
+
+#letters {
+	position: absolute;
+	top: 0;
+	left: 0;
+	display: flex;
+	color: white;
+	filter: blur(2px);
+}
+
+#letters .letter {
+	animation: up 2s infinite linear;
+}
+
+#letters .letter:nth-child(2) {
+	animation-delay: 0.3s;
+}
+
+#letters .letter:nth-child(3) {
+	animation-delay: 0.4s;
+}
+
+#letters .letter:nth-child(4) {
+	animation-delay: 0.2s;
+}
+
+#letters .letter:nth-child(5) {
+	animation-delay: 0.1s;
+}
+
+@keyframes up {
+	0% {
+		transform: translate(0, 0) skew(0);
+	}
+
+	20% {
+		transform: translate(0, -40%) skew(-5deg);
+	}
+
+	40% {
+		transform: translate(0, -80%) skew(8deg);
+	}
+
+	60% {
+		transform: translate(0, -120%) skew(-7deg);
+	}
+
+	80% {
+		transform: translate(0, -160%) skew(4deg);
+	}
+
+	100% {
+		transform: translate(0, -200%) skew(0);
+		opacity: 0;
+	}
+}
+
+@keyframes fade {
+	0% {
+		opacity: 1;
+	}
+
+	70% {
+		opacity: 0;
+	}
+
+	100% {
+		opacity: 0;
+	}
+}

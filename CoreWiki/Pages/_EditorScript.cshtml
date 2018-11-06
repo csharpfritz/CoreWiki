@@ -1,33 +1,42 @@
 ﻿<script src="~/lib/easymde/dist/easymde.min.js"></script>
 <script>
-	var easymde = new EasyMDE(
-		{
-			autoDownloadFontAwesome: false,
-			toolbar: [
-				"bold",
-				"italic",
-				"strikethrough",
-				"heading",
-				"|",
-				"quote",
-				"unordered-list",
-				"ordered-list",
-				"|",
-				"link",
-				"image",
-				"|",
-				"code",
-				"table",
-				"horizontal-rule",
-				"|",
-				"preview",
-				"side-by-side",
-				"fullscreen",
-				"|",
-				"guide"
-			]
-		}
-	);
+
+	if (document.getElementsByTagName("textarea").length) {
+
+		window.easymde = new EasyMDE(
+			{
+				autoDownloadFontAwesome: false,
+				insertTexts: {
+					link: ["[", "](some wiki page)"]
+				},
+				toolbar: [
+					"bold",
+					"italic",
+					"strikethrough",
+					"heading",
+					"|",
+					"quote",
+					"unordered-list",
+					"ordered-list",
+					"|",
+					"link",
+					"image",
+					"|",
+					"code",
+					"table",
+					"horizontal-rule",
+					"|",
+					"preview",
+					"side-by-side",
+					"fullscreen",
+					"|",
+					"guide"
+				]
+			}
+		);
+	}
+
+
 
 	var openFile = function (event) {
 		const input = event.target;

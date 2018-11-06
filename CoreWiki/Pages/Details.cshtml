@@ -16,7 +16,9 @@
 <div class="card card-header">
 	<div class="container">
 		<div class="row">
-			<h2 class="col-xl-7 col-lg-8 col-md-12">@Model.Article.Topic</h2>
+			<div id="topicContainer" style="width: 500px">
+				<h2 id="topic" class="col-xl-7 col-lg-8 col-md-12">@Model.Article.Topic</h2>
+			</div>
 			<div class="col-xl-5 col-lg-4 col-md-12">
 				<div class="container">
 					<div class="row">
@@ -57,6 +59,32 @@
 			var duration = Number($(this).attr('data-duration'));
 			$(this).text(moment.duration(duration).humanize());
 		});
+
+		var themeName = document.querySelector("#selectTheme").value;
+		if (themeName == "themeGhost") {
+			configureGhost();
+		}
+
+		function configureGhost() {
+
+			console.log("Configuring ghost");
+
+			var topic = document.getElementById("topic").innerText;
+			console.log(topic);
+			var segmentSize = Math.ceil(topic.length / 5);
+			var letters = document.createElement("div");
+			letters.id = "letters";
+			document.getElementById("topic").parentElement.appendChild(letters);
+			var letterArray = topic.match(new RegExp('.{1,' + segmentSize + '}', 'g'));
+			for (var i = 0; i < letterArray.length; i++) {
+				var newLetter = document.createElement("h2");
+				newLetter.className = "letter";
+				newLetter.innerText = letterArray[i];
+				letters.appendChild(newLetter);
+			}
+
+		}
+
 	</script>
 }
 

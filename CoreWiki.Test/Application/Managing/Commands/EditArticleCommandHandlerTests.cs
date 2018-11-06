@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using CoreWiki.Application.Articles.Managing;
 using CoreWiki.Application.Articles.Managing.Commands;
+using CoreWiki.Core.Domain;
 using Moq;
 using Xunit;
 
@@ -32,9 +33,18 @@ namespace CoreWiki.Test.Application.Managing.Commands
 		[Fact]
 		public async Task Handle_HappyPath_Successful()
 		{
+			Mock.Get(_articleManagementService)
+				.Setup(s => s.Update(_editArticleCommand.Id,
+					_editArticleCommand.Topic,
+					_editArticleCommand.Content,
+					_editArticleCommand.AuthorId,
+					_editArticleCommand.AuthorName))
+				.ReturnsAsync(new Article { Topic = "Some topic" })
+				.Verifiable();
+
 			var result = await _articleCommandHandler.Handle(_editArticleCommand, CancellationToken.None);
 
-			Mock.Get(_articleManagementService).Verify(s => s.Update(_editArticleCommand.Id, _editArticleCommand.Topic, _editArticleCommand.Content,_editArticleCommand.AuthorId, _editArticleCommand.AuthorName));
+			Mock.Get(_articleManagementService).Verify();
 			Assert.True(result.Successful);
 		}
 

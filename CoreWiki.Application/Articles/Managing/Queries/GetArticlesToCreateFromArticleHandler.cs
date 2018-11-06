@@ -6,7 +6,7 @@ using MediatR;
 namespace CoreWiki.Application.Articles.Managing.Queries
 {
 
-	public class GetArticlesToCreateFromArticleHandler : IRequestHandler<GetArticlesToCreateFromArticleQuery, string[]>
+	public class GetArticlesToCreateFromArticleHandler : IRequestHandler<GetArticlesToCreateFromArticleQuery, (string,string[])>
 	{
 		private readonly IArticleManagementService _articleReadingService;
 
@@ -15,10 +15,10 @@ namespace CoreWiki.Application.Articles.Managing.Queries
 			_articleReadingService = articleReadingService;
 		}
 
-		public async Task<string[]> Handle(GetArticlesToCreateFromArticleQuery request, CancellationToken cancellationToken)
+		public async Task<(string,string[])> Handle(GetArticlesToCreateFromArticleQuery request, CancellationToken cancellationToken)
 		{
-			var result = await _articleReadingService.GetArticlesToCreate(request.Slug);
-			return result.ToArray();
+			var result = await _articleReadingService.GetArticlesToCreate(request.ArticleId);
+			return (result.Item1, result.Item2.ToArray());
 		}
 
 	}

@@ -18,23 +18,5 @@ namespace CoreWiki.Test.Helpers
 			var actual_topic = UrlHelpers.SlugToTopic(slug);
 			Assert.Equal(expected_topic, actual_topic);
 		}
-
-		[Theory]
-		[InlineData("OneTwo", "one-two")]
-		[InlineData("HomePage", "home-page")]
-		public void ShouldAddDashBetweenWords(string givenText, string expectedUrlFriendly)
-		{
-
-			// act
-			var result = UrlHelpers.URLFriendly(givenText);
-
-			// assert
-			Assert.Equal(expectedUrlFriendly, result);
-
-
-		}
-
-
-
 	}
 }

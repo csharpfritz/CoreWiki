@@ -44,15 +44,15 @@ namespace CoreWiki.Application.Articles.Managing.Impl
 			return createdArticle;
 		}
 
-		public async Task Update(int id, string topic, string content, Guid authorId, string authorName)
+		public async Task<Article> Update(int id, string topic, string content, Guid authorId, string authorName)
 		{
-			var slug = UrlHelpers.URLFriendly(topic);
-			if (string.IsNullOrWhiteSpace(slug))
+			var article = new Article { Topic = topic };
+			if (string.IsNullOrWhiteSpace(article.Slug))
 			{
 				throw new InvalidTopicException("The topic must contain at least one alphanumeric character.");
 			}
 
-			var existingArticle = await _repository.GetArticleBySlug(slug);
+			var existingArticle = await _repository.GetArticleBySlug(article.Slug);
 			if (existingArticle != null && existingArticle.Id != id)
 			{
 				throw new InvalidTopicException("The topic conflicts with an existing article.");
@@ -67,7 +67,6 @@ namespace CoreWiki.Application.Articles.Managing.Impl
 
 			var oldSlug = existingArticle.Slug;
 			existingArticle.Topic = topic;
-			existingArticle.Slug = UrlHelpers.URLFriendly(topic);
 			existingArticle.Content = content;
 			existingArticle.AuthorId = authorId;
 			existingArticle.AuthorName = authorName;
@@ -80,6 +79,9 @@ namespace CoreWiki.Application.Articles.Managing.Impl
 				await _slugHistoryRepository.AddToHistory(oldSlug, existingArticle);
 			}
 			await _mediator.Publish(new ArticleEditedNotification(existingArticle));
+
+			return existingArticle;
+
 		}
 
 		public async Task<Article> Delete(string slug)
@@ -125,6 +127,38 @@ namespace CoreWiki.Application.Articles.Managing.Impl
 			}
 
 			return articlesToCreate.Distinct().ToList();
+
+			IEnumerable<string> FindWikiArticleLinks(string content)
+			{
+				return Regex.Matches(content, articleLinksPattern)
+					.Select(match => match.Groups[2].Value)
+					.ToArray();
+			}
+		}
+
+		public async Task<(string,IList<string>)> GetArticlesToCreate(int articleId)
+		{
+			var articlesToCreate = new List<string>();
+			var thisArticle = await _repository.GetArticleById(articleId);
+
+			if (string.IsNullOrWhiteSpace(thisArticle.Content))
+			{
+				return (thisArticle.Slug,articlesToCreate.Distinct().ToList());
+			}
+
+			foreach (var link in FindWikiArticleLinks(thisArticle.Content))
+			{
+				// Normalise the potential new wiki link into our slug format
+				var newSlug = link;
+
+				// Does the slug already exist in the database?
+				if (!await IsTopicAvailable(newSlug, thisArticle.Id))
+				{
+					articlesToCreate.Add(newSlug);
+				}
+			}
+
+			return (thisArticle.Slug,articlesToCreate.Distinct().ToList());
 
 			IEnumerable<string> FindWikiArticleLinks(string content)
 			{

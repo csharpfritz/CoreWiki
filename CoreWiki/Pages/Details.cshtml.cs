@@ -31,19 +31,18 @@ namespace CoreWiki.Pages
 
 		public async Task<IActionResult> OnGetAsync(string slug)
 		{
-
-			slug = slug ?? UrlHelpers.HomePageSlug;
+			slug = slug ?? Constants.HomePageSlug;
 			var article = await _mediator.Send(new GetArticleQuery(slug));
 
 			if (article == null)
 			{
-
 				var historical = await _mediator.Send(new GetSlugHistoryQuery(slug));
 
 				if (historical != null)
 				{
-					return new RedirectResult($"~/wiki/{historical.Article.Slug}");
+					return Redirect(historical.Article.Slug);
 				}
+
 				return new ArticleNotFoundResult(slug);
 			}
 
@@ -67,12 +66,12 @@ namespace CoreWiki.Pages
 			{
 				Expires = DateTime.UtcNow.AddMinutes(5)
 			});
+
 			_mediator.Send(new IncrementViewCountCommand(slug));
 		}
 
 		public async Task<IActionResult> OnPostAsync(Comment model)
 		{
-
 			TryValidateModel(model);
 
 			if (!ModelState.IsValid)
@@ -90,7 +89,7 @@ namespace CoreWiki.Pages
 
 			await _mediator.Send(commentCmd);
 
-			return Redirect($"/wiki/{article.Slug}");
+			return Redirect(article.Slug);
 		}
 	}
 }

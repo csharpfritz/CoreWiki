@@ -63,7 +63,7 @@ namespace CoreWiki.Pages
 			}
 
 			var result = await _mediator.Send(new DeleteArticleCommand(slug));
-			return LocalRedirect($"/wiki/{UrlHelpers.HomePageSlug}");
+			return RedirectToPage("Details", new {slug=Constants.HomePageSlug });
 		}
 	}
 }

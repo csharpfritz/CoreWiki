@@ -50,6 +50,7 @@ namespace CoreWiki.Pages
 			}
 			else
 			{
+				// TODO: Convert this to use a PageRoute
 				return Redirect($"/{slug}/Edit");
 			}
 
@@ -57,12 +58,12 @@ namespace CoreWiki.Pages
 		}
 
 		[BindProperty]
-		public ArticleCreate Article { get; set; }   
+		public ArticleCreate Article { get; set; }
 
 		public async Task<IActionResult> OnPostAsync()
 		{
-			var slug = UrlHelpers.URLFriendly(Article.Topic);
-			if (string.IsNullOrWhiteSpace(slug))
+			//var slug = UrlHelpers.URLFriendly(Article.Topic);
+			if (string.IsNullOrWhiteSpace(Article.Topic))
 			{
 				ModelState.AddModelError("Article.Topic", "The Topic must contain at least one alphanumeric character.");
 				return Page();
@@ -70,9 +71,9 @@ namespace CoreWiki.Pages
 
 			if (!ModelState.IsValid) { return Page(); }
 
-			_logger.LogWarning($"Creating page with slug: {slug}");
+			_logger.LogWarning($"Creating page with topic: {Article.Topic}");
 
-			var isTopicAvailable = new GetIsTopicAvailableQuery {Slug = slug, ArticleId = 0};
+			var isTopicAvailable = new GetIsTopicAvailableQuery {Topic = Article.Topic, ArticleId = 0};
 			if (await _mediator.Send(isTopicAvailable))
 			{
 				ModelState.AddModelError("Article.Topic", "This Title already exists.");
@@ -86,15 +87,15 @@ namespace CoreWiki.Pages
 
 			// TODO: Inspect result to ensure it ran properly
 
-			var query = new GetArticlesToCreateFromArticleQuery(slug);
-			var listOfSlugs = await _mediator.Send(query);
+			// var query = new GetArticlesToCreateFromArticleQuery(cmdResult.ObjectId);
+			// var listOfSlugs = await _mediator.Send(query);
 
-			if (listOfSlugs.Any())
-			{
-				return RedirectToPage("CreateArticleFromLink", new { id = slug });
-			}
+			// if (listOfSlugs.Item2.Any())
+			// {
+			// 	return RedirectToPage("CreateArticleFromLink", new { id = listOfSlugs.Item1 });
+			// }
 
-			return Redirect($"/wiki/{slug}");
+			return RedirectToPage("Details", new {slug=cmdResult.ObjectId.ToString()});
 
 		}
 	}

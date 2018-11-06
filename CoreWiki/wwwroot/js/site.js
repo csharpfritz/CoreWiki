@@ -8,6 +8,7 @@
 
 			var thisTimeStamp = ts.getAttribute("data-value");
 			var date = new Date(thisTimeStamp);
+			moment.locale(window.navigator.userLanguage || window.navigator.language);
 			ts.textContent = moment(date).format('LLL');
 
 		}

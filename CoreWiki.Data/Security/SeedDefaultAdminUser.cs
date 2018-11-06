@@ -26,28 +26,28 @@ namespace CoreWiki.Data.EntityFramework.Security
 			}
 
 			// If there are no users who are currently an admin, then create a default admin user
-			var anyAdminUsers = await userManager.GetUsersInRoleAsync(administratorsRole);
+			// var anyAdminUsers = await userManager.GetUsersInRoleAsync(administratorsRole);
 
-			if (!anyAdminUsers.Any())
-			{
-				var defaultAdminUserExists = await userManager.FindByEmailAsync(defaultAdminUsername);
+			// if (!anyAdminUsers.Any())
+			// {
+			// 	var defaultAdminUserExists = await userManager.FindByEmailAsync(defaultAdminUsername);
 
-				if (defaultAdminUserExists == null)
-				{
-					var defaultAdminUser = new CoreWikiUser
-					{
-						UserName = defaultAdminUsername,
-						Email = defaultAdminUsername
-					};
+			// 	if (defaultAdminUserExists == null)
+			// 	{
+			// 		var defaultAdminUser = new CoreWikiUser
+			// 		{
+			// 			UserName = defaultAdminUsername,
+			// 			Email = defaultAdminUsername
+			// 		};
 
-					var userResult = await userManager.CreateAsync(defaultAdminUser, defaultAdminPassword);
+			// 		var userResult = await userManager.CreateAsync(defaultAdminUser, defaultAdminPassword);
 
-					if (userResult.Succeeded)
-					{
-						var result = await userManager.AddToRoleAsync(defaultAdminUser, administratorsRole);
-					}
-				}
-			}
+			// 		if (userResult.Succeeded)
+			// 		{
+			// 			var result = await userManager.AddToRoleAsync(defaultAdminUser, administratorsRole);
+			// 		}
+			// 	}
+			// }
 		}
 	}
 }
