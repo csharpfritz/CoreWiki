@@ -25,13 +25,14 @@ Explore a CoreWiki live demo at https://corewiki.info/
 
 To run the latest version of CoreWiki on your local dev machine, open your favorite terminal on an operating system of your choice, and execute the following:
 
-`git clone https://github.com/csharpfritz/CoreWiki.git`
+```bash
+git clone https://github.com/csharpfritz/CoreWiki.git
+cd CoreWiki\CoreWiki
+npm install
+dotnet run
+```
 
-`cd CoreWiki\CoreWiki`
-
-`npm install`
-
-`dotnet run`
+:bulb: Tips: you can also use the watch command, it will rebuild CoreWiki when you do any code change `dotnet watch run`
 
 ### <a id="deploy">Deploy own instance</a>
 Fastest way to ship your own instance is to try our Deploy to Azure button, but you can deploy to a cloud provider of your choice.
@@ -39,6 +40,14 @@ Fastest way to ship your own instance is to try our Deploy to Azure button, but 
 [![Deploy to Azure](https://azuredeploy.net/deploybutton.png)](https://azuredeploy.net/)
 
 ### FAQ
+
+#### I want to contribute:
+
+**@csharpfritz** is inviting for new and old to learn together with team stream, and make a pull request.
+A more descriptive contributing guide is written **here:** [contributing](contributing.md)
+- To find task that has been discussed, search in the issues for **`help-wanted`** [here](https://github.com/csharpfritz/CoreWiki/issues?q=is%3Aissue+is%3Aopen+label%3A%22help+wanted%22)
+- If you see **TODO** in code, or see small improvements in current functionality, you are also welcome to make a pull-request
+- If you want to try adding a new feature, please open an issue so **@csharpfritz** can review the idea
 
 #### <a id="default-admin-warning">How do I get rid of the 'default administrator enabled' warning?</a>
 To create a new administrator and get rid of this warning, you must do the following:
