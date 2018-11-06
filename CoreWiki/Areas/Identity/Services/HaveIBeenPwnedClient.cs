@@ -29,7 +29,7 @@ namespace CoreWiki.Areas.Identity.Services
 			_client = client;
 			_client.BaseAddress = _baseUri;
 			_client.DefaultRequestHeaders.Add("api-version", "2");
-			_client.DefaultRequestHeaders.Add("User-Agent", "PwnedClient.Net");
+			_client.DefaultRequestHeaders.Add("User-Agent", "CoreWiki");
 			_logger = logger;
 		}
 
@@ -53,7 +53,8 @@ namespace CoreWiki.Areas.Identity.Services
 		{
 			var res = await CallApiAsync(hashedpassword);
 
-			// Find hash in result
+			// Find EndOfhash in results from HIBP
+			// HIBP returns end of all hashes that matches with the start of our hash
 			var regex = new Regex($"({hashedpassword.Substring(5)})[:](\\d+)");
 			var matches = regex.Matches(res);
 			if (matches.Count == 0)
@@ -76,10 +77,10 @@ namespace CoreWiki.Areas.Identity.Services
 		/// <returns></returns>
 		private async Task<string> CallApiAsync(string sha1string)
 		{
-			var query = FirstFive(sha1string);
+			var startOfHash = FirstFive(sha1string);
 			try
 			{
-				var response = await _client.GetAsync(query);
+				var response = await _client.GetAsync(startOfHash);
 				var results = await response.Content.ReadAsStringAsync();
 				return results;
 			}
