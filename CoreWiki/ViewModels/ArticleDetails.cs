@@ -6,6 +6,7 @@ namespace CoreWiki.ViewModels
 {
 	public class ArticleDetails
 	{
+		public bool IsHomePage { get; set; }
 		public int Id { get; set; }
 		public Guid AuthorId { get; set; }
 		public string Slug { get; set; }

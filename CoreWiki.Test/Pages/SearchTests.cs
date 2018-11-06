@@ -1,5 +1,6 @@
 ﻿using CoreWiki.Application.Articles.Search.Dto;
 using CoreWiki.Application.Articles.Search.Queries;
+using CoreWiki.Configuration.Startup;
 using CoreWiki.Pages;
 using MediatR;
 using Moq;
@@ -30,7 +31,7 @@ namespace CoreWiki.Test.Pages
 				}));
 
 			// Act
-			var searchModel = new SearchModel(mediator.Object);
+			var searchModel = new SearchModel(mediator.Object, ConfigureAutomapperServices.ConfigureAutomapper(null));
 
 			var result = await searchModel.OnGetAsync(query: "test", pageNumber: 2);
 

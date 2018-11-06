@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Security.Claims;
 using AutoMapper;
 using CoreWiki.Application.Articles.Managing.Commands;
 using CoreWiki.Application.Articles.Reading.Commands;
 using CoreWiki.Application.Articles.Reading.Dto;
+using CoreWiki.Application.Articles.Search.Dto;
 using CoreWiki.Application.Common;
 using CoreWiki.ViewModels;
 
@@ -37,6 +39,10 @@ namespace CoreWiki.Configuration.Startup
 			CreateMap<ClaimsPrincipal, EditArticleCommand>(MemberList.None)
 				.ForMember(d => d.AuthorId, m => m.MapFrom(s => Guid.Parse(s.FindFirstValue(ClaimTypes.NameIdentifier))))
 				.ForMember(d => d.AuthorName, m => m.MapFrom(s => s.Identity.Name));
+
+			CreateMap<IList<ArticleReadingDto>, SearchResultDto<ArticleSummary>>(MemberList.None)
+				.ForMember(d => d.Results, m => m.MapFrom(s => s))
+				.ForMember(d => d.TotalResults, m => m.MapFrom(s => s.Count));
 		}
 	}
 }

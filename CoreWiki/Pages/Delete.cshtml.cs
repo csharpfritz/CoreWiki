@@ -44,7 +44,7 @@ namespace CoreWiki.Pages
 				return NotFound();
 			}
 
-			if (article.Slug == Constants.HomePageSlug)
+			if (article.IsHomePage)
 			{
 				await _mediator.Publish(new DeleteHomePageAttemptNotification());
 				return Forbid();
