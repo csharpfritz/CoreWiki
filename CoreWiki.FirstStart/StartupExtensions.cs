@@ -36,7 +36,7 @@ namespace CoreWiki.FirstStart
 
 		private static bool IsFirstStartIncomplete(HttpContext context)
 		{
-			return true;
+			return false;
 		}
 	}
 
