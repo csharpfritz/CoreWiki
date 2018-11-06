@@ -71,7 +71,7 @@ namespace CoreWiki.Pages
 				taskList.Add(_mediator.Send(createCmd));
 			});
 
-			Task.WaitAll(taskList.ToArray());
+			await Task.WhenAll(taskList.ToArray());
 
 			return Redirect($"/wiki/{(slug == UrlHelpers.HomePageSlug ? "" : slug)}");
 		}
