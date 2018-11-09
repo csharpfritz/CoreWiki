@@ -10,6 +10,9 @@ namespace CoreWiki.FirstStart
 		[Required]
 		public string AdminUserName { get; set; }
 
+		[Required]
+		public string AdminDisplayName { get; set; }
+
 		[Required, EmailAddress]
 		public string AdminEmail { get; set; }
 

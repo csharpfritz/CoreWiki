@@ -62,7 +62,8 @@ namespace CoreWiki.FirstStart.MyFeature.Pages
 
 			var newAdminUser = new CoreWikiUser
 			{
-				UserName = this.FirstStartConfig.AdminEmail,
+				UserName = this.FirstStartConfig.AdminUserName,
+				DisplayName = this.FirstStartConfig.AdminDisplayName,
 				Email = this.FirstStartConfig.AdminEmail
 			};
 

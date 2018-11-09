@@ -67,7 +67,9 @@ namespace CoreWiki.Areas.Identity
 					break;
 				default:
 					connectionString = !string.IsNullOrEmpty(connectionString) ? connectionString : "DataSource =./App_Data/wikiIdentity.db";
-					optionsBuilder = options => options.UseSqlite(connectionString);
+					optionsBuilder = options => options.UseSqlite(connectionString, o => {
+						o.MigrationsAssembly("CoreWiki.Data.EntityFramework");
+					});
 					break;
 			}
 

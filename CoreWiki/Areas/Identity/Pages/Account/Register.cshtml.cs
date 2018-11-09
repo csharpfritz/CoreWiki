@@ -45,6 +45,15 @@ namespace CoreWiki.Areas.Identity.Pages.Account
 
 		public class InputModel
 		{
+
+			[Required]
+			[Display(Name = "User Name")]
+			public string UserName { get; set; }
+
+			[Required]
+			[Display(Name = "Display Name")]
+			public string DisplayName { get; set; }
+
 			[Required]
 			[EmailAddress]
 			[Display(Name = "Email")]
@@ -88,7 +97,8 @@ namespace CoreWiki.Areas.Identity.Pages.Account
 
 			var user = new CoreWikiUser
 			{
-				UserName = Input.Email,
+				UserName = Input.UserName,
+				DisplayName = Input.DisplayName,
 				Email = Input.Email,
 				CanNotify = Input.CanNotify
 			};
