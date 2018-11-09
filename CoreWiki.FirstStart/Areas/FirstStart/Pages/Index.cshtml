@@ -29,25 +29,32 @@
 	<div class="card">
 		<div class="card-body">
 			<form method="post">
+
+				<div asp-validation-summary="All" class="text-danger"></div>
+
 				<!-- <div class="form-group">
-					<label for="inputWikiName">Name your Wiki</label>
-					<input type="text" class="form-control" id="WikiName" aria-describedby="help" placeholder="Choose a name for your wiki">
-					<small id="nameHelp" class="form-text text-muted">Something more creative than myWiki or CoreWiki :-)</small>
-				</div> -->
+		<label for="inputWikiName">Name your Wiki</label>
+		<input type="text" class="form-control" id="WikiName" aria-describedby="help" placeholder="Choose a name for your wiki">
+		<small id="nameHelp" class="form-text text-muted">Something more creative than myWiki or CoreWiki :-)</small>
+	</div> -->
+
 				<div class="form-group">
 					<label asp-for="FirstStartConfig.AdminUserName">Administrator Username</label>
 					<input class="form-control" asp-for="FirstStartConfig.AdminUserName" aria-describedby="help" placeholder="Enter admin username">
 					<small id="usernameHelp" class="form-text text-muted">Let's make it unique. </small>
+					<span asp-validation-for="FirstStartConfig.AdminUserName" class="text-danger"></span>
 				</div>
 				<div class="form-group">
 					<label asp-for="FirstStartConfig.AdminEmail">Administrator Email Address</label>
 					<input class="form-control"
-				 asp-for="FirstStartConfig.AdminEmail"	aria-describedby="help" placeholder="Enter admin email address">
+								 asp-for="FirstStartConfig.AdminEmail" aria-describedby="help" placeholder="Enter admin email address">
+					<span asp-validation-for="FirstStartConfig.AdminEmail" class="text-danger"></span>
 				</div>
 				<div class="form-group">
 					<label asp-for="FirstStartConfig.AdminPassword">Password</label>
-					<input class="form-control" asp-for="FirstStartConfig.AdminPassword"  placeholder="Password">
+					<input class="form-control" asp-for="FirstStartConfig.AdminPassword" placeholder="Password">
 					<small id="passwordHelp" class="form-text text-muted">Long and random.</small>
+					<span asp-validation-for="FirstStartConfig.AdminPassword" class="text-danger"></span>
 				</div>
 				<div class="form-group">
 					<label asp-for="FirstStartConfig.Database">Database</label>
@@ -60,7 +67,7 @@
 				</div>
 				<div class="form-group">
 					<label asp-for="FirstStartConfig.ConnectionString">ConnectionString</label>
-					<input class="form-control" asp-for="FirstStartConfig.ConnectionString"  placeholder="ConnectionString">
+					<input class="form-control" asp-for="FirstStartConfig.ConnectionString" placeholder="ConnectionString">
 					<small id="databaseHelp" class="form-text text-muted">Enter your connection string here - leave blank for default</small>
 				</div>
 				<button type="submit" class="btn btn-primary">Submit</button>
