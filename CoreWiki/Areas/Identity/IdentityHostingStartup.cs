@@ -20,8 +20,10 @@ namespace CoreWiki.Areas.Identity
 
 				ConfigureDb(context, services);
 
-				services.AddIdentity<CoreWikiUser, IdentityRole>(options =>
-						options.SignIn.RequireConfirmedEmail = requireConfirmedEmail)
+				services.AddIdentity<CoreWikiUser, IdentityRole>(options => {
+					options.SignIn.RequireConfirmedEmail = requireConfirmedEmail;
+					options.User.RequireUniqueEmail = true;
+						})
 					.AddRoles<IdentityRole>()
 					.AddRoleManager<RoleManager<IdentityRole>>()
 					.AddDefaultUI()

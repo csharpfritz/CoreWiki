@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -21,7 +22,7 @@ namespace CoreWiki.FirstStart.MyFeature.Pages
 	{
 
 		public IndexModel(IHostingEnvironment env,
-			IConfiguration config,
+			IConfiguration config, ILoggerFactory loggerFactory,
 			UserManager<CoreWikiUser> userManager,
 			RoleManager<IdentityRole> roleManager)
 		{
@@ -29,6 +30,7 @@ namespace CoreWiki.FirstStart.MyFeature.Pages
 			this.Configuration = config;
 			this.FirstStartConfig = new FirstStartConfiguration();
 
+			this.Logger = loggerFactory.CreateLogger("FirstStart");
 			this.UserManager = userManager;
 			this.RoleManager = roleManager;
 
@@ -39,6 +41,7 @@ namespace CoreWiki.FirstStart.MyFeature.Pages
 
 		[BindProperty()]
 		public FirstStartConfiguration FirstStartConfig { get; set; }
+		public ILogger Logger { get; }
 		public UserManager<CoreWikiUser> UserManager { get; }
 		public RoleManager<IdentityRole> RoleManager { get; }
 		public bool Completed { get; set; } = false;
@@ -59,7 +62,7 @@ namespace CoreWiki.FirstStart.MyFeature.Pages
 
 			var newAdminUser = new CoreWikiUser
 			{
-				UserName = this.FirstStartConfig.AdminUserName,
+				UserName = this.FirstStartConfig.AdminEmail,
 				Email = this.FirstStartConfig.AdminEmail
 			};
 
@@ -68,6 +71,11 @@ namespace CoreWiki.FirstStart.MyFeature.Pages
 			if (userResult.Succeeded)
 			{
 				var result = await UserManager.AddToRoleAsync(newAdminUser, "Administrators");
+			}
+			else {
+				Logger.LogError($"Error creating user: {userResult.Errors.First().Description}");
+				ModelState.AddModelError("", $"There was an error creating the admin user: {userResult.Errors.First().Description}");
+				return Page();
 			}
 
 			if (string.IsNullOrEmpty(FirstStartConfig.ConnectionString)) {
