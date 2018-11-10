@@ -33,20 +33,18 @@
 	</div>
 </div>
 <br />
-<div class="container">
-	<markdown markdown="Article.Content" />
+<markdown markdown="Article.Content" />
 
-	<div>
-		<a asp-page="/Edit" asp-route-slug="@Model.Article.Slug" asp-policy="@PolicyConstants.CanEditArticles" class="btn btn-outline-info">@Localizer["Edit"]</a>
+<div>
+	<a asp-page="/Edit" asp-route-slug="@Model.Article.Slug" asp-policy="@PolicyConstants.CanEditArticles" class="btn btn-outline-info">@Localizer["Edit"]</a>
 
-		@if (!Model.Article.IsHomePage)
-		{
-			<a href="~/" class="btn btn-secondary">@Localizer["GoHome"]</a>
-		}
-	</div>
-
-	<partial name="_CommentsPartial" model="Model" />
+	@if (!Model.Article.IsHomePage)
+	{
+		<a href="~/" class="btn btn-secondary">@Localizer["GoHome"]</a>
+	}
 </div>
+
+<partial name="_CommentsPartial" model="Model" />
 @section Scripts {
 	@await Html.PartialAsync("_EditorScript")
 	<script type="text/javascript">
