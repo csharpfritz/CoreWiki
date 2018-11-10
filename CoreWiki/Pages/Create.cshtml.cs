@@ -14,6 +14,8 @@ using CoreWiki.Application.Articles.Managing.Commands;
 using CoreWiki.Application.Articles.Managing.Queries;
 using CoreWiki.Application.Common;
 using CoreWiki.Helpers;
+using Microsoft.AspNetCore.Identity;
+using CoreWiki.Data.EntityFramework.Security;
 
 namespace CoreWiki.Pages
 {
@@ -24,12 +26,14 @@ namespace CoreWiki.Pages
 		private readonly IMediator _mediator;
 		private readonly IMapper _mapper;
 		private readonly ILogger _logger;
+		private readonly UserManager<CoreWikiUser> _userManager;
 
-		public CreateModel(IMediator mediator, IMapper mapper, ILoggerFactory loggerFactory)
+		public CreateModel(IMediator mediator, IMapper mapper, ILoggerFactory loggerFactory, UserManager<CoreWikiUser> userManager)
 		{
 			_mediator = mediator;
 			_mapper = mapper;
 			_logger = loggerFactory.CreateLogger("CreatePage");
+			_userManager = userManager;
 		}
 
 		public async Task<IActionResult> OnGetAsync(string slug = "")
@@ -81,7 +85,8 @@ namespace CoreWiki.Pages
 			}
 
 			var cmd = _mapper.Map<CreateNewArticleCommand>(Article);
-			cmd = _mapper.Map(User, cmd);
+			var cwUser = await _userManager.GetUserAsync(User);
+			cmd = _mapper.Map(cwUser, cmd);
 
 			var cmdResult = await _mediator.Send(cmd);
 

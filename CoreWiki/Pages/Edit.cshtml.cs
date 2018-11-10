@@ -15,6 +15,8 @@ using CoreWiki.Application.Common;
 using Microsoft.AspNetCore.Authorization;
 using CoreWiki.Areas.Identity;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Identity;
+using CoreWiki.Data.EntityFramework.Security;
 
 namespace CoreWiki.Pages
 {
@@ -25,13 +27,15 @@ namespace CoreWiki.Pages
 
 		private readonly IMediator _mediator;
 		private readonly IMapper _mapper;
-        private readonly ILogger _Logger;
+		private readonly ILogger _Logger;
+		private readonly UserManager<CoreWikiUser> _UserManager;
 
-        public EditModel(IMediator mediator, IMapper mapper, ILoggerFactory loggerFactory)
+		public EditModel(IMediator mediator, IMapper mapper, ILoggerFactory loggerFactory, UserManager<CoreWikiUser> userManager)
 		{
 			_mediator = mediator;
 			_mapper = mapper;
 			_Logger = loggerFactory.CreateLogger("EditPage");
+			_UserManager = userManager;
 		}
 
 		[BindProperty]
@@ -65,7 +69,8 @@ namespace CoreWiki.Pages
 			}
 
 			var cmd = _mapper.Map<EditArticleCommand>(Article);
-			cmd =_mapper.Map(User, cmd);
+			var cwUser = await _UserManager.GetUserAsync(User);
+			cmd = _mapper.Map(cwUser, cmd);
 
 			var result = await _mediator.Send(cmd);
 
@@ -73,7 +78,7 @@ namespace CoreWiki.Pages
 			{
 				ModelState.AddModelError("Article.Topic", result.Exception.Message);
 				return Page();
-			} 
+			}
 			else if (result.Exception is ArticleNotFoundException)
 			{
 				return new ArticleNotFoundResult();
@@ -92,7 +97,7 @@ namespace CoreWiki.Pages
 
 			_Logger.LogWarning($"Routing for the slug: {result.ObjectId}");
 
-			return RedirectToPage("Details", new {Slug= (result.ObjectId == Constants.HomePageSlug ? "" : result.ObjectId)});
+			return RedirectToPage("Details", new { Slug = (result.ObjectId == Constants.HomePageSlug ? "" : result.ObjectId) });
 
 		}
 

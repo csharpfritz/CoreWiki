@@ -7,6 +7,7 @@ using CoreWiki.Application.Articles.Reading.Commands;
 using CoreWiki.Application.Articles.Reading.Dto;
 using CoreWiki.Application.Articles.Search.Dto;
 using CoreWiki.Application.Common;
+using CoreWiki.Data.EntityFramework.Security;
 using CoreWiki.ViewModels;
 
 namespace CoreWiki.Configuration.Startup
@@ -28,6 +29,9 @@ namespace CoreWiki.Configuration.Startup
 			CreateMap<ClaimsPrincipal, CreateNewArticleCommand>(MemberList.None)
 				.ForMember(d => d.AuthorId, m => m.MapFrom(s => Guid.Parse(s.FindFirstValue(ClaimTypes.NameIdentifier))))
 				.ForMember(d => d.AuthorName, m => m.MapFrom(s => s.Identity.Name));
+			CreateMap<CoreWikiUser, CreateNewArticleCommand>(MemberList.None)
+				.ForMember(d => d.AuthorId, m => m.MapFrom(s => Guid.Parse(s.Id)))
+				.ForMember(d => d.AuthorName, m => m.MapFrom(s => s.DisplayName));
 
 			CreateMap<ClaimsPrincipal, CreateSkeletonArticleCommand>(MemberList.None)
 				.ForMember(d => d.AuthorId, m => m.MapFrom(s => Guid.Parse(s.FindFirstValue(ClaimTypes.NameIdentifier))))
@@ -39,6 +43,9 @@ namespace CoreWiki.Configuration.Startup
 			CreateMap<ClaimsPrincipal, EditArticleCommand>(MemberList.None)
 				.ForMember(d => d.AuthorId, m => m.MapFrom(s => Guid.Parse(s.FindFirstValue(ClaimTypes.NameIdentifier))))
 				.ForMember(d => d.AuthorName, m => m.MapFrom(s => s.Identity.Name));
+			CreateMap<CoreWikiUser, EditArticleCommand>(MemberList.None)
+				.ForMember(d => d.AuthorId, m => m.MapFrom(s => Guid.Parse(s.Id)))
+				.ForMember(d => d.AuthorName, m => m.MapFrom(s => s.DisplayName));
 
 			CreateMap<IList<ArticleReadingDto>, SearchResultDto<ArticleSummary>>(MemberList.None)
 				.ForMember(d => d.Results, m => m.MapFrom(s => s))
