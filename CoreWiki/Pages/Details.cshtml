@@ -14,22 +14,20 @@
 }
 
 <div class="card card-header">
-	<div class="container">
-		<div class="row">
-			<div id="topicContainer" class="col-xl-7 col-lg-8 col-md-12">
-				<h2 id="topic">@Model.Article.Topic</h2>
+	<div class="row">
+		<div id="topicContainer" class="col-xl-7 col-lg-8 col-md-12">
+			<h2 id="topic">@Model.Article.Topic</h2>
+		</div>
+		<div class="col-xl-5 col-lg-4 col-md-12">
+			<div class="row">
+				<div class="col-xl-12 small text-muted">@Localizer["Published"]: <span data-value="@Model.Article.Published" class="timeStampValue"> @Model.Article.Published</span></div>
 			</div>
-			<div class="col-xl-5 col-lg-4 col-md-12">
-				<div class="row">
-					<div class="col-xl-12 small text-muted">@Localizer["Published"]: <span data-value="@Model.Article.Published" class="timeStampValue"> @Model.Article.Published</span></div>
-				</div>
-				<div class="row">
-					<div class="col-xl-4 small"><span class="text-muted">@Localizer["ViewCount"]: </span><span class="badge badge-primary" data-value="@Model.Article.ViewCount"> @Model.Article.ViewCount</span></div>
-					<div class="col-xl-8 small"><span class="text-muted">@Localizer["ReadingTime"]: </span><span class="badge badge-primary duration" data-duration="@Model.Article.Content.CalculateReadTime().TotalMilliseconds"></span></div>
-				</div>
-				<div class="row">
-					<div class="col-xl-12 small"><a asp-page="History" asp-route-slug="@Model.Article.Slug">@string.Format(Localizer["HistoryFormat"].Value, Model.Article.Version)</a></div>
-				</div>
+			<div class="row">
+				<div class="col-xl-4 small"><span class="text-muted">@Localizer["ViewCount"]: </span><span class="badge badge-primary" data-value="@Model.Article.ViewCount"> @Model.Article.ViewCount</span></div>
+				<div class="col-xl-8 small"><span class="text-muted">@Localizer["ReadingTime"]: </span><span class="badge badge-primary duration" data-duration="@Model.Article.Content.CalculateReadTime().TotalMilliseconds"></span></div>
+			</div>
+			<div class="row">
+				<div class="col-xl-12 small"><a asp-page="History" asp-route-slug="@Model.Article.Slug">@string.Format(Localizer["HistoryFormat"].Value, Model.Article.Version)</a></div>
 			</div>
 		</div>
 	</div>
