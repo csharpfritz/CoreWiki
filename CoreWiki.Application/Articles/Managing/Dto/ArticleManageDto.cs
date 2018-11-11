@@ -17,6 +17,6 @@ namespace CoreWiki.Application.Articles.Managing.Dto
 		public Instant Published { get; set; }
 		public Guid AuthorId { get; set; }
 		public SlugHistoryDto[] History { get; set; }
-		public string AuthorName { get; set; }
+
 	}
 }

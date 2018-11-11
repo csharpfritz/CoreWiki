@@ -41,8 +41,7 @@ namespace CoreWiki.Test.Website.Pages.Create
 			{
 				Topic = _topic,
 				AuthorId = userId,
-				Content = _content,
-				AuthorName = username
+				Content = _content
 			};
 
 			_mediator.Setup(mediator => mediator.Send(It.IsAny<CreateNewArticleCommand>(), It.IsAny<CancellationToken>()))
@@ -78,7 +77,6 @@ namespace CoreWiki.Test.Website.Pages.Create
 			_mediator.Verify(m => m.Send(
 				It.Is<CreateNewArticleCommand>(request =>
 					request.Topic.Equals(expectedCommand.Topic) &&
-					request.AuthorName.Equals(user.DisplayName) &&
 					request.Content.Equals(expectedCommand.Content) &&
 					request.AuthorId.Equals(userId)),
 				It.Is<CancellationToken>(token => token.Equals(CancellationToken.None))), Times.Once);

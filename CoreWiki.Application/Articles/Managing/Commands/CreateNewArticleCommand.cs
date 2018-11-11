@@ -13,8 +13,6 @@ namespace CoreWiki.Application.Articles.Managing.Commands
 
 		public Guid AuthorId { get; set; }
 
-		public string AuthorName { get; set; }
-
 	}
 
 

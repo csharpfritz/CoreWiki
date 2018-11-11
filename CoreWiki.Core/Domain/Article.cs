@@ -34,8 +34,6 @@ namespace CoreWiki.Core.Domain
 
 		public Guid AuthorId { get; set; }
 
-		public string AuthorName { get; set; } = "Unknown";
-
 		public string Content { get; set; }
 
 		public bool IsHomePage => Id == 1;

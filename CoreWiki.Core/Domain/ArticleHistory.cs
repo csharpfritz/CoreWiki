@@ -9,8 +9,6 @@ namespace CoreWiki.Core.Domain
 
 		public Guid AuthorId { get; set; }
 
-		public string AuthorName { get; set; }
-
 		public int Version { get; set; }
 
 		public string Topic { get; set; }
@@ -30,7 +28,6 @@ namespace CoreWiki.Core.Domain
 			{
 				ArticleId = article.Id,
 				AuthorId = article.AuthorId,
-				AuthorName = article.AuthorName,
 				Content = article.Content,
 				Published = article.Published,
 				Slug = article.Slug,

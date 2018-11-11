@@ -44,7 +44,7 @@ namespace CoreWiki.Application.Articles.Managing.Impl
 			return createdArticle;
 		}
 
-		public async Task<Article> Update(int id, string topic, string content, Guid authorId, string authorName)
+		public async Task<Article> Update(int id, string topic, string content, Guid authorId)
 		{
 			var article = new Article { Topic = topic };
 			if (string.IsNullOrWhiteSpace(article.Slug))
@@ -69,7 +69,6 @@ namespace CoreWiki.Application.Articles.Managing.Impl
 			existingArticle.Topic = topic;
 			existingArticle.Content = content;
 			existingArticle.AuthorId = authorId;
-			existingArticle.AuthorName = authorName;
 
 			existingArticle.Version++;
 			existingArticle.Published = _clock.GetCurrentInstant();

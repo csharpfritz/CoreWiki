@@ -39,9 +39,6 @@ namespace CoreWiki.Data.EntityFramework.Models
 		//[Required]
 		public Guid AuthorId { get; set; } = Guid.NewGuid();
 
-		//[Required]
-		public string AuthorName { get; set; } = "Unknown";
-
 		// Buddy property (?)
 		[Obsolete("This property only exists for EF-serialization purposes")]
 		[DataType(DataType.DateTime)]
@@ -73,7 +70,6 @@ namespace CoreWiki.Data.EntityFramework.Models
 			{
 
 				AuthorId = article.AuthorId,
-				AuthorName = article.AuthorName,
 				Comments = article.Comments.Select(c => CommentDAO.FromDomain(c)).ToHashSet(),
 				Content = article.Content,
 				History = article.History.Select(h => ArticleHistoryDAO.FromDomain(h)).ToHashSet(),
@@ -94,7 +90,6 @@ namespace CoreWiki.Data.EntityFramework.Models
 			{
 
 				AuthorId = AuthorId,
-				AuthorName = AuthorName,
 				Comments = Comments.Select(c => c.ToDomain()).ToHashSet(),
 				Content = Content,
 				History = History.Select(h => h.ToDomain()).ToHashSet(),

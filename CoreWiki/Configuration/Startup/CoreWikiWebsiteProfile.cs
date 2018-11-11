@@ -27,25 +27,20 @@ namespace CoreWiki.Configuration.Startup
 
 			CreateMap<ArticleCreate, CreateNewArticleCommand>(MemberList.Source);
 			CreateMap<ClaimsPrincipal, CreateNewArticleCommand>(MemberList.None)
-				.ForMember(d => d.AuthorId, m => m.MapFrom(s => Guid.Parse(s.FindFirstValue(ClaimTypes.NameIdentifier))))
-				.ForMember(d => d.AuthorName, m => m.MapFrom(s => s.Identity.Name));
+				.ForMember(d => d.AuthorId, m => m.MapFrom(s => Guid.Parse(s.FindFirstValue(ClaimTypes.NameIdentifier))));
 			CreateMap<CoreWikiUser, CreateNewArticleCommand>(MemberList.None)
-				.ForMember(d => d.AuthorId, m => m.MapFrom(s => Guid.Parse(s.Id)))
-				.ForMember(d => d.AuthorName, m => m.MapFrom(s => s.DisplayName));
+				.ForMember(d => d.AuthorId, m => m.MapFrom(s => Guid.Parse(s.Id)));
 
 			CreateMap<ClaimsPrincipal, CreateSkeletonArticleCommand>(MemberList.None)
-				.ForMember(d => d.AuthorId, m => m.MapFrom(s => Guid.Parse(s.FindFirstValue(ClaimTypes.NameIdentifier))))
-				.ForMember(d => d.AuthorName, m => m.MapFrom(s => s.Identity.Name));
+				.ForMember(d => d.AuthorId, m => m.MapFrom(s => Guid.Parse(s.FindFirstValue(ClaimTypes.NameIdentifier))));
 
 
 			CreateMap<ArticleEdit, EditArticleCommand>(MemberList.Source)
 				.ForSourceMember(d => d.Slug, m => m.Ignore());
 			CreateMap<ClaimsPrincipal, EditArticleCommand>(MemberList.None)
-				.ForMember(d => d.AuthorId, m => m.MapFrom(s => Guid.Parse(s.FindFirstValue(ClaimTypes.NameIdentifier))))
-				.ForMember(d => d.AuthorName, m => m.MapFrom(s => s.Identity.Name));
+				.ForMember(d => d.AuthorId, m => m.MapFrom(s => Guid.Parse(s.FindFirstValue(ClaimTypes.NameIdentifier))));
 			CreateMap<CoreWikiUser, EditArticleCommand>(MemberList.None)
-				.ForMember(d => d.AuthorId, m => m.MapFrom(s => Guid.Parse(s.Id)))
-				.ForMember(d => d.AuthorName, m => m.MapFrom(s => s.DisplayName));
+				.ForMember(d => d.AuthorId, m => m.MapFrom(s => Guid.Parse(s.Id)));
 
 			CreateMap<IList<ArticleReadingDto>, SearchResultDto<ArticleSummary>>(MemberList.None)
 				.ForMember(d => d.Results, m => m.MapFrom(s => s))

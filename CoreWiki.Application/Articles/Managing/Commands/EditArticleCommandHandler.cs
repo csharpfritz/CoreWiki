@@ -19,7 +19,7 @@ namespace CoreWiki.Application.Articles.Managing.Commands
 		{
 			try
 			{
-				var theArticle = await _articleManagementService.Update(request.Id, request.Topic, request.Content, request.AuthorId, request.AuthorName);
+				var theArticle = await _articleManagementService.Update(request.Id, request.Topic, request.Content, request.AuthorId);
 
 				return CommandResult.Success(theArticle.Slug);
 			}

@@ -13,7 +13,6 @@ namespace CoreWiki.Application.Articles.Reading.Dto
 		public Instant Added { get; set; }
 		public int Version { get; set; }
 		public string Content { get; set; }
-		public string AuthorName { get; set; }
 		public Instant Published { get; set; }
 	}
 }

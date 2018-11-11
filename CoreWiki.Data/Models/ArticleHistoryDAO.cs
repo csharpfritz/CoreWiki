@@ -23,8 +23,6 @@ namespace CoreWiki.Data.EntityFramework.Models
 		[Required]
 		public Guid AuthorId { get; set; }
 
-		public string AuthorName { get; set; }
-
 		[Required]
 		public int Version { get; set; }
 
@@ -62,7 +60,6 @@ namespace CoreWiki.Data.EntityFramework.Models
 				Article = article,
 				ArticleId = article.Id,
 				AuthorId = article.AuthorId,
-				AuthorName = article.AuthorName,
 				Content = article.Content,
 				Published = article.Published,
 				Slug = article.Slug,
@@ -78,7 +75,6 @@ namespace CoreWiki.Data.EntityFramework.Models
 
 				ArticleId = history.ArticleId,
 				AuthorId = history.AuthorId,
-				AuthorName = history.AuthorName,
 				Content = history.Content,
 				Id = history.Id,
 				Published = history.Published,
@@ -96,7 +92,6 @@ namespace CoreWiki.Data.EntityFramework.Models
 			{
 
 				AuthorId = AuthorId,
-				AuthorName = AuthorName,
 				Content = Content,
 				Id = Id,
 				Published = Published,

@@ -9,7 +9,7 @@ namespace CoreWiki.Application.Articles.Managing
 	public interface IArticleManagementService
 	{
 		Task<Article> CreateArticleAndHistory(Article article);
-		Task<Article> Update(int id, string topic, string content, Guid authorId, string authorName);
+		Task<Article> Update(int id, string topic, string content, Guid authorId);
 		Task<Article> Delete(string slug);
 		Task<bool> IsTopicAvailable(string articleSlug, int articleId);
 		Task<ArticleManageDto> GetArticleBySlug(string articleSlug);

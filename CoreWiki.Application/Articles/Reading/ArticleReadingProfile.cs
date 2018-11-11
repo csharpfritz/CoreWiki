@@ -18,7 +18,6 @@ namespace CoreWiki.Application.Articles.Reading
 			CreateMap<SlugHistory, SlugHistoryDto>()
 				.ForMember( d => d.Version, m => m.MapFrom(s => s.Article.Version))
 				.ForMember(d => d.Content, m => m.MapFrom(s => s.Article.Content))
-				.ForMember(d => d.AuthorName, m => m.MapFrom(s => s.Article.AuthorName))
 				.ForMember(d => d.Published, m => m.MapFrom(s => s.Article.Published));
 			CreateMap<CommentDto, Comment>();
 		}
