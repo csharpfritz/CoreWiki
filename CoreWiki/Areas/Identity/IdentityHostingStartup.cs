@@ -24,6 +24,7 @@ namespace CoreWiki.Areas.Identity
 				{
 					options.SignIn.RequireConfirmedEmail = requireConfirmedEmail;
 					options.User.RequireUniqueEmail = true;
+					options.User.AllowedUserNameCharacters = options.User.AllowedUserNameCharacters.Replace("@","");
 				})
 					.AddRoles<IdentityRole>()
 					.AddRoleManager<RoleManager<IdentityRole>>()
