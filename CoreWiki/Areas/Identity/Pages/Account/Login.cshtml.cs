@@ -39,6 +39,9 @@ namespace CoreWiki.Areas.Identity.Pages.Account
 
 		public class InputModel
 		{
+
+			// mozts2005 cheered 1050 on November 11, 2018
+
 			[Required]
 			[Display(Name = "User Name or Email Address")]
 			public string UserName { get; set; }
