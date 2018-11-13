@@ -14,7 +14,10 @@ namespace CoreWiki.Application.Articles.Reading
 			CreateMap<CreateCommentDto, Comment>()
 				.ForMember(d => d.Id, m => m.Ignore());
 			CreateMap<CreateNewCommentCommand, CreateCommentDto>();
-			CreateMap<Article, ArticleReadingDto>();
+			CreateMap<ArticleHistory, ArticleHistoryDto>();
+			CreateMap<Article, ArticleReadingDto>()
+				.ForMember(d => d.ArticleHistory, m => m.MapFrom(s => s.History))
+				.ForMember(d => d.SlugHistory, m => m.MapFrom(s => s.SlugHistory));
 			CreateMap<SlugHistory, SlugHistoryDto>()
 				.ForMember( d => d.Version, m => m.MapFrom(s => s.Article.Version))
 				.ForMember(d => d.Content, m => m.MapFrom(s => s.Article.Content))

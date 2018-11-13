@@ -15,4 +15,5 @@ namespace CoreWiki.Application.Articles.Reading.Dto
 		public string Content { get; set; }
 		public Instant Published { get; set; }
 	}
+
 }

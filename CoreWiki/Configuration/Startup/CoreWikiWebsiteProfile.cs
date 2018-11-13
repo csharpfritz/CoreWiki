@@ -20,6 +20,11 @@ namespace CoreWiki.Configuration.Startup
 			CreateMap<ArticleReadingDto, ArticleDelete>();
 			CreateMap<ArticleReadingDto, ArticleEdit>();
 
+			CreateMap<ArticleReadingDto, ArticleHistory>()
+				.ForMember(d => d.AuthorName, m => m.Ignore())
+				.ForMember(d => d.History, m=> m.MapFrom(s => s.ArticleHistory))
+				;
+
 			CreateMap<Comment, CreateNewCommentCommand>()
 				.ForMember(d => d.AuthorId, m => m.Ignore());
 			CreateMap<ClaimsPrincipal, CreateNewCommentCommand>(MemberList.None)

@@ -46,5 +46,19 @@ namespace CoreWiki.Data.EntityFramework.Models
 
 		}
 
+		public static SlugHistoryDAO FromDomain(Core.Domain.SlugHistory domain) {
+
+
+			return new SlugHistoryDAO
+			{
+
+				Added = domain.Added,
+				Id = domain.Id,
+				OldSlug = domain.OldSlug
+
+			};
+
+		}
+
 	}
 }

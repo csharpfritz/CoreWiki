@@ -42,6 +42,8 @@ namespace CoreWiki.Core.Domain
 
 		public virtual ICollection<ArticleHistory> History { get; set; }
 
+		public virtual ICollection<SlugHistory> SlugHistory { get; set; }
+
 		public Article()
 		{
 			this.Comments = new HashSet<Comment>();

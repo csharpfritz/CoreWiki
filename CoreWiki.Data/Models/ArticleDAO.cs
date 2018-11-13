@@ -56,10 +56,14 @@ namespace CoreWiki.Data.EntityFramework.Models
 		public string Content { get; set; }
 		public virtual ICollection<CommentDAO> Comments { get; set; }
 		public virtual ICollection<ArticleHistoryDAO> History { get; set; }
+
+		public virtual ICollection<SlugHistoryDAO> SlugHistory { get; set; }
+
 		public ArticleDAO()
 		{
 			this.Comments = new HashSet<CommentDAO>();
 			this.History = new HashSet<ArticleHistoryDAO>();
+			this.SlugHistory = new HashSet<SlugHistoryDAO>();
 		}
 
 		public int ViewCount { get; set; } = 0;
@@ -76,6 +80,7 @@ namespace CoreWiki.Data.EntityFramework.Models
 				Id = article.Id,
 				Published = article.Published,
 				Slug = article.Slug,
+				SlugHistory = article.SlugHistory.Select(h => SlugHistoryDAO.FromDomain(h)).ToHashSet(),
 				Topic = article.Topic,
 				Version = article.Version,
 				ViewCount = article.ViewCount
@@ -95,6 +100,7 @@ namespace CoreWiki.Data.EntityFramework.Models
 				History = History.Select(h => h.ToDomain()).ToHashSet(),
 				Id = Id,
 				Published = Published,
+				SlugHistory = SlugHistory.Select(h => h.ToDomain()).ToHashSet(),
 				Topic = Topic,
 				Version = Version,
 				ViewCount = ViewCount

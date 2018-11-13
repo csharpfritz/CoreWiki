@@ -39,7 +39,7 @@
 				@foreach (var history in Model.Article.History.OrderByDescending(a => a.Version))
 				{
 					<tr>
-						<td>@history.AuthorName</td>		<!-- NEED Author -->
+						<td>@((await Model._userManager.FindByIdAsync(history.AuthorId.ToString()))?.DisplayName)</td>		<!-- NEED Author -->
 						<td>@history.Version</td>
 						<td><span data-value="@history.Published" class="timeStampValue"> @history.Published</span></td>
 						<td><input type="checkbox" name="compare" value="@history.Version" class="form-check-input" /></td>

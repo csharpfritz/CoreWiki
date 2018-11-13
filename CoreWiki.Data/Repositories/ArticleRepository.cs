@@ -40,7 +40,9 @@ namespace CoreWiki.Data.EntityFramework.Repositories
 		{
 			var article = await Context.Articles
 				.AsNoTracking()
-				.Include(a => a.History).SingleOrDefaultAsync(m => m.Slug == articleSlug.ToLower());
+				.Include(a => a.History)
+				.Include(a => a.SlugHistory)
+				.SingleOrDefaultAsync(m => m.Slug == articleSlug.ToLower());
 			return article.ToDomain();
 		}
 

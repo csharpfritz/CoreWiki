@@ -43,7 +43,7 @@ namespace CoreWiki.Areas.Identity.Pages.UserAdmin
 		public IEnumerable<string> UpdatedRoles { get; set; }
 
 		[BindProperty]
-		public string UsernameToAddRoleTo { get; set; }
+		public string UsernameToAddRoleTo { get; set; } 
 
 		public async Task<IActionResult> OnPostUpdateUserRolesAsync()
 		{

@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
 using CoreWiki.Application.Articles.Reading.Queries;
+using CoreWiki.Data.EntityFramework.Security;
 using CoreWiki.Helpers;
 using CoreWiki.ViewModels;
 using DiffPlex.DiffBuilder;
 using DiffPlex.DiffBuilder.Model;
 using MediatR;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Collections.Generic;
@@ -17,11 +19,13 @@ namespace CoreWiki.Pages
 	{
 		private readonly IMediator _mediator;
 		private readonly IMapper _mapper;
+		public readonly UserManager<CoreWikiUser> _userManager;
 
-		public HistoryModel(IMediator mediator, IMapper mapper)
+		public HistoryModel(IMediator mediator, IMapper mapper, UserManager<CoreWikiUser> userManager)
 		{
 			_mediator = mediator;
 			_mapper = mapper;
+			_userManager = userManager;
 		}
 
 		public ArticleHistory Article { get; private set; }
@@ -48,6 +52,7 @@ namespace CoreWiki.Pages
 			}
 
 			Article = _mapper.Map<ArticleHistory>(article);
+			Article.AuthorName = (await _userManager.FindByIdAsync(Article.AuthorId.ToString())).DisplayName;
 
 			return Page();
 		}
@@ -63,7 +68,7 @@ namespace CoreWiki.Pages
 
 			var article = await _mediator.Send(qry);
 
-			var histories = article.History
+			var histories = article.SlugHistory
 				.Where(h => Compare.Any(c => c == h.Version.ToString()))
 				.OrderBy(h => h.Version)
 				.ToArray();
