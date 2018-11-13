@@ -52,7 +52,7 @@ namespace CoreWiki.Areas.Identity.Pages.UserAdmin
 				return Page();
 			}
 
-			var user = await UserManager.FindByEmailAsync(UsernameToAddRoleTo);
+			var user = await UserManager.FindByNameAsync(UsernameToAddRoleTo);
 
 			if (user == null)
 			{
