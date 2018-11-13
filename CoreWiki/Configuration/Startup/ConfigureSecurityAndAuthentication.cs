@@ -39,7 +39,6 @@ namespace CoreWiki.Configuration.Startup
 		{
 			app.UseCookiePolicy();
 			app.UseAuthentication();
-			await SeedDefaultAdminUserToAdminRole.Seed(userManager, roleManager);
 			return app;
 		}
 	}
