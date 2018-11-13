@@ -50,7 +50,7 @@ A more descriptive contributing guide is written **here:** [contributing](contri
 - If you want to try adding a new feature, please open an issue so **@csharpfritz** can review the idea
 
 #### <a id="default-admin-warning">How do I get rid of the 'default administrator enabled' warning?</a>
-You shouldn't see this problem any longer, as the latest versions of CoreWiki now support an initial start wizard that allow you to create a default admin user.  If you are using an older version of CoreWiki, follow these steps:
+You shouldn't see this problem any longer, as the latest versions of CoreWiki now include an initial start wizard that allows you to create a default administrator user.  If you are using an older version of CoreWiki, follow these steps:
 
 1. Register a new account (it won't have administrator rights for obvious reasons).
 2. Sign in as the default administrator (username: admin@corewiki.com, password: Admin@123), and go to the User Admin page from the main menu up top.
