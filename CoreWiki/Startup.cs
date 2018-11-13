@@ -49,7 +49,7 @@ namespace CoreWiki
 			app.ConfigureRouting();
 			app.InitializeData(Configuration);
 
-			app.UseFirstStartConfiguration(env, Configuration, () => Program.Restart());
+			app.UseFirstStartConfiguration(env, Configuration, userManager, () => Program.Restart());
 
 			var theTask = app.ConfigureAuthentication(userManager, roleManager);
 			theTask.GetAwaiter().GetResult();
