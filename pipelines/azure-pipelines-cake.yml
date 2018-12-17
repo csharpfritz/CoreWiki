@@ -1,5 +1,5 @@
 variables:
-  DOTNET_SDK_VERSION: '2.1.401'
+  DOTNET_SDK_VERSION: '2.1.502'
 
 jobs:
 - job: MacOS

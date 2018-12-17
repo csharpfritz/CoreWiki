@@ -8,7 +8,22 @@ pool:
 
 variables:
   buildConfiguration: 'Release'
+  DOTNET_SDK_VERSION: '2.1.502'
 
 steps:
+- task: NodeTool@0
+  inputs:
+    versionSpec: '7.x'
+
+- task: DotNetCoreInstaller@0
+  displayName: 'Use .NET Core SDK $(DOTNET_SDK_VERSION)'
+  inputs:
+    version: '$(DOTNET_SDK_VERSION)'
+
+- task: Npm@1
+  inputs:
+    command: 'install'
+    workingDir: 'CoreWiki'
+      
 - script: dotnet build --configuration $(buildConfiguration)
   displayName: 'dotnet build $(buildConfiguration)'
