@@ -8,7 +8,7 @@ ADD .  /src
 
 RUN Cake /src/build.cake --Target=Publish
 
-FROM microsoft/dotnet:2.1.3-aspnetcore-runtime
+FROM microsoft/dotnet:2.1.6-aspnetcore-runtime
 
 WORKDIR app
 
