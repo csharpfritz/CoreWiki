@@ -1,0 +1,29 @@
+@startuml
+!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/release/1-0/C4_Context.puml
+
+'LAYOUT_TOP_DOWN
+'LAYOUT_AS_SKETCH
+'LAYOUT_WITH_LEGEND
+
+title System-Landscape-diagram-for-CoreWiki
+
+Person(reader, "Reader", "The user that visits the Corewiki website")
+Person(author, "Author", "The authenticated user that manages articles and comments on the Corewiki website")
+
+System_Boundary(SB1, "Corewiki"){
+	System(CoreWikiSystem, "Corewiki UI", "provides a wikiblog to users")
+}
+
+System_Ext(disqus, "Discus", "Commenting service")
+System_Ext(sendgrid, "SendGrid", "Sends email")
+System_Ext(external_auth_provider, "External Auth Provider", "Provide authentication (Twitter, Facebook,...)")
+
+Rel(reader, CoreWikiSystem, "read articles and comments on them")
+Rel(author, CoreWikiSystem, "manage articles and internal comments")
+
+Rel(CoreWikiSystem, disqus, "Display external comments")
+Rel(CoreWikiSystem, sendgrid, "send email to users")
+Rel(CoreWikiSystem, external_auth_provider, "authenticate users")
+
+Rel(reader, disqus, "Comments on articles through Disqus")
+@enduml
