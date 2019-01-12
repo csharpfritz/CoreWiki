@@ -6,7 +6,7 @@ The Web frontend consists of a set of components.
 - Managing Pages: An area where authenticated users can manage articles.
 - Identity Pages: An area providing the visitor a way to manage his/hers account and authenticate against either the internal or external auth provider.
 
-![alt=Website Component](3-CoreWiki-Components-Website.png)
+![alt=Website Component](images/Frontend-Container-Diagram-For-CoreWiki.png)
 
 All areas use the Backend service to do their work. There is to be no business logic in any of these areas. All of them are about just displaying content and offer the user a way to interact with it.
 

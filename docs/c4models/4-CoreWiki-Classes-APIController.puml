@@ -1,0 +1,45 @@
+@startuml
+!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/release/1-0/C4_Component.puml
+
+LAYOUT_TOP_DOWN
+'LAYOUT_AS_SKETCH
+'LAYOUT_WITH_LEGEND
+
+title Classes-for-APIControllers-CoreWiki
+
+Container(CoreWikiUI, "CoreWiki UI","ASP.NET Core", "offers web frontend to Corewiki")
+Container(CoreWikiMobile, "Corewiki Mobile API", "ASP.NET Core", "Mobile API to CoreWiki")
+
+Boundary(alias, "API"){
+	Container_Boundary(ArticleReadController, "Article Read API Controller"){
+		Component(ArticleReadingAPIController, "Article Read Controller", "ASP.NET Core", "Converts http request to a corresponding command/query. Automaps between external API and Command/Query")
+		Component(MediatrRead, "Mediatr" , ".NET Core", "")
+		Component(CommandQueryHandlerForRead, "Command/Query-Handler", ".NET Core", "Handle the request by calling the application service. Automaps between application dto and externalAPI dto")
+
+	}
+
+	Container_Boundary(ArticleManagementController, "Article Management API Controller"){
+		Component(ArticleManagementAPIController, "Article Management Controller", "ASP.NET Core", "Converts http request to a corresponding command/query. Automaps between external API and Command/Query")
+		Component(MediatrManagement, "Mediatr", ".NET Core", "")
+		Component(CommandQueryHandlerForManagenent, "Command/Query-Handler", ".NET Core", "Handle the request by calling the application service. Automaps between application dto and externalAPI dto")
+	}
+
+	Component(ArticleApp, "Article Application", ".NET Core", "Exposes articles functionality based on the authenticated user. (Application Services can have multiple domains involved)")
+	Component(SearchApp, "Search Application", ".NET Core", "Searches for articles")
+	Component(IdentityApp, "Identity Application", "ASP.NET Identity", "Provides user identity support")
+}
+
+Rel(CoreWikiUI, ArticleReadingAPIController, "Retrieve articles and comments", "HTTPS")
+Rel(CoreWikiUI, ArticleManagementAPIController, "Manage articles", "HTTPS")
+Rel(CoreWikiMobile, ArticleReadingAPIController, "Retrieve articles and comments", "HTTPS")
+
+Rel(ArticleManagementAPIController, MediatrManagement, "sends to", ".NET Core")
+Rel_L(ArticleManagementAPIController, IdentityApp, "verifies auth", ".NET Core")
+Rel(MediatrManagement, CommandQueryHandlerForManagenent, "is handled by", ".NET Core")
+Rel(ArticleReadingAPIController, MediatrRead, "sends to", ".NET Core")
+Rel(MediatrRead, CommandQueryHandlerForRead, "is handled by", ".NET Core")
+Rel(CommandQueryHandlerForRead, ArticleApp, "read articles and comments from", ".NET Core")
+Rel(CommandQueryHandlerForRead, SearchApp, "searches articles in", ".NET Core")
+Rel(CommandQueryHandlerForManagenent, ArticleApp, "manages articles with", ".NET Core")
+
+@enduml

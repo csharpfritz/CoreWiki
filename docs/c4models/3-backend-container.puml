@@ -1,0 +1,42 @@
+@startuml
+!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/release/1-0/C4_Component.puml
+
+LAYOUT_TOP_DOWN
+'LAYOUT_AS_SKETCH
+'LAYOUT_WITH_LEGEND
+
+title Backend-Container-Diagram-For-CoreWiki
+
+Container(CoreWikiUI, "Corewiki UI", "ASP.NET Core", "This could be the website or a mobile app")
+ContainerDb(ArticleDb, "Article Database", "SQLite", "Stores articles and comments")
+Container(SearchIndex, "Search Index", "Lucene", "Stores article indexes")
+ContainerDb(IdentityDb, "Identity Database", "SQLite", "Stores user identities")
+
+Container_Boundary(C2, "CoreWiki Backend"){
+	Component(APIControllers, "API Controllers", "ASP.NET Core", "Translates the incoming commands/queries and forwards to the application service and returns results as DTO's.")
+	Component(ArticleApp, "Article Application", ".NET Core", "Exposes articles functionality based on the authenticated user. (Application Services can have multiple domains involved)")
+	Component(SearchApp, "Search Application", ".NET Core", "Searches for articles")
+	Component(IdentityApp, "Identity Application", "ASP.NET Identity", "Provides user identity support")
+	Component(ArticleCore, "Article Core", ".NET Core", "Contains the business rules of articles and comments. Includes Domain Services when multiple DO's are involved")
+	Component(ArticlePersistenceEF, "Article Persistence EF", "Entity Framework", "Provides persistence of Articles and Comments by converting the DOs to EF Objects and back")
+	Component(ArticlePersistenceLucene, "Article Persistence Lucene", "Lucene.NET", "Provides access to Lucene Indices")
+}
+
+Rel(CoreWikiUI, APIControllers, "Read/write articles and comments", "HTTPS")
+Rel(CoreWikiUI, IdentityApp, "Authenticate", "HTTPS")
+Rel(APIControllers, ArticleApp, "uses", ".NET Core")
+Rel(APIControllers, SearchApp, "Search for articles", ".NET Core")
+Rel_R(APIControllers, IdentityApp, "Verify authorization", ".NET Core")
+
+Rel(ArticleApp, ArticleCore, "uses", ".NET Core")
+Rel(ArticleApp, ArticlePersistenceEF, "Read/write articles", ".NET Core")
+
+Rel(SearchApp, ArticlePersistenceEF, "Search articles in", ".NET Core")
+Rel(SearchApp, ArticlePersistenceLucene, "Search articles in", ".NET Core")
+
+Rel(ArticlePersistenceEF, ArticleDb, "Read/write articles in", "SQL")
+Rel(ArticlePersistenceLucene, SearchIndex, "Search in index", "Lucene")
+Rel(IdentityApp, IdentityDb, "Read/write identities in", "SQL")
+Rel_L(ArticlePersistenceEF, ArticleCore, "uses", ".NET Core")
+
+@enduml

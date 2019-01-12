@@ -1,0 +1,27 @@
+@startuml
+!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/release/1-0/C4_Component.puml
+
+LAYOUT_TOP_DOWN
+'LAYOUT_AS_SKETCH
+'LAYOUT_WITH_LEGEND
+
+title Classes-for-Razor-Pages-For-CoreWiki
+
+Person(reader, "Reader", "The user that visits the Corewiki website")
+Container(CoreWikiBackend, "CoreWiki Backend", "ASP.NET Core", "Provides articles and commenting functionality.")
+
+Container_Boundary(C3, "Corewiki Frontend"){
+	Component(Pages, "*.Page", "CSHTML", "Displays the ViewModel as HTML and calls PageModel for sending change requests")
+	Component(PageModel, "*.PageModel", "ASP.NET Core", "manages the ViewModel through calling the API")
+	Component(ViewModel, "*.ViewModel", "ASP.NET Core", "Contain the data displayed on the details page")
+}
+
+Rel(Pages, PageModel, "Request to update", "Razor Pages")
+Rel(Pages, ViewModel, "Read from", "Razor Pages")
+Rel_R(PageModel, ViewModel, "Updates", ".NET Core")
+
+Rel(reader, Pages, "Read articles and comments", "HTTPS")
+Rel(PageModel, CoreWikiBackend, "Query articles and comments and send commands", "HTTPS/APIControllers")
+
+
+@enduml

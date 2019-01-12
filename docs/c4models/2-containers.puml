@@ -1,0 +1,40 @@
+@startuml
+!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/release/1-0/C4_Container.puml
+
+LAYOUT_TOP_DOWN
+'LAYOUT_AS_SKETCH
+'LAYOUT_WITH_LEGEND
+
+title Container-Diagram-For-CoreWiki
+
+Person(author, "Author", "The authenticated user that manages articles and comments on the Corewiki website")
+Person(reader, "Reader", "The user that visits the Corewiki website")
+System_Ext(disqus, "Discus", "Commenting service")
+System_Ext(sendgrid, "SendGrid", "Sends email")
+System_Ext(external_auth_provider, "External Auth Provider", "Provide authentication (Twitter, Facebook,...)")
+
+System_Boundary(S1, "CoreWiki System"){
+	Container_Boundary(C1, "CoreWiki"){
+		Container(CoreWikiUI, "CoreWiki UI","ASP.NET Core", "offers web frontend to Corewiki")
+		Container(CoreWikiMobile, "Corewiki Mobile API", "ASP.NET Core", "Mobile API to CoreWiki")
+		Container(CoreWikiBackend, "Corewiki Backend", "ASP.NET Core", "Provides articles and commenting functionality")
+		ContainerDb(ArticleDb, "Article Database", "SQLite", "Stores articles and comments")
+		Container(SearchIndex, "Search Index", "Lucene", "Stores article indexes")
+		ContainerDb(IdentityDb, "Identity Database", "SQLite", "Stores user identities")
+	}
+}
+
+Rel(reader, CoreWikiUI, "reads articles and comments on them", "HTTPS")
+Rel(reader, CoreWikiMobile, "reads articles and comments on them", "HTTPS")
+Rel(author, CoreWikiUI, "uses", "HTTPS")
+Rel(CoreWikiUI, CoreWikiBackend,"uses", "HTTPS")
+Rel(CoreWikiMobile, CoreWikiBackend,"uses", "HTTPS")
+
+Rel(CoreWikiUI, disqus, "display external comments", "HTTPS")
+Rel(CoreWikiBackend, sendgrid, "Send email to users", "HTTPS")
+Rel(CoreWikiBackend, external_auth_provider, "Authenticate", "HTTPS")
+Rel_R(CoreWikiBackend, ArticleDb, "Store articles and internal comments")
+Rel_L(CoreWikiBackend, SearchIndex, "Search for articles")
+Rel_L(CoreWikiBackend, IdentityDb, "Store user identities")
+
+@enduml

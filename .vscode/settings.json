@@ -1,5 +1,6 @@
 {
     "plantuml.exportFormat": "png",
-    "plantuml.exportOutDir": ".",
+    "plantuml.exportOutDir": "docs/c4models/images",
     "plantuml.exportSubFolder": false,
+    "plantuml.diagramsRoot": "docs/c4models/",
 }

@@ -1,7 +1,7 @@
 # Core Wiki Context
 
 The CoreWiki offers articles that other visitors can comment on.
-![alt=Context](System-Landscape-diagram-for-CoreWiki.png)
+![alt=Context](images/System-Landscape-diagram-for-CoreWiki.png)
 
 Articles are managed by authenticated users only. The authentication is provided by ASP.NET Identity, which can also be configured to provide external auth providers like [Twitter](http://www.twitter.com) and [Facebook](http://www.facebook.com).
 

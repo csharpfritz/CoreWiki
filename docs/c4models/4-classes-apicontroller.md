@@ -1,3 +1,3 @@
 # CoreWiki Api Controllers
 
-![alt=API Controllers](4-CoreWiki-Classes-APIController.png)
+![alt=API Controllers](images/Classes-for-APIControllers-CoreWiki.png)

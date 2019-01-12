@@ -1,0 +1,41 @@
+@startuml
+!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/release/1-0/C4_Component.puml
+
+LAYOUT_TOP_DOWN
+'LAYOUT_AS_SKETCH
+'LAYOUT_WITH_LEGEND
+
+title Classes-for-ApplicationService-Diagram-For-CoreWiki
+
+Component(ArticleReadingAPIController, "Article Read API Controller", "ASP.NET Core", "Converts http request to a corresponding command/query. Automaps between external API and Command/Query")
+Component(ArticleManagementAPIController, "Article Management API Controller", "ASP.NET Core", "Converts http request to a corresponding command/query. Automaps between external API and Command/Query")
+Component(ArticleCore, "Article Core", ".NET Core", "Contains the business rules of articles and comments. Includes Domain Services when multiple DO's are involved")
+Component(ArticlePersistenceEF, "Article Persistence EF", "Entity Framework", "Provides persistence of Articles and Comments by converting the DOs to EF Objects and back")
+Component(ArticlePersistenceLucene, "Article Persistence Lucene", "Lucene.NET", "Provides access to Lucene Indices")
+
+Container_Boundary(ArticleApp, "Article Application"){
+	Component(ArticleManagementService, "Article Management Application Service", "technology", "Automaps incoming dto's to article aggregates,then handles application logic, persisting and reading where needed. Emits an ArticleUpdated Domain Event")
+	Component(ArticleReadService, "Article Reading Application Service", "technology", "Automaps incoming dto's to article aggregates,then handles application logic, persisting and reading where needed.")
+}
+Container_Boundary(SearchApp, "Search Application"){
+	Component(ArticleUpdatedHandler, "ArticleUpdated EventHandler", ".NET Core", "Handles and ArticleUpdated Event")
+	Component(SearchIndexerApp, "Search Indexing", "Lucene", "Indexes article updates")
+	Component(SearchDBService, "Search DB Service", ".NET Core", "Searches article in the database")
+	Component(SearchLuceneService, "Search Lucene Service", "Lucene.NET", "Search for articles in Lucene index")
+}
+
+Rel(ArticleReadingAPIController, ArticleReadService, "query for articles", ".NET Core")
+Rel(ArticleReadingAPIController, SearchDBService, "search articles", ".NET Core")
+Rel(ArticleReadingAPIController, SearchLuceneService, "search articles", ".NET Core")
+Rel(ArticleManagementAPIController, ArticleManagementService, "manage articles", ".NET Core")
+Rel(ArticleManagementService, ArticleCore, "uses", ".NET Core")
+Rel(ArticleReadService, ArticleCore, "uses", ".NET Core")
+Rel(ArticleManagementService, ArticlePersistenceEF, "read/write articles in", ".NET Core")
+Rel(ArticleReadService, ArticlePersistenceEF, "reads articles from", ".NET Core")
+Rel(SearchDBService, ArticlePersistenceEF, "search for articles in", ".NET Core")
+Rel(SearchLuceneService, ArticlePersistenceLucene, "search for articles in", ".NET Core")
+Rel_L(ArticleUpdatedHandler, SearchIndexerApp, "triggers", ".NET Core")
+Rel(SearchIndexerApp, ArticlePersistenceLucene, "updates index with article in", ".NET Core")
+
+
+@enduml
