@@ -1,3 +1,3 @@
 # CoreWiki Application Services
 
-![alt=Application Services](4-CoreWiki-Classes-ApplicationService.png)
+![alt=Application Services](images/Classes-for-ApplicationService-Diagram-For-CoreWiki.png)

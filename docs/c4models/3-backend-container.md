@@ -2,7 +2,7 @@
 
 The backend is exposed as an HTTP(S) API Service (through ASP.NET). We can choose to expose that API on the same host as the webfront end.
 
-![alt=Backend Component](3-CoreWiki-Components-Backend.png)
+![alt=Backend Component](images/Backend-Container-Diagram-For-CoreWiki.png)
 
 ## API Controllers
 
@@ -47,4 +47,3 @@ This part exposes the Lucene directories that hold the article index through two
 ## Article Core
 
 The Article.Core provides all business logic of articles and comments. It exposes articles aggregates. These aggregates consist of entities and value objects.
-

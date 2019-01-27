@@ -1,0 +1,37 @@
+@startuml
+!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/release/1-0/C4_Component.puml
+
+LAYOUT_TOP_DOWN
+'LAYOUT_AS_SKETCH
+'LAYOUT_WITH_LEGEND
+
+title Frontend-Container-Diagram-For-CoreWiki
+
+Person(author, "Author", "The authenticated user that manages articles and comments on the Corewiki website")
+Person(reader, "Reader", "The user that visits the Corewiki website")
+Container(CoreWikiBackend, "Corewiki Backend", "ASP.NET Core", "Provides articles and commenting functionality")
+System_Ext(disqus, "Discus", "Commenting service")
+System_Ext(external_auth_provider, "External Auth Provider", "Provide authentication (Twitter, Facebook,...)")
+
+Container_Boundary(C2, "CoreWiki Website"){
+	Container(ManagingPages, "Managing Pages", "Razor Pages", "Pages to maintain articles")
+	Container(ReadingPages, "Reading Pages", "Razor Pages", "Reading articles")
+	Container(IdentityPages, "Identity Pages", "Razor Pages", "Pages to manange the user accounts and authenticate")
+}
+
+Rel(author, ManagingPages, "Manage Articles", "HTTPS")
+Rel(author, ReadingPages, "Read articles and comments", "HTTPS")
+Rel(author, IdentityPages, "Manage accounts and authenticate", "HTTPS")
+
+Rel(reader, ReadingPages, "Read articles and comment", "HTTPS")
+Rel(reader, IdentityPages, "Manage accounts and authenticate", "HTTPS")
+
+Rel(ManagingPages, CoreWikiBackend, "Query/Command articles and comments", "mediator")
+Rel(ReadingPages, CoreWikiBackend, "Query Article and comment DTOs and send Commands", "mediator")
+Rel(ReadingPages, disqus, "Display external comments", "HTTPS")
+
+Rel(IdentityPages, external_auth_provider, "Redirects", "HTTPS")
+Rel(IdentityPages, CoreWikiBackend, "Store identities", "Entity Framework")
+
+
+@enduml
