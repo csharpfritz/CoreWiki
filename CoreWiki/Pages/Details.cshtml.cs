@@ -3,7 +3,6 @@ using CoreWiki.Helpers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System;
-using System.Security.Claims;
 using System.Threading.Tasks;
 using MediatR;
 using AutoMapper;
@@ -48,17 +47,17 @@ namespace CoreWiki.Pages
 
 			Article = _mapper.Map<ArticleDetails>(article); 
 
-			ManageViewCount(slug);
+			await ManageViewCount(slug);
 
 			return Page();
 		}
 
-		private void ManageViewCount(string slug)
+		private Task<Unit> ManageViewCount(string slug)
 		{
 			var incrementViewCount = (Request.Cookies[slug] == null);
 			if (!incrementViewCount)
 			{
-				return;
+				return Task.FromResult(Unit.Value);
 			}
 
 			Article.ViewCount++;
@@ -67,7 +66,7 @@ namespace CoreWiki.Pages
 				Expires = DateTime.UtcNow.AddMinutes(5)
 			});
 
-			_mediator.Send(new IncrementViewCountCommand(slug));
+			return _mediator.Send(new IncrementViewCountCommand(slug));
 		}
 
 		public async Task<IActionResult> OnPostAsync(Comment model)
