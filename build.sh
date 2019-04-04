@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Define varibles
-CAKE_VERSION=0.30.0
-DOTNET_VERSION=2.1.403
+CAKE_VERSION=0.33.0
+DOTNET_VERSION=2.1.602
 SCRIPT_DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 TOOLS_DIR=$SCRIPT_DIR/tools
 CAKE_EXE=$TOOLS_DIR/dotnet-cake
