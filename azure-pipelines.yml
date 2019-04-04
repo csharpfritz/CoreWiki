@@ -8,7 +8,7 @@ pool:
 
 variables:
   buildConfiguration: 'Release'
-  DOTNET_SDK_VERSION: '2.1.502'
+  DOTNET_SDK_VERSION: '2.1.602'
 
 steps:
 - task: NodeTool@0
@@ -24,6 +24,6 @@ steps:
   inputs:
     command: 'install'
     workingDir: 'CoreWiki'
-      
+
 - script: dotnet build --configuration $(buildConfiguration)
   displayName: 'dotnet build $(buildConfiguration)'

@@ -1,5 +1,5 @@
 variables:
-  DOTNET_SDK_VERSION: '2.1.502'
+  DOTNET_SDK_VERSION: '2.1.602'
 
 jobs:
 - job: MacOS
@@ -18,7 +18,7 @@ jobs:
     displayName: 'Execute Cake Bootstrapper'
 
   - task: PublishTestResults@2
-    displayName: 'Publish Test Results'   
+    displayName: 'Publish Test Results'
     inputs:
       testRunner: xUnit
       testResultsFiles: '**/test_result.xml'

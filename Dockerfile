@@ -1,4 +1,4 @@
-FROM cakebuild/cake:v0.32.1-2.1-sdk AS builder
+FROM cakebuild/cake:v0.33.0-2.1-sdk AS builder
 
 RUN apt-get update -qq \
     && curl -sL https://deb.nodesource.com/setup_9.x | bash - \
