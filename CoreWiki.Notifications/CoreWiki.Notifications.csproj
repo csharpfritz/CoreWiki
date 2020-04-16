@@ -11,7 +11,7 @@
     <PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="2.1.1" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="2.1.1" />
     <PackageReference Include="Microsoft.Extensions.Options" Version="2.1.1" />
-		<PackageReference Include="sendgrid" Version="9.10.0" />
+		<PackageReference Include="sendgrid" Version="9.14.0" />
   </ItemGroup>
 
   <ItemGroup>
