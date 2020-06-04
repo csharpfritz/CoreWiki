@@ -23,7 +23,7 @@
     <PackageReference Include="NWebsec.AspNetCore.Middleware" Version="2.0.0" />
     <PackageReference Include="NWebsec.AspNetCore.Mvc.TagHelpers" Version="2.0.0" />
     <PackageReference Include="Snickler.RSSCore" Version="1.0.3" />
-    <PackageReference Include="WebEssentials.AspNetCore.PWA" Version="1.0.49" />
+    <PackageReference Include="WebEssentials.AspNetCore.PWA" Version="1.0.65" />
     <PackageReference Include="Westwind.AspNetCore.Markdown" Version="3.0.36" />
   </ItemGroup>
 
