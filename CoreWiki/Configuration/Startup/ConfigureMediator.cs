@@ -12,7 +12,7 @@ namespace CoreWiki.Configuration.Startup
 	{
 		public static IServiceCollection AddMediator(this IServiceCollection services)
 		{
-			services.AddMediatR();
+			services.AddMediatR(System.Reflection.Assembly.GetExecutingAssembly());
 			return services;
 		}
 	}
